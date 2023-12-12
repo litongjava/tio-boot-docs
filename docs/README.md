@@ -1,3 +1,5 @@
+[[toc]]
+
 # tio-boot-开发指南
 
 ## 1.tio-boot 简介
@@ -30,159 +32,159 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
 如果使用 Java 8 开发请使用
 
 ```
-    &ltdependency&gt
-      &ltgroupId&gtcom.litongjava&lt/groupId&gt
-      &ltartifactId&gttio-boot&lt/artifactId&gt
-      &ltversion&gt1.1.6&lt/version&gt
-    &lt/dependency&gt
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>1.1.6</version>
+    </dependency>
 ```
 
 #### 2.1.3.完整依赖
 
 ```
-&ltproperties&gt
-  &ltproject.build.sourceEncoding&gtUTF-8&lt/project.build.sourceEncoding&gt
-  &ltjava.version&gt1.8&lt/java.version&gt
-  &ltmaven.compiler.source&gt${java.version}&lt/maven.compiler.source&gt
-  &ltmaven.compiler.target&gt${java.version}&lt/maven.compiler.target&gt
-  &ltgraalvm.version&gt23.1.1&lt/graalvm.version&gt
-  &lttio.boot.version&gt1.1.6&lt/tio.boot.version&gt
-  &ltlombok-version&gt1.18.30&lt/lombok-version&gt
-  &lthotswap-classloader.version&gt1.1.9&lt/hotswap-classloader.version&gt
-  &ltfinal.name&gtweb-hello&lt/final.name&gt
-  &ltmain.class&gtcom.litongjava.tio.web.hello.HelloApp&lt/main.class&gt
-&lt/properties&gt
-&ltdependencies&gt
-  &ltdependency&gt
-    &ltgroupId&gtcom.litongjava&lt/groupId&gt
-    &ltartifactId&gttio-boot&lt/artifactId&gt
-    &ltversion&gt${tio.boot.version}&lt/version&gt
-  &lt/dependency&gt
-  &ltdependency&gt
-    &ltgroupId&gtorg.projectlombok&lt/groupId&gt
-    &ltartifactId&gtlombok&lt/artifactId&gt
-    &ltversion&gt${lombok-version}&lt/version&gt
-    &ltoptional&gttrue&lt/optional&gt
-    &ltscope&gtprovided&lt/scope&gt
-  &lt/dependency&gt
-  &ltdependency&gt
-    &ltgroupId&gtcom.litongjava&lt/groupId&gt
-    &ltartifactId&gthotswap-classloader&lt/artifactId&gt
-    &ltversion&gt${hotswap-classloader.version}&lt/version&gt
-  &lt/dependency&gt
-&lt/dependencies&gt
-&ltprofiles&gt
-  &lt!-- 开发环境 --&gt
-  &ltprofile&gt
-    &ltid&gtdevelopment&lt/id&gt
-    &ltactivation&gt
-      &ltactiveByDefault&gttrue&lt/activeByDefault&gt
-    &lt/activation&gt
-    &ltdependencies&gt
-      &ltdependency&gt
-        &ltgroupId&gtch.qos.logback&lt/groupId&gt
-        &ltartifactId&gtlogback-classic&lt/artifactId&gt
-        &ltversion&gt1.2.3&lt/version&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-  &lt/profile&gt
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <java.version>1.8</java.version>
+  <maven.compiler.source>${java.version}</maven.compiler.source>
+  <maven.compiler.target>${java.version}</maven.compiler.target>
+  <graalvm.version>23.1.1</graalvm.version>
+  <tio.boot.version>1.1.6</tio.boot.version>
+  <lombok-version>1.18.30</lombok-version>
+  <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
+  <final.name>web-hello</final.name>
+  <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+</properties>
+<dependencies>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>tio-boot</artifactId>
+    <version>${tio.boot.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>${lombok-version}</version>
+    <optional>true</optional>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>hotswap-classloader</artifactId>
+    <version>${hotswap-classloader.version}</version>
+  </dependency>
+</dependencies>
+<profiles>
+  <!-- 开发环境 -->
+  <profile>
+    <id>development</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+  </profile>
 
-  &lt!-- 生产环境 --&gt
-  &ltprofile&gt
-    &ltid&gtproduction&lt/id&gt
-    &ltdependencies&gt
-      &ltdependency&gt
-        &ltgroupId&gtch.qos.logback&lt/groupId&gt
-        &ltartifactId&gtlogback-classic&lt/artifactId&gt
-        &ltversion&gt1.2.3&lt/version&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-    &ltbuild&gt
-      &ltplugins&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
-          &ltartifactId&gtmaven-jar-plugin&lt/artifactId&gt
-          &ltversion&gt3.2.0&lt/version&gt
-        &lt/plugin&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
-          &ltartifactId&gtmaven-assembly-plugin&lt/artifactId&gt
-          &ltversion&gt3.1.1&lt/version&gt
-          &ltconfiguration&gt
-            &ltarchive&gt
-              &ltmanifest&gt
-                &ltmainClass&gt${main.class}&lt/mainClass&gt
-              &lt/manifest&gt
-            &lt/archive&gt
-            &ltdescriptorRefs&gt
-              &ltdescriptorRef&gtjar-with-dependencies&lt/descriptorRef&gt
-            &lt/descriptorRefs&gt
-            &ltappendAssemblyId&gtfalse&lt/appendAssemblyId&gt
-          &lt/configuration&gt
-          &ltexecutions&gt
-            &ltexecution&gt
-              &ltid&gtmake-assembly&lt/id&gt
-              &ltphase&gtpackage&lt/phase&gt
-              &ltgoals&gt
-                &ltgoal&gtsingle&lt/goal&gt
-              &lt/goals&gt
-            &lt/execution&gt
-          &lt/executions&gt
-        &lt/plugin&gt
-      &lt/plugins&gt
-    &lt/build&gt
-  &lt/profile&gt
-  &ltprofile&gt
-    &ltid&gtnative&lt/id&gt
-    &ltdependencies&gt
-      &lt!-- GraalVM 环境使用 jdk log --&gt
-      &ltdependency&gt
-        &ltgroupId&gtorg.slf4j&lt/groupId&gt
-        &ltartifactId&gtslf4j-jdk14&lt/artifactId&gt
-        &ltversion&gt1.7.31&lt/version&gt
-      &lt/dependency&gt
-      &lt!-- GraalVM --&gt
-      &ltdependency&gt
-        &ltgroupId&gtorg.graalvm.sdk&lt/groupId&gt
-        &ltartifactId&gtgraal-sdk&lt/artifactId&gt
-        &ltversion&gt${graalvm.version}&lt/version&gt
-        &ltscope&gtprovided&lt/scope&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-    &ltbuild&gt
-      &ltfinalName&gt${final.name}&lt/finalName&gt
-      &ltplugins&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.graalvm.nativeimage&lt/groupId&gt
-          &ltartifactId&gtnative-image-maven-plugin&lt/artifactId&gt
-          &ltversion&gt21.2.0&lt/version&gt
-          &ltexecutions&gt
-            &ltexecution&gt
-              &ltgoals&gt
-                &ltgoal&gtnative-image&lt/goal&gt
-              &lt/goals&gt
-              &ltphase&gtpackage&lt/phase&gt
-            &lt/execution&gt
-          &lt/executions&gt
-          &ltconfiguration&gt
-            &ltskip&gtfalse&lt/skip&gt
-            &ltimageName&gt${project.build.finalName}&lt/imageName&gt
-            &ltmainClass&gt${main.class}&lt/mainClass&gt
-            &ltbuildArgs&gt
+  <!-- 生产环境 -->
+  <profile>
+    <id>production</id>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>${main.class}</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <appendAssemblyId>false</appendAssemblyId>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <id>native</id>
+    <dependencies>
+      <!-- GraalVM 环境使用 jdk log -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.31</version>
+      </dependency>
+      <!-- GraalVM -->
+      <dependency>
+        <groupId>org.graalvm.sdk</groupId>
+        <artifactId>graal-sdk</artifactId>
+        <version>${graalvm.version}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+    <build>
+      <finalName>${final.name}</finalName>
+      <plugins>
+        <plugin>
+          <groupId>org.graalvm.nativeimage</groupId>
+          <artifactId>native-image-maven-plugin</artifactId>
+          <version>21.2.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>native-image</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>false</skip>
+            <imageName>${project.build.finalName}</imageName>
+            <mainClass>${main.class}</mainClass>
+            <buildArgs>
               -H:+RemoveSaturatedTypeFlows
               --allow-incomplete-classpath
-            &lt/buildArgs&gt
-          &lt/configuration&gt
-        &lt/plugin&gt
-      &lt/plugins&gt
-    &lt/build&gt
-  &lt/profile&gt
-&lt/profiles&gt
+            </buildArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
 ```
 
 #### 2.1.4.依赖解释
 
-`&ltproperties&gt` 部分
+`<properties>` 部分
 
 - `project.build.sourceEncoding`: 设置项目的源代码编码为 UTF-8。
 - `java.version`: 定义 Java 版本为 1.8。
@@ -193,14 +195,14 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
 - `final.name`: 指定构建的最终文件名为 `web-hello`。
 - `main.class`: 定义项目的主类为 `com.litongjava.tio.web.hello.App`。
 
-`&ltdependencies&gt` 部分
+`<dependencies>` 部分
 列出了项目所需的依赖库：
 
 - `tio-boot`: TIO Boot 库，用于 TIO 框架的启动和配置。
 - `lombok`: 一个 Java 库，用于自动处理一些常见的任务，如 getter/setter 的生成。
 - `hotswap-classloader`: 一个类加载器，支持热交换功能，用于动态替换类定义。
 
-`&ltprofiles&gt` 部分
+`<profiles>` 部分
 定义了不同环境下的特定配置：
 
 1. 开发环境 (development): 当 Maven 构建在开发环境下时，会添加 `logback-classic` 依赖，用于日志管理。
@@ -284,71 +286,71 @@ public class IndexController {
 添加 logback
 
 ```
-&ltdependency&gt
-  &ltgroupId&gtch.qos.logback&lt/groupId&gt
-  &ltartifactId&gtlogback-classic&lt/artifactId&gt
-  &ltversion&gt1.2.3&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>ch.qos.logback</groupId>
+  <artifactId>logback-classic</artifactId>
+  <version>1.2.3</version>
+</dependency>
 ```
 
 默认集成了 logback 日志,只需要添加 logback 配置文件即可
 logback.xml
 
 ```
-&lt?xml version="1.0" encoding="UTF-8" ?&gt
-&ltconfiguration debug="false" xmlns="http://ch.qos.logback/xml/ns/logback" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false" xmlns="http://ch.qos.logback/xml/ns/logback" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd
-http://ch.qos.logback/xml/ns/logback "&gt
-  &lt!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 --&gt
-  &ltproperty name="LOG_HOME" value="logs" /&gt
-  &lt!--格式化输出：%d表示日期,%-6level：日志级别从左显示6个字符宽度,%m：日志消息，%n是换行符 --&gt
-  &ltproperty name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-6level%logger{1}.%M:%L - %m%n" /&gt
+http://ch.qos.logback/xml/ns/logback ">
+  <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+  <property name="LOG_HOME" value="logs" />
+  <!--格式化输出：%d表示日期,%-6level：日志级别从左显示6个字符宽度,%m：日志消息，%n是换行符 -->
+  <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-6level%logger{1}.%M:%L - %m%n" />
 
-  &lt!-- 控制台输出 --&gt
-  &ltappender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt
-    &ltencoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"&gt
-      &ltpattern&gt${CONSOLE_LOG_PATTERN}&lt/pattern&gt
-    &lt/encoder&gt
-  &lt/appender&gt
+  <!-- 控制台输出 -->
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
 
-  &lt!-- 按照每天生成日志文件 --&gt
-  &ltappender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt
-    &ltencoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"&gt
-      &ltpattern&gt${CONSOLE_LOG_PATTERN}&lt/pattern&gt
-    &lt/encoder&gt
-    &ltrollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt
-      &lt!--日志文件输出的文件名 --&gt
-      &ltfileNamePattern&gt${LOG_HOME}/project-name-%d{yyyy-MM-dd}.log&lt/fileNamePattern&gt
-      &lt!--日志文件保留天数 --&gt
-      &ltmaxHistory&gt180&lt/maxHistory&gt
-    &lt/rollingPolicy&gt
-    &lt!--日志文件最大的大小 --&gt
-    &lttriggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"&gt
-      &ltmaxFileSize&gt10MB&lt/maxFileSize&gt
-    &lt/triggeringPolicy&gt
-  &lt/appender&gt
+  <!-- 按照每天生成日志文件 -->
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!--日志文件输出的文件名 -->
+      <fileNamePattern>${LOG_HOME}/project-name-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <!--日志文件保留天数 -->
+      <maxHistory>180</maxHistory>
+    </rollingPolicy>
+    <!--日志文件最大的大小 -->
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <maxFileSize>10MB</maxFileSize>
+    </triggeringPolicy>
+  </appender>
 
-  &lt!--专为 spring 定制 --&gt
-  &ltlogger name="org.springframework" level="info" /&gt
-  &lt!-- show parameters for hibernate sql 专为 Hibernate 定制 --&gt
-  &ltlogger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" /&gt
-  &ltlogger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG" /&gt
-  &ltlogger name="org.hibernate.SQL" level="DEBUG" /&gt
-  &ltlogger name="org.hibernate.engine.QueryParameters" level="DEBUG" /&gt
-  &ltlogger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" /&gt
+  <!--专为 spring 定制 -->
+  <logger name="org.springframework" level="info" />
+  <!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
+  <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />
+  <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG" />
+  <logger name="org.hibernate.SQL" level="DEBUG" />
+  <logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+  <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
 
-  &lt!--myibatis log configure --&gt
-  &ltlogger name="com.apache.ibatis" level="TRACE" /&gt
-  &ltlogger name="java.sql.Connection" level="DEBUG" /&gt
-  &ltlogger name="java.sql.Statement" level="DEBUG" /&gt
-  &ltlogger name="java.sql.PreparedStatement" level="DEBUG" /&gt
+  <!--myibatis log configure -->
+  <logger name="com.apache.ibatis" level="TRACE" />
+  <logger name="java.sql.Connection" level="DEBUG" />
+  <logger name="java.sql.Statement" level="DEBUG" />
+  <logger name="java.sql.PreparedStatement" level="DEBUG" />
 
-  &lt!-- 日志输出级别 和输出源 --&gt
-  &ltroot level="info"&gt
-    &ltappender-ref ref="STDOUT" /&gt
-    &ltappender-ref ref="FILE" /&gt
-  &lt/root&gt
-&lt/configuration&gt
+  <!-- 日志输出级别 和输出源 -->
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
 ```
 
 ### 2.3.整合热加载
@@ -356,11 +358,11 @@ http://ch.qos.logback/xml/ns/logback "&gt
 添加依赖
 
 ```
-&ltdependency&gt
-  &ltgroupId&gtcom.litongjava&lt/groupId&gt
-  &ltartifactId&gthotswap-classloader&lt/artifactId&gt
-  &ltversion&gt${hotswap-classloader.version}&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>hotswap-classloader</artifactId>
+  <version>${hotswap-classloader.version}</version>
+</dependency>
 ```
 
 添加依赖后使用 TioApplicationWrapper 启动服务即可
@@ -397,118 +399,132 @@ https://github.com/litongjava/hotswap-classloader
 添加 profiles 配置如下
 
 ```
-&ltprofiles&gt
-  &lt!-- 开发环境 --&gt
-  &ltprofile&gt
-    &ltid&gtdevelopment&lt/id&gt
-    &ltactivation&gt
-      &ltactiveByDefault&gttrue&lt/activeByDefault&gt
-    &lt/activation&gt
-    &ltdependencies&gt
-      &ltdependency&gt
-        &ltgroupId&gtch.qos.logback&lt/groupId&gt
-        &ltartifactId&gtlogback-classic&lt/artifactId&gt
-        &ltversion&gt1.2.3&lt/version&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-  &lt/profile&gt
+<profiles>
+  <!-- 开发环境 -->
+  <profile>
+    <id>development</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+  </profile>
 
-  &lt!-- 生产环境 --&gt
-  &ltprofile&gt
-    &ltid&gtproduction&lt/id&gt
-    &ltdependencies&gt
-      &ltdependency&gt
-        &ltgroupId&gtch.qos.logback&lt/groupId&gt
-        &ltartifactId&gtlogback-classic&lt/artifactId&gt
-        &ltversion&gt1.2.3&lt/version&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-    &ltbuild&gt
-      &ltplugins&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
-          &ltartifactId&gtmaven-jar-plugin&lt/artifactId&gt
-          &ltversion&gt3.2.0&lt/version&gt
-        &lt/plugin&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.apache.maven.plugins&lt/groupId&gt
-          &ltartifactId&gtmaven-assembly-plugin&lt/artifactId&gt
-          &ltversion&gt3.1.1&lt/version&gt
-          &ltconfiguration&gt
-            &ltarchive&gt
-              &ltmanifest&gt
-                &ltmainClass&gt${main.class}&lt/mainClass&gt
-              &lt/manifest&gt
-            &lt/archive&gt
-            &ltdescriptorRefs&gt
-              &ltdescriptorRef&gtjar-with-dependencies&lt/descriptorRef&gt
-            &lt/descriptorRefs&gt
-            &ltappendAssemblyId&gtfalse&lt/appendAssemblyId&gt
-          &lt/configuration&gt
-          &ltexecutions&gt
-            &ltexecution&gt
-              &ltid&gtmake-assembly&lt/id&gt
-              &ltphase&gtpackage&lt/phase&gt
-              &ltgoals&gt
-                &ltgoal&gtsingle&lt/goal&gt
-              &lt/goals&gt
-            &lt/execution&gt
-          &lt/executions&gt
-        &lt/plugin&gt
-      &lt/plugins&gt
-    &lt/build&gt
-  &lt/profile&gt
-  &ltprofile&gt
-    &ltid&gtnative&lt/id&gt
-    &ltdependencies&gt
-      &lt!-- GraalVM 环境使用 jdk log --&gt
-      &ltdependency&gt
-        &ltgroupId&gtorg.slf4j&lt/groupId&gt
-        &ltartifactId&gtslf4j-jdk14&lt/artifactId&gt
-        &ltversion&gt1.7.31&lt/version&gt
-      &lt/dependency&gt
-      &lt!-- GraalVM --&gt
-      &ltdependency&gt
-        &ltgroupId&gtorg.graalvm.sdk&lt/groupId&gt
-        &ltartifactId&gtgraal-sdk&lt/artifactId&gt
-        &ltversion&gt${graalvm.version}&lt/version&gt
-        &ltscope&gtprovided&lt/scope&gt
-      &lt/dependency&gt
-    &lt/dependencies&gt
-    &ltbuild&gt
-      &ltfinalName&gt${final.name}&lt/finalName&gt
-      &ltplugins&gt
-        &ltplugin&gt
-          &ltgroupId&gtorg.graalvm.nativeimage&lt/groupId&gt
-          &ltartifactId&gtnative-image-maven-plugin&lt/artifactId&gt
-          &ltversion&gt21.2.0&lt/version&gt
-          &ltexecutions&gt
-            &ltexecution&gt
-              &ltgoals&gt
-                &ltgoal&gtnative-image&lt/goal&gt
-              &lt/goals&gt
-              &ltphase&gtpackage&lt/phase&gt
-            &lt/execution&gt
-          &lt/executions&gt
-          &ltconfiguration&gt
-            &ltskip&gtfalse&lt/skip&gt
-            &ltimageName&gt${project.build.finalName}&lt/imageName&gt
-            &ltmainClass&gt${main.class}&lt/mainClass&gt
-            &ltbuildArgs&gt
+  <!-- 生产环境 -->
+  <profile>
+    <id>production</id>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>${main.class}</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <appendAssemblyId>false</appendAssemblyId>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <id>native</id>
+    <dependencies>
+      <!-- GraalVM 环境使用 jdk log -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.31</version>
+      </dependency>
+      <!-- GraalVM -->
+      <dependency>
+        <groupId>org.graalvm.sdk</groupId>
+        <artifactId>graal-sdk</artifactId>
+        <version>${graalvm.version}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+    <build>
+      <finalName>${final.name}</finalName>
+      <plugins>
+        <plugin>
+          <groupId>org.graalvm.nativeimage</groupId>
+          <artifactId>native-image-maven-plugin</artifactId>
+          <version>21.2.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>native-image</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>false</skip>
+            <imageName>${project.build.finalName}</imageName>
+            <mainClass>${main.class}</mainClass>
+            <buildArgs>
               -H:+RemoveSaturatedTypeFlows
               --allow-incomplete-classpath
-            &lt/buildArgs&gt
-          &lt/configuration&gt
-        &lt/plugin&gt
-      &lt/plugins&gt
-    &lt/build&gt
-  &lt/profile&gt
-&lt/profiles&gt
+            </buildArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
 ```
 
-为开发环境构建：`mvn clean package -DskipTests -Pdevelopment`
-为生产环境构建：`mvn clean package -DskipTests -Pproduction`
-为生产环境构建二进制包：` mvn clean package -DskipTests -Pnative`
+为开发环境构建：
+
+```
+mvn clean package -DskipTests -Pdevelopment
+```
+
+为生产环境构建：
+
+```
+mvn clean package -DskipTests -Pproduction
+```
+
+为生产环境构建二进制包：
+
+```
+mvn clean package -DskipTests -Pnative
+```
 
 ## 3.部署
 
@@ -1063,7 +1079,7 @@ InputType 是 from 中的一个参数,可以省略
 ```
 @RequestPath(value = "/get")
 public HttpResponse get(String before, String end, HttpRequest request) throws Exception {
-  HttpResponse ret = Resps.html(request, "before:" + before + "&ltbr&gtend:" + end);
+  HttpResponse ret = Resps.html(request, "before:" + before + "<br>end:" + end);
   return ret;
 }
 ```
@@ -1075,7 +1091,7 @@ public HttpResponse get(String before, String end, HttpRequest request) throws E
 ```
   @RequestPath(value = "/post")
   public HttpResponse post(String before, String end, User user, Short shortid, HttpRequest request) throws Exception {
-    HttpResponse ret = Resps.html(request, "before:" + before + "&ltbr&gtend:" + end + "&ltbr&gtuser:&ltpre&gt" + Json.toFormatedJson(user) + "&lt/pre&gt");
+    HttpResponse ret = Resps.html(request, "before:" + before + "<br>end:" + end + "<br>user:<pre>" + Json.toFormatedJson(user) + "</pre>");
     return ret;
   }
 ```
@@ -1143,17 +1159,17 @@ public HttpResponse var(String name, String id, HttpRequest request) throws Exce
 html 的 from 表单可以使用 input 标签使用下面的形式传参
 
 ```
-string数组&ltbr&gt
-&ltinput type="text" name="names" value="kobe"&gt
-&ltinput type="text" name="names" value="tan"&gt
+string数组<br>
+<input type="text" name="names" value="kobe">
+<input type="text" name="names" value="tan">
 
-&ltbr&gt&ltbr&gtInteger数组&ltbr&gt
-&ltinput type="text" name="ids" value="11"&gt
-&ltinput type="text" name="ids" value="22"&gt
+<br><br>Integer数组<br>
+<input type="text" name="ids" value="11">
+<input type="text" name="ids" value="22">
 
-&ltbr&gt&ltbr&gtint数组&ltbr&gt
-&ltinput type="text" name="primitiveIds" value="55"&gt
-&ltinput type="text" name="primitiveIds" value="66"&gt
+<br><br>int数组<br>
+<input type="text" name="primitiveIds" value="55">
+<input type="text" name="primitiveIds" value="66">
 ```
 
 ### 6.10.返回文本数据
@@ -1304,8 +1320,8 @@ import java.util.Map;
 
 public class IndexService {
 
-  public Map&ltString, String&gt index() {
-    Map&ltString, String&gt ret = new HashMap&lt&gt();
+  public Map<String, String> index() {
+    Map<String, String> ret = new HashMap<>();
     ret.put("data", "Hello 4");
     return ret;
   }
@@ -1322,7 +1338,7 @@ import com.litongjava.tio.web.hello.service.IndexService;
 @RequestPath("/")
 public class IndexController {
   @RequestPath()
-  public Map&ltString,String&gt index() {
+  public Map<String,String> index() {
     return Aop.get(IndexService.class).index();
   }
 }
@@ -1339,7 +1355,7 @@ public class IndexController {
 
 1. `IndexService` 类：
 
-   - 这是一个服务类，包含一个 `index` 方法，用于创建并返回一个 `Map&ltString, String&gt` 类型的数据。在这个方法中，它向 `Map` 中添加了一个键值对 `"data": "Hello 4"`。
+   - 这是一个服务类，包含一个 `index` 方法，用于创建并返回一个 `Map<String, String>` 类型的数据。在这个方法中，它向 `Map` 中添加了一个键值对 `"data": "Hello 4"`。
 
 2. `IndexController` 类：
    - 这是一个控制器类，标记了 `@RequestPath("/")`，表明它处理根路径（`/`）的 HTTP 请求。
@@ -1383,7 +1399,7 @@ import com.litongjava.tio.web.hello.service.IndexService;
 public class IndexController {
   @RequestPath()
   @Before(IndexInteceptor.class)
-  public Map&ltString, String&gt index() {
+  public Map<String, String> index() {
     return Aop.get(IndexService.class).index();
   }
 }
@@ -1894,24 +1910,24 @@ INSERT INTO "student" VALUES (1, '沈', '一年级');
 添加依赖
 
 ```
-&ltdependency&gt
-  &ltgroupId&gtcom.zaxxer&lt/groupId&gt
-  &ltartifactId&gtHikariCP&lt/artifactId&gt
-  &ltversion&gt4.0.3&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
 
-&lt!-- sqlite-jdbc --&gt
-&ltdependency&gt
-  &ltgroupId&gtorg.xerial&lt/groupId&gt
-  &ltartifactId&gtsqlite-jdbc&lt/artifactId&gt
-  &ltversion&gt3.7.2&lt/version&gt
-&lt/dependency&gt
+<!-- sqlite-jdbc -->
+<dependency>
+  <groupId>org.xerial</groupId>
+  <artifactId>sqlite-jdbc</artifactId>
+  <version>3.7.2</version>
+</dependency>
 
-&ltdependency&gt
-  &ltgroupId&gtcom.litongjava&lt/groupId&gt
-  &ltartifactId&gttable-to-json&lt/artifactId&gt
-  &ltversion&gt1.2.1&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
 ```
 
 添加配置文件 app.properties
@@ -1959,24 +1975,24 @@ INSERT INTO student VALUES (3,'张', '二年级');
 #### 11.2.2.添加依赖
 
 ```
-&ltdependency&gt
-  &ltgroupId&gtcom.litongjava&lt/groupId&gt
-  &ltartifactId&gttable-to-json&lt/artifactId&gt
-  &ltversion&gt1.2.1&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
 
 
-&ltdependency&gt
-  &ltgroupId&gtmysql&lt/groupId&gt
-  &ltartifactId&gtmysql-connector-java&lt/artifactId&gt
-  &ltversion&gt5.1.46&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>5.1.46</version>
+</dependency>
 
-&ltdependency&gt
-  &ltgroupId&gtcom.zaxxer&lt/groupId&gt
-  &ltartifactId&gtHikariCP&lt/artifactId&gt
-  &ltversion&gt4.0.3&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
 ```
 
 #### 11.2.3.配置文件-app.properties
@@ -2108,9 +2124,9 @@ public class DbTestController {
   DbJsonService dbJsonService = Aop.get(DbJsonService.class);
 
   @RequestPath("/list")
-  public DbJsonBean&ltList&ltKv&gt&gt list(HttpRequest request) {
+  public DbJsonBean<List<Kv>> list(HttpRequest request) {
     String tableName = "student";
-    DbJsonBean&ltList&ltKv&gt&gt jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
+    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
     return jsonBean;
   }
 }
@@ -2146,23 +2162,23 @@ INSERT INTO student VALUES (3,'张', '二年级');
 新建工程 tio-boot-postgresql-demo
 
 ```
-&ltdependency&gt
-  &ltgroupId&gtcom.litongjava&lt/groupId&gt
-  &ltartifactId&gttable-to-json&lt/artifactId&gt
-  &ltversion&gt1.2.1&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
 
-&ltdependency&gt
-  &ltgroupId&gtorg.postgresql&lt/groupId&gt
-  &ltartifactId&gtpostgresql&lt/artifactId&gt
-  &ltversion&gt42.2.24&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <version>42.2.24</version>
+</dependency>
 
-&ltdependency&gt
-  &ltgroupId&gtcom.zaxxer&lt/groupId&gt
-  &ltartifactId&gtHikariCP&lt/artifactId&gt
-  &ltversion&gt4.0.3&lt/version&gt
-&lt/dependency&gt
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
 ```
 
 #### 11.3.3.配置文件 app.properties
@@ -2301,9 +2317,9 @@ public class DbTestController {
   DbJsonService dbJsonService = Aop.get(DbJsonService.class);
 
   @RequestPath("/list")
-  public DbJsonBean&ltList&ltKv&gt&gt list(HttpRequest request) {
+  public DbJsonBean<List<Kv>> list(HttpRequest request) {
     String tableName = "student";
-    DbJsonBean&ltList&ltKv&gt&gt jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
+    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
     return jsonBean;
   }
 }
@@ -2454,7 +2470,7 @@ public class DbTestController {
 - **说明**: 获取所有 Cookie 的映射。
 - **用法**:
   ```java
-  Map&ltString, Cookie&gt cookieMap = httpRequest.getCookieMap();
+  Map<String, Cookie> cookieMap = httpRequest.getCookieMap();
   ```
 
 #### 18. `getCookies()`
@@ -2462,7 +2478,7 @@ public class DbTestController {
 - **说明**: 获取所有 Cookies 的列表。
 - **用法**:
   ```java
-  List&ltCookie&gt cookies = httpRequest.getCookies();
+  List<Cookie> cookies = httpRequest.getCookies();
   ```
 
 #### 19. `getHttpConfig()`
@@ -2513,7 +2529,7 @@ public class DbTestController {
 - **说明**: 获取所有请求参数的映射。
 - **用法**:
   ```java
-  Map&ltString, Object[]&gt params = httpRequest.getParams();
+  Map<String, Object[]> params = httpRequest.getParams();
   ```
 
 #### 25. `getParam()`
@@ -2612,7 +2628,7 @@ public class DbTestController {
   httpRequest.setContentLength(1024);
   ```
 
-#### 37. `setCookieMap(Map&ltString, Cookie&gt cookieMap)`
+#### 37. `setCookieMap(Map<String, Cookie> cookieMap)`
 
 - **说明**: 设置 HttpRequest 的 Cookie 映射。
 - **用法**:
@@ -2620,7 +2636,7 @@ public class DbTestController {
   httpRequest.setCookieMap(cookieMap);
   ```
 
-#### 38. `setCookies(List&ltCookie&gt cookies)`
+#### 38. `setCookies(List<Cookie> cookies)`
 
 - **说明**: 设置 HttpRequest 的 Cookies 列表。
 - **用法**:
@@ -2628,12 +2644,12 @@ public class DbTestController {
   httpRequest.setCookies(cookies);
   ```
 
-#### 39. `setHeaders(Map&ltString, String&gt headers)`
+#### 39. `setHeaders(Map<String, String> headers)`
 
 - **说明**: 设置 HttpRequest 的头部信息。
 - **用法**:
   ```java
-  Map&ltString, String&gt headers = new HashMap&lt&gt();
+  Map<String, String> headers = new HashMap<>();
   headers.put("Content-Type", "application/json");
   httpRequest.setHeaders(headers);
   ```
@@ -2670,12 +2686,12 @@ public class DbTestController {
   httpRequest.setIsSupportGzip(true);
   ```
 
-#### 44. `setParams(Map&ltString, Object[]&gt params)`
+#### 44. `setParams(Map<String, Object[]> params)`
 
 - **说明**: 设置 HttpRequest 的参数映射。
 - **用法**:
   ```java
-  Map&ltString, Object[]&gt params = new HashMap&lt&gt();
+  Map<String, Object[]> params = new HashMap<>();
   params.put("key", new Object[]{"value"});
   httpRequest.setParams(params);
   ```
@@ -2795,8 +2811,8 @@ public class DbTestController {
    - 参数：`HttpRequest request` - 对应的 HTTP 请求。
    - 说明：根据提供的 HTTP 请求创建响应。这种方式允许响应与请求相关联，从而可以更好地处理连接和版本兼容性。
 
-3. **`HttpResponse(Map&ltHeaderName, HeaderValue&gt responseHeaders, byte[] body)`**
-   - 参数：`Map&ltHeaderName, HeaderValue&gt responseHeaders` - 响应头部。
+3. **`HttpResponse(Map<HeaderName, HeaderValue> responseHeaders, byte[] body)`**
+   - 参数：`Map<HeaderName, HeaderValue> responseHeaders` - 响应头部。
    - 参数：`byte[] body` - 响应主体。
    - 说明：通过指定的头部信息和主体内容创建一个 HTTP 响应。
 
@@ -2814,7 +2830,7 @@ public class DbTestController {
 
 3. **`getHeaders()`**
 
-   - 返回：`Map&ltHeaderName, HeaderValue&gt` - 响应头部。
+   - 返回：`Map<HeaderName, HeaderValue>` - 响应头部。
    - 说明：返回 HTTP 响应的头部信息。注意，不应直接修改返回的 Map 对象，而应使用提供的方法来添加或修改头部。
 
 4. **`addHeader(HeaderName key, HeaderValue value)`**
@@ -2823,9 +2839,9 @@ public class DbTestController {
    - 参数：`HeaderValue value` - 头部值。
    - 说明：向响应中添加一个头部。
 
-5. **`addHeaders(Map&ltHeaderName, HeaderValue&gt headers)`**
+5. **`addHeaders(Map<HeaderName, HeaderValue> headers)`**
 
-   - 参数：`Map&ltHeaderName, HeaderValue&gt headers` - 要添加的头部集合。
+   - 参数：`Map<HeaderName, HeaderValue> headers` - 要添加的头部集合。
    - 说明：添加一组头部到响应中。
 
 6. **`getContentType()`**
@@ -2846,7 +2862,7 @@ public class DbTestController {
 
 9. **`getCookies()`**
 
-   - 返回：`List&ltCookie&gt` - Cookie 列表。
+   - 返回：`List<Cookie>` - Cookie 列表。
    - 说明：返回响应中包含的所有 Cookie。
 
 10. **`getHttpRequest()`**
@@ -2874,9 +2890,9 @@ public class DbTestController {
     - 参数：`String charset` - 字符集。
     - 说明：设置响应使用的字符集。
 
-15. **`setCookies(List&ltCookie&gt cookies)`**
+15. **`setCookies(List<Cookie> cookies)`**
 
-    - 参数：`List&ltCookie&gt cookies` - Cookie 列表。
+    - 参数：`List<Cookie> cookies` - Cookie 列表。
     - 说明：设置响应中包含的 Cookie。
 
 16. **`setHttpRequestPacket(HttpRequest request)`**
@@ -2969,7 +2985,7 @@ public class DbTestController {
 
 10. bytesWithContentType(HttpRequest request, byte[] bodyBytes, String contentType)：创建带有字节数组内容和指定 `Content-Type` 的响应。
 
-11. bytesWithHeaders(HttpRequest request, byte[] bodyBytes, Map&ltHeaderName, HeaderValue&gt headers)：与上一个方法类似，但允许添加额外的头部。
+11. bytesWithHeaders(HttpRequest request, byte[] bodyBytes, Map<HeaderName, HeaderValue> headers)：与上一个方法类似，但允许添加额外的头部。
 
 12. html(HttpRequest request, String bodyString)：生成带有给定正文字符串的 HTML 响应。
 
@@ -3037,7 +3053,7 @@ public class DbTestController {
 10. **bSendToGroup(TioConfig tioConfig, String group, Packet packet, ChannelContextFilter channelContextFilter)**: 阻塞方式发送消息给指定群组。
 11. **bSendToId(TioConfig tioConfig, String channelContextId, Packet packet)**: 阻塞方式发送消息给指定的通道上下文 ID。
 12. **bSendToIp(TioConfig tioConfig, String ip, Packet packet, ChannelContextFilter channelContextFilter)**: 阻塞方式发送消息给指定 IP 的所有连接。
-13. **bSendToSet(TioConfig tioConfig, SetWithLock&ltChannelContext&gt setWithLock, Packet packet, ChannelContextFilter channelContextFilter)** 阻塞方式发送消息给指定的一组通道上下文。
+13. bSendToSet(TioConfig tioConfig, SetWithLock&lt;ChannelContext&gt; setWithLock, Packet packet, ChannelContextFilter channelContextFilter) 阻塞方式发送消息给指定的一组通道上下文。
 14. **bSendToToken(TioConfig tioConfig, String token, Packet packet)**: 阻塞方式发送消息给指定令牌的所有连接。
 15. **bSendToUser(TioConfig tioConfig, String userid, Packet packet)**: 阻塞方式发送消息给指定用户 ID 的所有连接。
 16. **close(ChannelContext channelContext, String remark)**: 关闭指定的通道上下文连接。
@@ -3070,7 +3086,7 @@ public class DbTestController {
 43. **sendToGroup(TioConfig tioConfig, String group, Packet packet, ChannelContextFilter channelContextFilter)**: 发送消息给指定群组。
 44. **sendToId(TioConfig tioConfig, String channelContextId, Packet packet)**: 发送消息给指定的通道上下文 ID。
 45. **sendToIp(TioConfig tioConfig, String ip, Packet packet, ChannelContextFilter channelContextFilter)**: 发送消息给指定 IP 的所有连接。
-46. **sendToSet(TioConfig tioConfig, SetWithLock&ltChannelContext&gt setWithLock, Packet packet, ChannelContextFilter channelContextFilter)**: 发送消息给指定的一组通道上下文。
+46. **sendToSet(TioConfig tioConfig, SetWithLock&lt;ChannelContext&gt; setWithLock, Packet packet, ChannelContextFilter channelContextFilter)**: 发送消息给指定的一组通道上下文。
 47. **sendToToken(TioConfig tioConfig, String token, Packet packet)**: 发送消息给指定令牌的所有连接。
 48. **sendToUser(TioConfig tioConfig, String userid, Packet packet)**: 发送消息给指定用户 ID 的所有连接。
 49. **unbindBsId(ChannelContext channelContext)**: 解绑通道上下文的业务 ID。
