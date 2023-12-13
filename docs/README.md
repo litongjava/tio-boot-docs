@@ -740,6 +740,21 @@ http.page = classpath:/pages
 
 web 开发常用的类有 HttpRequest,HttpResponse,Reps 等
 
+```
+  @RequestPath(value = "/test")
+  public HttpResponse getBodyString(HttpRequest request) throws Exception {
+    HttpResponse ret = Resps.text(request, "text");
+    return ret;
+  }
+```
+
+在 Action 的方法签名中支持的类型有
+
+- ServerChannelContext
+- HttpConfig
+- HttpSession
+- HttpRequest
+
 ### 6.2.JSON 数据
 
 #### 6.2.1.实体类
