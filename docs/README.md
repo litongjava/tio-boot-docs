@@ -275,11 +275,11 @@ public class IndexController {
 }
 ```
 
-@RequestPath 注解用于指定请求路径,当在启动类上添加@ComponentScan 注解后,启动的注解处理器会@RequestPath 注解将 Controller 添加到 bean 容器中并设置路由
+@RequestPath 注解用于指定请求路径,当在启动类上添加@ComponentScan 注解后,启动时注解处理器会处理@RequestPath 注解将 Controller 添加到 bean 容器中并设置路由
 
 #### 2.1.8.启动测试
 
-访问 http://localhost/测试理解
+访问 http://localhost/
 
 ### 2.2.整合日志
 
@@ -1408,6 +1408,12 @@ public class IndexController {
 `IndexInteceptor` 是一个拦截器类，实现了 `Interceptor` 接口。它定义了 `intercept` 方法，该方法在被拦截的方法执行前后添加了日志记录。通过调用 `inv.invoke()`，它允许继续执行链中的下一个拦截器或目标方法。
 
 在 `IndexController` 类中，`@Before(IndexInteceptor.class)` 注解被应用于 `index` 方法。这表示当调用 `index` 方法时，`IndexInteceptor` 将被触发，执行其 `intercept` 方法。这允许在 `index` 方法执行之前和之后执行额外的逻辑，例如日志记录、验证等。
+
+如果使用了 Hotswap-classloader 需要在启动类中添加 SwapClassPrefix,添加之后才可以支持 切面代理类的 热加载,否则会出现异常
+
+```
+HotSwapResolver.addHotSwapClassPrefix("com.litongjava.jfinal");
+```
 
 ### 7.3.Aop 相关注解
 
