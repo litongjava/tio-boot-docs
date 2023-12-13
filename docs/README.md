@@ -999,7 +999,7 @@ import org.tio.utils.resp.RespVo;
 
 #### 6.3.1.接收文件
 
-接受文件在 Controller 的方法中添加 UploadFile uploadFile 参数,在发送 http 请求时,请求的 key 是 uploadFile
+接受文件在 Controller 的方法中添加 UploadFile 类型的参数,在发送 http 请求时,请求的 key 是 UploadFile 类型的参数名.通常是 file,下面的案例是 uploadFile
 
 ```
 import org.tio.utils.hutool.FileUtil;
