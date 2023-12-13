@@ -102,6 +102,38 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
     <build>
       <plugins>
         <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>2.7.4</version>
+          <configuration>
+            <mainClass>${main.class}</mainClass>
+            <excludeGroupIds>org.projectlombok</excludeGroupIds>
+          </configuration>
+          <!-- 设置执行目标 -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <!-- assembly -->
+  <profile>
+    <id>assembly</id>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.2.0</version>
@@ -171,9 +203,9 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
             <imageName>${project.build.finalName}</imageName>
             <mainClass>${main.class}</mainClass>
             <buildArgs>
-              -H:+RemoveSaturatedTypeFlows
-              --allow-incomplete-classpath
-            </buildArgs>
+            -H:+RemoveSaturatedTypeFlows
+            --allow-incomplete-classpath
+          </buildArgs>
           </configuration>
         </plugin>
       </plugins>
