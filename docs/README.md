@@ -35,7 +35,7 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.1.6</version>
+      <version>1.1.7</version>
     </dependency>
 ```
 
@@ -48,7 +48,7 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.1.6</tio.boot.version>
+  <tio.boot.version>1.1.7</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
   <final.name>web-hello</final.name>
