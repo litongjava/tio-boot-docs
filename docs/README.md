@@ -608,8 +608,8 @@ tar -xf graalvm-jdk-21_linux-x64_bin.tar.gz -C ~/program/
 2. 配置环境变量:
 
 ```shell
-export JAVA_HOME=~/program/graalvm-jdk-21.0.1+15.1
-export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+15.1
+export JAVA_HOME=~/program/graalvm-jdk-21.0.1+18.1
+export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+18.1
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
@@ -1447,7 +1447,7 @@ public class QrController {
 
 这个控制器的作用是接收一个文本内容，并将其转换为二维码图片，然后将这个图片作为 HTTP 响应返回给客户端。如果在生成二维码的过程中出现问题，它会返回一个包含错误信息的 JSON 响应。
 
-### 6.15.Session
+### 6.18.Session
 
 ```
 @RequestPath(value = "/putsession")
@@ -2612,7 +2612,7 @@ public class DbTestController {
 {"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
 ```
 
-## JWT
+## 12.JWT
 
 ```
 package com.litongjava.tio.boot.hello.controller;
@@ -2739,9 +2739,9 @@ public class AuthController {
    - 用户验证逻辑（`isValidUser` 方法）应该实现实际的验证过程，例如检查数据库中的用户凭据。
    - 令牌存储（`tokenStore`）应考虑使用更安全和可扩展的存储解决方案，如数据库或缓存系统。在内存中存储令牌可能不适合大规模或生产环境。
 
-## MQTT
+## 13.MQTT
 
-## Mica-mqtt
+## 14.Mica-mqtt
 
 ```
 <mica-mqtt.version>2.2.6</mica-mqtt.version>
@@ -3129,7 +3129,7 @@ public class TioServerConfig {
 
 这段代码演示了 TIO 服务器的基本但完整的设置，包括数据包处理、事件监听、消息处理，以及与 tio-boot 框架的集成，便于管理和配置。
 
-## Caffine
+## 15.Caffine
 
 ### Caffeine 简介
 
@@ -3210,9 +3210,465 @@ public class CaffeineTestController {
 访问测试:
 http://localhost//caffeine/test
 
-## 15.常用内置类方法说明
+## 16.redis
 
-### 15.1.HttpRequest
+tio-boot-整合 redis
+
+### 16.1.redis 简介
+
+Redis 是一个开源的内存数据结构存储系统，可以用作数据库、缓存和消息中间件。它支持多种数据结构，如字符串、哈希、列表、集合、有序集合等，并提供了丰富的操作命令。在 Java 开发中，使用 Redis 可以提高应用的性能和可扩展性。
+
+### 16.2.使用 Jedis 整合 Redis
+
+添加依赖
+
+```
+<dependency>
+  <groupId>redis.clients</groupId>
+  <artifactId>jedis</artifactId>
+  <version>3.6.3</version>
+</dependency>
+
+```
+
+添加配置类
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import redis.clients.jedis.Jedis;
+
+@Configuration
+public class JedisConfig {
+
+  @Bean(destroyMethod = "close")
+  public Jedis jedis() {
+    //得到Jedis对象
+    Jedis jedis = new Jedis("localhost", 6379);
+    //jedis.auth();
+    //向redis中添加一个字符串,测试中文乱码
+    jedis.set("name", "litong");
+    //获取redis中的字符串
+    String string = jedis.get("name");
+    System.out.println(string);
+    return jedis;
+  }
+}
+```
+
+这段代码是一个 Java 配置类，用于配置和初始化一个 Jedis 客户端连接。下面是对这个类中每个部分的解释：
+
+#### 导入的类
+
+- `com.litongjava.jfinal.aop.annotation.Bean` 和 `com.litongjava.jfinal.aop.annotation.Configuration`：这些是 JFinal Aop 框架中的注解，用于定义配置类和 Bean。
+
+#### 类定义
+
+- `@Configuration`：这个注解标记了类 `JedisConfig` 作为配置类。在 JFinal 框架中，配置类用于定义和配置应用程序的不同部分，如数据源、服务等。
+
+#### Jedis 配置方法
+
+- `@Bean(destroyMethod = "close")`：这个注解定义了一个 Bean，即 Jedis 实例。`destroyMethod = "close"` 指定当应用程序关闭或者该 Bean 不再需要时，应该调用 Jedis 的 `close()` 方法来关闭连接。
+- `public Jedis jedis()`：这个方法配置并返回一个 Jedis 实例。该方法的主体执行以下操作：
+  - 创建一个指向本地主机（localhost）在端口 6379（Redis 的默认端口）的新 Jedis 实例。这假设 Redis 服务器运行在本地并监听默认端口。
+  - `jedis.set("name", "litong")`：这行代码向 Redis 中添加一个键值对，键是 `"name"`，值是 `"litong"`。
+  - `String string = jedis.get("name")`：这行代码从 Redis 中检索键 `"name"` 对应的值，并将其存储在局部变量 `string` 中。
+  - `System.out.println(string)`：打印检索到的值（"litong"）到控制台。
+  - 返回创建的 Jedis 实例。
+
+#### 注意事项
+
+- 此配置类在创建 Jedis 实例时执行了一个 Redis 操作（设置并获取一个键值对）。通常，这种直接在配置方法中执行业务逻辑（如与 Redis 交互）并不是最佳实践。配置类应该专注于设置和配置组件，而业务逻辑应该放在服务类或控制器中。
+- 此配置没有显示地处理 Redis 密码认证。如果 Redis 服务器设置了密码，你需要通过 `jedis.auth("yourpassword")` 来认证。
+- 使用单个 Jedis 实例可能不适合多线程环境。在生产环境中，通常使用 `JedisPool` 来管理连接池，以便更好地处理并发请求。
+
+### 16.4.使用 hutool RedisDS
+
+添加依赖,tio-boot 已经内置了 hutool-all 以来,包含 hutool-redis,主要添加 jedis 依赖即可
+
+```
+<dependency>
+  <groupId>redis.clients</groupId>
+  <artifactId>jedis</artifactId>
+  <version>3.6.3</version>
+</dependency>
+```
+
+配置类
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import cn.hutool.db.nosql.redis.RedisDS;
+import cn.hutool.setting.Setting;
+import com.jfinal.kit.StrKit;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.tio.boot.context.Enviorment;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
+
+@Configuration
+public class HutoolRedisConfig {
+  @Bean(destroyMethod = "close")
+  public RedisDS redisDS() {
+    Enviorment enviorment = Aop.get(Enviorment.class);
+    String redisHost = enviorment.get("redis.host", "127.0.0.1");
+    String redisPort = enviorment.get("redis.port", "6379");
+    String redisPassword = enviorment.get("redis.password");
+
+    // 配置你的Redis连接信息
+    Setting setting = new Setting();
+
+    String group = "redis";
+    // 地址
+    setting.setByGroup("host", group, redisHost);
+    // 端口
+    setting.setByGroup("port", group, redisPort);
+    // 密码
+    if (!StrKit.isBlank(redisPassword)) {
+      setting.setByGroup("password", group, redisPassword);
+    }
+
+    // 连接超时
+    setting.setByGroup("timeout", group, String.valueOf(Protocol.DEFAULT_TIMEOUT));
+    setting.setByGroup("connectionTimeout", group, String.valueOf(Protocol.DEFAULT_TIMEOUT));
+    // 读取数据超时
+    setting.setByGroup("timeout", group, String.valueOf(Protocol.DEFAULT_TIMEOUT));
+    setting.setByGroup("soTimeout", group, String.valueOf(Protocol.DEFAULT_TIMEOUT));
+    // 数据库序号
+    setting.setByGroup("database", group, String.valueOf(Protocol.DEFAULT_DATABASE));
+    // 客户端名
+    setting.setByGroup("clientName", group, "Hutool");
+    // 是否使用SSL
+    setting.setByGroup("ssl", group, String.valueOf(false));
+    RedisDS redisDS = new RedisDS(setting, group);
+    //连接redis
+    redisDS.getJedis();
+    return redisDS;
+  }
+}
+```
+
+测试 Controller
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import cn.hutool.db.nosql.redis.RedisDS;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/huredis")
+@Slf4j
+public class HuRedisTestController {
+
+  @RequestPath("/test")
+  public String test(HttpRequest request) {
+    RedisDS redisDS = Aop.get(RedisDS.class);
+    String value = redisDS.getStr("key");
+    if (value == null) {
+      log.info("计算新的value");
+      redisDS.setStr("key", "value");
+    }
+    return value;
+  }
+}
+```
+
+这两段代码分别是配置类和控制器类的示例，用于在 Java 项目中使用 Hutool 的 `RedisDS` 类来配置和访问 Redis 数据库。
+
+#### 配置类 (`HutoolRedisConfig`)
+
+1 **类和方法注解**:
+
+- `@Configuration`: 表示这是一个配置类，用于定义和配置 Beans。
+- `@Bean(destroyMethod = "close")`: 创建一个 Bean，并指定当 Bean 不再需要时应该调用的销毁方法，这里是 `close()`。
+
+2. **方法 `redisDS()`**:
+
+- 从 `Enviorment` 实例（由 `Aop.get(Enviorment.class)` 获取）中读取 Redis 的配置信息（主机、端口、密码等）。
+- 使用 Hutool 的 `Setting` 类来设置 Redis 的各种配置参数，如主机、端口、密码、超时、数据库索引等。
+- 创建 `RedisDS` 实例，传入配置的 `Setting` 对象和配置组名。
+- 通过 `redisDS.getJedis()` 连接到 Redis 数据库。
+- 返回 `RedisDS` 实例。
+
+#### 控制器类 (`HuRedisTestController`)
+
+1. **类和方法注解**:
+
+- `@RequestPath("/huredis")`: 定义控制器的基本路径。
+- `@Slf4j`: Lombok 注解，为类提供一个日志实例。
+
+2. **方法 `test(HttpRequest request)`**:
+
+- 通过 `Aop.get(RedisDS.class)` 获取 RedisDS 实例。
+- 使用 `redisDS.getStr("key")` 尝试从 Redis 获取与 `"key"` 关联的值。
+- 如果值不存在（`null`），则记录信息并使用 `redisDS.setStr("key", "value")` 设置新的键值对。
+- 返回从 Redis 获取的值（如果之前不存在，则为 `null`）。
+
+这段代码展示了如何使用 Hutool 提供的 `RedisDS` 类在 tio-boot 框架中配置和访问 Redis 数据库。配置类 `HutoolRedisConfig` 负责设置 Redis 连接，而控制器类 `HuRedisTestController` 则处理具体的 Redis 交互逻辑。 17.使用 Redisson
+
+## 17.Redisson
+
+### 17.1.Redisson 简介
+
+#### 17.1.1.什么是 Redisson
+
+Redisson 是一个提供了多种分布式和可扩展 Java 数据结构的 Redis 客户端。
+
+##### Redisson 库的用途
+
+- **分布式实现**：Redisson 提供了标准 Java 集合接口的分布式和可扩展实现，如 `Map`、`Set`、`List`、`Queue`、`Deque` 等。
+- **附加功能**：除了数据结构，Redisson 还提供分布式锁、同步器（如 CountDownLatch、Semaphore）、发布/订阅、集群支持等功能。
+- **对象映射**：Redisson 还包括一个对象映射框架（RORM），可以将 Java 对象直接映射到 Redis 数据结构中。
+
+##### 使用场景
+
+- **高级缓存需求**：如果你的应用程序有复杂的缓存需求，或者你需要利用 Redis 提供的高级数据结构和功能，Redisson 是一个很好的选择。
+- **分布式系统**：在分布式系统中，Redisson 的分布式数据结构和同步器非常有用，可以帮助处理不同实例间的数据共享和协调问题。
+
+#### 17.1.2.Redisson 和 Jedis 的区别
+
+Redisson 不依赖于 Jedis。Redisson 和 Jedis 都是用于与 Redis 数据库交互的 Java 客户端，但它们是独立开发的，各自实现了与 Redis 交互的不同机制和 API。
+
+- **Redisson**：它使用自己的客户端来连接和操作 Redis。Redisson 提供了一系列高级功能，如分布式数据结构、分布式锁、可靠话题等，还支持多种集群模式，如主从、哨兵、集群等。
+
+- **Jedis**：这是一个比较轻量级的客户端，主要提供了一个直接且简洁的 API 来与 Redis 进行交互。它支持各种基本的 Redis 操作，但不提供 Redisson 那样的高级分布式特性。
+
+由于两者提供了不同的特性和优势，开发者会根据应用程序的具体需求和场景来选择使用 Redisson 或 Jedis。例如，需要高级分布式特性和集群支持时，可能会倾向于选择 Redisson；而对于简单的 Redis 操作，Jedis 可能更为合适。
+
+### 17.2.使用 Redisson 连接 redis
+
+要使用 Redisson 连接到 Redis，首先需要添加 Redisson 的 Maven 依赖到你的项目中。然后，可以创建一个新的配置类来配置和初始化 Redisson 客户端。以下是这个过程的详细说明：
+
+#### . 添加 Redisson 依赖
+
+在你的 `pom.xml` 文件中，添加 Redisson 的依赖。例如：
+
+```xml
+<dependency>
+  <groupId>org.redisson</groupId>
+  <artifactId>redisson</artifactId>
+  <version>3.16.0</version>
+</dependency>
+```
+
+redisson 依赖了 netty
+
+请确保使用最新的版本号。
+
+#### 创建 Redisson 配置类
+
+创建一个新的配置类用于初始化 Redisson 客户端。你可以使用 `Redisson.create()` 方法和 `Config` 类来配置 Redisson。例如：
+
+```java
+package com.litongjava.tio.boot.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+
+@Configuration
+public class RedissonConfig {
+
+  @Bean(destroyMethod = "shutdown")
+  public RedissonClient redissonClient() {
+    Config config = new Config();
+    config.useSingleServer()
+      .setAddress("redis://localhost:6379")
+      .setDatabase(0);
+
+    // 如果你的 Redis 设置了密码
+    // .setPassword("yourPassword");
+
+    return Redisson.create(config);
+  }
+}
+```
+
+在这个例子中：
+
+- `Config` 类用于配置 Redisson。
+- `useSingleServer()` 方法指定了单节点模式。
+- `setAddress("redis://localhost:6379")` 指定 Redis 服务器的地址和端口。
+- `setDatabase(0)` 指定默认数据库索引。
+- `Redisson.create(config)` 创建并返回 Redisson 客户端实例。
+- `@Bean(destroyMethod = "shutdown")` 注解确保当应用程序关闭时，Redisson 客户端也会被正确关闭。
+
+#### 3. 使用 Redisson 客户端
+
+一旦配置类设置好，你可以在你的应用程序中注入 `RedissonClient` 并使用它来与 Redis 交互。例如：
+
+```java
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.Autowired;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBucket;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+
+@RequestPath("/redisson")
+@Slf4j
+public class RedissonTestController {
+  @RequestPath("/test")
+  public String test(HttpRequest request) {
+    String value = null;
+
+    // 使用 Redisson 客户端
+    RedissonClient redissonClient = Aop.get(RedissonClient.class);
+    // 例如，获取一个锁
+    RLock lock = redissonClient.getLock("myLock");
+    lock.lock();
+    // 创建或获取一个存储桶对象
+    RBucket<String> bucket = redissonClient.getBucket("yourKey");
+    //获取支持
+    value = bucket.get();
+    if (value == null) {
+
+      log.info("计算新的value");
+      value = "yourValue";
+      // 向 Redis 中设置值
+      bucket.set(value);
+    }
+
+    try {
+      // 处理你的业务逻辑
+    } finally {
+      lock.unlock();
+    }
+    return value;
+  }
+}
+```
+
+请注意，Redisson 的 API 远不止于此。它提供了对许多复杂数据结构的支持，比如列表、映射、集合、分布式锁等，这些都可以通过 `RedissonClient` 实例来访问和操作。
+
+这个例子演示了如何在你的服务类中使用 `RedissonClient`。你可以使用 Redisson 提供的丰富 API 来实现复杂的分布式功能，如分布式锁、集合、映射等。
+
+### 17.4.Caffeine 整合 redis
+
+#### 17.4.1.Caffeine 和 redis 的区别
+
+Caffeine 本身不会将数据存储到 Redis 中。如果你想要将数据缓存到 Redis 中，你需要使用专门为 Redis 设计的缓存解决方案，如 Spring Cache with Redis 或 Jedis。这些工具和库允许你直接与 Redis 数据库交互，将数据存储在 Redis 中并从中检索。
+
+在一些复杂的应用中，Caffeine 和 Redis 可能会一起使用，每个在不同的层级提供缓存服务：
+
+- Caffeine：作为第一层缓存，提供快速的本地缓存。它非常适合频繁访问且相对较小的数据集。
+- Redis：作为第二层缓存，主要用于更大规模的、分布式的数据存储和缓存。它适合需要跨多个应用实例共享的数据。
+
+在这样的设置中，通常首先检查 Caffeine 缓存中是否存在所需的数据。如果未找到，然后检查 Redis 缓存，并且可能将从 Redis 检索的数据放入 Caffeine 缓存以加快后续访问的速度。
+
+#### 17.2.结合使用 Caffeine 和 Redis
+
+要创建一个服务，整合 Caffeine 和 Redisson 缓存，你可以遵循以下步骤。此服务将首先检查 Caffeine 缓存中是否存在所需数据。如果未找到，它将检查 Redisson 缓存，并可能将从 Redisson 检索的数据放入 Caffeine 缓存以加快后续访问的速度。
+
+##### 编写一个整合 Caffeine 和 Redisson 的服务类
+
+```java
+package com.litongjava.tio.boot.hello.services;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.litongjava.jfinal.aop.annotation.Service;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import com.litongjava.jfinal.aop.Aop;
+
+@Service
+public class CacheService {
+
+  private final Cache<String, Object> caffeineCache;
+  private final RedissonClient redissonClient;
+
+  public CacheService() {
+    this.caffeineCache = Aop.get(Cache.class);
+    this.redissonClient = Aop.get(RedissonClient.class);
+  }
+
+  public Object get(String key) {
+    // 首先尝试从 Caffeine 缓存中获取数据
+    Object value = caffeineCache.getIfPresent(key);
+    if (value != null) {
+      return value;
+    }
+
+    // 如果 Caffeine 缓存中没有，则尝试从 Redisson 缓存中获取
+    RBucket<Object> bucket = redissonClient.getBucket(key);
+    value = bucket.get();
+
+    if (value != null) {
+      // 如果在 Redisson 中找到数据，则将其添加到 Caffeine 缓存中
+      caffeineCache.put(key, value);
+    }
+
+    return value;
+  }
+
+  public void put(String key, Object value) {
+    // 同时更新 Caffeine 和 Redisson 缓存
+    caffeineCache.put(key, value);
+    RBucket<Object> bucket = redissonClient.getBucket(key);
+    bucket.set(value);
+  }
+}
+
+```
+
+##### 说明
+
+**服务类 (`CacheService`)**: - 这个类整合了 Caffeine 和 Redisson 客户端。 - `get(String key)` 方法首先尝试从 Caffeine 缓存获取数据。如果未找到，它会从 Redisson 获取数据，并且将其放入 Caffeine 缓存中。 - `put(String key, Object value)` 方法同时更新 Caffeine 和 Redisson 缓存。
+
+**缓存客户端获取**: - 使用 `Aop.get` 方法从 JFinal AOP 容器中获取 Caffeine 缓存和 Redisson 客户端实例。
+
+**使用服务**: - 你可以在你的应用程序中的其他部分，如控制器或业务逻辑层中，注入或实例化 `CacheService` 类，并通过它来处理缓存逻辑。
+
+这个服务提供了一个简单的方式来整合两种不同类型的缓存，利用了 Caffeine 的高性能本地缓存能力和 Redisson 的分布式缓存能力。通过这种方式，你可以提高数据检索的效率和应用程序的整体性能。
+
+##### 测试 Controller
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.tio.boot.hello.services.CacheService;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/cache")
+@Slf4j
+public class CacheTestController {
+
+  @RequestPath("/test")
+  public Object test() {
+    CacheService cacheService = Aop.get(CacheService.class);
+    String key = "cache-test1234";
+    Object value = cacheService.get(key);
+    if (value == null) {
+      log.info("计算新的value");
+      value = "12343";
+      cacheService.put(key, value);
+    }
+    return value;
+  }
+}
+```
+
+## 18.常用内置类方法说明
+
+### 18.1.HttpRequest
 
 #### 1. `HttpRequest(Node remote)`
 
@@ -3303,7 +3759,7 @@ http://localhost//caffeine/test
   httpRequest.addHeader("Content-Type", "application/json");
   ```
 
-#### 15. `getDomain()`
+#### 18. `getDomain()`
 
 - **说明**: 获取请求域名。
 - **用法**:
@@ -3319,7 +3775,7 @@ http://localhost//caffeine/test
   String bodyString = httpRequest.getBodyString();
   ```
 
-#### 15. `getChannelContext()`
+#### 18. `getChannelContext()`
 
 - **说明**: 获取当前 HTTP 请求的通道上下文。
 - **用法**:
@@ -3327,7 +3783,7 @@ http://localhost//caffeine/test
   ChannelContext channelContext = httpRequest.getChannelContext();
   ```
 
-#### 15. `getContentLength()`
+#### 18. `getContentLength()`
 
 - **说明**: 获取请求体的长度。
 - **用法**:
@@ -3343,7 +3799,7 @@ http://localhost//caffeine/test
   Cookie cookie = httpRequest.getCookie("session_id");
   ```
 
-#### 17. `getCookieMap()`
+#### 18. `getCookieMap()`
 
 - **说明**: 获取所有 Cookie 的映射。
 - **用法**:
@@ -3674,7 +4130,7 @@ http://localhost//caffeine/test
   httpRequest.setForward(true);
   ```
 
-### 15.2.HttpResponse
+### 18.2.HttpResponse
 
 `HttpResponse` 类扩展自 `HttpPacket`，用于表示 HTTP 响应。它包含了与 HTTP 响应相关的状态码、头部信息、Cookie 和主体内容。
 
@@ -3841,7 +4297,7 @@ http://localhost//caffeine/test
 
 29. **`getHeaderByteCount()`** - 返回：`int` - 头部字节计数。 - 说明：获取响应头部的字节大小。
 
-### 15.3.Resps
+### 18.3.Resps
 
 1. css(HttpRequest request, String bodyString)：创建一个带有给定正文字符串的 CSS 响应。设置 `Content-Type` 为 `text/css;charset=utf-8`。
 
@@ -3899,7 +4355,7 @@ http://localhost//caffeine/test
 
 每个方法都旨在处理 HTTP 响应生成的不同方面，使发送基于请求和所需内容类型的适当响应变得更加容易。
 
-### 15.4.Tio
+### 18.4.Tio
 
 `Tio`是一个用于管理网络通信的核心类，特别是在处理客户端和服务器之间的连接、消息发送、连接绑定和关闭等功能。类包含了大量的用于管理网络连接、发送和接收数据包、处理连接状态、以及管理连接的黑名单等操作的方法。这些方法使得开发者可以在客户端和服务器之间有效地进行通信，并对连接进行精细化管理.
 
