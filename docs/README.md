@@ -1274,15 +1274,189 @@ string数组<br>
 
 该方法的主要作用是当接收到特定的 HTTP 请求时，返回一个包含 HTML 内容的响应。
 
+### 返回图片
+
+#### 返回验证码
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import com.litongjava.tio.utils.resp.RespVo;
+
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.LineCaptcha;
+
+@RequestPath("/captcha")
+public class CaptchaController {
+
+  @RequestPath("")
+  public HttpResponse captcha(HttpRequest request) {
+    // 创建线性验证码
+    LineCaptcha captcha = CaptchaUtil.createLineCaptcha(200, 100);
+
+    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+      // 获取验证码图片，并写入到输出流
+      captcha.write(outputStream);
+
+      // 将输出流转换为字节数组
+      byte[] captchaBytes = outputStream.toByteArray();
+
+      // 使用 Resps 工具类创建一个包含验证码图片的响应
+      HttpResponse response = Resps.bytesWithContentType(request, captchaBytes, "image/jpeg");
+
+      // 返回响应
+      return response;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return Resps.json(request, RespVo.fail("Error generating captcha"));
+    }
+  }
+}
+```
+
+这段代码定义了一个 Java 控制器类，用于生成并返回一个图形验证码。它利用了 `hutool` 库中的 `CaptchaUtil` 工具和 `tio-boot` 网络框架。以下是对代码的详细解释：
+
+1. **包和导入**:
+
+   - `package com.litongjava.tio.boot.hello.controller;`: 定义了类所在的包。
+   - 导入了需要用到的类和接口，包括处理 HTTP 请求和响应的类，验证码生成工具类等。
+
+2. **类和注解**:
+
+   - `@RequestPath("/captcha")`: 类级别的注解，设置请求的路径。在这个例子中，类处理以 `/captcha` 开头的请求。
+   - `public class CaptchaController`: 定义了一个名为 `CaptchaController` 的公共类。
+
+3. **方法和路由**:
+
+   - `@RequestPath("")`: 方法级别的注解，指定当访问 `/captcha` 路径时，调用此方法。
+   - `public HttpResponse captcha(HttpRequest request)`: 定义了一个处理 HTTP 请求的方法，接收一个 `HttpRequest` 对象。
+
+4. **生成验证码**:
+   - `LineCaptcha captcha = CaptchaUtil.createLineCaptcha(200, 100)`: 使用 `hutool` 的 `CaptchaUtil` 生成一个线性（LineCaptcha）验证码，尺寸为 200x100 像素。
+5. **创建和返回响应**:
+
+   - `try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream())`: 使用 `try-with-resources` 语句创建一个 `ByteArrayOutputStream` 实例，确保流在操作结束后会被正确关闭。
+   - `captcha.write(outputStream)`: 将验证码图片写入到输出流。
+   - `byte[] captchaBytes = outputStream.toByteArray()`: 将输出流转换为字节数组。
+   - `HttpResponse response = Resps.bytesWithContentType(request, captchaBytes, "image/jpeg")`: 使用 `Resps.bytesWithContentType` 方法创建一个新的 `HttpResponse`，其中包含验证码图片数据，设置内容类型为“image/jpeg”。
+
+6. **异常处理**:
+   - `catch (IOException e)`: 捕获并处理可能在验证码生成或响应创建过程中出现的 IO 异常。
+   - `e.printStackTrace()`: 打印错误堆栈信息。
+   - `return Resps.json(request, RespVo.fail("Error generating captcha"))`: 发生异常时返回一个包含错误信息的 JSON 响应。
+
+总结：这个控制器的作用是生成一个图形验证码，并将它作为 HTTP 响应以图片的形式返回给客户端。如果在生成验证码的过程中出现问题，它会返回一个包含错误信息的 JSON 响应。
+
+#### 返回二维码
+
+添加依赖
+
+```
+<dependency>
+  <groupId>com.google.zxing</groupId>
+  <artifactId>core</artifactId>
+  <version>3.4.1</version> <!-- 使用最新版本 -->
+</dependency>
+```
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import com.litongjava.tio.utils.resp.RespVo;
+
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.qrcode.QrCodeUtil;
+
+@RequestPath("/qr")
+public class QrController {
+
+  @RequestPath("")
+  public HttpResponse qr(HttpRequest request, String content) {
+    // 获取要生成的二维码内容
+    if (StrUtil.isBlank(content)) {
+      return Resps.json(request, RespVo.fail("No content provided for QR code"));
+    }
+
+    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+      // 生成二维码图片，并写入到输出流
+      QrCodeUtil.generate(content, 300, 300, "png", outputStream);
+
+      // 将输出流转换为字节数组
+      byte[] qrCodeBytes = outputStream.toByteArray();
+
+      // 使用 Resps 工具类创建一个包含二维码图片的响应
+      HttpResponse response = Resps.bytesWithContentType(request, qrCodeBytes, "image/png");
+
+      // 返回响应
+      return response;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return Resps.json(request, RespVo.fail("Error generating QR code"));
+    }
+  }
+}
+
+```
+
+测试访问 http://localhost/qr?content=tio-boot  
+这段代码是一个 Java 控制器类，用于生成并返回一个二维码图片。它是基于 `hutool` 库的 `QrCodeUtil` 工具和 `tio` 网络框架实现的。以下是对代码的逐行解释：
+
+1. **类和注解**:
+
+   - `@RequestPath("/qr")`: 这是一个类级别的注解，用于设置请求的路径。在这个例子中，它将处理以 `/qr` 开头的请求。
+   - `public class QrController`: 定义了一个名为 `QrController` 的公共类。
+
+2. **方法和路由**:
+
+   - `@RequestPath("")`: 方法级别的注解，指定当访问 `/qr` 路径时，将调用此方法。
+   - `public HttpResponse qr(HttpRequest request, String content)`: 定义了一个处理 HTTP 请求的方法。它接收两个参数：一个 `HttpRequest` 对象和一个 `String` 类型的 `content`。
+
+3. **生成二维码**:
+
+   - `if (StrUtil.isBlank(content))`: 检查传入的 `content` 字符串是否为空。如果为空，则返回一个包含错误信息的 JSON 响应。
+   - `try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream())`: 使用 `try-with-resources` 语句创建一个 `ByteArrayOutputStream` 实例。这确保了流在操作结束后会被正确关闭。
+   - `QrCodeUtil.generate(content, 300, 300, "png", outputStream)`: 使用 `hutool` 的 `QrCodeUtil` 生成一个尺寸为 300x300 像素的 PNG 格式二维码，并写入到 `outputStream`。
+
+4. **创建响应**:
+
+   - `byte[] qrCodeBytes = outputStream.toByteArray()`: 将输出流转换为字节数组。
+   - `HttpResponse response = Resps.bytesWithContentType(request, qrCodeBytes, "image/png")`: 使用 `Resps.bytesWithContentType` 方法创建一个新的 `HttpResponse`，其中包含二维码图片数据和设置为“image/png”的内容类型。
+
+5. **异常处理**:
+
+   - `catch (IOException e)`: 捕获并处理可能在二维码生成或响应创建过程中出现的 IO 异常。
+   - `e.printStackTrace()`: 打印错误堆栈信息。
+   - `return Resps.json(request, RespVo.fail("Error generating QR code"))`: 发生异常时返回一个包含错误信息的 JSON 响应。
+
+6. **请求示例**:
+   - 访问 `http://localhost/qr?content=tio-boot` 将会触发这个控制器方法，`content=tio-boot` 表示生成包含文本 “tio-boot” 的二维码。
+
+这个控制器的作用是接收一个文本内容，并将其转换为二维码图片，然后将这个图片作为 HTTP 响应返回给客户端。如果在生成二维码的过程中出现问题，它会返回一个包含错误信息的 JSON 响应。
+
 ### 6.15.Session
 
 ```
-  @RequestPath(value = "/putsession")
-  public HttpResponse putsession(String value, HttpRequest request) throws Exception {
-    request.getHttpSession().setAttribute("test", value, request.httpConfig);
-    HttpResponse ret = Resps.json(request, "设置成功:" + value);
-    return ret;
-  }
+@RequestPath(value = "/putsession")
+public HttpResponse putsession(String value, HttpRequest request) throws Exception {
+request.getHttpSession().setAttribute("test", value, request.httpConfig);
+HttpResponse ret = Resps.json(request, "设置成功:" + value);
+return ret;
+}
+
 ```
 
 这段代码定义了一个名为 `putsession` 的方法，通过 `@RequestPath` 注解映射到 `/putsession` URL 路径。该方法接收两个参数：一个字符串 `value` 和一个 `HttpRequest` 对象 `request`。
@@ -1296,12 +1470,14 @@ string数组<br>
 这个方法的主要功能是处理 HTTP 请求，将一个值保存在用户会话中，并返回一个表示设置成功的 JSON 格式响应。这种方式通常用于在会话中存储用户相关数据。
 
 ```
-  @RequestPath(value = "/getsession")
-  public HttpResponse getsession(HttpRequest request) throws Exception {
-    String value = (String) request.getHttpSession().getAttribute("test");
-    HttpResponse ret = Resps.json(request, "获取的值:" + value);
-    return ret;
-  }
+
+@RequestPath(value = "/getsession")
+public HttpResponse getsession(HttpRequest request) throws Exception {
+String value = (String) request.getHttpSession().getAttribute("test");
+HttpResponse ret = Resps.json(request, "获取的值:" + value);
+return ret;
+}
+
 ```
 
 这段代码定义了一个名为 `getsession` 的方法，通过 `@RequestPath` 注解映射到 `/getsession` URL 路径。该方法接收一个 `HttpRequest` 对象 `request`。
@@ -1323,6 +1499,7 @@ DefaultHttpRequestHandler.processDynamic 方法会处理@EnableCORS 注解
 @EnableCORS 使用示例如下
 
 ```
+
 package com.litongjava.tio.boot.admin.controller.api.admin.system;
 
 import com.litongjava.tio.boot.annotation.EnableCORS;
@@ -1335,12 +1512,13 @@ import com.litongjava.tio.http.server.util.Resps;
 @EnableCORS
 public class CaptchaController {
 
-  @RequestPath("/check")
-  public HttpResponse check(HttpRequest request) {
-    HttpResponse response = Resps.json(request, "OK");
-    return response;
-  }
+@RequestPath("/check")
+public HttpResponse check(HttpRequest request) {
+HttpResponse response = Resps.json(request, "OK");
+return response;
 }
+}
+
 ```
 
 #### 6.13.2.HttpResponseUtils.enableCORS
@@ -1349,8 +1527,10 @@ public class CaptchaController {
 代码示例
 
 ```
+
 HttpResponse response = Resps.json(request, "OK");
 HttpResponseUtils.enableCORS(response, new HttpCors());
+
 ```
 
 ## 7.整合 jfinal-aoop
@@ -1362,20 +1542,23 @@ jfinal-aop 文档:https://litongjava.github.io/jfinal-doc/zh/4%20AOP/4.1%20%E6%A
 ### 7.1.Aop.get
 
 ```
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class IndexService {
 
-  public Map<String, String> index() {
-    Map<String, String> ret = new HashMap<>();
-    ret.put("data", "Hello 4");
-    return ret;
-  }
+public Map<String, String> index() {
+Map<String, String> ret = new HashMap<>();
+ret.put("data", "Hello 4");
+return ret;
 }
+}
+
 ```
 
 ```
+
 import java.util.Map;
 
 import com.litongjava.jfinal.aop.Aop;
@@ -1384,10 +1567,10 @@ import com.litongjava.tio.web.hello.service.IndexService;
 
 @RequestPath("/")
 public class IndexController {
-  @RequestPath()
-  public Map<String,String> index() {
-    return Aop.get(IndexService.class).index();
-  }
+@RequestPath()
+public Map<String,String> index() {
+return Aop.get(IndexService.class).index();
+}
 }
 
 ```
@@ -1395,7 +1578,9 @@ public class IndexController {
 执行后返回的数据是
 
 ```
+
 {"data":"Hello 4"}
+
 ```
 
 这两个类构成了一个简单的 MVC (Model-View-Controller) 结构。
@@ -1416,6 +1601,7 @@ public class IndexController {
 ### 7.2.Aop 拦击器@Before
 
 ```
+
 import com.litongjava.jfinal.aop.Interceptor;
 import com.litongjava.jfinal.aop.Invocation;
 
@@ -1424,17 +1610,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IndexInteceptor implements Interceptor {
 
-  @Override
-  public void intercept(Invocation inv) {
-    log.info("1before");
-    inv.invoke();
-    log.info("after");
-  }
+@Override
+public void intercept(Invocation inv) {
+log.info("1before");
+inv.invoke();
+log.info("after");
+}
 
 }
+
 ```
 
 ```
+
 import java.util.Map;
 
 import com.litongjava.jfinal.aop.Aop;
@@ -1444,12 +1632,13 @@ import com.litongjava.tio.web.hello.service.IndexService;
 
 @RequestPath("/")
 public class IndexController {
-  @RequestPath()
-  @Before(IndexInteceptor.class)
-  public Map<String, String> index() {
-    return Aop.get(IndexService.class).index();
-  }
+@RequestPath()
+@Before(IndexInteceptor.class)
+public Map<String, String> index() {
+return Aop.get(IndexService.class).index();
 }
+}
+
 ```
 
 `IndexInteceptor` 是一个拦截器类，实现了 `Interceptor` 接口。它定义了 `intercept` 方法，该方法在被拦截的方法执行前后添加了日志记录。通过调用 `inv.invoke()`，它允许继续执行链中的下一个拦截器或目标方法。
@@ -1459,7 +1648,9 @@ public class IndexController {
 如果使用了 Hotswap-classloader 需要在启动类中添加 SwapClassPrefix,添加之后才可以支持 切面代理类的 热加载,否则会出现异常
 
 ```
+
 HotSwapResolver.addHotSwapClassPrefix("com.litongjava.jfinal");
+
 ```
 
 ### 7.3.Aop 相关注解
@@ -1495,20 +1686,26 @@ HotSwapResolver.addHotSwapClassPrefix("com.litongjava.jfinal");
 获取 Aop 容器中的所有 bean
 
 ```
+
 String[] beans = Aop.beans();
+
 ```
 
 添加一个类到 Bean 容器中
 
 ```
+
 AopManager.me().addSingletonObject(bean);
+
 ```
 
 添加一个实现带有接口的实现类到 Bean 容器中
 
 ```
+
 AopManager.me().addMapping(SharedPreferences.class, sharedPreferences.getClass());
 AopManager.me().addSingletonObject(sharedPreferences);
+
 ```
 
 1. **AopManager.me().addMapping(SharedPreferences.class, sharedPreferences.getClass());**
@@ -1524,12 +1721,13 @@ AopManager.me().addSingletonObject(sharedPreferences);
 为了实现高性能推荐在 Controller 中使用自定义方法进行校验,使用示例如下
 
 ```
+
 import com.jfinal.kit.StrKit;
 import com.litongjava.tio.utils.resp.RespVo;
 
 public class LoginValidator {
-  public RespVo validateLogin(String username, String password, String verificationCode) {
-    RespVo retval = null;
+public RespVo validateLogin(String username, String password, String verificationCode) {
+RespVo retval = null;
 
     //验证username
     if (StrKit.isBlank(username)) {
@@ -1541,11 +1739,14 @@ public class LoginValidator {
     // ...
     //验证成功返回null,验证不成功返回RespVo
     return retval;
-  }
+
 }
+}
+
 ```
 
 ```
+
 import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.server.annotation.RequestPath;
@@ -1555,14 +1756,16 @@ import com.litongjava.tio.web.hello.validator.LoginValidator;
 @RequestPath("/auth")
 public class LoginController {
 
-  public RespVo login(String username, String password, String verificationCode) {
+public RespVo login(String username, String password, String verificationCode) {
 
     RespVo validateResult = Aop.get(LoginValidator.class).validateLogin(username, password, verificationCode);
     if (validateResult != null) return validateResult;
 
     return RespVo.ok();
-  }
+
 }
+}
+
 ```
 
 这段代码展示了一个登录验证流程，分为验证器类 `LoginValidator` 和控制器类 `LoginController`。
@@ -1585,6 +1788,7 @@ public class LoginController {
 配置 EnjoyEngine
 
 ```
+
 package com.litongjava.ai.chat.config;
 
 import com.jfinal.template.Engine;
@@ -1594,28 +1798,30 @@ import com.litongjava.jfinal.aop.annotation.Configuration;
 @Configuration
 public class EnjoyEngineConfig {
 
-  private final String RESOURCE_BASE_PATH = "/templates/";
+private final String RESOURCE_BASE_PATH = "/templates/";
 
-  @Bean
-  public Engine engine() {
-    Engine engine = Engine.use();
-    engine.setBaseTemplatePath(RESOURCE_BASE_PATH);
-    engine.setToClassPathSourceFactory();
-    // 支持模板热加载，绝大多数生产环境下也建议配置成 true，除非是极端高性能的场景
-    engine.setDevMode(true);
-    // 配置极速模式，性能提升 13%
-    Engine.setFastMode(true);
-    // jfinal 4.9.02 新增配置：支持中文表达式、中文变量名、中文方法名、中文模板函数名
-    Engine.setChineseExpression(true);
-    return engine;
-  }
+@Bean
+public Engine engine() {
+Engine engine = Engine.use();
+engine.setBaseTemplatePath(RESOURCE_BASE_PATH);
+engine.setToClassPathSourceFactory();
+// 支持模板热加载，绝大多数生产环境下也建议配置成 true，除非是极端高性能的场景
+engine.setDevMode(true);
+// 配置极速模式，性能提升 13%
+Engine.setFastMode(true);
+// jfinal 4.9.02 新增配置：支持中文表达式、中文变量名、中文方法名、中文模板函数名
+Engine.setChineseExpression(true);
+return engine;
+}
 
 }
+
 ```
 
 在 Controoler 使用 Engine 获取网页并返回
 
 ```
+
 package com.litongjava.ai.chat.controller;
 
 import com.jfinal.template.Engine;
@@ -1628,21 +1834,22 @@ import com.litongjava.tio.http.server.util.Resps;
 
 @RequestPath()
 public class TemplatesController {
-  private Engine engine = Aop.get(Engine.class);
+private Engine engine = Aop.get(Engine.class);
 
-  @RequestPath("/404")
-  public Template notFound(HttpRequest request) {
-    String fileName = "/404.html";
-    Template template = engine.getTemplate(fileName);
-    return template;
-  }
-
-  @RequestPath("/chat")
-  public HttpResponse chat(HttpRequest request) {
-    String fileName = "/chat.html";
-    return renderHtml(request, fileName);
-  }
+@RequestPath("/404")
+public Template notFound(HttpRequest request) {
+String fileName = "/404.html";
+Template template = engine.getTemplate(fileName);
+return template;
 }
+
+@RequestPath("/chat")
+public HttpResponse chat(HttpRequest request) {
+String fileName = "/chat.html";
+return renderHtml(request, fileName);
+}
+}
+
 ```
 
 解释一下上面的代码
@@ -1668,6 +1875,7 @@ public class TemplatesController {
 #### 10.1.1.使用拦截器
 
 ```
+
 package com.litongjava.tio.boot.admin.config;
 
 import com.litongjava.jfinal.aop.annotation.Bean;
@@ -1679,20 +1887,22 @@ import com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure;
 @Configuration
 public class IntecpetorConfig {
 
-  @Bean
-  public ServerInteceptorConfigure serverInteceptorRoutes() {
-    ServerInteceptorConfigure config = new ServerInteceptorConfigure();
-    config.add("/**", GlobalInteceptor.class);
-    config.add("/hello", HelloInteceptor.class);
-    return config;
-  }
+@Bean
+public ServerInteceptorConfigure serverInteceptorRoutes() {
+ServerInteceptorConfigure config = new ServerInteceptorConfigure();
+config.add("/\*\*", GlobalInteceptor.class);
+config.add("/hello", HelloInteceptor.class);
+return config;
+}
 
 }
+
 ```
 
 定义全局拦截器
 
 ```
+
 package com.litongjava.tio.boot.admin.inteceptor;
 
 import com.litongjava.tio.http.common.HttpRequest;
@@ -1705,24 +1915,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalInteceptor implements HttpServerInterceptor {
 
-  public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
-      throws Exception {
-    log.info("request:{}", request);
-    return responseFromCache;
-  }
+public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
+throws Exception {
+log.info("request:{}", request);
+return responseFromCache;
+}
 
-  public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
-      throws Exception {
-    log.info("request:{}", request);
-
-  }
+public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
+throws Exception {
+log.info("request:{}", request);
 
 }
+
+}
+
 ```
 
 定义普通拦击器
 
 ```
+
 package com.litongjava.tio.boot.admin.inteceptor;
 
 import com.litongjava.tio.http.common.HttpRequest;
@@ -1735,18 +1947,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HelloInteceptor implements HttpServerInterceptor {
 
-  public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
-      throws Exception {
-    log.info("request", request);
-    return null;
-  }
-
-  public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
-      throws Exception {
-    log.info("request", request);
-
-  }
+public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
+throws Exception {
+log.info("request", request);
+return null;
 }
+
+public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
+throws Exception {
+log.info("request", request);
+
+}
+}
+
 ```
 
 1. `IntecpetorConfig` 类：
@@ -1780,6 +1993,7 @@ public class HelloInteceptor implements HttpServerInterceptor {
 配置 websocket 路由
 
 ```
+
 package com.litongjava.tio.web.socket.hello.config;
 
 import com.litongjava.jfinal.aop.annotation.Bean;
@@ -1790,19 +2004,21 @@ import com.litongjava.tio.web.socket.hello.handler.HelloWebSocketHandler;
 @Configuration
 public class WebSocketConfig {
 
-  @Bean
-  public WebSocketRoutes webSocketRoutes() {
-    WebSocketRoutes webSocketRoutes = new WebSocketRoutes();
-    webSocketRoutes.add("/hello", HelloWebSocketHandler.class);
-    return webSocketRoutes;
-  }
+@Bean
+public WebSocketRoutes webSocketRoutes() {
+WebSocketRoutes webSocketRoutes = new WebSocketRoutes();
+webSocketRoutes.add("/hello", HelloWebSocketHandler.class);
+return webSocketRoutes;
+}
 
 }
+
 ```
 
 实现 websocket 处理器
 
 ```
+
 import java.util.Objects;
 
 import com.litongjava.tio.core.ChannelContext;
@@ -1819,91 +2035,101 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HelloWebSocketHandler implements IWsMsgHandler {
 
-  /**
-   * 用于群聊的group id
-   */
+/\*\*
+
+- 用于群聊的 group id
+  \*/
   public static final String GROUP_ID = "showcase-websocket";
   public static final String CHARSET = "utf-8";
 
-  /**
-   * 握手时走这个方法，业务可以在这里获取cookie，request参数等
-   */
+/\*\*
+
+- 握手时走这个方法，业务可以在这里获取 cookie，request 参数等
+  \*/
   @Override
   public HttpResponse handshake(HttpRequest request, HttpResponse httpResponse, ChannelContext channelContext)
-      throws Exception {
-    String clientip = request.getClientIp();
-    String myname = request.getParam("name");
+  throws Exception {
+  String clientip = request.getClientIp();
+  String myname = request.getParam("name");
 
-    Tio.bindUser(channelContext, myname);
-//    channelContext.setUserid(myname);
-    log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
-    return httpResponse;
-  }
+  Tio.bindUser(channelContext, myname);
 
-  /**
-   * @param httpRequest
-   * @param httpResponse
-   * @param channelContext
-   * @throws Exception
-   * @author tanyaowu
-   */
+// channelContext.setUserid(myname);
+log.info("收到来自{}的 ws 握手包\r\n{}", clientip, request.toString());
+return httpResponse;
+}
+
+/\*\*
+
+- @param httpRequest
+- @param httpResponse
+- @param channelContext
+- @throws Exception
+- @author tanyaowu
+  \*/
   @Override
   public void onAfterHandshaked(HttpRequest httpRequest, HttpResponse httpResponse, ChannelContext channelContext)
-      throws Exception {
-    // 绑定到群组，后面会有群发
-    Tio.bindGroup(channelContext, GROUP_ID);
-    int count = Tio.getAll(channelContext.tioConfig).getObj().size();
+  throws Exception {
+  // 绑定到群组，后面会有群发
+  Tio.bindGroup(channelContext, GROUP_ID);
+  int count = Tio.getAll(channelContext.tioConfig).getObj().size();
 
-    String msg = "{name:'admin',message:'" + channelContext.userid + " 进来了，共【" + count + "】人在线" + "'}";
-    // 用tio-websocket，服务器发送到客户端的Packet都是WsResponse
-    WsResponse wsResponse = WsResponse.fromText(msg, CHARSET);
-    // 群发
-    Tio.sendToGroup(channelContext.tioConfig, GROUP_ID, wsResponse);
-  }
+  String msg = "{name:'admin',message:'" + channelContext.userid + " 进来了，共【" + count + "】人在线" + "'}";
+  // 用 tio-websocket，服务器发送到客户端的 Packet 都是 WsResponse
+  WsResponse wsResponse = WsResponse.fromText(msg, CHARSET);
+  // 群发
+  Tio.sendToGroup(channelContext.tioConfig, GROUP_ID, wsResponse);
 
-  /**
-   * 字节消息（binaryType = arraybuffer）过来后会走这个方法
-   */
+}
+
+/\*\*
+
+- 字节消息（binaryType = arraybuffer）过来后会走这个方法
+  \*/
   @Override
   public Object onBytes(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {
-    return null;
+  return null;
   }
 
-  /**
-   * 当客户端发close flag时，会走这个方法
-   */
+/\*\*
+
+- 当客户端发 close flag 时，会走这个方法
+  \*/
   @Override
   public Object onClose(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {
-    Tio.remove(channelContext, "receive close flag");
-    return null;
+  Tio.remove(channelContext, "receive close flag");
+  return null;
   }
 
-  /*
-   * 字符消息（binaryType = blob）过来后会走这个方法
-   */
+/\*
+
+- 字符消息（binaryType = blob）过来后会走这个方法
+  \*/
   @Override
   public Object onText(WsRequest wsRequest, String text, ChannelContext channelContext) throws Exception {
-    WsSessionContext wsSessionContext = (WsSessionContext) channelContext.get();
-    String path = wsSessionContext.getHandshakeRequest().getRequestLine().path;
-    log.info("path:{}", path);
+  WsSessionContext wsSessionContext = (WsSessionContext) channelContext.get();
+  String path = wsSessionContext.getHandshakeRequest().getRequestLine().path;
+  log.info("path:{}", path);
 
-    // log.info("收到ws消息:{}", text);
+  // log.info("收到 ws 消息:{}", text);
 
-    if (Objects.equals("心跳内容", text)) {
-      return null;
-    }
-    // channelContext.getToken()
-    // String msg = channelContext.getClientNode().toString() + " 说：" + text;
-    String msg = "{name:'" + channelContext.userid + "',message:'" + text + "'}";
-    // 用tio-websocket，服务器发送到客户端的Packet都是WsResponse
-    WsResponse wsResponse = WsResponse.fromText(msg, CHARSET);
-    // 群发
-    Tio.sendToGroup(channelContext.tioConfig, GROUP_ID, wsResponse);
-
-    // 返回值是要发送给客户端的内容，一般都是返回null,返回为null,handler不会发送数据
-    return null;
+  if (Objects.equals("心跳内容", text)) {
+  return null;
   }
+  // channelContext.getToken()
+  // String msg = channelContext.getClientNode().toString() + " 说：" + text;
+  String msg = "{name:'" + channelContext.userid + "',message:'" + text + "'}";
+  // 用 tio-websocket，服务器发送到客户端的 Packet 都是 WsResponse
+  WsResponse wsResponse = WsResponse.fromText(msg, CHARSET);
+  // 群发
+  Tio.sendToGroup(channelContext.tioConfig, GROUP_ID, wsResponse);
+
+  // 返回值是要发送给客户端的内容，一般都是返回 null,返回为 null,handler 不会发送数据
+  return null;
+
 }
+}
+
 ```
 
 这两个类涉及 WebSocket 的配置和处理。
@@ -1963,6 +2189,7 @@ INSERT INTO "student" VALUES (1, '沈', '一年级');
 添加依赖
 
 ```
+
 <dependency>
   <groupId>com.zaxxer</groupId>
   <artifactId>HikariCP</artifactId>
