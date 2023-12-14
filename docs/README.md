@@ -608,8 +608,8 @@ tar -xf graalvm-jdk-21_linux-x64_bin.tar.gz -C ~/program/
 2. 配置环境变量:
 
 ```shell
-export JAVA_HOME=~/program/graalvm-jdk-21.0.1+12.1
-export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+12.1
+export JAVA_HOME=~/program/graalvm-jdk-21.0.1+14.1
+export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+14.1
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
@@ -1274,7 +1274,7 @@ string数组<br>
 
 该方法的主要作用是当接收到特定的 HTTP 请求时，返回一个包含 HTML 内容的响应。
 
-### 6.12.Session
+### 6.14.Session
 
 ```
   @RequestPath(value = "/putsession")
@@ -2385,9 +2385,268 @@ public class DbTestController {
 {"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
 ```
 
-## 12.常用内置类方法说明
+## JWT
 
-### 12.1.HttpRequest
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import cn.hutool.jwt.JWTUtil;
+import com.litongjava.tio.http.common.HeaderName;
+import com.litongjava.tio.http.common.HeaderValue;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import com.litongjava.tio.utils.resp.RespVo;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * token永不过期
+ */
+@RequestPath("/auth")
+public class AuthController {
+
+  // 使用HmacSHA256签名算法的密钥
+  byte[] key = "litongjava".getBytes();
+  // 用于存储tokens的Map
+  private static Map<String, String> tokenStore = new HashMap<>();
+
+  @RequestPath("/login")
+  public HttpResponse login(HttpRequest request, String username, String password) {
+    if (isValidUser(username, password)) {
+      // 生成JWT token
+      String accessToken = createJWTToken(username, key);
+
+      // 将token存储到Map中
+      tokenStore.put(username, accessToken);
+
+      // 创建HttpResponse，并添加token作为头部
+      HeaderName headerName = HeaderName.from("Authorization");
+      HeaderValue headerValue = HeaderValue.from("Bearer " + accessToken);
+
+      HttpResponse httpResponse = Resps.json(request, RespVo.ok());
+      httpResponse.addHeader(headerName, headerValue);
+      return httpResponse;
+    } else {
+      return Resps.json(request, RespVo.fail("Invalid username or password"));
+    }
+  }
+
+  @RequestPath("/verifyToken")
+  public RespVo verifyToken(String token) {
+    // 验证token是否有效
+    if (isValidToken(token)) {
+      return RespVo.ok();
+    } else {
+      return RespVo.fail("Token is invalid or expired");
+    }
+  }
+
+  private boolean isValidUser(String username, String password) {
+    // 在这里实现您的用户验证逻辑
+    // 暂时返回true模拟验证成功
+    return true;
+  }
+
+  public static String createJWTToken(String username, byte[] key) {
+    // 载荷，可根据需要添加更多数据
+    Map<String, Object> payload = new HashMap<>();
+    payload.put("username", username);
+
+    // 设置过期时间，例如1小时后
+    long expirationMillis = System.currentTimeMillis() + 3600000; // 1小时 = 3600000毫秒
+    Date expiration = new Date(expirationMillis);
+    payload.put("exp", expiration.getTime() / 1000); // JWT通常使用秒为单位的时间戳
+
+    // 生成JWT token
+    return JWTUtil.createToken(payload, key);
+  }
+
+  private boolean isValidToken(String token) {
+    // 使用相同的密钥验证token
+    return JWTUtil.verify(token, key);
+  }
+}
+
+```
+
+代码展示了一个用于身份验证和令牌管理的 `AuthController` 类，它是使用 tio-boot 框架编写的。这个类提供了用户登录和验证令牌的功能。下面是对代码的关键点的解释：
+
+1. **类定义和成员变量**:
+
+   - 类被注解为 `@RequestPath("/auth")`，这意味着它处理以 `/auth` 开头的 HTTP 请求路径。
+   - `key` 是用于 JWT 签名的密钥，这里是一个硬编码的字符串 `"litongjava"`。在实际应用中，这个密钥应该是安全生成和存储的。
+   - `tokenStore` 是一个用于存储生成的令牌的静态映射（Map）。
+
+2. **`login` 方法**:
+
+   - 当用户尝试登录时，此方法被调用。
+   - 它首先调用 `isValidUser` 方法来验证用户名和密码。
+   - 如果验证成功，它调用 `createJWTToken` 方法生成 JWT 令牌。
+   - 然后，生成的令牌被存储在 `tokenStore` 中，并以 `Authorization` 头的形式添加到响应中。
+   - 最后，方法返回一个 `HttpResponse` 对象，该对象包含 JSON 格式的响应。
+
+3. **`verifyToken` 方法**:
+
+   - 此方法用于验证传入的令牌是否有效。
+   - 它调用 `isValidToken` 方法来检查令牌。
+   - 根据令牌的有效性，它返回一个包含相应消息的 `RespVo` 对象。
+
+4. **`createJWTToken` 方法**:
+
+   - 这是一个静态辅助方法，用于生成带有用户信息和过期时间的 JWT 令牌。
+   - 它将用户名作为载荷的一部分，并计算一个小时后的时间作为令牌的过期时间。
+   - 这个方法使用 `JWTUtil.createToken` 方法生成令牌。
+
+5. **`isValidToken` 方法**:
+
+   - 用于验证给定令牌的有效性。
+   - 它使用相同的密钥 `key` 来验证令牌。
+
+6. **安全性和实用性的考虑**:
+   - 密钥应该安全生成和存储，不应硬编码在代码中。
+   - 在生产环境中，令牌应该有一个合理的过期时间，并且应该提供令牌刷新的机制。
+   - 用户验证逻辑（`isValidUser` 方法）应该实现实际的验证过程，例如检查数据库中的用户凭据。
+   - 令牌存储（`tokenStore`）应考虑使用更安全和可扩展的存储解决方案，如数据库或缓存系统。在内存中存储令牌可能不适合大规模或生产环境。
+
+## MQTT
+
+## Mica-mqtt
+
+```
+<mica-mqtt.version>2.2.6</mica-mqtt.version>
+<dependency>
+  <groupId>net.dreamlu</groupId>
+  <artifactId>mica-mqtt-client</artifactId>
+  <version>${mica-mqtt.version}</version>
+</dependency>
+```
+
+```
+package com.litongjava.mica.mqtt.client.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tio.core.ChannelContext;
+
+import net.dreamlu.iot.mqtt.core.client.IMqttClientConnectListener;
+
+/**
+ * Client Connection Status Listening
+ */
+public class MqttClientConnectListener implements IMqttClientConnectListener {
+  private static final Logger logger = LoggerFactory.getLogger(MqttClientConnectListener.class);
+
+  @Override
+  public void onConnected(ChannelContext context, boolean isReconnect) {
+    if (isReconnect) {
+      logger.info("Reconnect mqtt server reconnected successfully");
+    } else {
+      logger.info("Connection to mqtt server successful");
+    }
+  }
+
+  @Override
+  public void onDisconnect(ChannelContext channelContext, Throwable throwable, String remark, boolean isRemove) {
+    logger.error("mqtt link broken remark:{} isRemove:{}", remark, isRemove, throwable);
+  }
+
+}
+```
+
+```
+package com.litongjava.mica.mqtt.client.config;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.tio.core.ChannelContext;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.iot.mqtt.codec.MqttPublishMessage;
+import net.dreamlu.iot.mqtt.codec.MqttQoS;
+import net.dreamlu.iot.mqtt.core.client.IMqttClientMessageListener;
+import net.dreamlu.iot.mqtt.core.client.MqttClient;
+import net.dreamlu.iot.mqtt.core.client.MqttClientCreator;
+
+@Configuration
+@Slf4j
+public class MicaMQTTClientConfig {
+
+  @Bean
+  public MqttClient MqttClient() {
+    // 初始化 mqtt 客户端
+    MqttClientCreator creator = MqttClient.create().ip("192.168.3.9").port(1883).username("mica").password("mica");
+    // 连接监听
+    MqttClient client = creator.connectListener(new MqttClientConnectListener()).willMessage(builder -> {
+      builder.topic("/test/offline").messageText("down").retain(false).qos(MqttQoS.AT_MOST_ONCE); // 遗嘱消息
+    })
+        // 同步连接，也可以使用 connect() 异步（可以避免 broker 没启动照成启动卡住），但是下面的订阅和发布可能还没连接成功。
+        .connectSync();
+
+    // 订阅
+    client.subQos0("/test/123", new IMqttClientMessageListener() {
+      @Override
+      public void onSubscribed(ChannelContext context, String topicFilter, MqttQoS mqttQoS) {
+        // 订阅成功之后触发，可在此处做一些业务逻辑
+        log.info("topicFilter:{} MqttQoS:{} Subscription successful", topicFilter, mqttQoS);
+      }
+
+      @Override
+      public void onMessage(ChannelContext context, String topic, MqttPublishMessage message, byte[] payload) {
+        log.info(topic + '\t' + new String(payload, StandardCharsets.UTF_8));
+      }
+    });
+
+    // 发送
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        client.publish("/test/client", "hello this is mica client".getBytes(StandardCharsets.UTF_8));
+      }
+    }, 1000, 2000);
+
+    return client;
+  }
+}
+```
+
+这段代码主要涉及两个 Java 类，它们是用于配置和实现 MQTT 客户端的功能。让我们逐个进行解释：
+
+#### MqttClientConnectListener 类
+
+这个类实现了 `IMqttClientConnectListener` 接口，用于监听 MQTT 客户端的连接状态。
+
+- **方法**:
+  - `onConnected`: 当客户端成功连接到 MQTT 服务器时调用。如果是重新连接（`isReconnect` 为 `true`），则记录“重连成功”的消息；否则，记录“连接成功”的消息。
+  - `onDisconnect`: 当客户端与 MQTT 服务器的连接断开时调用。记录断开连接的详细信息和错误（如果有）。
+
+#### MicaMQTTClientConfig 类
+
+这个类使用了 JFinal 的 `@Configuration` 和 `@Bean` 注解，表明它是一个配置类，用于初始化和配置 MQTT 客户端。
+
+- **方法**:
+  - `MqttClient`: 定义了一个 `MqttClient` Bean。在这个方法中，执行了以下操作：
+    - **初始化 MQTT 客户端**：使用 `MqttClient.create()` 创建一个 MQTT 客户端实例，并设置了服务器的 IP 地址、端口、用户名和密码。
+    - **设置连接监听器**：添加了前面定义的 `MqttClientConnectListener` 实例作为连接监听器。
+    - **配置遗嘱消息**：设置了客户端的遗嘱消息，当客户端意外断开连接时，服务器将会发布这条消息到指定的主题（`/test/offline`）。
+    - **同步连接**：调用 `connectSync()` 方法来同步连接到 MQTT 服务器。
+    - **订阅主题**：订阅了 `/test/123` 主题，并定义了如何处理订阅成功事件和收到的消息。
+    - **定时发送消息**：使用 `Timer` 定时向 `/test/client` 主题发送消息。
+
+这段代码通过 JFinal AOP 提供的注解方式配置了一个 MQTT 客户端。客户端在启动时会自动连接到 MQTT 服务器，订阅指定的主题，并定期向另一个主题发送消息。同时，它通过实现连接监听器来记录连接和断开事件。这样的设置在 IoT（物联网）应用中很常见，用于设备与 MQTT 服务器之间的通信。
+
+## 14.常用内置类方法说明
+
+### 14.1.HttpRequest
 
 #### 1. `HttpRequest(Node remote)`
 
@@ -2478,7 +2737,7 @@ public class DbTestController {
   httpRequest.addHeader("Content-Type", "application/json");
   ```
 
-#### 12. `getDomain()`
+#### 14. `getDomain()`
 
 - **说明**: 获取请求域名。
 - **用法**:
@@ -2849,7 +3108,7 @@ public class DbTestController {
   httpRequest.setForward(true);
   ```
 
-### 12.2.HttpResponse
+### 14.2.HttpResponse
 
 `HttpResponse` 类扩展自 `HttpPacket`，用于表示 HTTP 响应。它包含了与 HTTP 响应相关的状态码、头部信息、Cookie 和主体内容。
 
@@ -3016,7 +3275,7 @@ public class DbTestController {
 
 29. **`getHeaderByteCount()`** - 返回：`int` - 头部字节计数。 - 说明：获取响应头部的字节大小。
 
-### 12.3.Resps
+### 14.3.Resps
 
 1. css(HttpRequest request, String bodyString)：创建一个带有给定正文字符串的 CSS 响应。设置 `Content-Type` 为 `text/css;charset=utf-8`。
 
@@ -3074,7 +3333,7 @@ public class DbTestController {
 
 每个方法都旨在处理 HTTP 响应生成的不同方面，使发送基于请求和所需内容类型的适当响应变得更加容易。
 
-### 12.4.Tio
+### 14.4.Tio
 
 `Tio`是一个用于管理网络通信的核心类，特别是在处理客户端和服务器之间的连接、消息发送、连接绑定和关闭等功能。类包含了大量的用于管理网络连接、发送和接收数据包、处理连接状态、以及管理连接的黑名单等操作的方法。这些方法使得开发者可以在客户端和服务器之间有效地进行通信，并对连接进行精细化管理.
 
