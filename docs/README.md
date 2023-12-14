@@ -608,8 +608,8 @@ tar -xf graalvm-jdk-21_linux-x64_bin.tar.gz -C ~/program/
 2. 配置环境变量:
 
 ```shell
-export JAVA_HOME=~/program/graalvm-jdk-21.0.1+14.1
-export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+14.1
+export JAVA_HOME=~/program/graalvm-jdk-21.0.1+15.1
+export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+15.1
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
@@ -1274,7 +1274,7 @@ string数组<br>
 
 该方法的主要作用是当接收到特定的 HTTP 请求时，返回一个包含 HTML 内容的响应。
 
-### 6.14.Session
+### 6.15.Session
 
 ```
   @RequestPath(value = "/putsession")
@@ -2644,9 +2644,267 @@ public class MicaMQTTClientConfig {
 
 这段代码通过 JFinal AOP 提供的注解方式配置了一个 MQTT 客户端。客户端在启动时会自动连接到 MQTT 服务器，订阅指定的主题，并定期向另一个主题发送消息。同时，它通过实现连接监听器来记录连接和断开事件。这样的设置在 IoT（物联网）应用中很常见，用于设备与 MQTT 服务器之间的通信。
 
-## 14.常用内置类方法说明
+## 14.tio server
 
-### 14.1.HttpRequest
+整合 tio-server 启动一个 tcp 服务器
+
+```
+package com.litongjava.tio.boot.hello.tioserver;
+import com.litongjava.tio.core.intf.Packet;
+
+/**
+* socket消息包
+*/
+@SuppressWarnings("serial")
+public class DemoPacket extends Packet {
+  private byte[] body;
+
+  public byte[] getBody() {
+    return body;
+  }
+
+  public void setBody(byte[] body) {
+    this.body = body;
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.tioserver;
+import com.litongjava.tio.core.ChannelContext;
+import com.litongjava.tio.core.Tio;
+import com.litongjava.tio.core.intf.Packet;
+import com.litongjava.tio.server.intf.ServerAioListener;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoTioServerListener implements ServerAioListener {
+  public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect) throws Exception {
+  }
+
+  public void onAfterDecoded(ChannelContext channelContext, Packet packet, int packetSize) throws Exception {
+  }
+
+  public void onAfterReceivedBytes(ChannelContext channelContext, int receivedBytes) throws Exception {
+  }
+
+  public void onAfterSent(ChannelContext channelContext, Packet packet, boolean isSentSuccess) throws Exception {
+  }
+
+  public void onAfterHandled(ChannelContext channelContext, Packet packet, long cost) throws Exception {
+  }
+
+  /**
+   * 连接关闭前触发本方法
+   *
+   * @param channelContext        the channelcontext
+   * @param throwable the throwable 有可能为空
+   * @param remark    the remark 有可能为空
+   * @param isRemove
+   * @throws Exception
+   */
+
+  public void onBeforeClose(ChannelContext channelContext, Throwable throwable, String remark, boolean isRemove) throws Exception {
+    log.info("关闭后清除认证信息");
+    Tio.unbindToken(channelContext);
+  }
+
+  /**
+   * @param channelContext
+   * @param interval              已经多久没有收发消息了，单位：毫秒
+   * @param heartbeatTimeoutCount 心跳超时次数，第一次超时此值是1，以此类推。此值被保存在：channelContext.stat.heartbeatTimeoutCount
+   * @return 返回true，那么服务器则不关闭此连接；返回false，服务器将按心跳超时关闭该连接
+   */
+  public boolean onHeartbeatTimeout(ChannelContext channelContext, Long interval, int heartbeatTimeoutCount) {
+    log.info("心跳超时");
+    Tio.unbindToken(channelContext);
+    return false;
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.tioserver;
+
+import java.nio.ByteBuffer;
+
+import com.litongjava.tio.core.ChannelContext;
+import com.litongjava.tio.core.Tio;
+import com.litongjava.tio.core.TioConfig;
+import com.litongjava.tio.core.exception.TioDecodeException;
+import com.litongjava.tio.core.intf.Packet;
+import com.litongjava.tio.server.intf.ServerAioHandler;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoTioServerHandler implements ServerAioHandler {
+
+  public Packet decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext)
+      throws TioDecodeException {
+    log.info("buffer:{}", buffer);
+    // 获取由ByteBuffer支持的字节数组
+    byte[] bytes = new byte[readableLength];
+    buffer.get(bytes);
+    // 封装为ShowcasePacket
+    DemoPacket imPackage = new DemoPacket();
+    imPackage.setBody(bytes);
+    return imPackage;
+  }
+
+  public ByteBuffer encode(Packet packet, TioConfig tioConfig, ChannelContext channelContext) {
+    DemoPacket helloPacket = (DemoPacket) packet;
+    byte[] body = helloPacket.getBody();
+    // ByteBuffer的总长度是消息体长度
+    int bodyLength = body.length;
+    log.info("encode:{}", bodyLength);
+
+    // 创建一个新的ByteBuffer
+    ByteBuffer buffer = ByteBuffer.allocate(bodyLength);
+    // 设置字节序
+    buffer.order(tioConfig.getByteOrder());
+    // 消息消息体
+    buffer.put(body);
+    return buffer;
+  }
+
+  public void handler(Packet packet, ChannelContext channelContext) throws Exception {
+    DemoPacket packingPacket = (DemoPacket) packet;
+    byte[] body = packingPacket.getBody();
+    if (body == null) {
+      return;
+    }
+    String string = new String(body);
+    log.info("received:{}", string);
+    // 响应数据
+    String sendMessage = "收到了你的消息，你的消息是:" + string;
+    log.info("sendMessage:{}", sendMessage);
+    byte[] bytes = sendMessage.getBytes();
+    // 响应包
+    DemoPacket responsePacket = new DemoPacket();
+    responsePacket.setBody(bytes);
+    // 响应消息
+    log.info("开始响应");
+    Tio.send(channelContext, responsePacket);
+    log.info("响应完成");
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.tioserver;
+
+import java.io.IOException;
+
+import com.litongjava.tio.server.ServerTioConfig;
+import com.litongjava.tio.server.TioServer;
+import com.litongjava.tio.server.intf.ServerAioHandler;
+import com.litongjava.tio.server.intf.ServerAioListener;
+
+public class DemoTioServer {
+  // handler, 包括编码、解码、消息处理
+  ServerAioHandler serverHandler = new DemoTioServerHandler();
+  // 事件监听器，可以为null，但建议自己实现该接口，可以参考showcase了解些接口
+  ServerAioListener serverListener = new DemoTioServerListener();
+  // 配置对象
+  ServerTioConfig tioServerConfig = new ServerTioConfig(serverHandler, serverListener);
+
+  /**
+   * 启动程序入口
+   */
+  public void start() throws IOException {
+
+    // 设置心跳,-1 取消心跳
+    tioServerConfig.setHeartbeatTimeout(-1);
+    // TioServer对象
+    TioServer tioServer = new TioServer(tioServerConfig);
+
+    // 启动服务
+    tioServer.start(null, 6789);
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import java.io.IOException;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.tio.boot.hello.tioserver.DemoTioServer;
+
+@Configuration
+public class TioServerConfig {
+
+  @Bean
+  public DemoTioServer demoTioServer() {
+    DemoTioServer demoTioServer = new DemoTioServer();
+    try {
+      demoTioServer.start();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return demoTioServer;
+  }
+
+}
+```
+
+上面的代码是一个使用 Java TIO 网络框架实现的简单服务器应用的示例。让我们逐部分进行解释：
+
+#### `DemoPacket` 类（数据包定义）
+
+- **目的**：为服务器定义一个自定义的数据包结构。在网络通信中，数据包是数据的格式化单位。
+- **主要元素**：
+  - 继承自 Tio 框架的 `Packet` 类。
+  - 包含一个 `byte[] body` 用于存储数据载荷。
+
+#### `DemoTioServerListener` 类（服务器事件监听器）
+
+- **目的**：实现 `ServerAioListener` 接口，定义各种服务器事件的行为。
+- **关键功能**：
+  - `onAfterConnected`、`onAfterDecoded` 等：在特定事件（如连接或解码数据包）后触发的方法。
+  - `onBeforeClose`：在关闭连接之前执行的操作，例如解绑令牌。
+  - `onHeartbeatTimeout`：管理超时的连接。
+
+#### `DemoTioServerHandler` 类（服务器处理器）
+
+- **目的**：实现 `ServerAioHandler` 接口，处理数据包的编码、解码和处理。
+- **关键功能**：
+  - `decode`：将传入的原始数据转换为 `DemoPacket` 对象。
+  - `encode`：将 `DemoPacket` 对象转换为传输的原始数据。
+  - `handler`：处理接收到的数据包并发送响应。
+
+#### `DemoTioServer` 类（服务器配置和启动）
+
+- **目的**：设置并启动 Tio 服务器。
+- **主要元素**：
+  - 配置心跳超时、服务器处理器和监听器。
+  - 在指定端口（`6789`）上启动服务器。
+
+#### `TioServerConfig` 类（tio-boot 配置）
+
+- **包名**：`com.litongjava.tio.boot.hello.config`
+- **目的**：使用 tio-boot 框架的注解来配置并启动 `DemoTioServer`。
+- **主要元素**：
+  - 用 `@Configuration` 注解标记，表示这是一个 tio-boot 配置类。
+  - 包含一个用 `@Bean` 注解的方法 `demoTioServer`，该方法启动 `DemoTioServer`。
+
+#### 整体流程
+
+1. **数据包定义**：自定义数据包（`DemoPacket`）来携带数据。
+2. **事件处理**：`DemoTioServerListener` 监听服务器事件，如连接、断开连接和心跳。
+3. **数据处理**：`DemoTioServerHandler` 处理数据包的编码和解码，并处理传入的消息。
+4. **服务器设置和启动**：`DemoTioServer` 配置并启动 Tio 服务器，使用定义的处理器和监听器。
+5. **tio-boot 集成**：`TioServerConfig` 使用 tio-boot 来管理 `DemoTioServer` 的生命周期和配置。
+
+这段代码演示了 TIO 服务器的基本但完整的设置，包括数据包处理、事件监听、消息处理，以及与 tio-boot 框架的集成，便于管理和配置。
+
+## 15.常用内置类方法说明
+
+### 15.1.HttpRequest
 
 #### 1. `HttpRequest(Node remote)`
 
@@ -2737,7 +2995,7 @@ public class MicaMQTTClientConfig {
   httpRequest.addHeader("Content-Type", "application/json");
   ```
 
-#### 14. `getDomain()`
+#### 15. `getDomain()`
 
 - **说明**: 获取请求域名。
 - **用法**:
@@ -2753,7 +3011,7 @@ public class MicaMQTTClientConfig {
   String bodyString = httpRequest.getBodyString();
   ```
 
-#### 14. `getChannelContext()`
+#### 15. `getChannelContext()`
 
 - **说明**: 获取当前 HTTP 请求的通道上下文。
 - **用法**:
@@ -3108,7 +3366,7 @@ public class MicaMQTTClientConfig {
   httpRequest.setForward(true);
   ```
 
-### 14.2.HttpResponse
+### 15.2.HttpResponse
 
 `HttpResponse` 类扩展自 `HttpPacket`，用于表示 HTTP 响应。它包含了与 HTTP 响应相关的状态码、头部信息、Cookie 和主体内容。
 
@@ -3275,7 +3533,7 @@ public class MicaMQTTClientConfig {
 
 29. **`getHeaderByteCount()`** - 返回：`int` - 头部字节计数。 - 说明：获取响应头部的字节大小。
 
-### 14.3.Resps
+### 15.3.Resps
 
 1. css(HttpRequest request, String bodyString)：创建一个带有给定正文字符串的 CSS 响应。设置 `Content-Type` 为 `text/css;charset=utf-8`。
 
@@ -3333,7 +3591,7 @@ public class MicaMQTTClientConfig {
 
 每个方法都旨在处理 HTTP 响应生成的不同方面，使发送基于请求和所需内容类型的适当响应变得更加容易。
 
-### 14.4.Tio
+### 15.4.Tio
 
 `Tio`是一个用于管理网络通信的核心类，特别是在处理客户端和服务器之间的连接、消息发送、连接绑定和关闭等功能。类包含了大量的用于管理网络连接、发送和接收数据包、处理连接状态、以及管理连接的黑名单等操作的方法。这些方法使得开发者可以在客户端和服务器之间有效地进行通信，并对连接进行精细化管理.
 
