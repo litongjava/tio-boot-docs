@@ -778,11 +778,16 @@ http.page = classpath:/pages
 web 开发常用的类有 HttpRequest,HttpResponse,Reps 等
 
 ```
-  @RequestPath(value = "/test")
-  public HttpResponse getBodyString(HttpRequest request) throws Exception {
-    HttpResponse ret = Resps.text(request, "text");
-    return ret;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/test")
+public class TestController {
+
+  @RequestPath
+  public String index() {
+    return "index";
   }
+}
 ```
 
 在 Action 的方法签名中支持的类型有
@@ -818,7 +823,8 @@ public class User {
 
 #### 6.2.2.接收 Json 数据
 
-从 http 请求中获取 json 字符串
+##### 从 http 请求中获取 json 字符串
+
 从 http 请求中获取 json 字符串,接收 JSON 数据有需要手动转为 JavaBean
 
 ```
@@ -828,19 +834,44 @@ String bodyString = request.getBodyString();
 示例代码
 
 ```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
+
   @RequestPath(value = "/getBodyString")
   public HttpResponse getBodyString(HttpRequest request) throws Exception {
     String bodyString = request.getBodyString();
     log.info(bodyString);
-    HttpResponse ret = Resps.html(request, bodyString);
+    HttpResponse ret = Resps.txt(request, bodyString);
     return ret;
   }
+
+}
 ```
 
-请求信息
+1. **`@RequestPath`**:
+   @RequestPath("/test/json"),用于声明这个类是一个请求控制器，并指定了访问这个控制器的基础 URL 路径。在这种情况下，任何发送到 `/test/json` 的 HTTP 请求都将由这个控制器处理。
+
+2. **Method `getBodyString`**:
+   - `@RequestPath(value = "/getBodyString")`: 这个方法注解指定了具体的请求路径。当 HTTP 请求发送到 `/test/json/getBodyString` 时，将调用此方法。
+   - 方法接收一个 `HttpRequest` 对象作为参数，代表接收到的 HTTP 请求。
+   - `request.getBodyString()`: 从 HTTP 请求体中获取字符串内容。
+   - `log.info(bodyString)`: 使用日志记录请求体的内容。
+   - `HttpResponse ret = Resps.txt(request, bodyString)`: 创建一个 `HttpResponse` 对象来响应请求。`Resps.txt` 方法创建了一个文本响应，内容为请求体中的字符串。
+   - `return ret;`: 返回构建的响应对象。
+     请求信息
 
 ```
-curl --location --request POST 'http://127.0.0.1/demo/getBodyString' \
+curl --location --request POST 'http://127.0.0.1/test/json/getBodyString' \
 --header 'User-Agent: apifox/1.0.0 (https://www.apifox.cn)' \
 --header 'Content-Type: application/json' \
 --header 'Accept: */*' \
@@ -853,13 +884,30 @@ curl --location --request POST 'http://127.0.0.1/demo/getBodyString' \
 }'
 ```
 
-自动封装为 java bean
+##### 自动封装为 java bean
+
 在 Action 的方法签名上添加参数 User user
 
 ```
-@RequestPath(value = "/bean")
-public HttpResponse bean(User user, HttpRequest request) throws Exception {
+import com.litongjava.tio.boot.hello.model.User;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
+
+  @RequestPath(value = "/bean")
+  public User bean(User user, HttpRequest request) throws Exception {
+    return user;
+  }
+
 }
+
 ```
 
 支持 application/json
@@ -874,9 +922,9 @@ Host: 127.0.0.1
 Connection: keep-alive
 
 {
-"ip": "69.134.20.34",
-"loginName": "别同器",
-"nick": "汪刚"
+  "ip": "69.134.20.34",
+  "loginName": "别同器",
+  "nick": "汪刚"
 }
 ```
 
@@ -930,12 +978,32 @@ Connection: keep-alive
 Action 的返回值可以直接是实体类,框架会自动进行转换
 
 ```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.boot.hello.model.User;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
+
   @RequestPath(value = "/responseUser")
   public User responseUser(HttpRequest request) throws Exception {
     return User.builder().loginName("Ping E Lee").nick("李通").ip("127.0.0.1").build();
   }
+
+}
+
 ```
 
+@RequestPath(value = "/responseUser"): 方法注解，指定了此方法处理的具体请求路径。当 HTTP 请求发送到 /test/json/responseUser 时，此方法将被调用。
+方法返回 User 类型的对象。这里使用了 User 类的 builder 模式创建了一个 User 对象，并设置了相关属性。
+该方法无需额外的 HTTP 响应处理，因为 tio-boot 框架将自动处理 User 对象的序列化并返回 JSON 格式的响应。
 响应
 
 ```
@@ -949,13 +1017,35 @@ Action 的返回值可以直接是实体类,框架会自动进行转换
 使用 Resps.json(request, user);返回 json 数据
 
 ```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.boot.hello.model.User;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
+
   @RequestPath(value = "/responseJson")
   public HttpResponse json(HttpRequest request) throws Exception {
     User user = User.builder().loginName("Ping E Lee").nick("李通").ip("127.0.0.1").build();
     HttpResponse ret = Resps.json(request, user);
     return ret;
   }
+}
 ```
+
+**Method `responseJson`**:
+
+- `@RequestPath(value = "/responseJson")`: 方法注解，指定了此方法处理的具体请求路径。当 HTTP 请求发送到 `/test/json/responseJson` 时，此方法将被调用。
+- 方法内部创建了一个 `User` 对象，使用了 Builder 模式设置了其属性。
+- 使用 `Resps.json(request, user)` 生成了一个包含 JSON 格式用户数据的 `HttpResponse` 对象。这种方式是 tio-boot 框架中处理和返回 JSON 数据的标准做法。
+- 最后，方法返回这个 `HttpResponse` 对象。
 
 请求
 http://127.0.0.1/demo/responseJson
@@ -977,22 +1067,36 @@ return Resps.json(request, Resp.ok(systemInfo));
 ```
 
 ```
-import org.tio.http.common.HttpRequest;
-import org.tio.http.common.HttpResponse;
-import org.tio.http.server.annotation.RequestPath;
-import org.tio.http.server.util.Resps;
-import org.tio.utils.resp.Resp;
+package com.litongjava.tio.boot.hello.controller;
 
+import com.litongjava.tio.boot.hello.model.User;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import com.litongjava.tio.utils.resp.Resp;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
 
   @RequestPath("/responseJsonResp")
   public HttpResponse responseJsonResp(HttpRequest request) {
     User user = User.builder().loginName("Ping E Lee").nick("李通").ip("127.0.0.1").build();
     return Resps.json(request, Resp.ok(user));
   }
-
+}
 ```
 
-返回数据如下
+**Method `responseJsonResp`**:
+
+- `@RequestPath("/responseJsonResp")`: 方法注解，指定了此方法处理的具体请求路径。当 HTTP 请求发送到 `/test/json/responseJsonResp` 时，此方法将被调用。
+- 方法内部创建了一个 `User` 对象，使用了 Builder 模式设置了其属性。
+- 使用 `Resps.json(request, Resp.ok(user))` 生成了一个包含 JSON 格式用户数据的 `HttpResponse` 对象。`Resp.ok(user)` 封装了 `User` 对象，并添加了一些额外的响应信息，例如成功状态。
+- 最后，方法返回这个 `HttpResponse` 对象。
+  返回数据如下
 
 ```
 {
@@ -1007,23 +1111,37 @@ return Resps.json(request, RespVo.ok(data));
 示例
 
 ```
-package com.litongjava.aio.server.tio.controller;
+package com.litongjava.tio.boot.hello.controller;
 
-import com.litongjava.whipser.cpp.java.WhisperCppJnaLibrary;
-import org.tio.http.common.HttpRequest;
-import org.tio.http.common.HttpResponse;
-import org.tio.http.server.annotation.RequestPath;
-import org.tio.http.server.util.Resps;
-import org.tio.utils.resp.RespVo;
+import com.litongjava.tio.boot.hello.model.User;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import com.litongjava.tio.utils.resp.Resp;
+import com.litongjava.tio.utils.resp.RespVo;
 
-  @RequestPath("/responseJsonResps")
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/test/json")
+@Slf4j
+public class TestJsonController {
+
+  @RequestPath("/responseJsonRespVo")
   public HttpResponse responseJsonResps(HttpRequest request) {
     User user = User.builder().loginName("Ping E Lee").nick("李通").ip("127.0.0.1").build();
     return Resps.json(request, RespVo.ok(user));
   }
+}
 ```
 
-返回数据如下
+**Method `responseJsonResps`**:
+
+- `@RequestPath("/responseJsonRespVo")`: 方法注解，指定了此方法处理的具体请求路径。当 HTTP 请求发送到 `/test/json/responseJsonRespVo` 时，此方法将被调用。
+- 方法内部创建了一个 `User` 对象，使用了 Builder 模式设置了其属性。
+- 使用 `Resps.json(request, RespVo.ok(user))` 生成了一个包含 JSON 格式用户数据的 `HttpResponse` 对象。`RespVo.ok(user)` 封装了 `User` 对象，并可能添加了一些额外的响应信息，例如成功状态，这是一种标准的响应对象格式。
+- 最后，方法返回这个 `HttpResponse` 对象。
+  返回数据如下
 
 ```
 {
@@ -1224,7 +1342,30 @@ string数组<br>
 <input type="text" name="primitiveIds" value="66">
 ```
 
-### 6.10.返回文本数据
+### 5.10 返回字符串
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/test/string")
+public class TestStringController {
+
+@RequestPath()
+  public String index() {
+    return "index";
+  }
+}
+```
+
+这段代码定义了一个使用 tio-boot 框架的 HTTP 控制器，专门用于处理 /test/string 路径下的 Web 请求，并返回一个字符串。
+
+- `@RequestPath()`: 方法注解，指定了此方法处理的具体请求路径。结合类注解，当 HTTP 请求发送到 `/test/string` 时，此方法将被调用。
+- 方法不接收任何参数，这意味着它响应的是不需要任何输入的请求。
+- 方法返回一个字符串 `"index"`。在 tio-boot 框架中，会直接将字符串 `"index"` 作为响应内容发送给客户端不会查找名为 `"index"` 的视图模板，并用该模板生成 HTTP 响应。
+
+### 6.11.返回文本数据
 
 ```
   @RequestPath(value = "/txt")
@@ -1242,9 +1383,9 @@ string数组<br>
 
 这个方法的主要功能是处理 HTTP 请求，并以纯文本格式返回 `txt` 变量中的内容。这种方式通常用于返回简单的文本数据。
 
-### 6.11.返回网页
+### 6.12.返回网页
 
-#### 6.11.1.无标签网页
+#### 6.12.1.无标签网页
 
 ```
   @RequestPath(value = "/plain")
@@ -1262,7 +1403,7 @@ string数组<br>
 
 这个方法的主要作用是接收 HTTP 请求，获取请求的正文内容，并将这个内容以 HTML 响应格式返回。虽然方法名为 `plain`，实际上它以 HTML 格式返回请求的正文内容。
 
-#### 6.11.2.有标签网页
+#### 6.12.2.有标签网页
 
 ```
   @RequestPath(value = "/html")
@@ -1279,7 +1420,35 @@ string数组<br>
 
 该方法的主要作用是当接收到特定的 HTTP 请求时，返回一个包含 HTML 内容的响应。
 
-### 返回图片
+### 6.13 获取请求字节
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/test/bytes")
+public class TestBytesController {
+
+  @RequestPath
+  public String index(HttpRequest reuqest) {
+    byte[] body = reuqest.getBody();
+    return "index";
+  }
+}
+```
+
+**Method `index`**:
+
+- `@RequestPath`: 方法注解，没有提供具体的路径值，这意味着它将使用类级别的路径 `/test/bytes`。因此，当 HTTP 请求发送到 `/test/bytes` 时，此方法将被调用。
+- 方法接收一个 `HttpRequest` 对象作为参数，代表接收到的 HTTP 请求。
+- `byte[] body = reuqest.getBody();`: 从 HTTP 请求中获取字节数组格式的请求体。
+- 方法返回一个字符串 `"index"`。这个字符串会会作为 Response 返回。
+
+这对深度学习框架很有用,可以它获取客户端发送的 NumPy 的字节数据
+
+### 6.14 返回图片
 
 #### 返回验证码
 
@@ -1452,14 +1621,14 @@ public class QrController {
 
 这个控制器的作用是接收一个文本内容，并将其转换为二维码图片，然后将这个图片作为 HTTP 响应返回给客户端。如果在生成二维码的过程中出现问题，它会返回一个包含错误信息的 JSON 响应。
 
-### 6.18.Session
+### 6.15.Session
 
 ```
 @RequestPath(value = "/putsession")
 public HttpResponse putsession(String value, HttpRequest request) throws Exception {
-request.getHttpSession().setAttribute("test", value, request.httpConfig);
-HttpResponse ret = Resps.json(request, "设置成功:" + value);
-return ret;
+  request.getHttpSession().setAttribute("test", value, request.httpConfig);
+  HttpResponse ret = Resps.json(request, "设置成功:" + value);
+  return ret;
 }
 
 ```
@@ -1478,9 +1647,9 @@ return ret;
 
 @RequestPath(value = "/getsession")
 public HttpResponse getsession(HttpRequest request) throws Exception {
-String value = (String) request.getHttpSession().getAttribute("test");
-HttpResponse ret = Resps.json(request, "获取的值:" + value);
-return ret;
+  String value = (String) request.getHttpSession().getAttribute("test");
+  HttpResponse ret = Resps.json(request, "获取的值:" + value);
+  return ret;
 }
 
 ```
@@ -1537,6 +1706,87 @@ HttpResponse response = Resps.json(request, "OK");
 HttpResponseUtils.enableCORS(response, new HttpCors());
 
 ```
+
+### 14 Cookie
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.tio.http.common.Cookie;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+
+@RequestPath("/test/cookie")
+public class TestCookieController {
+
+  @RequestPath("/index")
+  public String index(HttpRequest request) {
+    Cookie cookie = request.getCookie("access-token");
+    if (cookie != null) {
+      String accessToken = cookie.getValue();
+      return accessToken;
+    }
+    return null;
+  }
+
+  @RequestPath("/set-cookie")
+  public HttpResponse setCookie(HttpRequest request) {
+
+    HttpResponse response = Resps.txt(request, "set-cookit");
+    Cookie cookie = new Cookie(null, "access-token", "token-value", null);
+    response.addCookie(cookie);
+    return response;
+  }
+
+}
+```
+
+Cookie 构建方法
+
+```
+  /**
+   * 创建一个 Cookie
+   * @param domain  cookie的受控域
+   * @param value   名称
+   * @param value   值
+   * @param maxAge  失效时间,单位秒
+   * @return Cookie 对象
+   */
+  public Cookie(String domain, String name, String value, Long maxAge) {
+    setName(name);
+    setValue(value);
+    setPath("/");
+    setDomain(domain);
+    setMaxAge(maxAge);
+    setHttpOnly(false);
+  }
+```
+
+这段代码定义了一个使用 tio-boot 框架的 HTTP 控制器，用于处理 `/test/cookie` 路径下的 Web 请求，并涉及 HTTP Cookie 的读取和设置。以下是对代码的部分解释：
+
+1. **Method `index`**:
+
+   ```
+   - 当 HTTP 请求发送到 `/test/cookie/index` 时，此方法将被调用。
+   - 方法从 HTTP 请求中提取名为 `"access-token"` 的 Cookie。
+   - 如果 Cookie 存在，方法返回 Cookie 的值；否则返回 `null`。
+
+   ```
+
+2. **Method `setCookie`**:
+
+   - 当 HTTP 请求发送到 `/test/cookie/set-cookie` 时，此方法将被调用。
+   - 创建一个文本响应 `"set-cookie"`。
+   - 构造一个新的 Cookie 对象，名称为 `"access-token"`，值为 `"token-value"`，并将其添加到响应中。
+   - 返回包含新设置的 Cookie 的响应对象。
+
+3. **Cookie Constructor**:
+   - `Cookie(String domain, String name, String value, Long maxAge)`: 构造器用于创建一个新的 Cookie 对象。参数包括域名、名称、值和最大有效期。
+   - 在 `setCookie` 方法中，创建的 Cookie 没有指定域名和最大有效期，这意味着它将被视为会话 Cookie，并且只在客户端与服务器的会话期间有效。
+
+总结：`TestCookieController` 类是一个 tio-boot HTTP 控制器，它包含两个方法，一个用于读取请求中的特定 Cookie，另一个用于设置新的 Cookie 并将其发送回客户端。这使得该控制器可以在客户端和服务器之间有效地管理 Cookie 数据。
 
 ## 7.整合 jfinal-aoop
 
