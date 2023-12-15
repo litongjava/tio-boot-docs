@@ -17,6 +17,11 @@ tio 测试数据
 - t-io 实测性能二：用 t-io 跑出每秒 1051 万条聊天消息：https://www.tiocloud.com/41
 - t-io 实测性能三：netty 和 t-io 对比测试结果：https://www.tiocloud.com/154
 
+## gpts-jfinal
+
+你可以询问 gpts jfinal,它已经包含了本框架的部分知识
+https://chat.openai.com/g/g-za2zgLE34-jfinal
+
 ## 2.快速入门
 
 ### 2.1.web hello
