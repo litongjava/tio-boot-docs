@@ -4925,6 +4925,8 @@ Content-Length: 265
 {"jobId":2,"executorHandler":"my_job","executorParams":"","executorBlockStrategy":"SERIAL_EXECUTION","executorTimeout":0,"logId":1357,"logDateTime":1702727731010,"glueType":"BEAN","glueSource":"","glueUpdatetime":1702724718000,"broadcastIndex":0,"broadcastTotal":1}
 ```
 
+推荐使用使用我开发的[ide-rest-client](https://ppntai.github.io/vscode-ide-docs/cn/08_ide-rest-client/01_install.html)发送 http 请求,将上面内容新建一个后缀名为.http 文件,使用 ide-rest-client 打开即可发送
+
 ## 21.常用内置类方法说明
 
 ### 18.1.HttpRequest
