@@ -4927,7 +4927,78 @@ Content-Length: 265
 
 推荐使用使用我开发的[ide-rest-client](https://ppntai.github.io/vscode-ide-docs/cn/08_ide-rest-client/01_install.html)发送 http 请求,将上面内容新建一个后缀名为.http 文件,使用 ide-rest-client 打开即可发送
 
-## 21.常用内置类方法说明
+## 21.简单定时任务 quartz
+
+原生的 quartz 用起来着实有点麻烦，所以使用 tio-utils 对 quartz 进行了简单封装，使其更容易开发和维护
+
+- com.litongjava.tio.utils.quartz.QuartzUtils
+- com.litongjava.tio.utils.quartz.AbstractJobWithLog
+
+tio-boot 已经内置了 tio-utils,所以只需要添加依赖 quartz 和 quartz-jobs 以来即可
+
+```
+<dependency>
+  <groupId>org.quartz-scheduler</groupId>
+  <artifactId>quartz</artifactId>
+  <version>2.3.0</version>
+</dependency>
+<dependency>
+  <groupId>org.quartz-scheduler</groupId>
+  <artifactId>quartz-jobs</artifactId>
+  <version>2.3.0</version>
+</dependency>
+```
+
+创建任务类
+
+```
+package com.litongjava.tio.boot.hello.quartzjob;
+import org.quartz.JobExecutionContext;
+import com.litongjava.tio.utils.quartz.AbstractJobWithLog;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+public class DemoTask extends AbstractJobWithLog {
+  @Override
+  public void run(JobExecutionContext context) throws Exception {
+    log.info("context:{}", context);
+  }
+}
+```
+
+创建配置文件
+在 src/main/resources/config 目录下创建 tio-quartz.properties 文件，内容如下：
+
+```
+#每10秒执行一次
+demo.timetask.DemoTask = 0/10 * * * * ?
+```
+
+在主程序中启动定时任务 QuartzUtils.start();
+
+```
+package com.litongjava.tio.boot.hello;
+
+import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
+import com.litongjava.jfinal.aop.annotation.ComponentScan;
+import com.litongjava.tio.utils.jfinal.P;
+import com.litongjava.tio.utils.quartz.QuartzUtils;
+
+@ComponentScan
+public class TioBootWebApp {
+  public static void main(String[] args) throws Exception {
+    long start = System.currentTimeMillis();
+    P.use("app.properties");
+    QuartzUtils.start();
+    TioApplicationWrapper.run(TioBootWebApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println("started:" + (end - start) + "(ms)");
+  }
+}
+```
+
+Quartz 不需要和 hotswap-classloader 整合.因为 Quartz 对任务的操作都是静态的
+
+## 22.常用内置类方法说明
 
 ### 18.1.HttpRequest
 
