@@ -3991,6 +3991,298 @@ public class CacheTestController {
 }
 ```
 
+## tio-boot 内置 CacheUtils
+
+### 概述
+
+tio-utils 内置了 CacheUtils 用户提供对缓存数据的支持,提供的工具类如下,tio-boot 已经内置了 tio-utils,所以不需要添加 tio-utils 的依赖.但是需要添加对于缓存库的依赖
+
+- com.litongjava.tio.utils.cache.caffeine.CaffeineCache
+- com.litongjava.tio.utils.cache.guava.GuavaCache
+- com.litongjava.tio.utils.cache.caffeineredis.CaffeineRedisCache
+- com.litongjava.tio.utils.cache.guavaredis.GuavaRedisCache
+- com.litongjava.tio.utils.cache.j2cache.J2Cache
+- com.litongjava.tio.utils.cache.redis.RedisCache
+
+下面演示一下 CaffeineCache,RedisCache,CaffeineRedisCache 的使用
+
+### 缓存数据到 Caffeine
+
+```
+package com.litongjava.tio.boot.hello.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.litongjava.tio.boot.hello.model.CacheName;
+import com.litongjava.tio.utils.time.Time;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Data
+public class CacheNameService {
+  private CacheName demo = new CacheName("demo", null, Time.MINUTE_1 * 10);
+
+  public List<CacheName> cacheNames() {
+    List<CacheName> list = new ArrayList<>();
+    list.add(demo);
+    return list;
+  }
+
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import java.util.List;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.tio.boot.hello.model.CacheName;
+import com.litongjava.tio.boot.hello.services.CacheNameService;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
+
+@Configuration
+public class CacheNameConfig {
+
+  @Bean
+  public CacheNameService register() {
+    CacheNameService cacheNameService = new CacheNameService();
+    List<CacheName> names = cacheNameService.cacheNames();
+    for (CacheName cacheName : names) {
+      CaffeineCache.register(cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+    }
+    return cacheNameService;
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.tio.boot.hello.services.CacheNameConstants;
+import com.litongjava.tio.boot.hello.services.CacheService;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.utils.cache.CacheUtils;
+import com.litongjava.tio.utils.cache.FirsthandCreater;
+import com.litongjava.tio.utils.cache.ICache;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/cache")
+@Slf4j
+public class CacheTestController {
+  @RequestPath("/test2")
+  public Object test2() {
+    // firsthandCreater用户查询数据库
+    FirsthandCreater<String> firsthandCreater = new FirsthandCreater<String>() {
+      @Override
+      public String create() {
+        log.info("查询数据库");
+        return "index";
+      }
+    };
+
+    String cacheName = Aop.get(CacheNameService.class).getDemo().getName();
+    ICache cache = CaffeineCache.getCache(cacheName);
+    String key = "key";
+    boolean putTempToCacheIfNull = false;
+    String value = CacheUtils.get(cache, key, putTempToCacheIfNull, firsthandCreater);
+    return value;
+  }
+}
+```
+
+#### CacheNameService 类
+
+- **目的**: 管理缓存名称和相关设置。
+- **成员变量**: 包含一个 `CacheName` 类型的 `demo` 对象，初始化为一个缓存名称为 "demo"，生命周期为 10 分钟（`Time.MINUTE_1 * 10`）的缓存。
+- **方法 `cacheNames()`**: 返回一个包含 `demo` 缓存配置的列表。
+
+#### CacheNameConfig 类
+
+- **目的**: 配置缓存。
+- **方法 `register()`**:
+  - 创建 `CacheNameService` 实例。
+  - 遍历 `cacheNames()` 方法返回的所有缓存名称。
+  - 对每个缓存名称，使用 `CaffeineCache.register` 方法注册缓存，设定其生存和空闲时间。
+  - 返回 `CacheNameService` 实例。
+
+#### CacheTestController 类
+
+- **目的**: 演示如何使用缓存。
+- **方法 `test2()`**:
+  - 定义 `FirsthandCreater` 匿名类实例，用于在缓存未命中时获取数据（例如从数据库中）。
+  - 通过 `Aop.get(CacheNameService.class)` 获取 `CacheNameService` 实例，并从中获取 `demo` 缓存的名称。
+  - 使用 `CaffeineCache.getCache` 方法获取对应名称的缓存实例。
+  - 使用 `CacheUtils.get` 方法从缓存中获取键为 "key" 的数据。如果缓存中没有该数据，则会调用 `FirsthandCreater` 实例的 `create` 方法来获取数据并缓存它。
+  - 返回获取的值。
+
+#### 总结
+
+整体而言，这些代码段展示了如何在 Tio 框架中配置和使用 Caffeine 缓存。它们通过 `CacheNameService` 类管理缓存配置，`CacheNameConfig` 类负责缓存的注册，而 `CacheTestController` 类演示了如何实际从缓存中获取数据。这是一个典型的缓存使用场景，特别是在需要高效读取频繁访问数据的应用中。
+
+### 缓存数据到 redis
+
+使用 tio-utils 提供的 CacheUtils 缓存数据到 redis
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+
+@Configuration
+public class RedissonConfig {
+
+  @Bean(destroyMethod = "shutdown", priority = 10)
+  public RedissonClient redissonClient() {
+    Config config = new Config();
+    config.useSingleServer().setAddress("redis://localhost:6379").setDatabase(0);
+
+    // 如果你的 Redis 设置了密码
+    // .setPassword("yourPassword");
+    RedissonClient client = null;
+    try {
+      client = Redisson.create(config);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return client;
+  }
+}
+```
+
+```
+package com.litongjava.tio.boot.hello.config;
+
+import java.util.List;
+
+import org.redisson.api.RedissonClient;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.tio.boot.hello.model.CacheName;
+import com.litongjava.tio.boot.hello.services.CacheNameService;
+import com.litongjava.tio.utils.cache.redis.RedisCache;
+
+@Configuration
+public class CacheNameConfig {
+
+  @Bean
+  public CacheNameService register() {
+    RedissonClient redissonClient = Aop.get(RedissonClient.class);
+    CacheNameService cacheNameService = new CacheNameService();
+    List<CacheName> names = cacheNameService.cacheNames();
+    for (CacheName cacheName : names) {
+      // CaffeineCache.register(cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+      RedisCache.register(redissonClient,
+          // cache
+          cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+    }
+    return cacheNameService;
+  }
+}
+
+```
+
+```
+package com.litongjava.tio.boot.hello.controller;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.tio.boot.hello.services.CacheNameService;
+import com.litongjava.tio.boot.hello.services.CacheService;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.utils.cache.CacheUtils;
+import com.litongjava.tio.utils.cache.FirsthandCreater;
+import com.litongjava.tio.utils.cache.ICache;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
+import com.litongjava.tio.utils.cache.redis.RedisCache;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/cache")
+@Slf4j
+public class CacheTestController {
+
+  @RequestPath("/test3")
+  public Object test3() {
+    // firsthandCreater用户查询数据库
+    FirsthandCreater<String> firsthandCreater = new FirsthandCreater<String>() {
+      @Override
+      public String create() {
+        log.info("查询数据库");
+        return "index";
+      }
+    };
+
+    String cacheName = Aop.get(CacheNameService.class).getDemo().getName();
+    ICache cache = RedisCache.getCache(cacheName);
+    String key = "key";
+    boolean putTempToCacheIfNull = false;
+    String value = CacheUtils.get(cache, key, putTempToCacheIfNull, firsthandCreater);
+    return value;
+  }
+}
+```
+
+代码展示了如何在 Tio 框架中使用 Redis 作为缓存解决方案。以下是对代码的详细解释：
+
+#### RedissonConfig 类
+
+- **目的**: 配置 Redisson 客户端以连接 Redis 服务器。
+- **方法 `redissonClient()`**:
+  - 使用 `Config` 类创建 Redis 配置，指定 Redis 服务器地址和数据库索引。
+  - 如果 Redis 设置了密码，可以通过 `.setPassword("yourPassword")` 方法设置。
+  - 创建 `RedissonClient` 实例并返回。
+  - `priority = 10` 指定这个 Bean 的初始化优先级，值越小优先级越高，确保在其他依赖 RedissonClient 的 Bean 之前初始化。
+
+#### CacheNameConfig 类
+
+- **目的**: 配置缓存名称和设置。
+- **方法 `register()`**:
+  - 获取 `RedissonClient` 实例。
+  - 创建 `CacheNameService` 实例，然后获取其提供的缓存配置列表。
+  - 遍历列表，使用 `RedisCache.register` 方法为每个缓存名称注册 Redis 缓存，指定存活时间和空闲时间。
+  - 返回 `CacheNameService` 实例。
+
+#### CacheTestController 类
+
+- **目的**: 演示如何使用缓存。
+- **方法 `test3()`**:
+  - 定义 `FirsthandCreater` 匿名类，用于在缓存未命中时获取数据（比如从数据库获取）。
+  - 通过 `Aop.get(CacheNameService.class)` 获取 `CacheNameService` 实例，进而获得 `demo` 缓存的名称。
+  - 使用 `RedisCache.getCache` 方法获取对应名称的缓存实例。
+  - 使用 `CacheUtils.get` 方法从缓存中获取键为 "key" 的数据。如果缓存中没有该数据，则会调用 `FirsthandCreater` 实例的 `create` 方法来获取数据，并将其缓存。
+  - 返回获取的值。
+
+#### 总结
+
+这段代码演示了如何在 Tio 框架中配置和使用 Redis 作为缓存解决方案。它使用 RedissonClient 连接到 Redis 服务器，并通过 CacheNameService 管理缓存的不同配置。CacheTestController 类演示了如何在实际应用中从缓存中读取数据，如果缓存中没有数据，会从数据库中获取并缓存。这种方式在需要高效读取频繁访问数据的应用中非常有用。
+
+### caffeine 和 redis 实现的两级缓存
+
+```
+//基于CAFFEINE和REDIS实现的两级缓存
+import com.litongjava.tio.utils.cache.caffeineredis.CaffeineRedisCache;
+
+CaffeineRedisCache.register(redissonClient,
+    // cache
+    cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+```
+
 ## tio-boot 内置 Tcp 支持
 
 tio-boot 内置了 tcp 的支持,可以使用一个端口支持 tcp,http,websocket 三种协议,当一个数据包发送到 tio-boot-server 时,TioBootServerHandler 会根据内置的判断方法,选择对应处理器进行协议的处理.
