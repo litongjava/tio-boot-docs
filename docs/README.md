@@ -2,6 +2,11 @@
 
 # tio-boot-开发指南
 
+## gpts-jfinal
+
+你可以询问 gpts jfinal,它已经包含了本框架的部分知识
+https://chat.openai.com/g/g-za2zgLE34-jfinal
+
 ## 1.tio-boot 简介
 
 tio-boot 是一款基于 Java AIO 高性能 Web 框架,可以 tio-boot 可以简单的让单台服务器承担上万并发
@@ -17,11 +22,6 @@ tio 测试数据
 - t-io 实测性能二：用 t-io 跑出每秒 1051 万条聊天消息：https://www.tiocloud.com/41
 - t-io 实测性能三：netty 和 t-io 对比测试结果：https://www.tiocloud.com/154
 
-## gpts-jfinal
-
-你可以询问 gpts jfinal,它已经包含了本框架的部分知识
-https://chat.openai.com/g/g-za2zgLE34-jfinal
-
 ## 2.快速入门
 
 ### 2.1.web hello
@@ -34,15 +34,47 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
 
 #### 2.1.2.添加依赖
 
-如果使用 Java 8 开发请使用
+The package is distributed through Maven Central.
+[tio-boot](https://central.sonatype.com/artifact/com.litongjava/tio-boot),
 
+If you are developing with Java 8, please use the following dependency:
+
+```xml
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>tio-boot</artifactId>
+  <version>${tio-boot.version}</version>
+</dependency>
 ```
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>tio-boot</artifactId>
-      <version>1.2.0</version>
-    </dependency>
+
+### 编写代码
+
+```java
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.jfinal.aop.annotation.ComponentScan;
+import com.litongjava.jfinal.aop.annotation.Controller;
+import com.litongjava.tio.boot.TioApplication;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@ComponentScan
+@Controller
+@RequestPath("/")
+public class HelloApp {
+  public static void main(String[] args) {
+    TioApplication.run(HelloApp.class, args);
+  }
+
+  @RequestPath()
+  public String index() {
+    return "index";
+  }
+}
 ```
+
+访问测试 http://localhost/,显示 index
+
+### 创建 tio-boot 工程常用配置
 
 #### 2.1.3.完整依赖
 
@@ -264,7 +296,7 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
 - `java.version`: 定义 Java 版本为 1.8。
 - `maven.compiler.source` 和 `maven.compiler.target`: 指定 Maven 编译器使用的 Java 版本。
 - `graalvm.version`: 设置 GraalVM 版本为 23.1.1。
-- `tio.boot.version`: 定义 TIO Boot 版本为 1.1.3。
+- `tio.boot.version`: 定义 TIO Boot 版本为
 - `lombok-version`: 指定 Lombok 库的版本为 1.18.30。
 - `final.name`: 指定构建的最终文件名为 `web-hello`。
 - `main.class`: 定义项目的主类为 `com.litongjava.tio.web.hello.App`。
@@ -280,8 +312,10 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
 定义了不同环境下的特定配置：
 
 1. 开发环境 (development): 当 Maven 构建在开发环境下时，会添加 `logback-classic` 依赖，用于日志管理。
-2. 生产环境 (production): 在生产环境中，同样使用 `logback-classic`，并配置了 `maven-jar-plugin` 和 `maven-assembly-plugin` 用于打包。
-3. GraalVM 环境 (native): 用于 GraalVM 的特定配置，包括 `slf4j-jdk14` 和 `graal-sdk` 依赖，以及 `native-image-maven-plugin` 插件，用于生成 GraalVM 的本地映像。
+2. 生产环境 (production): 在生产环境中使用 spring-boot-maven-plugin 打包
+3. 自定义环境(assembly): 同样使用 `logback-classic`，并配置了 `maven-jar-plugin` 和 `maven-assembly-plugin` 用于打包。
+
+4. GraalVM 环境 (native): 用于 GraalVM 的特定配置，包括 `slf4j-jdk14` 和 `graal-sdk` 依赖，以及 `native-image-maven-plugin` 插件，用于生成 GraalVM 的本地映像。
 
 #### 2.1.5.配置文件(可选)
 
@@ -805,6 +839,15 @@ http.page = classpath:/pages
 ```
 
 将静态文件放到 pages 目录下即可 DefaultHttpRequestHandler 的 processStatic 类会处理静态文件
+
+### 4.3 通过命令行指定参数
+
+tio-boot 框架的参数查找顺序是,支持所有参数 命令行参数-->环境变量-->配置文件
+使用命令行指定参数示例如下
+
+```
+java -jar paddle-ocr-server-1.0.1.jar  --http-port 8080
+```
 
 ## 5.tio-boot 架构
 
