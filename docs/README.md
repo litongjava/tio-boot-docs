@@ -40,7 +40,7 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.1.8</version>
+      <version>1.2.0</version>
     </dependency>
 ```
 
@@ -53,7 +53,7 @@ https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-s
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.1.8</tio.boot.version>
+  <tio.boot.version>1.2.0</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -3196,9 +3196,9 @@ public class MicaMQTTClientConfig {
 
 这段代码通过 JFinal AOP 提供的注解方式配置了一个 MQTT 客户端。客户端在启动时会自动连接到 MQTT 服务器，订阅指定的主题，并定期向另一个主题发送消息。同时，它通过实现连接监听器来记录连接和断开事件。这样的设置在 IoT（物联网）应用中很常见，用于设备与 MQTT 服务器之间的通信。
 
-## 14.tio server
+## 14. tio-boot 内置 tio-core
 
-整合 tio-server 启动一个 tcp 服务器
+使用 tio-boot 内置 tio-core 开发一个 tcp 服务器, tcp 服务器使用单独端口
 
 ```
 package com.litongjava.tio.boot.hello.tioserver;
@@ -4289,7 +4289,7 @@ tio-boot 内置了 tcp 的支持,可以使用一个端口支持 tcp,http,websock
 
 - com.litongjava.tio.http.server.HttpServerAioHandler 内置的 http 协议处理器
 - com.litongjava.tio.websocket.server.WsServerAioHandler 内置的 WebSocket 协议处理器
-- com.litongjava.tio.server.intf.ServerAioHandler tcp 协议处理器,这是一个接口,需要自己实现 tcp 的处理逻辑
+- com.litongjava.tio.boot.tcp.ServerTcpHandler tcp 协议处理器,这是一个接口,需要自己实现 tcp 的处理逻辑
 
 下面介绍如何使用 tio-boot 内置 Tcp 功能
 
@@ -4315,22 +4315,21 @@ public class DemoPacket extends Packet {
 ```
 
 ```
-
-package com.litongjava.tio.web.hello.tcp;
+package com.litongjava.tio.boot.hello.tcp;
 
 import java.nio.ByteBuffer;
 
+import com.litongjava.tio.boot.tcp.ServerTcpHandler;
 import com.litongjava.tio.core.ChannelContext;
 import com.litongjava.tio.core.Tio;
 import com.litongjava.tio.core.TioConfig;
 import com.litongjava.tio.core.exception.TioDecodeException;
 import com.litongjava.tio.core.intf.Packet;
-import com.litongjava.tio.server.intf.ServerAioHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DemoHandler implements ServerAioHandler {
+public class DemoHandler implements ServerTcpHandler {
 
   public Packet decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext)
       throws TioDecodeException {
@@ -4369,7 +4368,7 @@ public class DemoHandler implements ServerAioHandler {
     String string = new String(body);
     log.info("received:{}", string);
     // 响应数据
-    String sendMessage = "收到了你的消息，你的消息是:" + string;
+    String sendMessage = "echo:" + string;
     log.info("sendMessage:{}", sendMessage);
     byte[] bytes = sendMessage.getBytes();
     // 响应包
@@ -4384,17 +4383,18 @@ public class DemoHandler implements ServerAioHandler {
 ```
 
 ```
+package com.litongjava.tio.boot.hello.tcp;
 
-package com.litongjava.tio.web.hello.tcp;
-
+import com.litongjava.jfinal.aop.annotation.Component;
+import com.litongjava.tio.boot.tcp.ServerListener;
 import com.litongjava.tio.core.ChannelContext;
 import com.litongjava.tio.core.intf.Packet;
-import com.litongjava.tio.server.intf.ServerAioListener;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DemoTioServerListener implements ServerAioListener {
+@Component
+public class DemoListener implements ServerListener {
   public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect)
       throws Exception {
     log.info("{},{},{}", channelContext, isConnected, isReconnect);
@@ -4442,30 +4442,33 @@ public class DemoTioServerListener implements ServerAioListener {
     return false;
   }
 }
-
 ```
 
 ```
-package com.litongjava.tio.web.hello;
+package com.litongjava.tio.boot.hello.config;
 
-import com.litongjava.jfinal.aop.annotation.ComponentScan;
-import com.litongjava.tio.boot.TioApplication;
-import com.litongjava.tio.server.intf.ServerAioHandler;
-import com.litongjava.tio.server.intf.ServerAioListener;
-import com.litongjava.tio.web.hello.tcp.DemoHandler;
-import com.litongjava.tio.web.hello.tcp.DemoTioServerListener;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
+import com.litongjava.tio.boot.hello.tcp.DemoHandler;
+import com.litongjava.tio.boot.hello.tcp.DemoListener;
+import com.litongjava.tio.boot.tcp.ServerListener;
+import com.litongjava.tio.boot.tcp.ServerTcpHandler;
 
-@ComponentScan
-public class HelloApp {
-  public static void main(String[] args) {
-    long start = System.currentTimeMillis();
-    ServerAioHandler demoHandler = new DemoHandler();
-    ServerAioListener listener = new DemoTioServerListener();
-    TioApplication.run(HelloApp.class, demoHandler, listener, args);
-    long end = System.currentTimeMillis();
-    System.out.println((end - start) + "ms");
+@BeforeStartConfiguration
+public class ServerConfig {
+
+  @Bean
+  public ServerTcpHandler demoHandler() {
+    ServerTcpHandler demoHandler = new DemoHandler();
+    return demoHandler;
+  }
+
+  @Bean
+  public ServerListener serverListener() {
+    return new DemoListener();
   }
 }
+
 ```
 
 ### 1. `DemoPacket` 类
@@ -4474,7 +4477,7 @@ public class HelloApp {
 
 ### 2. `DemoHandler` 类
 
-这个类实现了 `ServerAioHandler` 接口，用于处理 TCP 协议。它主要包含三个方法：
+这个类实现了 `ServerTcpHandler` 接口，用于处理 TCP 协议。它主要包含三个方法：
 
 - `decode`: 解码方法，用于从 `ByteBuffer` 中读取数据并转换为 `DemoPacket`。
 - `encode`: 编码方法，将 `DemoPacket` 的数据转换为 `ByteBuffer`，以便于传输。
@@ -4482,9 +4485,9 @@ public class HelloApp {
 
 ### 3. `DemoTioServerListener` 类
 
-这个类实现了 `ServerAioListener` 接口，用于监听服务器在处理 TCP 连接时的不同事件如连接建立、消息解码、消息接收、消息发送、处理完成和连接关闭等。
+这个类实现了 `ServerListener` 接口，用于监听服务器在处理 TCP 连接时的不同事件如连接建立、消息解码、消息接收、消息发送、处理完成和连接关闭等。
 。这个监听器允许你在连接的生命周期中的关键时刻进行自定义处理。这对于监控、日志记录、资源管理和异常处理等方面非常有用。
-下面是对 `DemoTioServerListener` 中各个方法的详细解释：
+下面是对 `ServerListener` 中各个方法的详细解释：
 
 #### 1. `onAfterConnected`
 
@@ -4549,13 +4552,13 @@ public class HelloApp {
   - `heartbeatTimeoutCount`: 心跳超时次数。
 - **实现逻辑**: 当连接心跳超时时调用，可以根据需要决定是否关闭连接。
 
-### 4. `HelloApp` 类
+### 4. `ServerConfig` 类
 
-这是应用程序的入口类。它使用 `TioApplication.run` 方法启动服务器，并传入 `DemoHandler` 和 `DemoTioServerListener` 作为处理器和监听器。
+- @BeforeStartConfiguration:使用该注解标记的配置类会自在启动服务器之前执行,这里的功能是在服务器启动之前完成 ServerTcpHandler 和 ServerListener 初始化,为为后面的使用做好准备.这里是放到了 Bean 容器中,可以在后面需要时从 bean 容器中的获取
 
 ### 总结
 
-整体上，这段代码展示了如何使用 `tio-boot` 框架来构建一个同时支持 TCP、HTTP 和 WebSocket 协议的服务器。它通过定义消息包的格式（`DemoPacket`）、处理逻辑（`DemoHandler`）、事件监听（`DemoTioServerListener`）以及应用程序启动配置（`HelloApp`），实现了一个基本的网络通信服务器。
+整体上，这段代码展示了如何使用 `tio-boot` 框架来构建一个同时支持 TCP、HTTP 和 WebSocket 协议的服务器。它通过定义消息包的格式（`DemoPacket`）、处理逻辑（`DemoHandler`）、事件监听（`DemoListener`）以及应用程序启动配置（`ServerConfig`），实现了一个基本的网络通信服务器。
 
 ## Netty
 
