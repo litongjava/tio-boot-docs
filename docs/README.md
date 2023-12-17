@@ -338,6 +338,7 @@ import org.tio.http.server.util.Resps;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Controller
 @RequestPath(value = "/")
 public class IndexController {
   @RequestPath
@@ -349,7 +350,7 @@ public class IndexController {
 }
 ```
 
-@RequestPath 注解用于指定请求路径,当在启动类上添加@ComponentScan 注解后,启动时注解处理器会处理@RequestPath 注解将 Controller 添加到 bean 容器中并设置路由
+@Controller and @RequestPath 注解用于指定请求路径,当在启动类上添加@ComponentScan 注解后,启动时注解处理器会处理@RequestPath 注解将 Controller 添加到 bean 容器中并设置路由
 
 #### 2.1.8.启动测试
 
@@ -785,7 +786,17 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 
 ## 4.tio-boot 配置
 
-### 4.1.添加静态文件
+### 4.1.配置概览
+
+- http.port = 80 服务器端口
+- http.page = classpath:/pages 静态页面地址
+- http.404 = /404 404 时的路由地址
+- http.500 = /500 500 是的路由地址
+- http.maxLiveTimeOfStaticRes=0 页面文件缓存时间，开发时设置成 0，生产环境可以设置成 1 小时(3600)，10 分钟(600)等，单位：秒
+- tio.mvc.route.printMapping 是否打印路由信息
+- tio.mvc.route.writeMappingToFile 是否将路由信息写入文件
+
+### 4.2.添加静态文件
 
 将 app.properties 中配置 http.page
 
@@ -795,11 +806,26 @@ http.page = classpath:/pages
 
 将静态文件放到 pages 目录下即可 DefaultHttpRequestHandler 的 processStatic 类会处理静态文件
 
-## 5.tio-boo 架构
+## 5.tio-boot 架构
 
 ### 5.1.概述
 
-### 5.2.请求过程
+### 5.2 生命周期
+
+tio-boot 框架的生命周期如下
+
+- 初始化 Bean 容器
+- 扫描所有 Class,查找 AopClass,初始化@com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration 标记的类
+- 启动服务器,监听端口
+- 初始化@com.litongjava.jfinal.aop.annotation.Configuration 标记的配置类,如连接数据库,连接 redis
+- 初始化组件类 如 Controller,Service,Respository,HttpApi
+- 扫描路由,配置 http 路由
+- 运行,接受请求和处理请求
+- 关闭
+
+源码请参考 com.litongjava.tio.boot.context.TioApplicationContext.run(Class<?>[], String[])
+
+### 5.3.请求过程
 
 1. `TioBootServerHandler.handler`: 请求最先到达此处理器，负责协议区分,区分 Http 协议和 WbSocket 协议。
 2. `HttpServerAioHandler.handler`: 负责接收数据,解析成 Http 数据和初步处理请求。
@@ -807,7 +833,7 @@ http.page = classpath:/pages
 4. `HandlerDispatcher.executeAction`: 该分发器负责执行 Controller 的 Action。
 5. `IndexController.index`: 最终，请求到达控制器的 `index` 方法，这里是请求的具体业务逻辑处理的地方。
 
-### 5.3.默认 bean 类
+### 5.4.默认 bean 类
 
 当启动一个服务后默认会将下面的类放到 bean 容器中
 
@@ -849,7 +875,7 @@ web 开发常用的类有 HttpRequest,HttpResponse,Reps 等
 
 ```
 import com.litongjava.tio.http.server.annotation.RequestPath;
-
+@Controller
 @RequestPath("/test")
 public class TestController {
 
@@ -912,7 +938,7 @@ import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -966,7 +992,7 @@ import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -1057,7 +1083,7 @@ import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -1096,7 +1122,7 @@ import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -1147,7 +1173,7 @@ import com.litongjava.tio.http.server.util.Resps;
 import com.litongjava.tio.utils.resp.Resp;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -1192,7 +1218,7 @@ import com.litongjava.tio.utils.resp.Resp;
 import com.litongjava.tio.utils.resp.RespVo;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/test/json")
 @Slf4j
 public class TestJsonController {
@@ -1418,11 +1444,11 @@ string数组<br>
 package com.litongjava.tio.boot.hello.controller;
 
 import com.litongjava.tio.http.server.annotation.RequestPath;
-
+@Controller
 @RequestPath("/test/string")
 public class TestStringController {
 
-@RequestPath()
+  @RequestPath()
   public String index() {
     return "index";
   }
@@ -1497,7 +1523,7 @@ package com.litongjava.tio.boot.hello.controller;
 
 import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.server.annotation.RequestPath;
-
+@Controller
 @RequestPath("/test/bytes")
 public class TestBytesController {
 
@@ -1536,7 +1562,7 @@ import com.litongjava.tio.utils.resp.RespVo;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-
+@Controller
 @RequestPath("/captcha")
 public class CaptchaController {
 
@@ -1624,7 +1650,7 @@ import com.litongjava.tio.utils.resp.RespVo;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
-
+@Controller
 @RequestPath("/qr")
 public class QrController {
 
@@ -1751,16 +1777,16 @@ import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
-
+@Controller
 @RequestPath("/admin-api/system/captcha")
 @EnableCORS
 public class CaptchaController {
 
-@RequestPath("/check")
-public HttpResponse check(HttpRequest request) {
-HttpResponse response = Resps.json(request, "OK");
-return response;
-}
+  @RequestPath("/check")
+  public HttpResponse check(HttpRequest request) {
+    HttpResponse response = Resps.json(request, "OK");
+    return response;
+  }
 }
 
 ```
@@ -1787,7 +1813,7 @@ import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
-
+@Controller
 @RequestPath("/test/cookie")
 public class TestCookieController {
 
@@ -1866,17 +1892,16 @@ jfinal-aop 文档:https://litongjava.github.io/jfinal-doc/zh/4%20AOP/4.1%20%E6%A
 
 ### 7.1.Aop.get
 
-```
-
+```java
 import java.util.HashMap;
 import java.util.Map;
 
 public class IndexService {
 
-public Map<String, String> index() {
-Map<String, String> ret = new HashMap<>();
-ret.put("data", "Hello 4");
-return ret;
+  public Map<String, String> index() {
+    Map<String, String> ret = new HashMap<>();
+    ret.put("data", "Hello 4");
+   return ret;
 }
 }
 
@@ -1889,7 +1914,7 @@ import java.util.Map;
 import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.web.hello.service.IndexService;
-
+@Controller
 @RequestPath("/")
 public class IndexController {
 @RequestPath()
@@ -1935,12 +1960,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class IndexInteceptor implements Interceptor {
 
-@Override
-public void intercept(Invocation inv) {
-log.info("1before");
-inv.invoke();
-log.info("after");
-}
+  @Override
+  public void intercept(Invocation inv) {
+    log.info("1before");
+    inv.invoke();
+    log.info("after");
+  }
 
 }
 
@@ -1954,14 +1979,14 @@ import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.jfinal.aop.Before;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.web.hello.service.IndexService;
-
+@Controller
 @RequestPath("/")
 public class IndexController {
-@RequestPath()
-@Before(IndexInteceptor.class)
-public Map<String, String> index() {
-return Aop.get(IndexService.class).index();
-}
+  @RequestPath()
+  @Before(IndexInteceptor.class)
+    public Map<String, String> index() {
+    return Aop.get(IndexService.class).index();
+  }
 }
 
 ```
@@ -1982,29 +2007,33 @@ HotSwapResolver.addHotSwapClassPrefix("com.litongjava.jfinal");
 
 1. **@ComponentScan**: 用于指定 在初始化时要扫描的包。这个注解会查找标记有 `@Component`、`@Service`、`@Repository`、`@Controller` 等注解的类，并注册为 Aop 容器中的 Bean。
 
-2. **@Configuration**: 表示该类是一个配置类，该类可以包含有 `@Bean` 注解的方法。Spring 容器会在启动时自动调用这些方法，注册返回值为容器中的 Bean。
+2. **@Configuration**: 表示该类是一个配置类，该类可以包含有 `@Bean` 注解的方法。jfinal 容器会服务器启动后,动时自动调用这些方法.
 
-3. **@Bean**: 标记在方法上，表明该方法产生一个 Bean 对象，然后这个对象被 Aop 容器管理。通常在 `@Configuration` 注解的类中使用。
+3. **@BeforeStartConfiguration**:表示该类是一个配置类，该类可以包含有 `@Bean` 注解的方法。jfinal 容器会服务器启动前调用这些方法
 
-4. **@Component**: 基本的注解，标记一个类为组件。当使用基于注解的配置和类路径扫描时，这个注解的类会自动注册为 Spring Bean。
+4. **@Bean**: 标记在方法上，该方法返回一个 Bean 对象，然后这个对象被 Aop 容器管理。通常在 `@Configuration` 注解的类中使用。
 
-5. **@Controller**: 用于标记控制器组件，通常用在 MVC 模式的 Web 应用程序中。这个注解表明类的实例是一个控制器。
+5. **@Initialization**: 标记在方法上，该方法返回没有返回值,也不会添加到 bean 容器中,但是会在 Aop 容器初始化时执行该方法
 
-6. **@Service**: 用于标记服务层组件，通常用于业务逻辑层。这个注解表明类的实例是一个“服务”，它可以包含业务逻辑，调用数据访问层等。
+6. **@Component**: 基本的注解，标记一个类为组件。当使用基于注解的配置和类路径扫描时，这个注解的类会自动注册为 Spring Bean。
 
-7. **@Repository**: 用于标记数据访问组件，即 DAO（Data Access Object）组件。这个注解表明类的实例是一个“仓库”，用于封装数据库访问和异常处理。
+7. **@Controller**: 用于标记控制器组件，通常用在 MVC 模式的 Web 应用程序中。这个注解表明类的实例是一个控制器。
 
-8. **@HttpRequest**: 用于标记 Http 组件，例如用于 HttpClient 请求。
+8. **@Service**: 用于标记服务层组件，通常用于业务逻辑层。这个注解表明类的实例是一个“服务”，它可以包含业务逻辑，调用数据访问层等。
 
-9. **@Inject**: `@Autowired` 类似，但它是来自 Java CDI（Contexts and Dependency Injection）的标准注解。用于依赖注入。
+9. **@Repository**: 用于标记数据访问组件，即 DAO（Data Access Object）组件。这个注解表明类的实例是一个“仓库”，用于封装数据库访问和异常处理。
 
-10. **@Autowired**: 用于自动注入依赖。它可以应用于字段、构造器、方法等，Spring 容器会在创建 Bean 时自动注入相应的依赖。
+10. **@HttpApi**: 用于标记 Http 组件，例如用于 HttpClient 请求。
 
-11. **@Clear**: 用于清除 Aop 拦截器
+11. **@Inject**: `@Autowired` 类似，但它是来自 Java CDI（Contexts and Dependency Injection）的标准注解。用于依赖注入。
 
-12. **@Before**: 这个注解与 AOP（面向切面编程）有关，用于标记一个方法在某操作之前执行。
+12. **@Autowired**: 用于自动注入依赖。它可以应用于字段、构造器、方法等，Spring 容器会在创建 Bean 时自动注入相应的依赖。
 
-13. **@Import**: 用于导入其他配置类。在一个配置类上使用 `@Import`，可以将其他配置类中的 Bean 导入当前的配置类中。
+13. **@Clear**: 用于清除 Aop 拦截器
+
+14. **@Before**: 这个注解与 AOP（面向切面编程）有关，用于标记一个方法在某操作之前执行。
+
+15. **@Import**: 用于导入其他配置类。在一个配置类上使用 `@Import`，可以将其他配置类中的 Bean 导入当前的配置类中。
 
 ### 7.4.Aop 其他方法
 
@@ -2077,7 +2106,7 @@ import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.utils.resp.RespVo;
 import com.litongjava.tio.web.hello.validator.LoginValidator;
-
+@Controller
 @RequestPath("/auth")
 public class LoginController {
 
@@ -2156,23 +2185,23 @@ import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.common.HttpResponse;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.http.server.util.Resps;
-
+@Controller
 @RequestPath()
 public class TemplatesController {
-private Engine engine = Aop.get(Engine.class);
+  private Engine engine = Aop.get(Engine.class);
 
-@RequestPath("/404")
-public Template notFound(HttpRequest request) {
-String fileName = "/404.html";
-Template template = engine.getTemplate(fileName);
-return template;
-}
+  @RequestPath("/404")
+  public Template notFound(HttpRequest request) {
+    String fileName = "/404.html";
+    Template template = engine.getTemplate(fileName);
+    return template;
+  }
 
-@RequestPath("/chat")
-public HttpResponse chat(HttpRequest request) {
-String fileName = "/chat.html";
-return renderHtml(request, fileName);
-}
+  @RequestPath("/chat")
+  public HttpResponse chat(HttpRequest request) {
+    String fileName = "/chat.html";
+    return renderHtml(request, fileName);
+  }
 }
 
 ```
@@ -2722,7 +2751,7 @@ import com.litongjava.data.model.DbJsonBean;
 import com.litongjava.data.services.DbJsonService;
 import com.litongjava.data.utils.DbJsonBeanUtils;
 import com.litongjava.jfinal.aop.Aop;
-
+@Controller
 @RequestPath("/db/student")
 public class DbTestController {
 
@@ -2915,7 +2944,7 @@ import com.litongjava.data.model.DbJsonBean;
 import com.litongjava.data.services.DbJsonService;
 import com.litongjava.data.utils.DbJsonBeanUtils;
 import com.litongjava.jfinal.aop.Aop;
-
+@Controller
 @RequestPath("/db/student")
 public class DbTestController {
 
@@ -2958,6 +2987,7 @@ import java.util.Map;
 /**
  * token永不过期
  */
+@Controller
 @RequestPath("/auth")
 public class AuthController {
 
@@ -3514,7 +3544,7 @@ import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/caffeine")
 @Slf4j
 public class CaffeineTestController {
@@ -3690,7 +3720,7 @@ import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.tio.http.common.HttpRequest;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/huredis")
 @Slf4j
 public class HuRedisTestController {
@@ -3845,7 +3875,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBucket;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-
+@Controller
 @RequestPath("/redisson")
 @Slf4j
 public class RedissonTestController {
@@ -3971,7 +4001,7 @@ import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.tio.boot.hello.services.CacheService;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/cache")
 @Slf4j
 public class CacheTestController {
@@ -4075,7 +4105,7 @@ import com.litongjava.tio.utils.cache.ICache;
 import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/cache")
 @Slf4j
 public class CacheTestController {
@@ -4212,7 +4242,7 @@ import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
 import com.litongjava.tio.utils.cache.redis.RedisCache;
 
 import lombok.extern.slf4j.Slf4j;
-
+@Controller
 @RequestPath("/cache")
 @Slf4j
 public class CacheTestController {
