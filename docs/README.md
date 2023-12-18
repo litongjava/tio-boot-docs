@@ -88,51 +88,15 @@ public class HelloApp {
 #### 2.1.3.完整依赖
 
 ```
-<properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <java.version>1.8</java.version>
-  <maven.compiler.source>${java.version}</maven.compiler.source>
-  <maven.compiler.target>${java.version}</maven.compiler.target>
-  <graalvm.version>23.1.1</graalvm.version>
-  <tio-boot.version>1.2.3</tio-boot.version>
-  <lombok-version>1.18.30</lombok-version>
-  <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
-  <final.name>web-hello</final.name>
-  <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
-</properties>
-<dependencies>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>tio-boot</artifactId>
-    <version>${tio.boot.version}</version>
-  </dependency>
-  <dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>${lombok-version}</version>
-    <optional>true</optional>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>hotswap-classloader</artifactId>
-    <version>${hotswap-classloader.version}</version>
-  </dependency>
-</dependencies>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.litongjava</groupId>
-  <artifactId>tio-boot-web-hello</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.1.7</tio.boot.version>
+    <tio.boot.version>1.2.4</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
-    <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
+    <hotswap-classloader.version>1.2.0</hotswap-classloader.version>
     <final.name>web-hello</final.name>
     <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
   </properties>
@@ -512,7 +476,7 @@ mode=dev
 热加载的使用请参考文档
 https://github.com/litongjava/hotswap-classloader
 
-### 2.4.使用 profile 分离环境
+### 2.4.使用 maven profile 分离打包方式
 
 添加 profiles 配置如下
 
@@ -831,20 +795,27 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 
 ### 4.1.配置概览
 
-- http.port = 80 服务器端口
-- http.page = classpath:/pages 静态页面地址
-- http.404 = /404 404 时的路由地址
-- http.500 = /500 500 是的路由地址
-- http.maxLiveTimeOfStaticRes=0 页面文件缓存时间，开发时设置成 0，生产环境可以设置成 1 小时(3600)，10 分钟(600)等，单位：秒
+- server.address=127.0.0.1 服务器监听 IP
+- server.port=8080 服务器监听端口
+- server.context-path=/myapp
+- server.404 = /404 404 时的路由地址
+- server.500 = /500 500 是的路由地址
+- server.resources.static-locations = classpath:/pages 静态页面地址
+- http.maxLiveTimeOfStaticRes =0 页面文件缓存时间，开发时设置成 0，生产环境可以设置成 1 小时(3600)，10 分钟(600)等，单位：秒
+- http.useSession
+- http.checkHost
+- app.env
 - tio.mvc.route.printMapping 是否打印路由信息
 - tio.mvc.route.writeMappingToFile 是否将路由信息写入文件
+
+tio-boot 配置参考源码 com.litongjava.tio.boot.constatns.ConfigKeys
 
 ### 4.2.添加静态文件
 
 将 app.properties 中配置 http.page
 
 ```
-http.page = classpath:/pages
+server.resources.static-locations = classpath:/pages
 ```
 
 将静态文件放到 pages 目录下即可 DefaultHttpRequestHandler 的 processStatic 类会处理静态文件
@@ -857,6 +828,246 @@ tio-boot 框架的参数查找顺序是,支持所有参数 命令行参数-->环
 ```
 java -jar paddle-ocr-server-1.0.1.jar  --http-port 8080
 ```
+
+### 4.4 环境配置
+
+#### 1. 设置环境键
+
+`tio-boot` 允许你设置一个环境（默认为 `app.env`），用于在主配置文件中指定当前的运行环境。你可以使用 `setEnvKey` 方法来设置这个键，如果你的配置文件中使用的是默认的 `app.env` 作为键，那么这一步可以跳过。
+
+#### 2. 加载主配置文件 (`app.properties`)
+
+tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应该包含一个指定当前环境的键值对，例如 `app.env=dev` 或 `app.env=prod`。你可以通过配置文件,环境变量,启动参数来设置 app.env 的值,
+
+#### 3. 根据环境加载特定的配置文件
+
+`tio-boot` 会自动检测 `app.env` 键的值，并尝试加载相应的环境特定配置文件。例如，如果 `app.env=dev`，它将尝试加载 `app-dev.properties` 文件。这是通过 `handleEnv` 方法实现的，它会根据 `app.env` 的值追加相应的环境配置文件。
+
+#### 具体步骤
+
+假设你有三个配置文件：`app.properties`（主配置文件），`app-dev.properties`（开发环境配置），`app-prod.properties`（生产环境配置）。你可以按照以下步骤配置：
+
+1. **在 `app.properties` 中设置环境**：
+
+   ```properties
+   app.env=dev  # 或 prod
+   ```
+
+2. **启动 `tio-boot`**：
+
+   ```java
+   TioApplication.run(HelloApp.class, args);
+   ```
+
+3. **获取指定当前环境的键值**：
+   ```java
+   Enviorment enviorment = Aop.get(Enviorment.class);
+   String env = enviorment.get(ConfigKeys.appEnv);
+   ```
+
+当你调用 `TioApplication.run(HelloApp.class, args)`后，`tio-boot` 会根据 `app.properties` 中的 `app.env` 值加载对应的环境文件（`app-dev.properties` 或 `app-prod.properties`）。这样，你就可以根据不同的环境自动加载相应的配置文件。
+
+#### 注意
+
+- 确保 `app.properties`、`app-dev.properties` 和 `app-prod.properties` 文件都位于 CLASSPATH 下或者在可访问的文件路径中。
+- `tio-boot` 将合并主配置文件和环境特定的配置文件，如果有重复的键，环境特定配置文件中的值将覆盖主配置文件中的值。
+
+### 4.4 整合 hotswap-classloader,开启热加载
+
+整合 hotswap-classloader,开启热加载有两种方式,
+
+- 在启动中使用 TioApplicationWrapper 启动
+- 启动配置类配置 hotswap-classloader
+
+这里重点介绍第二种方式
+
+#### 什么是 `hotswap-classloader`？
+
+[`hotswap-classloader`](https://github.com/litongjava/hotswap-classloader) 是一款由开发者 litongjava 创建的 Java 动态类加载器。这个工具的核心功能是支持在 Java 应用运行时动态地更换或更新类定义，而无需重启整个 JVM。这种热替换（hot swapping）的能力对于开发过程中的迭代和测试尤其有价值，因为它大大减少了等待应用重启的时间。
+
+#### 什么是 `tio-boot`？
+
+`tio-boot` 是一个基于 Java 的网络编程框架，用于简化网络应用的开发。它提供了一套丰富的 API 和工具，使开发者能够更容易地构建和部署网络服务和应用。`tio-boot` 支持多种网络协议，并且提供了高性能和可扩展性。
+
+#### 为什么将 `hotswap-classloader` 和 `tio-boot` 结合使用？
+
+结合使用 `hotswap-classloader` 和 `tio-boot` 可以为 Java 网络应用开发带来以下几个关键优势：
+
+1. **快速迭代和测试**：通过使用 `hotswap-classloader`，开发者可以在不重启服务器的情况下实时更新类文件，从而实现快速迭代和即时测试。
+
+2. **提升开发效率**：减少了重启应用程序所需的时间，开发者可以更加专注于代码的编写和改进，从而提高工作效率。
+
+3. **适合敏捷开发**：在敏捷开发模式下，需要频繁地进行更改和测试。`hotswap-classloader` 的动态加载能力使得这一过程更加流畅和高效。
+
+总的来说，结使用 `hotswap-classloader` 和 `tio-boot` 不仅提高了开发效率，而且增强了网络应用开发的灵活性和便利性。这对于希望快速迭代和改进其网络应用的开发团队来说，是一个非常有价值的组合。
+
+#### 如何在开发环境下使用 `hotswap-classloader` 和 `tio-boot` 实现动态类加载。
+
+##### 1. 添加 `hotswap-classloader` 依赖
+
+首先，您需要在您的 Java 项目中添加 `hotswap-classloader` 依赖。在项目的 `pom.xml` 文件中添加以下依赖配置：
+
+```xml
+<properties>
+  <hotswap-classloader.version>1.2.0</hotswap-classloader.version>
+  <tio-boot.version>1.2.4</tio-boot.version>
+</properties>
+
+<dependencies>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>tio-boot</artifactId>
+    <version>${tio-boot.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>hotswap-classloader</artifactId>
+    <version>${hotswap-classloader.version}</version>
+  </dependency>
+</dependencies>
+```
+
+这将确保您的项目能够使用 `hotswap-classloader`。
+
+##### 2. 创建启动类
+
+创建一个简单的启动类 `HelloApp` 来使用 `tio-boot` 启动您的应用。这个类将定义一个基本的 HTTP 请求路径和一个处理方法：
+
+```java
+package com.litongjava.tio.web.hello;
+
+// 导入必要的类
+
+@ComponentScan
+@Controller
+@RequestPath("/")
+public class HelloApp {
+  public static void main(String[] args) {
+    tio-boot.run(HelloApp.class, args);
+  }
+
+  @RequestPath()
+  public String index() {
+    return "index4";
+  }
+}
+```
+
+这个类中的 `main` 方法将启动 tio-boot，而 `index` 方法将响应根路径的 HTTP 请求。
+
+##### 3. 配置类加载器
+
+创建 `HotSwapClassLoaderConfig` 类以配置动态类加载器。这个配置类在服务器启动之前设置自定义的类加载器，以便于开发环境下的热替换：
+
+```java
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.hotswap.kit.HotSwapUtils;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
+import com.litongjava.jfinal.aop.annotation.Initialization;
+import com.litongjava.tio.boot.constatns.ConfigKeys;
+import com.litongjava.tio.boot.utils.Enviorment;
+
+import lombok.extern.slf4j.Slf4j;
+
+@BeforeStartConfiguration
+@Slf4j
+public class HowSwapClassLoaderConfig {
+  @Initialization
+  public void configClassLoader() {
+    Enviorment enviorment = Aop.get(Enviorment.class);
+    String env = enviorment.get(ConfigKeys.appEnv);
+    if ("dev".equals(env)) {
+      // 获取自定义的classLoalder
+      ClassLoader hotSwapClassLoader = HotSwapUtils.getClassLoader();
+      Thread.currentThread().setContextClassLoader(hotSwapClassLoader);
+      log.info("hotSwapClassLoader:{}", hotSwapClassLoader);
+    }
+  }
+}
+```
+
+这里的配置逻辑将检查应用环境，并在开发环境下设置自定义的类加载器。
+
+##### 4. 实现服务器监听器
+
+创建 `MyServerListener` 类，该类实现了 `TioBootServerListener` 接口。在服务器启动完成后，这个类将启动 `HotSwapWatcher` 来监听类文件的变化：
+
+```java
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.hotswap.watcher.HotSwapWatcher;
+import com.litongjava.hotswap.wrapper.tio.boot.TioBootArgument;
+import com.litongjava.hotswap.wrapper.tio.boot.TioBootRestartServer;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.AopManager;
+import com.litongjava.tio.boot.constatns.ConfigKeys;
+import com.litongjava.tio.boot.context.Context;
+import com.litongjava.tio.boot.server.TioBootServerListener;
+import com.litongjava.tio.boot.utils.Enviorment;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class MyServerListener implements TioBootServerListener {
+
+  protected static volatile HotSwapWatcher hotSwapWatcher;
+
+  @Override
+  public void boforeStart(Class<?>[] primarySources, String[] args) {
+  }
+
+  @Override
+  public void afterStarted(Class<?>[] primarySources, String[] args, Context context) {
+    Enviorment enviorment = Aop.get(Enviorment.class);
+    String env = enviorment.get(ConfigKeys.appEnv);
+    if("dev".endsWith(env)) {
+      TioBootArgument tioBootArgument = new TioBootArgument(primarySources, args, context, true);
+      AopManager.me().addSingletonObject(tioBootArgument);
+
+      if (hotSwapWatcher == null) {
+        // 使用反射执行下面的代码
+         log.info("start hotSwapWatcher");
+        hotSwapWatcher = new HotSwapWatcher(new TioBootRestartServer());
+        hotSwapWatcher.start();
+      }
+    }
+  }
+}
+```
+
+在 `afterStarted` 方法中，如果处于开发环境，则启动 `HotSwapWatcher`。
+
+##### 5. 注册服务器监听器
+
+最后，编写 `TioBootServerListenerConfig` 类来在启动前将 `TioBootServerListener` 添加到 Aop 容器中：
+
+```java
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
+import com.litongjava.tio.boot.server.TioBootServerListener;
+
+@BeforeStartConfiguration
+public class TioBootServerListenerConfig {
+
+  @Bean
+  public TioBootServerListener tioBootServerListener() {
+    return new MyServerListener();
+  }
+}
+```
+
+这将确保 `MyServerListener` 能够正确注册并在应用启动时被调用。
+
+##### 6.测试加载效果
+
+如果是 Eclipse IDE,保持一个文件即可测试加载效果,如果是 IDEA 环境需要再运行时手动编译(Build-->Recompile)文件才可以看到效果
+
+源码地址
+https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-study/tio-boot-env-study
 
 ## 5.tio-boot 架构
 
@@ -4475,8 +4686,7 @@ import com.litongjava.tio.core.intf.Packet;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
-public class DemoListener implements ServerListener {
+public class DemoListener implements ServerHanlderListener {
   public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect)
       throws Exception {
     log.info("{},{},{}", channelContext, isConnected, isReconnect);
@@ -4533,7 +4743,7 @@ import com.litongjava.jfinal.aop.annotation.Bean;
 import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
 import com.litongjava.tio.boot.hello.tcp.DemoHandler;
 import com.litongjava.tio.boot.hello.tcp.DemoListener;
-import com.litongjava.tio.boot.tcp.ServerListener;
+import com.litongjava.tio.boot.tcp.ServerHanlderListener;
 import com.litongjava.tio.boot.tcp.ServerTcpHandler;
 
 @BeforeStartConfiguration
@@ -4546,7 +4756,7 @@ public class ServerConfig {
   }
 
   @Bean
-  public ServerListener serverListener() {
+  public ServerHanlderListener serverListener() {
     return new DemoListener();
   }
 }
