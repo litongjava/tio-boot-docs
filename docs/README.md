@@ -40,11 +40,20 @@ The package is distributed through Maven Central.
 If you are developing with Java 8, please use the following dependency:
 
 ```xml
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>tio-boot</artifactId>
-  <version>${tio-boot.version}</version>
-</dependency>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <tio-boot.version>1.2.3</tio-boot.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio-boot.version}</version>
+    </dependency>
+  </dependencies>
 ```
 
 ### 编写代码
@@ -85,7 +94,7 @@ public class HelloApp {
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.2.0</tio.boot.version>
+  <tio-boot.version>1.2.3</tio-boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.1.9</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -6131,3 +6140,63 @@ Quartz 不需要和 hotswap-classloader 整合.因为 Quartz 对任务的操作�
 54. **unbindToken(TioConfig tioConfig, String token)**: 解除特定令牌的绑定。
 55. **unbindUser(ChannelContext channelContext)**: 解除通道上下文绑定的用户 ID。
 56. **unbindUser(TioConfig tioConfig, String userid)**: 解除特定用户 ID 的绑定。
+
+## 使用@Import 注解整合 paddle-ocr-server
+
+paddle-ocr-server 是笔者开发的款 ocr 识别应用,[开源地址](https://github.com/litongjava/ai-server/tree/main/paddle-ocr),paddle-ocr-server 完全基于 tio-boot 开发,所以可以非常方便的整合到 tio-boot 应用中
+
+编写 pom.xml
+只需要添加 tio-boot 和 paddle-ocr-server 依赖
+
+```
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <tio-boot.version>1.2.3</tio-boot.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio-boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>paddle-ocr-server</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+  </dependencies>
+```
+
+编写代码,只需要@Import({ PaddleOcrConfig.class, PaddleOcrController.class }) 导入需要的配置
+
+```
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.ai.server.padddle.ocr.config.PaddleOcrConfig;
+import com.litongjava.ai.server.padddle.ocr.controller.PaddleOcrController;
+import com.litongjava.jfinal.aop.annotation.ComponentScan;
+import com.litongjava.jfinal.aop.annotation.Controller;
+import com.litongjava.jfinal.aop.annotation.Import;
+import com.litongjava.tio.boot.TioApplication;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@ComponentScan
+@Controller
+@RequestPath("/")
+@Import({ PaddleOcrConfig.class, PaddleOcrController.class })
+public class HelloApp {
+  public static void main(String[] args) {
+    TioApplication.run(HelloApp.class, args);
+  }
+
+  @RequestPath()
+  public String index() {
+    return "index";
+  }
+}
+```
+
+然后运行项目访问 http://localhost/paddle/ocr/test 即可看到测试结果
