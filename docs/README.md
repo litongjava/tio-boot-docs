@@ -861,8 +861,7 @@ tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应
 
 3. **获取指定当前环境的键值**：
    ```java
-   Enviorment enviorment = Aop.get(Enviorment.class);
-   String env = enviorment.get(ConfigKeys.appEnv);
+   String env = EnviormentUtils.get(ConfigKeys.appEnv);
    ```
 
 当你调用 `TioApplication.run(HelloApp.class, args)`后，`tio-boot` 会根据 `app.properties` 中的 `app.env` 值加载对应的环境文件（`app-dev.properties` 或 `app-prod.properties`）。这样，你就可以根据不同的环境自动加载相应的配置文件。
@@ -872,14 +871,7 @@ tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应
 - 确保 `app.properties`、`app-dev.properties` 和 `app-prod.properties` 文件都位于 CLASSPATH 下或者在可访问的文件路径中。
 - `tio-boot` 将合并主配置文件和环境特定的配置文件，如果有重复的键，环境特定配置文件中的值将覆盖主配置文件中的值。
 
-### 4.4 整合 hotswap-classloader,开启热加载
-
-整合 hotswap-classloader,开启热加载有两种方式,
-
-- 在启动中使用 TioApplicationWrapper 启动
-- 启动配置类配置 hotswap-classloader
-
-这里重点介绍第二种方式
+### 4.4 整合 hotswap-classloader 实现热加载
 
 #### 什么是 `hotswap-classloader`？
 
@@ -900,6 +892,13 @@ tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应
 3. **适合敏捷开发**：在敏捷开发模式下，需要频繁地进行更改和测试。`hotswap-classloader` 的动态加载能力使得这一过程更加流畅和高效。
 
 总的来说，结使用 `hotswap-classloader` 和 `tio-boot` 不仅提高了开发效率，而且增强了网络应用开发的灵活性和便利性。这对于希望快速迭代和改进其网络应用的开发团队来说，是一个非常有价值的组合。
+
+#### 整合 hotswap-classloader,开启热加载有两种方式,
+
+- 在启动中使用 TioApplicationWrapper 启动
+- 启动配置类配置 hotswap-classloader
+
+这里重点介绍第二种方式
 
 #### 如何在开发环境下使用 `hotswap-classloader` 和 `tio-boot` 实现动态类加载。
 
@@ -976,8 +975,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HowSwapClassLoaderConfig {
   @Initialization
   public void configClassLoader() {
-    Enviorment enviorment = Aop.get(Enviorment.class);
-    String env = enviorment.get(ConfigKeys.appEnv);
+    String env = EnviormentUtils.get(ConfigKeys.appEnv);
     if ("dev".equals(env)) {
       // 获取自定义的classLoalder
       ClassLoader hotSwapClassLoader = HotSwapUtils.getClassLoader();
@@ -1005,7 +1003,6 @@ import com.litongjava.jfinal.aop.AopManager;
 import com.litongjava.tio.boot.constatns.ConfigKeys;
 import com.litongjava.tio.boot.context.Context;
 import com.litongjava.tio.boot.server.TioBootServerListener;
-import com.litongjava.tio.boot.utils.Enviorment;
 
 import lombok.extern.slf4j.Slf4j;
 
