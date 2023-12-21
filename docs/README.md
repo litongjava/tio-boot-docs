@@ -807,6 +807,7 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 - app.env
 - tio.mvc.route.printMapping 是否打印路由信息
 - tio.mvc.route.writeMappingToFile 是否将路由信息写入文件
+- tio.mvc.request.printReport 打印请求信息,推荐在开发环境下使用
 
 tio-boot 配置参考源码 com.litongjava.tio.boot.constatns.ConfigKeys
 
@@ -1131,9 +1132,9 @@ tio-boot 框架的生命周期如下
 
 ### 6.1 概述
 
-web 开发常用的类有 HttpRequest,HttpResponse,Reps 等
+在 Web 开发中，常用的类包括 HttpRequest, HttpResponse, Reps 等。以下是一个使用了 tio-boot controller 的 Java 控制器示例：
 
-```
+```java
 import com.litongjava.tio.http.server.annotation.RequestPath;
 @Controller
 @RequestPath("/test")
@@ -1146,12 +1147,17 @@ public class TestController {
 }
 ```
 
-在 Action 的方法签名中支持的类型有
+这段代码演示了一些重要的注解的用法：
 
-- ServerChannelContext
-- HttpConfig
-- HttpSession
-- HttpRequest
+1. `@Controller`: 这个注解标识一个类作为控制器（Controller）。如果一个类已经被 `@RequestPath` 注解标记，那么可以省略 `@Controller` 注解。
+2. `@RequestPath`: 这个注解用于指明控制器的请求路径。在这个例子中，它将 `TestController` 类关联到了 `/test` 路径。此外，当一个控制器类的成员方法返回值不为 void 时，tio-boot 会自动将这些方法添加到请求路由中。方法名将作为子路径。你也可以通过在方法上使用 `@RequestPath` 来手动指定路由路径。
+
+在 TIO HTTP Server 中，一个控制器（Controller）的方法（即 Action 方法）支持以下类型的参数签名：
+
+- `ServerChannelContext`
+- `HttpConfig`
+- `HttpSession`
+- `HttpRequest`
 
 ### 6.2.JSON 数据
 
@@ -4304,6 +4310,28 @@ tio-utils 内置了 CacheUtils 用户提供对缓存数据的支持,提供的工
 下面演示一下 CaffeineCache,RedisCache,CaffeineRedisCache 的使用
 
 ### 缓存数据到 Caffeine
+
+自定义 CacheName
+
+```
+package com.litongjava.tio.boot.hello.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class CacheName {
+  // `cacheName`（缓存名称）
+  private String name;
+  // `timeToLiveSeconds`（生存时间）和`timeToIdleSeconds`（闲置时间）。
+  private Long timeToLiveSeconds;
+  private Long timeToIdleSeconds;
+}
+
+```
 
 ```
 package com.litongjava.tio.boot.hello.services;
