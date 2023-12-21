@@ -437,6 +437,28 @@ http://ch.qos.logback/xml/ns/logback ">
 
 ### 2.3.整合热加载
 
+#### 什么是 `hotswap-classloader`？
+
+[`hotswap-classloader`](https://github.com/litongjava/hotswap-classloader) 是一款由开发者 litongjava 创建的 Java 动态类加载器。这个工具的核心功能是支持在 Java 应用运行时动态地更换或更新类定义，而无需重启整个 JVM。这种热替换（hot swapping）的能力对于开发过程中的迭代和测试尤其有价值，因为它大大减少了等待应用重启的时间。
+
+#### 什么是 `tio-boot`？
+
+`tio-boot` 是一个基于 Java 的网络编程框架，用于简化网络应用的开发。它提供了一套丰富的 API 和工具，使开发者能够更容易地构建和部署网络服务和应用。`tio-boot` 支持多种网络协议，并且提供了高性能和可扩展性。
+
+#### 为什么将 `hotswap-classloader` 和 `tio-boot` 结合使用？
+
+结合使用 `hotswap-classloader` 和 `tio-boot` 可以为 Java 网络应用开发带来以下几个关键优势：
+
+1. **快速迭代和测试**：通过使用 `hotswap-classloader`，开发者可以在不重启服务器的情况下实时更新类文件，从而实现快速迭代和即时测试。
+
+2. **提升开发效率**：减少了重启应用程序所需的时间，开发者可以更加专注于代码的编写和改进，从而提高工作效率。
+
+3. **适合敏捷开发**：在敏捷开发模式下，需要频繁地进行更改和测试。`hotswap-classloader` 的动态加载能力使得这一过程更加流畅和高效。
+
+总的来说，结使用 `hotswap-classloader` 和 `tio-boot` 不仅提高了开发效率，而且增强了网络应用开发的灵活性和便利性。这对于希望快速迭代和改进其网络应用的开发团队来说，是一个非常有价值的组合。
+
+#### 整合热加载步骤
+
 添加依赖
 
 ```
@@ -473,7 +495,12 @@ public class AiServerTio {
 mode=dev
 ```
 
-热加载的使用请参考文档
+##### 测试加载效果
+
+如果是 Eclipse IDE,保持一个文件即可测试加载效果,如果是 IDEA 环境需要再运行时手动编译(Build-->Recompile)文件才可以看到效果
+
+###### 热加载的使用请参考文档
+
 https://github.com/litongjava/hotswap-classloader
 
 ### 2.4.使用 maven profile 分离打包方式
@@ -795,19 +822,22 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 
 ### 4.1.配置概览
 
-- server.address=127.0.0.1 服务器监听 IP
-- server.port=8080 服务器监听端口
-- server.context-path=/myapp
-- server.404 = /404 404 时的路由地址
-- server.500 = /500 500 是的路由地址
-- server.resources.static-locations = classpath:/pages 静态页面地址
-- http.maxLiveTimeOfStaticRes =0 页面文件缓存时间，开发时设置成 0，生产环境可以设置成 1 小时(3600)，10 分钟(600)等，单位：秒
-- http.useSession
-- http.checkHost
-- app.env
-- tio.mvc.route.printMapping 是否打印路由信息
-- tio.mvc.route.writeMappingToFile 是否将路由信息写入文件
-- tio.mvc.request.printReport 打印请求信息,推荐在开发环境下使用
+- `server.address=127.0.0.1`：指定服务器监听的 IP 地址。此处为本地地址，意味着服务器仅在本机上可访问。
+- `server.port=8080`：定义服务器监听的端口号。在这里，端口被设置为 8080。
+- `server.context-path=/myapp`：设置应用的上下文路径，这里的应用将通过 `/myapp` 路径访问。
+- `server.404=/404`：定义 404 错误（页面未找到）时的路由地址。用户将被重定向到 `/404` 路径。
+- `server.500=/500`：指定 500 错误（服务器内部错误）时的路由地址。对应的路径是 `/500`。
+- `server.resources.static-locations=classpath:/pages`：设定静态页面的位置，此例中静态资源位于类路径下的 `/pages` 目录,默认值也是 classpath:/pages。
+- `http.maxLiveTimeOfStaticRes=0`：设置页面文件的缓存时间。在开发环境中，通常设置为 0 以禁用缓存，而在生产环境中，可以设置为较长的时间（如 3600 秒或 600 秒）以提高性能。
+- `http.useSession`：控制是否使用 HTTP 会话。
+- `http.checkHost`：用于检查和验证 HTTP 请求的主机头。
+- `tio.devMode=true`：开启或关闭开发模式。当设为 `true` 时，将启用更详细的日志记录，并可能激活其他框架的开发模式特性，如热加载功能。
+- `tio.mvc.route.printMapping`：决定是否在启动时打印路由映射信息，有助于调试路由问题。
+- `tio.mvc.route.writeMappingToFile`：选择是否将路由信息写入文件，便于记录和审查。
+- `tio.mvc.request.printReport`：设置是否打印请求信息。这通常在开发环境下使用，以便于跟踪和调试。
+- `http.multipart.max-request-size`: 设置请求体的大小
+- `http.multipart.max-file-size`: 设置上传文件的大小
+- `app.env`：定义应用的运行环境。根据 `app.env` 的不同值，可以加载不同的配置文件，以适应不同的开发、测试或生产环境。
 
 tio-boot 配置参考源码 com.litongjava.tio.boot.constatns.ConfigKeys
 
@@ -872,124 +902,9 @@ tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应
 - 确保 `app.properties`、`app-dev.properties` 和 `app-prod.properties` 文件都位于 CLASSPATH 下或者在可访问的文件路径中。
 - `tio-boot` 将合并主配置文件和环境特定的配置文件，如果有重复的键，环境特定配置文件中的值将覆盖主配置文件中的值。
 
-### 4.4 整合 hotswap-classloader 实现热加载
+### 4.4 监听服务器
 
-#### 什么是 `hotswap-classloader`？
-
-[`hotswap-classloader`](https://github.com/litongjava/hotswap-classloader) 是一款由开发者 litongjava 创建的 Java 动态类加载器。这个工具的核心功能是支持在 Java 应用运行时动态地更换或更新类定义，而无需重启整个 JVM。这种热替换（hot swapping）的能力对于开发过程中的迭代和测试尤其有价值，因为它大大减少了等待应用重启的时间。
-
-#### 什么是 `tio-boot`？
-
-`tio-boot` 是一个基于 Java 的网络编程框架，用于简化网络应用的开发。它提供了一套丰富的 API 和工具，使开发者能够更容易地构建和部署网络服务和应用。`tio-boot` 支持多种网络协议，并且提供了高性能和可扩展性。
-
-#### 为什么将 `hotswap-classloader` 和 `tio-boot` 结合使用？
-
-结合使用 `hotswap-classloader` 和 `tio-boot` 可以为 Java 网络应用开发带来以下几个关键优势：
-
-1. **快速迭代和测试**：通过使用 `hotswap-classloader`，开发者可以在不重启服务器的情况下实时更新类文件，从而实现快速迭代和即时测试。
-
-2. **提升开发效率**：减少了重启应用程序所需的时间，开发者可以更加专注于代码的编写和改进，从而提高工作效率。
-
-3. **适合敏捷开发**：在敏捷开发模式下，需要频繁地进行更改和测试。`hotswap-classloader` 的动态加载能力使得这一过程更加流畅和高效。
-
-总的来说，结使用 `hotswap-classloader` 和 `tio-boot` 不仅提高了开发效率，而且增强了网络应用开发的灵活性和便利性。这对于希望快速迭代和改进其网络应用的开发团队来说，是一个非常有价值的组合。
-
-#### 整合 hotswap-classloader,开启热加载有两种方式,
-
-- 在启动中使用 TioApplicationWrapper 启动
-- 启动配置类配置 hotswap-classloader
-
-这里重点介绍第二种方式
-
-#### 如何在开发环境下使用 `hotswap-classloader` 和 `tio-boot` 实现动态类加载。
-
-##### 1. 添加 `hotswap-classloader` 依赖
-
-首先，您需要在您的 Java 项目中添加 `hotswap-classloader` 依赖。在项目的 `pom.xml` 文件中添加以下依赖配置：
-
-```xml
-<properties>
-  <hotswap-classloader.version>1.2.0</hotswap-classloader.version>
-  <tio-boot.version>1.2.4</tio-boot.version>
-</properties>
-
-<dependencies>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>tio-boot</artifactId>
-    <version>${tio-boot.version}</version>
-  </dependency>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>hotswap-classloader</artifactId>
-    <version>${hotswap-classloader.version}</version>
-  </dependency>
-</dependencies>
-```
-
-这将确保您的项目能够使用 `hotswap-classloader`。
-
-##### 2. 创建启动类
-
-创建一个简单的启动类 `HelloApp` 来使用 `tio-boot` 启动您的应用。这个类将定义一个基本的 HTTP 请求路径和一个处理方法：
-
-```java
-package com.litongjava.tio.web.hello;
-
-// 导入必要的类
-
-@ComponentScan
-@Controller
-@RequestPath("/")
-public class HelloApp {
-  public static void main(String[] args) {
-    tio-boot.run(HelloApp.class, args);
-  }
-
-  @RequestPath()
-  public String index() {
-    return "index4";
-  }
-}
-```
-
-这个类中的 `main` 方法将启动 tio-boot，而 `index` 方法将响应根路径的 HTTP 请求。
-
-##### 3. 配置类加载器
-
-创建 `HotSwapClassLoaderConfig` 类以配置动态类加载器。这个配置类在服务器启动之前设置自定义的类加载器，以便于开发环境下的热替换：
-
-```java
-package com.litongjava.tio.web.hello.config;
-
-import com.litongjava.hotswap.kit.HotSwapUtils;
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
-import com.litongjava.jfinal.aop.annotation.Initialization;
-import com.litongjava.tio.boot.constatns.ConfigKeys;
-import com.litongjava.tio.boot.utils.Enviorment;
-
-import lombok.extern.slf4j.Slf4j;
-
-@BeforeStartConfiguration
-@Slf4j
-public class HowSwapClassLoaderConfig {
-  @Initialization
-  public void configClassLoader() {
-    String env = EnviormentUtils.get(ConfigKeys.appEnv);
-    if ("dev".equals(env)) {
-      // 获取自定义的classLoalder
-      ClassLoader hotSwapClassLoader = HotSwapUtils.getClassLoader();
-      Thread.currentThread().setContextClassLoader(hotSwapClassLoader);
-      log.info("hotSwapClassLoader:{}", hotSwapClassLoader);
-    }
-  }
-}
-```
-
-这里的配置逻辑将检查应用环境，并在开发环境下设置自定义的类加载器。
-
-##### 4. 实现服务器监听器
+##### 1. 实现服务器监听器
 
 创建 `MyServerListener` 类，该类实现了 `TioBootServerListener` 接口。在服务器启动完成后，这个类将启动 `HotSwapWatcher` 来监听类文件的变化：
 
@@ -1021,23 +936,14 @@ public class MyServerListener implements TioBootServerListener {
     Enviorment enviorment = Aop.get(Enviorment.class);
     String env = enviorment.get(ConfigKeys.appEnv);
     if("dev".endsWith(env)) {
-      TioBootArgument tioBootArgument = new TioBootArgument(primarySources, args, context, true);
-      AopManager.me().addSingletonObject(tioBootArgument);
-
-      if (hotSwapWatcher == null) {
-        // 使用反射执行下面的代码
-         log.info("start hotSwapWatcher");
-        hotSwapWatcher = new HotSwapWatcher(new TioBootRestartServer());
-        hotSwapWatcher.start();
-      }
     }
   }
 }
 ```
 
-在 `afterStarted` 方法中，如果处于开发环境，则启动 `HotSwapWatcher`。
+在 `afterStarted` 方法中，如果处于开发环境，则 执行部分自定义代码
 
-##### 5. 注册服务器监听器
+##### 2. 注册服务器监听器
 
 最后，编写 `TioBootServerListenerConfig` 类来在启动前将 `TioBootServerListener` 添加到 Aop 容器中：
 
@@ -1059,13 +965,6 @@ public class TioBootServerListenerConfig {
 ```
 
 这将确保 `MyServerListener` 能够正确注册并在应用启动时被调用。
-
-##### 6.测试加载效果
-
-如果是 Eclipse IDE,保持一个文件即可测试加载效果,如果是 IDEA 环境需要再运行时手动编译(Build-->Recompile)文件才可以看到效果
-
-源码地址
-https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-study/tio-boot-env-study
 
 ## 5.tio-boot 架构
 
