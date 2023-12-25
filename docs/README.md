@@ -1968,7 +1968,7 @@ HttpResponseUtils.enableCORS(response, new HttpCors());
 
 ```
 
-### 14 Cookie
+### 6.14 Cookie
 
 ```
 package com.litongjava.tio.boot.hello.controller;
@@ -2048,6 +2048,212 @@ Cookie 构建方法
    - 在 `setCookie` 方法中，创建的 Cookie 没有指定域名和最大有效期，这意味着它将被视为会话 Cookie，并且只在客户端与服务器的会话期间有效。
 
 总结：`TestCookieController` 类是一个 tio-boot HTTP 控制器，它包含两个方法，一个用于读取请求中的特定 Cookie，另一个用于设置新的 Cookie 并将其发送回客户端。这使得该控制器可以在客户端和服务器之间有效地管理 Cookie 数据。
+
+### Tio-boot 手动添加路由
+
+Tio-boot 框架提供了一种简单高效的方式来处理 HTTP 路由。虽然框架默认会自动扫描并添加带有 `@RequestPath` 注解的 Controller 到路由中，但在某些情况下，你可能需要手动添加路由。这可以通过实例化 `SimpleHttpRoutes` 类并向其中添加路由来实现。值得注意的是，
+
+- 手动添加的路由将拥有比默认 `TioBootHttpRoutes` 更高的优先级。
+- 手动添加路由不支持参数封装
+
+#### 步骤 1：创建 Controller 类
+
+首先，创建一个名为 `HelloController` 的类，它包含了两个处理 HTTP 请求的方法。每个方法接收一个 `HttpRequest` 对象，并返回一个 `HttpResponse` 对象。例如：
+
+```java
+package com.litongjava.ai.chat.controller;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.util.Resps;
+
+public class HelloController {
+
+  public HttpResponse hello(HttpRequest httpRequest) {
+    return Resps.txt(httpRequest, "hello");
+  }
+
+  public HttpResponse hi(HttpRequest httpRequest) {
+    return Resps.txt(httpRequest, "hi");
+  }
+}
+```
+
+在这个例子中，`hello` 方法返回文本 "hello"，而 `hi` 方法返回文本 "hi"。
+
+#### 步骤 2：定义并配置 HttpRoutes
+
+接下来，定义一个配置类 `DefineHttpRoutesConfig`。在这个类中，你将实例化 `SimpleHttpRoutes` 并添加自定义路由。
+
+使用 `@BeforeStartConfiguration` 注解标记这个配置类，这样框架会在启动前加载它。通过 `@Bean` 注解定义一个 `HttpRoutes` 类型的方法 `httpRoutes`。在这个方法中，首先通过 `Aop.get` 方法获取 `HelloController` 的实例。然后，创建一个 `SimpleHttpRoutes` 实例，并使用 `add` 方法添加路由。
+
+```java
+package com.litongjava.ai.chat.config;
+
+import com.litongjava.ai.chat.controller.HelloController;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
+import com.litongjava.tio.http.server.handler.HttpRoutes;
+import com.litongjava.tio.http.server.handler.SimpleHttpRoutes;
+
+@BeforeStartConfiguration
+public class DefineHttpRoutesConfig {
+
+  @Bean
+  public HttpRoutes httpRoutes() {
+    HelloController helloController = Aop.get(HelloController.class);
+    HttpRoutes simpleHttpRoutes = new SimpleHttpRoutes();
+    simpleHttpRoutes.add("/hi", helloController::hi);
+    simpleHttpRoutes.add("/hello", helloController::hello);
+    return simpleHttpRoutes;
+  }
+}
+```
+
+在上述配置中，`/hi` 路由映射到 `HelloController` 的 `hi` 方法，而 `/hello` 路由映射到 `hello` 方法。
+
+### tio-boot 整合 Server-Sent Events (SSE)
+
+#### SSE 简介
+
+Server-Sent Events（SSE）是一种允许服务器主动向客户端发送信息的技术。与 WebSocket 不同，SSE 是单向通信，仅服务器能向客户端发送数据。这使得 SSE 非常适合于需要服务器实时推送数据但客户端不需要发送信息的场景，例如实时通知和更新。
+
+#### tio-boot 中整合 SSE 的步骤
+
+整合 SSE 到 tio-boot 框架中可以让你的应用具备实时数据推送的能力。以下是在 tio-boot 框架中创建一个简单的 SSE 应用的步骤和代码示例：
+
+##### 步骤 1: 创建 SSE Controller
+
+首先，创建一个名为 `SseController` 的类，并用 `@RequestPath` 注解标记该类和方法。该方法将处理来自 `/sse` 路径的 SSE 请求。
+
+```java
+package com.litongjava.ai.chat.controller;
+
+import com.litongjava.tio.core.Tio;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.sse.SsePacket;
+import com.litongjava.tio.server.ServerChannelContext;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/sse")
+@Slf4j
+public class SseController {
+
+  @RequestPath
+  public HttpResponse conversation(HttpRequest request, ServerChannelContext channelContext) {
+    // ... (代码继续)
+  }
+}
+```
+
+##### 步骤 2: 设置 SSE 请求头并发送响应
+
+在 `conversation` 方法中，首先设置 SSE 请求头，并发送一个空的响应来初始化 SSE 连接。
+
+```java
+// 设置 SSE 请求头
+HttpResponse httpResponse = new HttpResponse(request).setServerSentEventsHeader();
+Tio.send(channelContext, httpResponse);
+log.info("已经响应请求头");
+```
+
+##### 步骤 3: 发送 SSE 消息
+
+使用 `SsePacket` 来构造并发送 SSE 消息。在这个例子中，我们通过一个循环发送了 10 条消息。
+
+```java
+new Thread(() -> {
+  for (int i = 0; i < 10; i++) {
+    // ... (循环内容)
+  }
+  // 手动移除连接
+  Tio.remove(channelContext, "remove sse");
+}).start();
+```
+
+##### 步骤 4: 测试 SSE 功能
+
+要测试你的 SSE 服务，你可以使用 curl 命令访问 SSE 路径：
+
+```
+curl http://localhost/sse
+```
+
+测试结果应该显示一系列格式化的 SSE 消息：
+
+```
+id:1
+event:message
+data:This is message 0
+
+id:2
+event:message
+data:This is message 1
+
+...
+```
+
+每条消息都包含一个唯一的 `id`，事件类型 `event`，以及实际的消息内容 `data`。
+
+#### 完整的 Cotnroller
+
+```
+package com.litongjava.ai.chat.controller;
+
+import com.litongjava.tio.core.Tio;
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.sse.SsePacket;
+import com.litongjava.tio.server.ServerChannelContext;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/sse")
+@Slf4j
+public class SseController {
+
+  @RequestPath
+  public HttpResponse conversation(HttpRequest request, ServerChannelContext channelContext) {
+    // 设置sse请求头
+    HttpResponse httpResponse = new HttpResponse(request).setServerSentEventsHeader();
+    // 手动发送消息到客户端,因为已经设置了sse的请求头,所以客户端的连接不会关闭
+    Tio.send(channelContext, httpResponse);
+    log.info("已经相应请求头");
+    new Thread(() -> {
+      for (int i = 0; i < 10; i++) {
+        String id = i + "";
+        String eventName = "message";
+        String data = "This is message " + i;
+        SsePacket ssePacket = new SsePacket().eventId(id).name(eventName).data(data);
+        // 再次向客户端发送消息
+        Tio.send(channelContext, ssePacket);
+        log.info("发送数据:{}", i);
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      //手动移除连接
+      Tio.remove(channelContext, "remove sse");
+    }).start();
+
+    // 告诉处理器不要将消息发送给客户端
+    return new HttpResponse().setSend(false);
+
+  }
+}
+
+```
+
+#### 总结
+
+通过上述步骤，你可以在 tio-boot 框架中成功整合 SSE，从而使你的应用能够实时地向客户端推送数据。这种方法的优点在于其简单性和低延迟，非常适用于需要服务器实时更新的场景。
 
 ## 7.整合 jfinal-aoop
 
