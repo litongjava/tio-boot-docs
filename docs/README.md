@@ -5944,6 +5944,202 @@ public class EhCacheController {
 http://localhost/ecache/getCacheNames  
 http://localhost/ecache/getAllCacheValue
 
+## tio-boot jfinal-plugins 整合 redis
+
+tio-boot 是一个基于 Java 的网络编程框架，用于快速开发高性能的网络应用程序。
+redis 是一个广泛使用的开源缓存服务，它可以提高应用程序的性能和扩展性。
+
+整合 ecache 需要用到 jfinal-plugins
+https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
+
+### 添加依赖
+
+```
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <graalvm.version>23.1.1</graalvm.version>
+    <tio.boot.version>1.2.9</tio.boot.version>
+    <lombok-version>1.18.30</lombok-version>
+    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+    <final.name>web-hello</final.name>
+    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok-version}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>hotswap-classloader</artifactId>
+      <version>${hotswap-classloader.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>jfinal-plugins</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jfinal</groupId>
+      <artifactId>activerecord</artifactId>
+      <version>5.1.2</version>
+    </dependency>
+  </dependencies>
+
+```
+
+依赖解释
+
+- tio-boot 是框架核心，
+- jfinal-plugins 提供与 Ehcache 的集成
+- activerecord jfinal-plugins 依赖 jfinal-plugins
+
+jfinal-plugins 依赖如下
+
+> cron4j:2.2.5
+> ehcache-core:2.6.11
+> jedis:3.6.3
+> fst:2.57
+
+### RedisPluginConfig 配置类
+
+这个类是一个配置类，用于初始化和配置 Redis 插件。它通过 `@Configuration` 注解标记为配置类。类中的方法 `redisPlugin` 通过 `@Initialization` 注解标记为初始化方法。在这个方法中，创建了一个 `RedisPlugin` 实例并启动它。启动插件意味着 RedisPlugin 将连接 redis 服务
+
+```
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.Initialization;
+import com.litongjava.jfinal.plugin.redis.Redis;
+import com.litongjava.jfinal.plugin.redis.RedisPlugin;
+
+@Configuration
+public class RedisPluginConfig {
+
+  @Initialization
+  public void redisPlugin() {
+    // 用于缓存bbs模块的redis服务
+    RedisPlugin bbsRedis = new RedisPlugin("bbs", "localhost");
+    bbsRedis.start();
+    // 测试连接
+    Redis.use("bbs").getJedis().connect();
+  }
+}
+
+```
+
+### 控制器
+
+`RedisTestController` 包含三个方法，每个方法都演示了如何使用 Redis 进行不同类型的操作。以下是对每个方法的详细解释：
+
+#### 1. test01() 方法 - 基本的 Redis 缓存操作
+
+- **目的**: 演示了如何使用 Redis 进行基本的缓存操作。
+- **过程**:
+  - 使用 `Redis.use("bbs")` 获取名为 "bbs" 的 Redis 缓存实例。
+  - 试图使用键 "litong" 从缓存中获取值。
+  - 如果值不存在（即 `null`），记录一条日志（表示需要计算新的值），并将一个新值 "value\_\_\_001" 设置到这个键中。
+  - 返回缓存中的值（如果是首次调用，将返回 `null`，因为设置值是在检查之后）。
+
+#### 2. test02() 方法 - 使用 Redis.call 方法
+
+- **目的**: 演示了如何使用 `Redis.call` 方法执行更复杂的 Redis 操作。
+- **过程**:
+  - 使用 `Redis.call` 方法执行一个 lambda 表达式，它使用 `jedis` 客户端从 Redis 中获取键为 "user" 的值。
+  - 将获取的 JSON 字符串解析为 `User` 类的实例。
+  - 如果未找到用户（即 `user` 为 `null`），记录一条日志，并创建一个新的 `User` 实例。
+  - 使用 `Redis.call` 再次将新的 `User` 实例以 JSON 格式保存到 Redis 中。
+  - 返回 `User` 对象。
+
+#### 3. test03() 方法 - 调用 Jedis API
+
+- **目的**: 演示如何直接调用 Jedis API 进行 Redis 操作。
+- **过程**:
+  - 使用 `Redis.call` 方法执行一个 lambda 表达式，该表达式调用 `j.incrBy` 方法增加 "increase" 键的值。
+  - `j.incrBy("increase", 1)` 表示将 "increase" 键的值增加 1。
+  - 返回增加后的值。
+
+```
+package com.litongjava.tio.web.hello.controller;
+
+import com.alibaba.fastjson2.JSON;
+import com.litongjava.jfinal.plugin.redis.Cache;
+import com.litongjava.jfinal.plugin.redis.Redis;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.web.hello.model.User;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequestPath("/redis/test")
+public class RedisTestController {
+
+  /**
+   * 测试redis
+   * @return
+   */
+  public Object test01() {
+    String cacheKey = "litong";
+
+    Cache bbsCache = Redis.use("bbs");
+
+    Object value = bbsCache.get(cacheKey);
+    if (value == null) {
+      log.info("计算新的值");
+      bbsCache.set(cacheKey, "value___001");
+    }
+    return value;
+  }
+
+  /**
+   * 使用Redis.call方法
+   * @return
+   */
+  public User test02() {
+    User user = Redis.call(jedis -> {
+      String userJsonString = jedis.get("user");
+      return JSON.parseObject(userJsonString, User.class);
+    });
+
+    if (user == null) {
+      log.info("重新计算user");
+      User user1 = new User("ping", "00000000");
+      user = user1;
+      // 或者简化为下面代码
+      Redis.call(j -> {
+        return j.set("user", JSON.toJSONString(user1));
+      });
+    }
+
+    return user;
+
+  }
+
+  /**
+   * 调用Jedis API
+   * @return
+   */
+  public Long test03() {
+    Long ret = Redis.call(j -> j.incrBy("increase", 1));
+    return ret;
+  }
+}
+```
+
+访问测试 http://localhost/redis/test/test01 http://localhost/redis/test/test02 http://localhost/redis/test/test03
+
 ## 22.常用内置类方法说明
 
 ### 18.1.HttpRequest
