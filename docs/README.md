@@ -5714,6 +5714,236 @@ public class TioBootWebApp {
 
 Quartz 不需要和 hotswap-classloader 整合.因为 Quartz 对任务的操作都是静态的
 
+## tio-boot jfinal-plugins 整合 ecache
+
+Tio-boot 是一个基于 Java 的网络编程框架，用于快速开发高性能的网络应用程序。
+Ehcache 是一个广泛使用的开源 Java 缓存，它可以提高应用程序的性能和扩展性。
+
+整合 ecache 需要用到 jfinal-plugins
+https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
+
+### 添加依赖
+
+```
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <graalvm.version>23.1.1</graalvm.version>
+    <tio.boot.version>1.2.9</tio.boot.version>
+    <lombok-version>1.18.30</lombok-version>
+    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+    <final.name>web-hello</final.name>
+    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok-version}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>hotswap-classloader</artifactId>
+      <version>${hotswap-classloader.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>jfinal-plugins</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jfinal</groupId>
+      <artifactId>activerecord</artifactId>
+      <version>5.1.2</version>
+    </dependency>
+  </dependencies>
+
+```
+
+依赖解释
+
+- tio-boot 是框架核心，
+- jfinal-plugins 提供与 Ehcache 的集成
+- activerecord jfinal-plugins 依赖 jfinal-plugins
+
+jfinal-plugins 依赖如下
+
+> cron4j:2.2.5
+> ehcache-core:2.6.11
+> jedis:3.6.3
+> fst:2.57
+
+### 添加配置文件 ehcache.xml
+
+`ehcache.xml` 是 Ehcache 缓存的配置文件。EcachePlugin 启动时会自动加载这个配置,它定义了缓存的基本属性和行为。以下是文件中每个部分的详细解释：
+
+1. **`<diskStore>`**: 指定磁盘存储的路径，用于溢出或持久化缓存数据到磁盘。
+
+2. **`<defaultCache>`**: 设置默认缓存的属性。这些属性将应用于未单独配置的所有缓存。
+   - **`eternal`**: 设置为 `false` 表示缓存不是永久的，可以过期。
+   - **`maxElementsInMemory`**: 内存中可以存储的最大元素数量。
+   - **`overflowToDisk`**: 当内存中的元素数量超过最大值时，是否溢出到磁盘。
+   - **`diskPersistent`**: 是否在 JVM 重启之间持久化到磁盘。
+   - **`timeToIdleSeconds`**: 元素最后一次被访问后多久会变成空闲状态。
+   - **`timeToLiveSeconds`**: 元素从创建或最后一次更新后多久会过期。
+   - **`memoryStoreEvictionPolicy`**: 当内存达到最大值时，移除元素的策略（例如，LRU 表示最近最少使用）。
+
+ehcache.xml 配置文件内容如下
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
+
+  <diskStore path="java.io.tmpdir/EhCache" />
+
+  <defaultCache eternal="false" maxElementsInMemory="10000" overflowToDisk="false" diskPersistent="false"
+    timeToIdleSeconds="1800" timeToLiveSeconds="259200" memoryStoreEvictionPolicy="LRU" />
+</ehcache>
+```
+
+### EhCachePluginConfig 配置类
+
+这个类是一个配置类，用于初始化和配置 Ehcache 插件。它通过 `@Configuration` 注解标记为配置类。类中的方法 `ehCachePlugin` 通过 `@Initialization` 注解标记为初始化方法。在这个方法中，创建了一个 `EhCachePlugin` 实例并启动它。启动插件意味着 Ehcache 将根据 `ehcache.xml` 配置文件的设置进行初始化。
+
+```
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.Initialization;
+import com.litongjava.jfinal.plugin.ehcache.EhCachePlugin;
+
+@Configuration
+public class EhCachePluginConfig {
+
+  @Initialization
+  public void ehCachePlugin() {
+    EhCachePlugin ehCachePlugin = new EhCachePlugin();
+    ehCachePlugin.start();
+  }
+}
+```
+
+### 控制器
+
+1. **EhCacheTestController**:
+
+   - 这个控制器包含一个方法 `test01`，用于测试将数据添加到 EhCache 缓存中并从中检索数据。
+   - 在这个方法中，首先尝试从缓存中获取一个键值。如果不存在，它将计算一个新值并将其存储在缓存中。
+   - 这个控制器演示了如何使用 Ehcache 存储和检索简单的键值对。
+
+2. **EhCacheController**:
+   - 这个控制器包含多个方法，用于与 Ehcache 进行更复杂的交互。
+   - 方法如 `getCacheNames` 和 `getAllCacheValue` 用于检索缓存中的信息，例如缓存名称或所有缓存的值。
+   - 其他方法允许按名称检索特定缓存的值，或者根据缓存名称和键检索特定的值。
+   - 这个控制器提供了更深入的视图，展示了如何管理和检查 Ehcache 中的数据。
+
+```
+package com.litongjava.tio.web.hello.controller;
+
+import com.litongjava.jfinal.plugin.ehcache.CacheKit;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequestPath("/ecache/test")
+public class EhCacheTestController {
+
+  public String test01() {
+    String cacheName = "student";
+    String cacheKey = "litong";
+
+    String cacheData = CacheKit.get(cacheName, cacheKey);
+
+    if (cacheData == null) {
+      String result = "001";
+      log.info("计算新的值");
+      CacheKit.put(cacheName, cacheKey, result);
+    }
+
+    return cacheData;
+  }
+
+}
+
+```
+
+访问测试 http://localhost/ecache/test/test01
+
+```
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.litongjava.jfinal.plugin.ehcache.CacheKit;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
+@RequestPath("/ecache")
+public class EhCacheController {
+  public String[] getCacheNames() {
+    String[] cacheNames = CacheKit.getCacheManager().getCacheNames();
+    return cacheNames;
+  }
+
+  public Map<String, Map<String, Object>> getAllCacheValue() {
+    CacheManager cacheManager = CacheKit.getCacheManager();
+    String[] cacheNames = cacheManager.getCacheNames();
+    Map<String, Map<String, Object>> retval = new HashMap<>(cacheNames.length);
+    for (String name : cacheNames) {
+      Map<String, Object> map = cacheToMap(cacheManager, name);
+      retval.put(name, map);
+    }
+    return retval;
+
+  }
+
+  public Map<String, Object> getCacheValueByCacheName(String cacheName) {
+    CacheManager cacheManager = CacheKit.getCacheManager();
+    Map<String, Object> retval = cacheToMap(cacheManager, cacheName);
+    return retval;
+  }
+
+  public Object getCacheValueByCacheNameAndCacheKey(String cacheName, String key) {
+    Object object = CacheKit.get(cacheName, key);
+    return object;
+  }
+
+  private Map<String, Object> cacheToMap(CacheManager cacheManager, String name) {
+    Cache cache = cacheManager.getCache(name);
+    @SuppressWarnings("unchecked")
+    List<String> keys = cache.getKeys();
+    Map<String, Object> map = new HashMap<>(keys.size());
+    for (String key : keys) {
+      Element element = cache.get(key);
+      Object value = element.getObjectValue();
+      map.put(key, value);
+    }
+    return map;
+  }
+}
+```
+
+访问测试
+http://localhost/ecache/getCacheNames  
+http://localhost/ecache/getAllCacheValue
+
 ## 22.常用内置类方法说明
 
 ### 18.1.HttpRequest
