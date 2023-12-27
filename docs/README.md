@@ -5714,7 +5714,7 @@ public class TioBootWebApp {
 
 Quartz 不需要和 hotswap-classloader 整合.因为 Quartz 对任务的操作都是静态的
 
-## tio-boot jfinal-plugins 整合 ecache
+## tio-boot jfinal-plugins 整合 ehcache
 
 Tio-boot 是一个基于 Java 的网络编程框架，用于快速开发高性能的网络应用程序。
 Ehcache 是一个广泛使用的开源 Java 缓存，它可以提高应用程序的性能和扩展性。
@@ -5731,7 +5731,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.2.9</tio.boot.version>
+    <tio.boot.version>1.3.0</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -5814,22 +5814,23 @@ ehcache.xml 配置文件内容如下
 
 ### EhCachePluginConfig 配置类
 
-这个类是一个配置类，用于初始化和配置 Ehcache 插件。它通过 `@Configuration` 注解标记为配置类。类中的方法 `ehCachePlugin` 通过 `@Initialization` 注解标记为初始化方法。在这个方法中，创建了一个 `EhCachePlugin` 实例并启动它。启动插件意味着 Ehcache 将根据 `ehcache.xml` 配置文件的设置进行初始化。
+这个类是一个配置类，用于初始化和配置 EhCache 插件。它通过 @Configuration 注解标记为配置类。类中的方法 ehCachePlugin 通过 @Bean 注解标记为 Bean 方法,框架启动时会执行该方法并将返回值放到 bean 容器中。在这个方法中，创建了一个 Plugin 实例并启动它。destroyMethod 指定在服务关闭时将会调用该方法,关闭该插件
 
 ```
 package com.litongjava.tio.web.hello.config;
 
+import com.litongjava.jfinal.aop.annotation.Bean;
 import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.jfinal.aop.annotation.Initialization;
 import com.litongjava.jfinal.plugin.ehcache.EhCachePlugin;
 
 @Configuration
 public class EhCachePluginConfig {
 
-  @Initialization
-  public void ehCachePlugin() {
+  @Bean(destroyMethod = "stop")
+  public EhCachePlugin ehCachePlugin() {
     EhCachePlugin ehCachePlugin = new EhCachePlugin();
     ehCachePlugin.start();
+    return ehCachePlugin;
   }
 }
 ```
@@ -5961,7 +5962,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.2.9</tio.boot.version>
+    <tio.boot.version>1.3.0</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -6015,26 +6016,27 @@ jfinal-plugins 依赖如下
 
 ### RedisPluginConfig 配置类
 
-这个类是一个配置类，用于初始化和配置 Redis 插件。它通过 `@Configuration` 注解标记为配置类。类中的方法 `redisPlugin` 通过 `@Initialization` 注解标记为初始化方法。在这个方法中，创建了一个 `RedisPlugin` 实例并启动它。启动插件意味着 RedisPlugin 将连接 redis 服务
+这个类是一个配置类，用于初始化和配置 EhCache 插件。它通过 @Configuration 注解标记为配置类。类中的方法 redisPlugin 通过 @Bean 注解标记为 Bean 方法,框架启动时会执行该方法并将返回值放到 bean 容器中。在这个方法中，创建了一个 Plugin 实例并启动它。destroyMethod 指定在服务关闭时将会调用该方法,关闭该插件
 
 ```
 package com.litongjava.tio.web.hello.config;
 
+import com.litongjava.jfinal.aop.annotation.Bean;
 import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.jfinal.aop.annotation.Initialization;
 import com.litongjava.jfinal.plugin.redis.Redis;
 import com.litongjava.jfinal.plugin.redis.RedisPlugin;
 
 @Configuration
 public class RedisPluginConfig {
 
-  @Initialization
-  public void redisPlugin() {
+  @Bean(destroyMethod = "stop")
+  public RedisPlugin redisPlugin() {
     // 用于缓存bbs模块的redis服务
     RedisPlugin bbsRedis = new RedisPlugin("bbs", "localhost");
     bbsRedis.start();
     // 测试连接
     Redis.use("bbs").getJedis().connect();
+    return bbsRedis;
   }
 }
 
@@ -6139,6 +6141,124 @@ public class RedisTestController {
 ```
 
 访问测试 http://localhost/redis/test/test01 http://localhost/redis/test/test02 http://localhost/redis/test/test03
+
+## tio-boot jfinal-plugins 整合 cron4j
+
+tio-boot 是一个基于 Java 的网络编程框架，用于快速开发高性能的网络应用程序。
+cron4j 是一个广泛使用的定时任务框架
+
+整合 ecache 需要用到 jfinal-plugins
+https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
+
+### 添加依赖
+
+```
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <graalvm.version>23.1.1</graalvm.version>
+    <tio.boot.version>1.3.0</tio.boot.version>
+    <lombok-version>1.18.30</lombok-version>
+    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+    <final.name>web-hello</final.name>
+    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok-version}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>hotswap-classloader</artifactId>
+      <version>${hotswap-classloader.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>jfinal-plugins</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jfinal</groupId>
+      <artifactId>activerecord</artifactId>
+      <version>5.1.2</version>
+    </dependency>
+  </dependencies>
+
+```
+
+依赖解释
+
+- tio-boot 是框架核心，
+- jfinal-plugins 提供与 Ehcache 的集成
+- activerecord jfinal-plugins 依赖 jfinal-plugins
+
+jfinal-plugins 依赖如下
+
+> cron4j:2.2.5
+> ehcache-core:2.6.11
+> jedis:3.6.3
+> fst:2.57
+
+### Cron4jPluginConfig 配置类
+
+这个类是一个配置类，用于初始化和配置 Cron4j 插件。它通过 `@Configuration` 注解标记为配置类。类中的方法 `cron4jPlugin` 通过 `@Bean` 注解标记为 Bean 方法,框架启动时会执行该方法并将返回值放到 bean 容器中。在这个方法中，创建了一个 `Plugin` 实例并启动它。destroyMethod 指定在服务关闭时将会调用该方法,关闭该插件
+cron4j 插件的表达式和其他框架和语言的表达式不同,具体请参考文档
+https://litongjava.github.io/jfinal-doc/en/9%20Cron4jPlugin/9.1%20Overview.html
+
+```
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.plugin.cron4j.Cron4jPlugin;
+import com.litongjava.tio.web.hello.task.MyTask;
+
+@Configuration
+public class Cron4jPluginConfig {
+
+  @Bean(destroyMethod = "stop")
+  public Cron4jPlugin cron4jPlugin() {
+    Cron4jPlugin cp = new Cron4jPlugin();
+    // 每1分钟执行一次
+    cp.addTask("* * * * * ", new MyTask());
+    cp.start();
+    return cp;
+  }
+}
+```
+
+创建一个任务
+
+```
+package com.litongjava.tio.web.hello.task;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class MyTask implements Runnable {
+
+  @Override
+  public void run() {
+    log.info("执行任务");
+  }
+
+}
+
+```
+
+启动服务,测试任务是否执行
 
 ## 22.常用内置类方法说明
 
