@@ -45,7 +45,7 @@ If you are developing with Java 8, please use the following dependency:
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <tio-boot.version>1.2.9</tio-boot.version>
+    <tio-boot.version>1.3.0</tio-boot.version>
   </properties>
   <dependencies>
     <dependency>
@@ -94,7 +94,7 @@ public class HelloApp {
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.2.9</tio.boot.version>
+  <tio.boot.version>1.3.0</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
   <final.name>web-hello</final.name>
