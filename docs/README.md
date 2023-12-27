@@ -718,8 +718,8 @@ tar -xf graalvm-jdk-21_linux-x64_bin.tar.gz -C ~/program/
 2. 配置环境变量:
 
 ```shell
-export JAVA_HOME=~/program/graalvm-jdk-21.0.1+18.1
-export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+18.1
+export JAVA_HOME=~/program/graalvm-jdk-21.0.1+12.1
+export GRAALVM_HOME=~/program/graalvm-jdk-21.0.1+12.1
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
@@ -743,6 +743,12 @@ export PATH=$MVN_HOME/bin:$PATH
 
 ```
 mvn package -DskipTests -Pnative
+```
+
+实际执行的打包命令如下,笔者在打包时移除了 hotswap-classloader
+
+```
+/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.0/tio-boot-1.3.0.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
 ```
 
 启动
@@ -794,7 +800,7 @@ CMD ["/usr/java/jdk1.8.0_211/bin/java", "-jar", "tio-boot-web-hello-0.0.1-SNAPSH
 
 #### 3.3.2.binary
 
-如果要使用二进制的方式启动,推荐使用 TioApplication 启动应用,修改启动类
+如果要使用二进制的方式启动,推荐移除 hotswap-classloader 依赖使用 TioApplication 启动应用,示例代码如下
 
 ```
 TioApplication.run(HelloApp.class, args);
@@ -806,6 +812,7 @@ TioApplication.run(HelloApp.class, args);
 mvn clean package -DskipTests -Pnative
 ```
 
+运行二进制文件失败,不支持反射
 测试失败,原因不不明
 
 ```
