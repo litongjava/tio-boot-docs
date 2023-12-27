@@ -4406,102 +4406,82 @@ tio-utils 内置了 CacheUtils 用户提供对缓存数据的支持,提供的工
 
 下面演示一下 CaffeineCache,RedisCache,CaffeineRedisCache 的使用
 
+### CacheUtils
+
+com.litongjava.tio.utils.cache.CacheUtils 提供了 get 方法,方法签名如下
+
+```
+public static <T extends Serializable> T get(ICache cache, String cacheKey, boolean putTempToCacheIfNull,FirsthandCreater<T> firsthandCreater);
+```
+
+方法解释:
+根据 cacheKey 从缓存中获取对象，如果缓存中没有该 key 对象，则用 firsthandCreater 获取对象，并将对象用 cacheKey 存于 cache 中
+
 ### 缓存数据到 Caffeine
 
-自定义 CacheName
+#### 添加依赖
+
+tio-utils 虽然提供了对 caffeine 的支持,但是并没有继承 caffeine 依赖,所以添加 caffeine 依赖,推荐 2.x 版本,因为 3.x 版已经不支持 jdk 1.8
 
 ```
-package com.litongjava.tio.boot.hello.model;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-public class CacheName {
-  // `cacheName`（缓存名称）
-  private String name;
-  // `timeToLiveSeconds`（生存时间）和`timeToIdleSeconds`（闲置时间）。
-  private Long timeToLiveSeconds;
-  private Long timeToIdleSeconds;
-}
-
+<dependency>
+  <groupId>com.github.ben-manes.caffeine</groupId>
+  <artifactId>caffeine</artifactId>
+  <version>2.9.3</version>
+</dependency>
 ```
 
-```
-package com.litongjava.tio.boot.hello.services;
+#### 配置类 CacheNameConfig
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.litongjava.tio.boot.hello.model.CacheName;
-import com.litongjava.tio.utils.time.Time;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@Data
-public class CacheNameService {
-  private CacheName demo = new CacheName("demo", null, Time.MINUTE_1 * 10);
-
-  public List<CacheName> cacheNames() {
-    List<CacheName> list = new ArrayList<>();
-    list.add(demo);
-    return list;
-  }
-
-}
-```
+CacheName,使用默认的 com.litongjava.tio.utils.cache.CacheName
+CacheNameService,使用默认的 com.litongjava.tio.utils.cache.CacheNameService
 
 ```
-package com.litongjava.tio.boot.hello.config;
+package com.litongjava.tio.web.hello.config;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.litongjava.jfinal.aop.annotation.Bean;
 import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.tio.boot.hello.model.CacheName;
-import com.litongjava.tio.boot.hello.services.CacheNameService;
-import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
+import com.litongjava.tio.utils.cache.CacheName;
+import com.litongjava.tio.utils.cache.CacheNameService;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCacheFactory;
+import com.litongjava.tio.utils.time.Time;
 
 @Configuration
 public class CacheNameConfig {
 
   @Bean
   public CacheNameService register() {
+    CacheName demo = new CacheName("demo", null, Time.MINUTE_1 * 10);
     CacheNameService cacheNameService = new CacheNameService();
-    List<CacheName> names = cacheNameService.cacheNames();
+    cacheNameService.add(demo);
+
+    Collection<CacheName> names = cacheNameService.cacheNames();
     for (CacheName cacheName : names) {
-      CaffeineCache.register(cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+      CaffeineCacheFactory.INSTANCE.register(cacheName);
     }
     return cacheNameService;
   }
 }
+
 ```
 
 ```
-package com.litongjava.tio.boot.hello.controller;
+package com.litongjava.tio.web.hello.controller;
 
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.tio.boot.hello.services.CacheNameConstants;
-import com.litongjava.tio.boot.hello.services.CacheService;
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.utils.cache.CacheUtils;
 import com.litongjava.tio.utils.cache.FirsthandCreater;
 import com.litongjava.tio.utils.cache.ICache;
-import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCacheFactory;
 
 import lombok.extern.slf4j.Slf4j;
-@Controller
-@RequestPath("/cache")
+
+@RequestPath("/cache/caffeine")
 @Slf4j
-public class CacheTestController {
-  @RequestPath("/test2")
+public class CacheCaffeineTestController {
+
   public Object test2() {
     // firsthandCreater用户查询数据库
     FirsthandCreater<String> firsthandCreater = new FirsthandCreater<String>() {
@@ -4512,15 +4492,19 @@ public class CacheTestController {
       }
     };
 
-    String cacheName = Aop.get(CacheNameService.class).getDemo().getName();
-    ICache cache = CaffeineCache.getCache(cacheName);
+    // 通常是tableName
+    String cacheName = "demo";
+    ICache cache = CaffeineCacheFactory.INSTANCE.getCache(cacheName);
     String key = "key";
     boolean putTempToCacheIfNull = false;
     String value = CacheUtils.get(cache, key, putTempToCacheIfNull, firsthandCreater);
     return value;
   }
+
 }
 ```
+
+访问测试 http://localhost/cache/caffeine/test2
 
 #### CacheNameService 类
 
@@ -4555,6 +4539,20 @@ public class CacheTestController {
 
 使用 tio-utils 提供的 CacheUtils 缓存数据到 redis
 
+#### 添加依赖
+
+因为需要使用 redisson 连接 redis,所以需要添加 redisson 依赖
+
+```
+<dependency>
+  <groupId>org.redisson</groupId>
+  <artifactId>redisson</artifactId>
+  <version>3.16.0</version>
+</dependency>
+```
+
+#### RedissonConfig 配置类
+
 ```
 package com.litongjava.tio.boot.hello.config;
 
@@ -4586,60 +4584,67 @@ public class RedissonConfig {
 }
 ```
 
-```
-package com.litongjava.tio.boot.hello.config;
+#### CacheNameConfig 配置类
 
-import java.util.List;
+```
+package com.litongjava.tio.web.hello.config;
+
+import java.util.Collection;
 
 import org.redisson.api.RedissonClient;
 
 import com.litongjava.jfinal.aop.Aop;
 import com.litongjava.jfinal.aop.annotation.Bean;
 import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.tio.boot.hello.model.CacheName;
-import com.litongjava.tio.boot.hello.services.CacheNameService;
-import com.litongjava.tio.utils.cache.redis.RedisCache;
+import com.litongjava.tio.utils.cache.CacheName;
+import com.litongjava.tio.utils.cache.CacheNameService;
+import com.litongjava.tio.utils.cache.caffeine.CaffeineCacheFactory;
+import com.litongjava.tio.utils.cache.redis.RedisCacheFactory;
+import com.litongjava.tio.utils.time.Time;
 
 @Configuration
 public class CacheNameConfig {
 
   @Bean
   public CacheNameService register() {
-    RedissonClient redissonClient = Aop.get(RedissonClient.class);
+    //设置CacheName
+    CacheName demo = new CacheName("demo", null, Time.MINUTE_1 * 10);
+    //将CacheName添加到CacheNameService
     CacheNameService cacheNameService = new CacheNameService();
-    List<CacheName> names = cacheNameService.cacheNames();
+    cacheNameService.add(demo);
+
+    //将redissonClient添加到RedisCacheFactory
+    RedissonClient redissonClient = Aop.get(RedissonClient.class);
+    RedisCacheFactory.INSTANCE.setRedisson(redissonClient);
+
+    //注册cacheName
+    Collection<CacheName> names = cacheNameService.cacheNames();
     for (CacheName cacheName : names) {
-      // CaffeineCache.register(cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
-      RedisCache.register(redissonClient,
-          // cache
-          cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+      CaffeineCacheFactory.INSTANCE.register(cacheName);
+      RedisCacheFactory.INSTANCE.register(cacheName);
     }
     return cacheNameService;
   }
 }
-
 ```
 
-```
-package com.litongjava.tio.boot.hello.controller;
+#### 测试 Controller
 
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.tio.boot.hello.services.CacheNameService;
-import com.litongjava.tio.boot.hello.services.CacheService;
+```
+package com.litongjava.tio.web.hello.controller;
+
 import com.litongjava.tio.http.server.annotation.RequestPath;
 import com.litongjava.tio.utils.cache.CacheUtils;
 import com.litongjava.tio.utils.cache.FirsthandCreater;
 import com.litongjava.tio.utils.cache.ICache;
-import com.litongjava.tio.utils.cache.caffeine.CaffeineCache;
-import com.litongjava.tio.utils.cache.redis.RedisCache;
+import com.litongjava.tio.utils.cache.redis.RedisCacheFactory;
 
 import lombok.extern.slf4j.Slf4j;
-@Controller
-@RequestPath("/cache")
-@Slf4j
-public class CacheTestController {
 
-  @RequestPath("/test3")
+@RequestPath("/cache/redis")
+@Slf4j
+public class CacheRedisTestController {
+
   public Object test3() {
     // firsthandCreater用户查询数据库
     FirsthandCreater<String> firsthandCreater = new FirsthandCreater<String>() {
@@ -4650,8 +4655,8 @@ public class CacheTestController {
       }
     };
 
-    String cacheName = Aop.get(CacheNameService.class).getDemo().getName();
-    ICache cache = RedisCache.getCache(cacheName);
+    String cacheName = "demo";
+    ICache cache = RedisCacheFactory.INSTANCE.getCache(cacheName);
     String key = "key";
     boolean putTempToCacheIfNull = false;
     String value = CacheUtils.get(cache, key, putTempToCacheIfNull, firsthandCreater);
@@ -4660,6 +4665,9 @@ public class CacheTestController {
 }
 ```
 
+#### 访问测试
+
+http://localhost/cache/redis/test3
 代码展示了如何在 Tio 框架中使用 Redis 作为缓存解决方案。以下是对代码的详细解释：
 
 #### RedissonConfig 类
@@ -4694,16 +4702,90 @@ public class CacheTestController {
 
 这段代码演示了如何在 Tio 框架中配置和使用 Redis 作为缓存解决方案。它使用 RedissonClient 连接到 Redis 服务器，并通过 CacheNameService 管理缓存的不同配置。CacheTestController 类演示了如何在实际应用中从缓存中读取数据，如果缓存中没有数据，会从数据库中获取并缓存。这种方式在需要高效读取频繁访问数据的应用中非常有用。
 
-### caffeine 和 redis 实现的两级缓存
+### 使用 CacheUtils 整合 caffeine 和 redis 实现的两级缓存
+
+#### 配置类 CacheNameConfig
 
 ```
-//基于CAFFEINE和REDIS实现的两级缓存
-import com.litongjava.tio.utils.cache.caffeineredis.CaffeineRedisCache;
+package com.litongjava.tio.web.hello.config;
 
-CaffeineRedisCache.register(redissonClient,
-    // cache
-    cacheName.getName(), cacheName.getTimeToLiveSeconds(), cacheName.getTimeToIdleSeconds());
+import java.util.Collection;
+
+import org.redisson.api.RedissonClient;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.tio.utils.cache.CacheName;
+import com.litongjava.tio.utils.cache.CacheNameService;
+import com.litongjava.tio.utils.cache.caffeineredis.CaffeineRedisCacheFactory;
+import com.litongjava.tio.utils.time.Time;
+
+@Configuration
+public class CacheNameConfig {
+
+  @Bean
+  public CacheNameService register() {
+    //设置CacheName
+    CacheName demo = new CacheName("demo", null, Time.MINUTE_1 * 10);
+    //将CacheName添加到CacheNameService
+    CacheNameService cacheNameService = new CacheNameService();
+    cacheNameService.add(demo);
+
+    //将redissonClient添加到CaffeineRedisCacheFactory
+    RedissonClient redissonClient = Aop.get(RedissonClient.class);
+    CaffeineRedisCacheFactory.INSTANCE.init(redissonClient);
+
+    //注册cacheName
+    Collection<CacheName> names = cacheNameService.cacheNames();
+    for (CacheName cacheName : names) {
+      //CaffeineCacheFactory.INSTANCE.register(cacheName);
+      //RedisCacheFactory.INSTANCE.register(cacheName);
+      CaffeineRedisCacheFactory.INSTANCE.register(cacheName);
+    }
+    return cacheNameService;
+  }
+}
 ```
+
+#### 测试类 CacheCaffeineRedisTestController
+
+```
+package com.litongjava.tio.web.hello.controller;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.utils.cache.CacheUtils;
+import com.litongjava.tio.utils.cache.FirsthandCreater;
+import com.litongjava.tio.utils.cache.ICache;
+import com.litongjava.tio.utils.cache.caffeineredis.CaffeineRedisCacheFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/cache/caffeine/redis")
+@Slf4j
+public class CacheCaffeineRedisTestController {
+
+  public Object test() {
+    // firsthandCreater用户查询数据库
+    FirsthandCreater<String> firsthandCreater = new FirsthandCreater<String>() {
+      @Override
+      public String create() {
+        log.info("查询数据库");
+        return "index";
+      }
+    };
+
+    String cacheName = "demo";
+    ICache cache = CaffeineRedisCacheFactory.INSTANCE.getCache(cacheName);
+    String key = "key";
+    boolean putTempToCacheIfNull = false;
+    String value = CacheUtils.get(cache, key, putTempToCacheIfNull, firsthandCreater);
+    return value;
+  }
+}
+```
+
+访问 http://localhost/cache/caffeine/redis/test 查看测试结果
 
 ## tio-boot 内置 Tcp 支持
 
