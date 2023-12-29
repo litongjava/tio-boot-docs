@@ -9,12 +9,14 @@ https://chat.openai.com/g/g-za2zgLE34-jfinal
 
 ## 1.tio-boot 简介
 
+宗旨:去繁求减,返璞归真,轻装上阵,高效开发  
 tio-boot 是一款基于 Java AIO 高性能 Web 框架,可以 tio-boot 可以简单的让单台服务器承担上万并发
 
 - 1.基于 Java AIO 和 t-io 进行开发
 - 2.引入了 spring-boot 中的配置类思想,支持 spring-boot 的常用注解,但是没有使用 spring 的 ioc 和 aop
 - 3.引入了 jfinal 的 aop,enjoy 模版引擎和 active-record 连接数据库
 - 4.支持常见的 web 组件,如拦截器和 websocket
+
 
 tio 测试数据
 
