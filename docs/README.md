@@ -619,7 +619,7 @@ https://github.com/litongjava/hotswap-classloader
         </dependency>
       </dependencies>
       <build>
-        <finalName>${final.name}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
           <plugin>
             <groupId>org.graalvm.nativeimage</groupId>
@@ -635,7 +635,7 @@ https://github.com/litongjava/hotswap-classloader
             </executions>
             <configuration>
               <skip>false</skip>
-              <imageName>${project.build.finalName}</imageName>
+              <imageName>${project.artifactId}</imageName>
               <mainClass>${main.class}</mainClass>
               <buildArgs>
                 -H:+RemoveSaturatedTypeFlows
@@ -7174,3 +7174,574 @@ public class HelloApp {
 ```
 
 然后运行项目访问 http://localhost/paddle/ocr/test 即可看到测试结果
+
+## tio-boot 整合 Mybatis
+
+### 简介
+
+Tio-Boot： Tio-Boot 是一个基于 Java 高性能网络编程框架，用于快速搭建 Web 、WebSocket、TCP 等网络应用。在本教程中，通过 Tio-Boot 启动了一个简单的 Web 服务，用于演示整合 MyBatis
+
+MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型数据库之间进行映射。在本教程中，使用 MyBatis 配置数据源、映射文件以及 Mapper 接口，实现了与数据库的交互
+
+### 使用工具类整合 Mybatis
+
+#### 添加依赖
+
+```
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <graalvm.version>23.1.1</graalvm.version>
+    <tio.boot.version>1.3.0</tio.boot.version>
+    <lombok-version>1.18.30</lombok-version>
+    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+    <final.name>web-hello</final.name>
+    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>tio-boot</artifactId>
+      <version>${tio.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok-version}</version>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.litongjava</groupId>
+      <artifactId>hotswap-classloader</artifactId>
+      <version>${hotswap-classloader.version}</version>
+    </dependency>
+
+    <!-- mybatis -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.4.4</version>
+    </dependency>
+    <!-- 连接池 -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.10</version>
+    </dependency>
+    <!-- 数据库驱动 -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.46</version>
+    </dependency>
+  </dependencies>
+```
+
+上面的依赖除去 tio-boot 的相关依赖外还有 mybatis,druid 和 mysql-connector-java
+
+- mybatis mybatis 依赖
+- druid 数据库连接池依赖
+- mysql-connector-java mysql 驱动依赖
+
+#### 启动 tio-boot
+
+编写 IndexController
+
+```
+package demo.mybatis.controller;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/")
+public class IndexController {
+
+  @RequestPath()
+  public String index() {
+    return "index";
+  }
+
+}
+```
+
+编写启动类
+
+```
+package demo.mybatis;
+
+import com.litongjava.jfinal.aop.annotation.ComponentScan;
+import com.litongjava.tio.boot.TioApplication;
+
+@ComponentScan
+public class MybatisApp {
+  public static void main(String[] args) {
+    TioApplication.run(MybatisApp.class, args);
+  }
+
+}
+```
+
+启动 MybatisApp,访问 http://localhost 如果可以启动成功说明 tio-boot 启动成功
+
+#### 准备模拟数据
+
+```
+CREATE TABLE system_admin(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	login_name VARCHAR(32),
+	PASSWORD VARCHAR(32)
+);
+
+INSERT INTO system_admin(login_name,PASSWORD) VALUE('litong','00000000');
+
+```
+
+```
+SELECT * FROM system_admin
+```
+
+1. 创建了一个名为`system_admin`的新表。这个表有三个字段：`id`，`login_name`和`PASSWORD`。`id`是一个整数类型的字段，被设置为主键，并且会自动增加。`login_name`和`PASSWORD`都是最多包含 32 个字符的字符串。
+
+2. 在`system_admin`表中插入了一条新的记录。`login_name`的值被设置为`litong`，`PASSWORD`的值被设置为`00000000`。
+
+#### 整合 mybatis
+
+SystemAdmin mybatis 的 model 用于和数据表结构对应
+
+```
+package demo.mybatis.model;
+
+import lombok.Data;
+
+@Data
+public class SystemAdmin {
+  private int id;
+  private String loginName;
+  private String password;
+}
+```
+
+SystemAdminMapper mybatis 的 mapper,定义了一个方法 getSystemAdmin 用户查询数据库
+
+```
+package demo.mybatis.mapper;
+
+import demo.mybatis.model.SystemAdmin;
+
+public interface SystemAdminMapper {
+
+  public SystemAdmin getSystemAdmin(SystemAdmin systemAdmin);
+}
+
+```
+
+SystemAdminMapper.xml
+
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="demo.mybatis.mapper.SystemAdminMapper">
+
+  <resultMap type="SystemAdmin" autoMapping="true" id="SystemAdminResult">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+
+  <select id="getSystemAdmin" resultMap="SystemAdminResult">
+    select * from system_admin where 1=1
+    <if test="loginName != null and loginName !=''">
+      and login_name=#{loginName}
+    </if>
+  </select>
+</mapper>
+```
+
+SystemAdminMapper.xml
+
+1. `<mapper namespace="demo.mybatis.mapper.SystemAdminMapper">`：这个标签定义了一个命名空间，它通常与对应的 Mapper 接口的全限定名相匹配。
+
+2. `<resultMap type="SystemAdmin" autoMapping="true" id="SystemAdminResult">`：这个标签定义了一个结果映射，它描述了如何从数据库结果集中的列映射到对象的属性。`type`属性指定了目标类的类型，`autoMapping`属性设置为`true`表示自动映射结果集的列到类的属性，`id`属性是这个结果映射的唯一标识符。
+
+3. `<id column="id" jdbcType="INTEGER" property="id" />`：这个标签表示`id`列的值将被映射到`SystemAdmin`类的`id`属性，列的 JDBC 类型是`INTEGER`。
+
+4. `<result column="login_name" jdbcType="VARCHAR" property="loginName" />`和`<result column="password" jdbcType="VARCHAR" property="password" />`：这两个标签表示`login_name`和`password`列的值将被映射到`SystemAdmin`类的`loginName`和`password`属性，列的 JDBC 类型是`VARCHAR`。
+
+5. `<select id="getSystemAdmin" resultMap="SystemAdminResult">`：这个标签定义了一个查询语句，`id`属性是这个查询的唯一标识符，`resultMap`属性指定了用于映射结果集的结果映射。
+
+6. `select * from system_admin where 1=1`：这是查询的 SQL 语句，它从`system_admin`表中选择所有的记录。
+
+7. `<if test="loginName != null and loginName !=''">`：这个标签是一个条件判断，如果`loginName`不为空，那么就会添加`and login_name=#{loginName}`到 SQL 语句中，这样就可以根据`loginName`过滤结果集。
+
+#### mybatis.xml
+
+```
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+  <!-- 打印查询语句 -->
+  <settings>
+    <setting name="logImpl" value="STDOUT_LOGGING" />
+  </settings>
+
+
+  <typeAliases>
+    <package name="demo.mybatis.model" />
+  </typeAliases>
+  <environments default="development">
+
+    <environment id="development">
+      <transactionManager type="JDBC">
+        <property name="" value="" />
+      </transactionManager>
+
+      <dataSource type="UNPOOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://192.168.3.9:3306/robot_ex" />
+        <property name="username" value="root" />
+        <property name="password" value="robot_123456#" />
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="SystemAdminMapper.xml" />
+  </mappers>
+
+</configuration>
+```
+
+MyBatis 的全局配置文件，它定义了 MyBatis 的运行环境和行为
+
+1. `<settings>`：这个标签用于配置 MyBatis 的全局设置。在这个例子中，`<setting name="logImpl" value="STDOUT_LOGGING" />`表示将日志输出到标准输出。
+
+2. `<typeAliases>`：这个标签用于定义类型别名，它可以简化 XML 配置文件中的全限定类名。在这个例子中，`<package name="demo.mybatis.model" />`表示为`demo.mybatis.model`包下的所有类自动创建别名。
+
+3. `<environments default="development">`：这个标签用于配置环境。`default`属性指定了默认的环境。
+
+4. `<environment id="development">`：这个标签定义了一个环境，`id`属性是这个环境的唯一标识符。
+
+5. `<transactionManager type="JDBC">`：这个标签定义了事务管理器的类型，这里的类型是`JDBC`。
+
+6. `<dataSource type="UNPOOLED">`：这个标签定义了数据源的类型，这里的类型是`UNPOOLED`，表示使用非池化的数据源。
+
+7. `<property name="driver" value="com.mysql.jdbc.Driver" />`等：这些标签定义了数据源的属性，包括驱动类名、数据库 URL、用户名和密码。
+
+8. `<mappers>`：这个标签用于注册映射器。在这个例子中，`<mapper resource="SystemAdminMapper.xml" />`表示注册了一个映射器，它的配置文件是`SystemAdminMapper.xml`。
+
+#### 编写一个工具类用于读取 mybatis.xml
+
+MybatisUtils
+
+```
+package demo.mybatis.utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+public class MybatisUtils {
+
+  public static final String resource = "mybatis.xml";
+  private static SqlSessionFactory factory;
+  static {
+    InputStream inputStream = null;
+    try {
+      inputStream = Resources.getResourceAsStream(resource);
+      factory = new SqlSessionFactoryBuilder().build(inputStream);
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
+  }
+
+  /**
+   * 返回factory
+   * @return
+   */
+  public static SqlSessionFactory getFactory() {
+    return factory;
+  }
+
+  /**
+   * 打开会话
+   * @return
+   */
+  public static SqlSession openSession(boolean autoCommit) {
+    return factory.openSession(autoCommit);
+  }
+
+  public static SqlSession openSession() {
+    return factory.openSession(true);
+  }
+
+}
+```
+
+`MybatisUtils`的 Java 工具类，它提供了一些用于操作 MyBatis 的静态方法。
+
+1. `public static final String resource = "mybatis.xml";`：这是一个静态常量，表示 MyBatis 的配置文件的名称。
+
+2. `private static SqlSessionFactory factory;`：这是一个静态变量，表示 MyBatis 的`SqlSessionFactory`，它是创建`SqlSession`的工厂。
+
+3. `static {...}`：这是一个静态代码块，它在类加载时执行。在这个代码块中，它试图从`mybatis.xml`文件中读取 MyBatis 的配置，并创建一个`SqlSessionFactory`。
+
+4. `public static SqlSessionFactory getFactory() {...}`：这是一个静态方法，它返回`SqlSessionFactory`。
+
+5. `public static SqlSession openSession(boolean autoCommit) {...}`：这是一个静态方法，它创建并返回一个新的`SqlSession`。`autoCommit`参数决定了这个`SqlSession`是否自动提交事务。
+
+6. `public static SqlSession openSession() {...}`：这是一个重载的静态方法，它创建并返回一个新的`SqlSession`，并且这个`SqlSession`会自动提交事务。
+
+#### 在 Controller 中获取 Mapper
+
+MybatisController
+
+```
+package demo.mybatis.controller;
+
+import java.sql.Connection;
+
+import org.apache.ibatis.binding.MapperRegistry;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import demo.mybatis.mapper.SystemAdminMapper;
+import demo.mybatis.utils.MybatisUtils;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequestPath("/mybatis")
+public class MybatisController {
+  public String getMapper() {
+    SqlSessionFactory factory = MybatisUtils.getFactory();
+    log.info("factory:{}", factory);
+    SqlSession sqlSession = MybatisUtils.openSession(true);
+    log.info("sqlSession:{}", sqlSession);
+    Connection connection = sqlSession.getConnection();
+    log.info("connection:{}", connection);
+    Configuration configuration = sqlSession.getConfiguration();
+    log.info("configuration:{}", configuration);
+    MapperRegistry mapperRegistry = configuration.getMapperRegistry();
+    log.info("mapperRegistry:{}", mapperRegistry);
+    SystemAdminMapper mapper = sqlSession.getMapper(SystemAdminMapper.class);
+    log.info("mapper:{}", mapper);
+    return mapper.toString();
+  }
+}
+
+```
+
+`public String getMapper() {...}`：这是一个公共方法，它获取了一个`SystemAdminMapper`对象，并返回了它的字符串表示。
+
+- `SqlSessionFactory factory = MybatisUtils.getFactory();`：这行代码从`MybatisUtils`工具类中获取了一个`SqlSessionFactory`对象。
+
+- `SqlSession sqlSession = MybatisUtils.openSession(true);`：这行代码从`MybatisUtils`工具类中获取了一个`SqlSession`对象，这个`SqlSession`对象会自动提交事务。
+
+- `Connection connection = sqlSession.getConnection();`：这行代码获取了`SqlSession`对象的数据库连接。
+
+- `Configuration configuration = sqlSession.getConfiguration();`：这行代码获取了`SqlSession`对象的配置。
+
+- `MapperRegistry mapperRegistry = configuration.getMapperRegistry();`：这行代码获取了配置的映射器注册表。
+
+- `SystemAdminMapper mapper = sqlSession.getMapper(SystemAdminMapper.class);`：这行代码从`SqlSession`对象中获取了一个`SystemAdminMapper`对象。
+
+- `return mapper.toString();`：这行代码返回了`SystemAdminMapper`对象的字符串表示。
+
+### 使用配类整合 mybatis-plus
+
+MySqlSessionManager 用户管理 SqlSession
+
+```
+package demo.mybatis.config;
+import org.apache.ibatis.session.SqlSession;
+public class MySqlSessionManager {
+
+  private static SqlSession sqlSession;
+
+  public static SqlSession getSqlSession() {
+    return sqlSession;
+  }
+
+  public static void setSqlSession(SqlSession sqlSession) {
+    MySqlSessionManager.sqlSession = sqlSession;
+  }
+
+  public static <T> T getMapper(Class<T> clazz) {
+    return sqlSession.getMapper(clazz);
+  }
+}
+```
+
+MybatisConfig 配置类
+
+```
+package demo.mybatis.config;
+
+import java.io.IOException;
+import java.io.Reader;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Configuration
+public class MybatisConfig {
+
+  // 配置文件名称
+  private String mybatisConfigXml = "mybatis.xml";
+
+  /**
+   * 获取SqlSession
+   *
+   * @return
+   */
+  @Bean(destroyMethod = "close")
+  public SqlSession getSqlSession() {
+    Reader reader = null;
+    try {
+      reader = Resources.getResourceAsReader(mybatisConfigXml);
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+      // 通过sqlSessionFactory打开一个数据库会话
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      MySqlSessionManager.setSqlSession(sqlSession);
+      return sqlSession;
+    } catch (IOException e) {
+      log.error("can not get sqlSession", e);
+    }
+    return null;
+  }
+
+}
+```
+
+`MybatisConfig 使用了 MyBatis 框架来配置数据库会话。
+
+1. `@Slf4j`：这是一个 Lombok 库提供的注解，它在类中自动创建一个名为`log`的 SLF4J（Simple Logging Facade for Java）日志对象。
+
+2. `private String mybatisConfigXml = "mybatis.xml";`：这是一个私有变量，表示 MyBatis 的配置文件的名称。
+
+3. `@Bean(destroyMethod = "close")`：这是一个注解，它定义了一个 Bean，并指定了销毁方法为`close`。
+
+4. `private SqlSession getSqlSession() {...}`：这是一个私有方法，它创建并返回一个新的`SqlSession`对象。让我们详细看看这个方法做了什么：
+
+   - `Reader reader = Resources.getResourceAsReader(mybatisConfigXml);`：这行代码从`mybatis.xml`文件中读取 MyBatis 的配置。
+
+   - `SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);`：这行代码使用读取到的配置创建了一个`SqlSessionFactory`对象。
+
+   - `SqlSession sqlSession = sqlSessionFactory.openSession();`：这行代码从`SqlSessionFactory`对象中打开了一个新的数据库会话。
+
+   - `MySqlSessionManager.setSqlSession(sqlSession);`：这行代码将新打开的数据库会话设置到`MySqlSessionManager`中。
+
+   - `return sqlSession;`：这行代码返回了新打开的数据库会话。
+
+   - 如果在创建数据库会话过程中发生了异常，那么它会被捕获，并记录到日志中。
+
+#### 在 Controller 中获取 Mapper
+
+```
+package demo.mybatis.controller;
+
+import java.sql.Connection;
+import java.util.Collection;
+
+import org.apache.ibatis.binding.MapperRegistry;
+import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import demo.mybatis.config.MySqlSessionManager;
+import demo.mybatis.mapper.SystemAdminMapper;
+import demo.mybatis.utils.MybatisUtils;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequestPath("/mybatis")
+public class MybatisController {
+
+  public String getMappers() {
+    SqlSession sqlSession = MySqlSessionManager.getSqlSession();
+    Configuration configuration = sqlSession.getConfiguration();
+    MapperRegistry mapperRegistry = configuration.getMapperRegistry();
+    Collection<Class<?>> mappers = mapperRegistry.getMappers();
+    for (Class<?> c : mappers) {
+      log.info("c:{}", c);
+    }
+    return mappers.toString();
+  }
+}
+```
+
+访问
+http://localhost/mybatis/getMappers
+
+`public String getMappers() {...}`：这是一个公共方法，它获取了所有的映射器，并返回了它们的字符串表示
+
+- `SqlSession sqlSession = MySqlSessionManager.getSqlSession();`：这行代码从`MySqlSessionManager`中获取了一个`SqlSession`对象。
+
+- `Configuration configuration = sqlSession.getConfiguration();`：这行代码获取了`SqlSession`对象的配置。
+
+- `MapperRegistry mapperRegistry = configuration.getMapperRegistry();`：这行代码获取了配置的映射器注册表。
+
+- `Collection<Class<?>> mappers = mapperRegistry.getMappers();`：这行代码获取了所有的映射器。
+
+- `for (Class<?> c : mappers) {...}`：这是一个 for-each 循环，它遍历了所有的映射器，并将它们的类名记录到日志中。
+
+- `return mappers.toString();`：这行代码返回了所有映射器的字符串表示。
+
+希望这个解释对您有所帮助！如果您有其他关于 MyBatis 或 Java 的问题，欢迎随时向我提问。😊
+
+### SystemAdminController
+
+```
+package demo.mybatis.controller;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import demo.mybatis.config.MySqlSessionManager;
+import demo.mybatis.mapper.SystemAdminMapper;
+import demo.mybatis.model.SystemAdmin;
+
+@RequestPath("/SystemAdmin")
+public class SystemAdminController {
+
+  public SystemAdmin getSystemAdmin() {
+    SystemAdminMapper mapper = MySqlSessionManager.getSqlSession().getMapper(SystemAdminMapper.class);
+    SystemAdmin systemAdmin = mapper.getSystemAdmin(null);
+    return systemAdmin;
+  }
+}
+```
+
+访问测试
+http://localhost/SystemAdmin/getSystemAdmin
+
+`public SystemAdmin getSystemAdmin() {...}`：这是一个公共方法，它获取了一个`SystemAdmin`对象，并返回了它
+
+- `SystemAdminMapper mapper = MySqlSessionManager.getSqlSession().getMapper(SystemAdminMapper.class);`：这行代码从`MySqlSessionManager`中获取了一个`SqlSession`对象，然后从这个`SqlSession`对象中获取了一个`SystemAdminMapper`对象。
+
+- `SystemAdmin systemAdmin = mapper.getSystemAdmin(null);`：这行代码调用了`SystemAdminMapper`对象的`getSystemAdmin`方法，获取了一个`SystemAdmin`对象。这个方法的参数是`null`，这意味着它将获取所有的`SystemAdmin`记录。
+
+- `return systemAdmin;`：这行代码返回了获取到的`SystemAdmin`对象。
+
+在测试中，您可以通过访问`http://localhost/SystemAdmin/getSystemAdmin`来调用这个方法，它将返回一个`SystemAdmin`对象的信息。
