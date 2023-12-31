@@ -46,7 +46,7 @@ If you are developing with Java 8, please use the following dependency:
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <tio-boot.version>1.3.1</tio-boot.version>
+    <tio-boot.version>1.3.2</tio-boot.version>
   </properties>
   <dependencies>
     <dependency>
@@ -63,23 +63,34 @@ If you are developing with Java 8, please use the following dependency:
 package com.litongjava.tio.web.hello;
 
 import com.litongjava.jfinal.aop.annotation.AComponentScan;
-import com.litongjava.jfinal.aop.annotation.AController;
 import com.litongjava.tio.boot.TioApplication;
-import com.litongjava.tio.http.server.annotation.RequestPath;
 
 @AComponentScan
-@AController
-@RequestPath("/")
 public class HelloApp {
   public static void main(String[] args) {
+    long start = System.currentTimeMillis();
     TioApplication.run(HelloApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println((end - start) + "ms");
   }
+}
+```
 
+IndexController
+
+```java
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/")
+public class IndexController {
   @RequestPath()
   public String index() {
     return "index";
   }
 }
+
 ```
 
 访问测试 http://localhost/,显示 index
@@ -88,14 +99,14 @@ public class HelloApp {
 
 #### 2.1.3.完整依赖
 
-```
+```xml
 <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <java.version>1.8</java.version>
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.3.1</tio.boot.version>
+  <tio.boot.version>1.3.2</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -295,7 +306,7 @@ public class HelloApp {
 
 src\main\resources\app.properties
 
-```
+```java
 #http 配置
 http.port = 80
 http.page = classpath:/pages
@@ -308,14 +319,14 @@ http.maxLiveTimeOfStaticRes=0
 
 如果要使用配置文件,需要在启动类中使用工具类 P 指定配置文件,否则不会生效
 
-```
+```java
 // 初始化服务器并启动服务器
 P.use("app.properties");
 ```
 
 #### 2.1.6.启动类
 
-```
+```java
 package com.litongjava.tio.web.hello;
 
 import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
@@ -337,7 +348,7 @@ public class HelloApp {
 
 #### 2.1.7.AController
 
-```
+```java
 import org.tio.http.common.HttpRequest;
 import org.tio.http.common.HttpResponse;
 import org.tio.http.server.annotation.RequestPath;
@@ -368,7 +379,7 @@ public class IndexController {
 
 添加 logback
 
-```
+```xml
 <dependency>
   <groupId>ch.qos.logback</groupId>
   <artifactId>logback-classic</artifactId>
@@ -379,7 +390,7 @@ public class IndexController {
 默认集成了 logback 日志,只需要添加 logback 配置文件即可
 logback.xml
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration debug="false" xmlns="http://ch.qos.logback/xml/ns/logback" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd
@@ -462,7 +473,7 @@ http://ch.qos.logback/xml/ns/logback ">
 
 添加依赖
 
-```
+```xml
 <dependency>
   <groupId>com.litongjava</groupId>
   <artifactId>hotswap-classloader</artifactId>
@@ -472,11 +483,8 @@ http://ch.qos.logback/xml/ns/logback ">
 
 添加依赖后使用 TioApplicationWrapper 启动服务即可
 
-```
+```java
 package com.litongjava.aio.server.tio;
-
-import org.tio.utils.jfinal.P;
-
 import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
 
 public class AiServerTio {
@@ -508,7 +516,7 @@ https://github.com/litongjava/hotswap-classloader
 
 添加 profiles 配置如下
 
-```
+```xml
   <profiles>
     <!-- 开发环境 -->
     <profile>
@@ -653,19 +661,19 @@ https://github.com/litongjava/hotswap-classloader
 
 为开发环境构建：
 
-```
+```java
 mvn clean package -DskipTests -Pdevelopment
 ```
 
 为生产环境构建：
 
-```
+```java
 mvn clean package -DskipTests -Pproduction
 ```
 
 为生产环境构建二进制包：
 
-```
+```java
 mvn clean package -DskipTests -Pnative
 ```
 
@@ -675,20 +683,20 @@ mvn clean package -DskipTests -Pnative
 
 打包
 
-```
+```java
 set JAVA_HOME=D:\\java\\jdk1.8.0_121
 mvn clean package -DskipTests -Pproduction
 ```
 
 windows 启动
 
-```
+```java
 java -jar target\tio-boot-web-hello-0.0.1-SNAPSHOT.jar
 ```
 
 linux 启动
 
-```
+```java
 java -jar tio-boot-web-hello-0.0.1-SNAPSHOT.jar --mode=prod
 ```
 
@@ -748,13 +756,13 @@ mvn package -DskipTests -Pnative
 
 实际执行的打包命令如下,笔者在打包时移除了 hotswap-classloader
 
-```
-/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.1/tio-boot-1.3.1.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
+```shell
+/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.2/tio-boot-1.3.2.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
 ```
 
 启动
 
-```
+```shell
 ./target/web-hello --mode=prod
 ```
 
@@ -764,7 +772,7 @@ mvn package -DskipTests -Pnative
 
 打包
 
-```
+```shell
 mvn clean package -DskipTests -Pproduction
 ```
 
@@ -784,7 +792,7 @@ curl http://localhost:8080
 
 封装成镜像
 
-```
+```shell
 
 # Use litongjava/jdk:8u211 as the base image
 FROM litongjava/jdk:8u211
@@ -803,26 +811,26 @@ CMD ["/usr/java/jdk1.8.0_211/bin/java", "-jar", "tio-boot-web-hello-0.0.1-SNAPSH
 
 如果要使用二进制的方式启动,推荐移除 hotswap-classloader 依赖使用 TioApplication 启动应用,示例代码如下
 
-```
+```java
 TioApplication.run(HelloApp.class, args);
 ```
 
 打包成二进制文件
 
-```
+```java
 mvn clean package -DskipTests -Pnative
 ```
 
 运行二进制文件失败,不支持反射
 测试失败,原因不不明
 
-```
+```shell
 docker run --rm -p 8080:80 -v $(pwd)/target:/app debian /app/web-hello
 ```
 
 测试失败,原因不明
 
-```
+```shell
 docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0_211 litongjava/jdk:8u211 /app/web-hello
 ```
 
@@ -836,10 +844,12 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 - `server.404=/404`：定义 404 错误（页面未找到）时的路由地址。用户将被重定向到 `/404` 路径。
 - `server.500=/500`：指定 500 错误（服务器内部错误）时的路由地址。对应的路径是 `/500`。
 - `server.resources.static-locations=classpath:/pages`：设定静态页面的位置，此例中静态资源位于类路径下的 `/pages` 目录,默认值也是 classpath:/pages。
-- `http.maxLiveTimeOfStaticRes=0`：设置页面文件的缓存时间。在开发环境中，通常设置为 0 以禁用缓存，而在生产环境中，可以设置为较长的时间（如 3600 秒或 600 秒）以提高性能。
-- `http.useSession`：控制是否使用 HTTP 会话。
+- `http.max.live.time.of.static.res=0`：设置页面文件的缓存时间。在开发环境中，通常设置为 0 以禁用缓存，而在生产环境中，可以设置为较长的时间（如 3600 秒或 600 秒）以提高性能。
+- `http.enable.session`：是否开启使用 HTTP 会话。
+- `http.enable.request.limit`: 是否开启请求限流
+- `http.max.requests.per.second` : 开启限流后,每秒请求数量,默认 10
 - `http.checkHost`：用于检查和验证 HTTP 请求的主机头。
-- `tio.devMode=true`：开启或关闭开发模式。当设为 `true` 时，将启用更详细的日志记录，并可能激活其他框架的开发模式特性，如热加载功能。
+- `tio.dev.mode=true`：开启或关闭开发模式。当设为 `true` 时，将启用更详细的日志记录，并可能激活其他框架的开发模式特性，如热加载功能。
 - `tio.mvc.route.printMapping`：决定是否在启动时打印路由映射信息，有助于调试路由问题。
 - `tio.mvc.route.writeMappingToFile`：选择是否将路由信息写入文件，便于记录和审查。
 - `tio.mvc.request.printReport`：设置是否打印请求信息。这通常在开发环境下使用，以便于跟踪和调试。
@@ -853,7 +863,7 @@ tio-boot 配置参考源码 com.litongjava.tio.boot.constatns.ConfigKeys
 
 将 app.properties 中配置 http.page
 
-```
+```shell
 server.resources.static-locations = classpath:/pages
 ```
 
@@ -864,7 +874,7 @@ server.resources.static-locations = classpath:/pages
 tio-boot 框架的参数查找顺序是,支持所有参数 命令行参数-->环境变量-->配置文件
 使用命令行指定参数示例如下
 
-```
+```shell
 java -jar paddle-ocr-server-1.0.1.jar  --http-port 8080
 ```
 
@@ -1070,7 +1080,7 @@ public class TestController {
 
 #### 6.2.1.实体类
 
-```
+```java
 package top.ppnt.java.ee.tio.http.server.boot.model;
 
 import lombok.AllArgsConstructor;
@@ -3145,7 +3155,7 @@ public class DbTestController {
 
 ### 11.3.整合 PostGresql 数据库
 
-#### 11.3.1.创建表,插入数据
+#### 11.3.2.创建表,插入数据
 
 创建一张简单的 student 表
 
@@ -5814,7 +5824,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.1</tio.boot.version>
+    <tio.boot.version>1.3.2</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -6045,7 +6055,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.1</tio.boot.version>
+    <tio.boot.version>1.3.2</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -6242,7 +6252,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.1</tio.boot.version>
+    <tio.boot.version>1.3.2</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -7188,7 +7198,7 @@ MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型�
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.1</tio.boot.version>
+    <tio.boot.version>1.3.2</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -8370,7 +8380,7 @@ http://localhost/mybatis/getUserMapper
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.3.1</version>
+      <version>1.3.2</version>
     </dependency>
 
     <dependency>
@@ -8617,7 +8627,7 @@ java -jar target\spring-boot-2.5.6-tio-boot-1.0.jar
 
 编写一个测试类 UserServiceTest,测试 UserService
 
-```
+```java
 package com.litongjava.spring.boot.tio.boot.demo01.services;
 
 import java.util.ArrayList;
@@ -8657,3 +8667,166 @@ public class UserServiceTest {
 2. **@Test**：这是一个 JUnit 注解，表示 `test()` 方法是一个测试方法。在这个方法中，首先从 tio-boot aop 容器中获取了 `UserService` 对象，然后调用了 `listAll()` 方法获取所有的用户记录，并打印出来。
 
 这个测试类的目的是验证 `UserService` 类的 `listAll()` 方法是否能正确地获取所有的用户记录。
+
+## 性能测试
+
+### tio-http-server apache benchmark
+
+测试方式
+通过 apache benchmark 工具进行压力测试
+
+测试环境
+JDK 信息：
+java version "1.8.0_361"
+Java(TM) SE Runtime Environment (build 1.8.0_361-b09)
+Java HotSpot(TM) 64-Bit Server VM (build 25.361-b09, mixed mode)
+
+硬件信息
+处理器：2.3 GHz Intel Core i7
+内存：16 GB 1600 MHz DDR3
+系统：macOS 10.13.4 (17E202)
+硬件：MacBook Pro (Retina, 15-inch, Late 2013
+
+测试代码
+
+```java
+package com.litongjava.tio.http.server;
+
+import java.io.IOException;
+
+import com.litongjava.tio.http.common.HttpConfig;
+import com.litongjava.tio.http.common.handler.HttpRequestHandler;
+import com.litongjava.tio.http.server.controller.IndexController;
+import com.litongjava.tio.http.server.handler.HttpRoutes;
+import com.litongjava.tio.http.server.handler.SimpleHttpDispatcherHandler;
+import com.litongjava.tio.http.server.handler.SimpleHttpRoutes;
+import com.litongjava.tio.server.ServerTioConfig;
+
+public class MainApp {
+
+  public static void main(String[] args) throws IOException {
+    // 手动添加路由
+    IndexController controller = new IndexController();
+    HttpRoutes simpleHttpRoutes = new SimpleHttpRoutes();
+    simpleHttpRoutes.add("/plaintext", controller::plaintext);
+
+    // config server
+    HttpConfig httpConfig = new HttpConfig(80, null, null, null);
+    // 关闭心跳
+    HttpRequestHandler requestHandler = new SimpleHttpDispatcherHandler(httpConfig, simpleHttpRoutes);
+    HttpServerStarter httpServerStarter = new HttpServerStarter(httpConfig, requestHandler);
+    ServerTioConfig serverTioConfig = httpServerStarter.getServerTioConfig();
+
+    serverTioConfig.setHeartbeatTimeout(0);
+    // start server
+    httpServerStarter.start();
+  }
+
+}
+```
+
+```java
+package com.litongjava.tio.http.server.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.util.Resps;
+
+public class IndexController {
+  public HttpResponse plaintext(HttpRequest request) {
+    return Resps.txt(request, "Hello, World!");
+  }
+}
+```
+
+代码含义：
+启动 Http 服务器
+对外提供 1 个接口,"plaintext"
+
+测试过程
+启动服务端
+
+```shell
+java -jar target\tio-server-study-1.0.jar
+```
+
+模拟 10 个并发，十万次访问：
+
+```shell
+ab -c10 -n100000 http://localhost/plaintext
+```
+
+测试结果
+
+```java
+This is ApacheBench, Version 2.3 <$Revision: 1901567 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 10000 requests
+Completed 20000 requests
+Completed 30000 requests
+Completed 40000 requests
+Completed 50000 requests
+Completed 60000 requests
+Completed 70000 requests
+Completed 80000 requests
+Completed 90000 requests
+Completed 100000 requests
+Finished 100000 requests
+
+
+Server Software:        -io
+Server Hostname:        localhost
+Server Port:            80
+
+Document Path:          /plaintext
+Document Length:        13 bytes
+
+Concurrency Level:      10
+Time taken for tests:   235.745 seconds
+Complete requests:      100000
+Failed requests:        0
+Total transferred:      13900000 bytes
+HTML transferred:       1300000 bytes
+Requests per second:    424.19 [#/sec] (mean)
+Time per request:       23.574 [ms] (mean)
+Time per request:       2.357 [ms] (mean, across all concurrent requests)
+Transfer rate:          57.58 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   11 441.5      0   19326
+Processing:     0   13  69.9      1    1404
+Waiting:        0   12  67.6      1    1404
+Total:          0   24 446.8      2   19330
+
+Percentage of the requests served within a certain time (ms)
+  50%      2
+  66%      2
+  75%      2
+  80%      2
+  90%      3
+  95%      6
+  98%    399
+  99%    439
+ 100%  19330 (longest request)
+```
+
+这是一个使用 ApacheBench 进行的性能测试报告，主要测试了服务器在并发访问下的性能。下面是对报告的一些关键指标的解释：
+
+1. **Concurrency Level**: 并发用户数，这里是 10 个。
+2. **Time taken for tests**: 所有请求完成所需的总时间，这里是 235.745 秒。
+3. **Complete requests**: 完成的请求总数，这里是 100000 次请求。
+4. **Failed requests**: 失败的请求总数，这里是 0，表示所有请求都成功了。
+5. **Requests per second**: 平均每秒的请求数，这里是 424.19 次/秒。
+6. **Time per request**: 用户平均请求等待时间，这里是 23.574 毫秒。
+7. **Transfer rate**: 服务器的平均传输速率，这里是 57.58KB/sec。
+
+在"Connection Times"部分，给出了连接、处理和等待的时间统计信息，包括最小值、平均值、中位数和最大值。
+
+在最后的百分比部分，列出了所有请求中有多少百分比的请求可以在特定的时间内完成。例如，50%的请求在 2 毫秒内完成，98%的请求在 399 毫秒内完成，最长的请求需要 19330 毫秒才能完成。
