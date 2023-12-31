@@ -8331,8 +8331,6 @@ http://localhost/mybatis/getUserMapper
 
 4. **dependencyManagement**：这部分允许你集中管理项目中所有的版本号，避免在每个 `<dependency>` 标签中都要写版本号。在这里，你引入了 `spring-boot-dependencies`，这是一个特殊的依赖，它包含了 Spring Boot 项目中所有可能用到的依赖的版本号。
 
-希望这个解释对你有所帮助！如果你还有其他问题，欢迎随时向我提问。😊
-
 ```xml
 <properties>
     <java.version>1.8</java.version>
