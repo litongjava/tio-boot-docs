@@ -247,7 +247,7 @@ public class HelloApp {
           </executions>
           <configuration>
             <skip>false</skip>
-            <imageName>${project.build.finalName}</imageName>
+            <imageName>${final.name}</imageName>
             <mainClass>${main.class}</mainClass>
             <buildArgs>
               -H:+RemoveSaturatedTypeFlows
