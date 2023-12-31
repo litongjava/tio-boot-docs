@@ -8451,6 +8451,39 @@ http://localhost/mybatis/getUserMapper
 
 4. **计算启动时间**：这段代码计算了从启动 SpringApplication 到启动 TioApplication 的总时间，并打印出来。
 
+```
+package com.litongjava.spring.boot.tio.boot.demo01;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+import com.litongjava.tio.boot.TioApplication;
+
+@SpringBootApplication
+@AComponentScan
+public class Applicaton {
+  public static void main(String[] args) {
+    long start = System.currentTimeMillis();
+    SpringApplication.run(Applicaton.class, args);
+
+    List<String> list = new ArrayList<String>();
+    for (int i = 0; i < args.length; i++) {
+      list.add(args[i]);
+    }
+    list.add("--tio.noServer=true");
+    String[] newArgs = list.toArray(new String[] {});
+
+    TioApplication.run(Applicaton.class, newArgs);
+    long end = System.currentTimeMillis();
+    System.out.println(end - start + "(ms)");
+  }
+}
+```
+
 **编写配置类连接数据库**
 
 配置类中包含了连接数据库的设置，使用 DruidPlugin 和 ActiveRecordPlugin。
