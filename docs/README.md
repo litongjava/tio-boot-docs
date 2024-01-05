@@ -46,7 +46,7 @@ If you are developing with Java 8, please use the following dependency:
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <tio-boot.version>1.3.2</tio-boot.version>
+    <tio-boot.version>1.3.3</tio-boot.version>
   </properties>
   <dependencies>
     <dependency>
@@ -106,7 +106,7 @@ public class IndexController {
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.3.2</tio.boot.version>
+  <tio.boot.version>1.3.3</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -308,7 +308,7 @@ src\main\resources\app.properties
 
 ```java
 #http 配置
-http.port = 80
+server.port = 80
 http.page = classpath:/pages
 
 http.404 = /404
@@ -757,7 +757,7 @@ mvn package -DskipTests -Pnative
 实际执行的打包命令如下,笔者在打包时移除了 hotswap-classloader
 
 ```shell
-/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.2/tio-boot-1.3.2.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
+/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.3/tio-boot-1.3.3.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
 ```
 
 启动
@@ -2951,7 +2951,7 @@ INSERT INTO "student" VALUES (1, '沈', '一年级');
 添加配置文件 app.properties
 
 ```
-http.port = 80
+server.port = 80
 http.page = classpath:/pages
 
 http.404 = /404
@@ -3016,7 +3016,7 @@ INSERT INTO student VALUES (3,'张', '二年级');
 #### 11.2.3.配置文件-app.properties
 
 ```
-http.port = 80
+server.port = 80
 http.page = classpath:/pages
 
 http.404 = /404
@@ -3155,7 +3155,7 @@ public class DbTestController {
 
 ### 11.3.整合 PostGresql 数据库
 
-#### 11.3.2.创建表,插入数据
+#### 11.3.3.创建表,插入数据
 
 创建一张简单的 student 表
 
@@ -3172,7 +3172,7 @@ INSERT INTO student VALUES (2, '李', '一年级');
 INSERT INTO student VALUES (3,'张', '二年级');
 ```
 
-#### 11.3.2.添加依赖
+#### 11.3.3.添加依赖
 
 新建工程 tio-boot-postgresql-demo
 
@@ -3199,7 +3199,7 @@ INSERT INTO student VALUES (3,'张', '二年级');
 #### 11.3.3.配置文件 app.properties
 
 ```
-http.port = 80
+server.port = 80
 http.page = classpath:/pages
 
 http.404 = /404
@@ -5824,7 +5824,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.2</tio.boot.version>
+    <tio.boot.version>1.3.3</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -6055,7 +6055,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.2</tio.boot.version>
+    <tio.boot.version>1.3.3</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -6252,7 +6252,7 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.2</tio.boot.version>
+    <tio.boot.version>1.3.3</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -7198,7 +7198,7 @@ MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型�
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.2</tio.boot.version>
+    <tio.boot.version>1.3.3</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -8293,7 +8293,7 @@ http://localhost/user/selectList
 http://localhost/mybatis/mappers
 http://localhost/mybatis/getUserMapper
 
-## Spring Boot 与 Tio Boot 的整合
+## Tio Boot 的整合 spring-boot-starter-web
 
 ### 概述
 
@@ -8380,7 +8380,7 @@ http://localhost/mybatis/getUserMapper
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.3.2</version>
+      <version>1.3.3</version>
     </dependency>
 
     <dependency>
@@ -8667,6 +8667,306 @@ public class UserServiceTest {
 2. **@Test**：这是一个 JUnit 注解，表示 `test()` 方法是一个测试方法。在这个方法中，首先从 tio-boot aop 容器中获取了 `UserService` 对象，然后调用了 `listAll()` 方法获取所有的用户记录，并打印出来。
 
 这个测试类的目的是验证 `UserService` 类的 `listAll()` 方法是否能正确地获取所有的用户记录。
+
+## Tio Boot 与 Spring Boot Starter 的集成
+
+### 背景
+
+在以前的整合模式中，我们通过 `spring-boot-starter-web` 将 Spring Boot 的 Controller 与 Tio Boot 的 Service 相整合。这种方法虽然能够工作，但却失去了 Tio Boot 在处理请求时的异步和非阻塞特性。
+
+### 新的整合方式
+
+为了充分利用 Tio Boot 的异步和非阻塞优势，我们提出了一个新的整合方法：仅仅整合 `spring-boot-starter`，并使用 Tio Boot 的 Controller 来处理请求。
+
+### Maven 配置（pom.xml）
+
+首先，我们配置 Maven 项目的 `pom.xml` 文件。以下是主要的配置部分：
+
+1. **Java 和 Spring Boot 版本设置**：确保使用适合的 Java 版本和 Spring Boot 版本。
+2. **依赖项**：除了标准的 Spring Boot Starter 依赖，还包括 `tio-boot` 和其他必要的库，如 Lombok、数据库连接池（Druid）和数据库驱动（MySQL）。
+3. **构建配置**：使用 `spring-boot-maven-plugin` 来支持热启动和其他 Spring Boot 特性。
+
+```
+<properties>
+  <java.version>1.8</java.version>
+  <maven.compiler.source>${java.version}</maven.compiler.source>
+  <maven.compiler.target>${java.version}</maven.compiler.target>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  <spring-boot.version>2.5.6</spring-boot.version>
+  <main.class>com.litongjava.spring.boot.tio.boot.demo01.Applicaton</main.class>
+</properties>
+
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+  </dependency>
+
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <scope>provided</scope>
+  </dependency>
+
+  <!-- SpringBoot集成Test -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+  </dependency>
+
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <scope>test</scope>
+  </dependency>
+
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>tio-boot</artifactId>
+    <version>1.3.3</version>
+  </dependency>
+
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>jfinal-plugins</artifactId>
+    <version>1.0.3</version>
+  </dependency>
+  <!-- 连接池 -->
+  <dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.1.10</version>
+  </dependency>
+  <!-- 数据库驱动 -->
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+  </dependency>
+
+</dependencies>
+
+<build>
+  <plugins>
+    <!-- Spring Boot -->
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <version>${spring-boot.version}</version>
+      <configuration>
+        <includeSystemScope>true</includeSystemScope>
+        <!--使该插件支持热启动 -->
+        <fork>true</fork>
+        <mainClass>${main.class}</mainClass>
+        <excludeGroupIds>org.projectlombok</excludeGroupIds>
+      </configuration>
+      <!-- 设置执行目标 -->
+      <executions>
+        <execution>
+          <goals>
+            <goal>repackage</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-dependencies</artifactId>
+      <version>${spring-boot.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
+### 启动类（Application）
+
+接下来，定义 Spring Boot 应用的启动类：
+
+```java
+package com.litongjava.spring.boot.tio.boot.demo01;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+
+@SpringBootApplication
+@AComponentScan
+public class Application {
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+}
+```
+
+这个类标记为 Spring Boot 应用，并启动整个应用。
+
+### 配置类（Configuration）
+
+配置类负责整合 Tio Boot：
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.config;
+
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.litongjava.spring.boot.tio.boot.demo01.Applicaton;
+import com.litongjava.tio.boot.TioApplication;
+import com.litongjava.tio.boot.context.Context;
+
+@Configuration
+public class TioApplicationConfig {
+
+  @Bean
+  public Context myBean(ApplicationArguments args) {
+    String[] sourceArgs = args.getSourceArgs();
+    return TioApplication.run(Applicaton.class, sourceArgs);
+  }
+}
+```
+
+配置类负责整合 ActiveRecordPlugin
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.config;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.litongjava.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.litongjava.jfinal.plugin.druid.DruidPlugin;
+
+@AConfiguration
+public class ActiveRecordPluginConfig {
+  @ABean(priority = 10)
+  public DruidPlugin druidPlugin() {
+    String jdbcUrl = "jdbc:mysql://192.168.3.9:3306/mybatis_plus_study";
+    String jdbcUser = "root";
+    String jdbcPswd = "robot_123456#";
+
+    DruidPlugin druidPlugin = new DruidPlugin(jdbcUrl, jdbcUser, jdbcPswd);
+    druidPlugin.start();
+    return druidPlugin;
+  }
+
+  @ABean
+  public ActiveRecordPlugin activeRecordPlugin() {
+    DruidPlugin druidPlugin = Aop.get(DruidPlugin.class);
+    ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
+    arp.setContainerFactory(new OrderedFieldContainerFactory());
+    arp.start();
+    return arp;
+  }
+}
+```
+
+### Service 和 Controller
+
+定义 Service 接口和实现，以及相应的 Controller 来处理请求。例如，UserController 使用 Tio Boot 的注解 @RequestPath 来定义路由。
+service
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.service;
+
+import java.util.List;
+
+import com.litongjava.jfinal.plugin.activerecord.Record;
+
+public interface UserService {
+  List<Record> listAll();
+}
+```
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.service;
+
+import java.util.List;
+
+import com.litongjava.jfinal.aop.annotation.AService;
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+
+@AService
+public class UserServiceImpl implements UserService {
+
+  public List<Record> listAll() {
+    return Db.findAll("user");
+  }
+}
+
+```
+
+controller
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.controller;
+
+import java.util.List;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.spring.boot.tio.boot.demo01.service.UserService;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/user")
+public class UserController {
+
+  public List<Record> listAll() {
+    return Aop.get(UserService.class).listAll();
+  }
+}
+```
+
+### 启动测试
+
+启动访问 http://localhost/user/listAll
+
+###单独测试 Service
+我们可以编写单元测试来测试 Service 层的逻辑。
+
+```
+package com.litongjava.spring.boot.tio.boot.demo01.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.spring.boot.tio.boot.demo01.Applicaton;
+import com.litongjava.spring.boot.tio.boot.demo01.service.UserService;
+import com.litongjava.tio.boot.TioApplication;
+
+public class UserServiceTest {
+
+  @Before
+  public void before() {
+    List<String> list = new ArrayList<String>();
+    list.add("--tio.noServer=true");
+    String[] args = list.toArray(new String[] {});
+    TioApplication.run(Applicaton.class, args);
+  }
+
+  @Test
+  public void test() {
+    UserService userService = Aop.get(UserService.class);
+    List<Record> listAll = userService.listAll();
+    System.out.println(listAll);
+  }
+}
+```
 
 ## 性能测试
 
