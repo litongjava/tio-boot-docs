@@ -9067,24 +9067,6 @@ public class HelloApp {
 TDUtils 类是一个工具类，用于存储和提供数据源（DataSource）实例。
 
 ```java
-package com.litongjava.tio.web.hello.config.utils;
-
-import javax.sql.DataSource;
-
-public class TDUtils {
-
-  public static DataSource ds;
-
-  public static void setDataSource(DataSource ds) {
-    TDUtils.ds = ds;
-  }
-}
-```
-
-TdEngineDataSourceConfig
-TdEngineDataSourceConfig 类配置了 HikariCP 连接池，并连接到 TDengine 数据库。它设置了数据库连接属性，并创建了 HikariDataSource 实例。
-
-```java
 package com.litongjava.tio.web.hello.config;
 
 import com.litongjava.jfinal.aop.annotation.ABean;
@@ -9105,11 +9087,11 @@ public class TdEngineDataSourceConfig {
     int port = 6041;
     String user = "root";
     String pswd = "taosdata";
+    String dbName = "test_ws_parabind";
     String driverClassName = "com.taosdata.jdbc.rs.RestfulDriver";
-    //String driverClassName = "com.taosdata.jdbc.TSDBDriver";
+    // String driverClassName = "com.taosdata.jdbc.TSDBDriver";
 
-    // 添加batchfetch=true属性后得到的Websocket连接
-    String jdbcUrl = getJdbcUrl(host, port, user, pswd);
+    String jdbcUrl = getJdbcUrl(host, port, user, pswd, dbName);
     config.setJdbcUrl(jdbcUrl);
     config.setDriverClassName(driverClassName);
     // connection pool configurations
@@ -9125,11 +9107,13 @@ public class TdEngineDataSourceConfig {
     return ds;
   }
 
-  private String getJdbcUrl(String host, int port, String user, String pswd) {
-    String jdbcUrl = "jdbc:TAOS-RS://" + host + ":" + port + "/test_ws_parabind?user=" + user + "&password=" + pswd + "&batchfetch=true";
-    return jdbcUrl;
+  private String getJdbcUrl(String host, int port, String user, String pswd, String dbName) {
+    // 添加batchfetch=true属性后得到的Websocket连接
+    return "jdbc:TAOS-RS://" + host + ":" + port + "/" + dbName + "?user=" + user + "&password=" + pswd
+        + "&batchfetch=true";
   }
 }
+
 ```
 
 添加 Controller 创建数据
@@ -9597,6 +9581,516 @@ public class Stable1Controller {
 - http://localhost/stable3/selectList
 - http://localhost/stable4/selectList
 - http://localhost/stable5/selectList
+
+## tio-boot 使用 jfinal-plugin 整合 TDEngine
+
+添加依赖
+
+```xml
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>tio-boot</artifactId>
+  <version>${tio.boot.version}</version>
+</dependency>
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-api</artifactId>
+  <version>1.7.25</version>
+</dependency>
+
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <version>${lombok-version}</version>
+  <optional>true</optional>
+  <scope>provided</scope>
+</dependency>
+
+<dependency>
+  <groupId>com.taosdata.jdbc</groupId>
+  <artifactId>taos-jdbcdriver</artifactId>
+  <version>3.2.7</version>
+</dependency>
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.4</version>
+</dependency>
+
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>hotswap-classloader</artifactId>
+  <version>${hotswap-classloader.version}</version>
+</dependency>
+```
+
+启动类
+
+```java
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+
+@AComponentScan
+public class HelloApp {
+  public static void main(String[] args) {
+    long start = System.currentTimeMillis();
+    TioApplicationWrapper.run(HelloApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println((end - start) + "ms");
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.config.utils;
+
+import javax.sql.DataSource;
+
+public class TDUtils {
+
+  public static DataSource ds;
+
+  public static void setDataSource(DataSource ds) {
+    TDUtils.ds = ds;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.config;
+
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.tio.web.hello.config.utils.TDUtils;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
+
+@AConfiguration
+public class TdEngineDataSourceConfig {
+
+  @ABean(destroyMethod = "close", priority = 10)
+  public DataSource hikariDataSource() {
+    HikariConfig config = new HikariConfig();
+    // jdbc properties
+    String host = "192.168.3.9";
+    int port = 6041;
+    String user = "root";
+    String pswd = "taosdata";
+    String dbName = "test_ws_parabind";
+    String driverClassName = "com.taosdata.jdbc.rs.RestfulDriver";
+    // String driverClassName = "com.taosdata.jdbc.TSDBDriver";
+
+    String jdbcUrl = getJdbcUrl(host, port, user, pswd, dbName);
+    config.setJdbcUrl(jdbcUrl);
+    config.setDriverClassName(driverClassName);
+    // connection pool configurations
+    config.setMinimumIdle(10); // minimum number of idle connection
+    config.setMaximumPoolSize(10); // maximum number of connection in the pool
+    config.setConnectionTimeout(30000); // maximum wait milliseconds for get connection from pool
+    config.setMaxLifetime(0); // maximum life time for each connection
+    config.setIdleTimeout(0); // max idle time for recycle idle connection
+    config.setConnectionTestQuery("select server_status()"); // validation query
+
+    HikariDataSource ds = new HikariDataSource(config); // create datasource
+    TDUtils.setDataSource(ds);
+    return ds;
+  }
+
+  private String getJdbcUrl(String host, int port, String user, String pswd, String dbName) {
+    // 添加batchfetch=true属性后得到的Websocket连接
+    return "jdbc:TAOS-RS://" + host + ":" + port + "/" + dbName + "?user=" + user + "&password=" + pswd
+        + "&batchfetch=true";
+  }
+}
+
+```
+
+```java
+package com.litongjava.tio.web.hello.config;
+
+import javax.sql.DataSource;
+
+import com.litongjava.data.utils.TioRequestParamUtils;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.litongjava.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
+
+@AConfiguration
+public class ActiveRecordPluginConfig {
+
+  @ABean(destroyMethod = "stop")
+  public ActiveRecordPlugin activeRecordPlugin() {
+    boolean showSql = EnvironmentUtils.getBoolean("jdbc.showSql", false);
+
+    DataSource dataSource = Aop.get(DataSource.class);
+    ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
+    arp.setContainerFactory(new OrderedFieldContainerFactory());
+    arp.setShowSql(showSql);
+
+    // add
+    TioRequestParamUtils.types.add("bigint");
+    arp.start();
+    return arp;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Random;
+
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.jfinal.plugin.activerecord.RecordBuilder;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.web.hello.config.utils.TDUtils;
+import com.taosdata.jdbc.ws.TSWSPreparedStatement;
+
+import lombok.Cleanup;
+
+@RequestPath("/tdeingien/test")
+public class TbEngineTestController {
+
+  public String connection() throws SQLException {
+
+    @Cleanup
+    Connection connection = TDUtils.ds.getConnection();
+    String string = connection.toString();
+    return string;
+  }
+
+  /**
+   * 创建表和数据库
+   * @throws SQLException
+   */
+  public String init() throws SQLException {
+    int BINARY_COLUMN_SIZE = 30;
+    String[] schemaList = {
+        "create table stable1(ts timestamp, f1 tinyint, f2 smallint, f3 int, f4 bigint) tags(t1 tinyint, t2 smallint, t3 int, t4 bigint)",
+        "create table stable2(ts timestamp, f1 float, f2 double) tags(t1 float, t2 double)",
+        "create table stable3(ts timestamp, f1 bool) tags(t1 bool)",
+        "create table stable4(ts timestamp, f1 binary(" + BINARY_COLUMN_SIZE + ")) tags(t1 binary(" + BINARY_COLUMN_SIZE
+            + "))",
+        "create table stable5(ts timestamp, f1 nchar(" + BINARY_COLUMN_SIZE + ")) tags(t1 nchar(" + BINARY_COLUMN_SIZE
+            + "))" };
+
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+
+    try (Statement stmt = conn.createStatement()) {
+      stmt.execute("drop database if exists test_ws_parabind");
+      stmt.execute("create database if not exists test_ws_parabind");
+      stmt.execute("use test_ws_parabind");
+      for (int i = 0; i < schemaList.length; i++) {
+        stmt.execute(schemaList[i]);
+      }
+    }
+    return "success";
+  }
+
+  /**
+   * init类型参数查询
+   */
+  public String bindInteger() throws SQLException {
+    String sql = "insert into ? using stable1 tags(?,?,?,?) values(?,?,?,?,?)";
+    int numOfSubTable = 10, numOfRow = 10;
+    Random random = new Random(System.currentTimeMillis());
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+
+    try (TSWSPreparedStatement pstmt = conn.prepareStatement(sql).unwrap(TSWSPreparedStatement.class)) {
+
+      pstmt.execute("use test_ws_parabind");
+
+      for (int i = 1; i <= numOfSubTable; i++) {
+        // set table name
+        pstmt.setTableName("t1_" + i);
+        // set tags
+        pstmt.setTagByte(1, Byte.parseByte(Integer.toString(random.nextInt(Byte.MAX_VALUE))));
+        pstmt.setTagShort(2, Short.parseShort(Integer.toString(random.nextInt(Short.MAX_VALUE))));
+        pstmt.setTagInt(3, random.nextInt(Integer.MAX_VALUE));
+        pstmt.setTagLong(4, random.nextLong());
+        // set columns
+        long current = System.currentTimeMillis();
+        for (int j = 0; j < numOfRow; j++) {
+          pstmt.setTimestamp(1, new Timestamp(current + j));
+          pstmt.setByte(2, Byte.parseByte(Integer.toString(random.nextInt(Byte.MAX_VALUE))));
+          pstmt.setShort(3, Short.parseShort(Integer.toString(random.nextInt(Short.MAX_VALUE))));
+          pstmt.setInt(4, random.nextInt(Integer.MAX_VALUE));
+          pstmt.setLong(5, random.nextLong());
+          pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+      }
+    }
+    return "success";
+  }
+
+  public String bindFloat() throws SQLException {
+    String sql = "insert into ? using stable2 tags(?,?) values(?,?,?)";
+    Random random = new Random(System.currentTimeMillis());
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+
+    int numOfSubTable = 10, numOfRow = 10;
+
+    try (TSWSPreparedStatement pstmt = conn.prepareStatement(sql).unwrap(TSWSPreparedStatement.class)) {
+
+      pstmt.execute("use test_ws_parabind");
+
+      for (int i = 1; i <= numOfSubTable; i++) {
+        // set table name
+        pstmt.setTableName("t2_" + i);
+        // set tags
+        pstmt.setTagFloat(1, random.nextFloat());
+        pstmt.setTagDouble(2, random.nextDouble());
+        // set columns
+        long current = System.currentTimeMillis();
+        for (int j = 0; j < numOfRow; j++) {
+          pstmt.setTimestamp(1, new Timestamp(current + j));
+          pstmt.setFloat(2, random.nextFloat());
+          pstmt.setDouble(3, random.nextDouble());
+          pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+      }
+    }
+
+    return "success";
+  }
+
+  public String bindBoolean() throws SQLException {
+    String sql = "insert into ? using stable3 tags(?) values(?,?)";
+    int numOfSubTable = 10, numOfRow = 10;
+    Random random = new Random(System.currentTimeMillis());
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+    try (TSWSPreparedStatement pstmt = conn.prepareStatement(sql).unwrap(TSWSPreparedStatement.class)) {
+      for (int i = 1; i <= numOfSubTable; i++) {
+        // set table name
+        pstmt.setTableName("t3_" + i);
+        // set tags
+        pstmt.setTagBoolean(1, random.nextBoolean());
+        // set columns
+        long current = System.currentTimeMillis();
+        for (int j = 0; j < numOfRow; j++) {
+          pstmt.setTimestamp(1, new Timestamp(current + j));
+          pstmt.setBoolean(2, random.nextBoolean());
+          pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+      }
+    }
+    return "success";
+  }
+
+  public String bindBytes() throws SQLException {
+    String sql = "insert into ? using stable4 tags(?) values(?,?)";
+    int numOfSubTable = 10, numOfRow = 10;
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+    try (TSWSPreparedStatement pstmt = conn.prepareStatement(sql).unwrap(TSWSPreparedStatement.class)) {
+
+      for (int i = 1; i <= numOfSubTable; i++) {
+        // set table name
+        pstmt.setTableName("t4_" + i);
+        // set tags
+        pstmt.setTagString(1, new String("abc"));
+
+        // set columns
+        long current = System.currentTimeMillis();
+        for (int j = 0; j < numOfRow; j++) {
+          pstmt.setTimestamp(1, new Timestamp(current + j));
+          pstmt.setString(2, "abc");
+          pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+      }
+    }
+    return "success";
+  }
+
+  public String bindString() throws SQLException {
+    String sql = "insert into ? using stable5 tags(?) values(?,?)";
+    int numOfSubTable = 10, numOfRow = 10;
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+
+    try (TSWSPreparedStatement pstmt = conn.prepareStatement(sql).unwrap(TSWSPreparedStatement.class)) {
+
+      for (int i = 1; i <= numOfSubTable; i++) {
+        // set table name
+        pstmt.setTableName("t5_" + i);
+        // set tags
+        pstmt.setTagNString(1, "California.SanFrancisco");
+
+        // set columns
+        long current = System.currentTimeMillis();
+        for (int j = 0; j < numOfRow; j++) {
+          pstmt.setTimestamp(0, new Timestamp(current + j));
+          pstmt.setNString(1, "California.SanFrancisco");
+          pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+      }
+    }
+    return "success";
+  }
+
+  public List<Record> selectStable1() throws SQLException {
+    String sql = "select * from test.stable1";
+    //List<Record> records = Db.find(sql);
+    //return records;
+    @Cleanup
+    Connection conn = TDUtils.ds.getConnection();
+    @Cleanup
+    Statement stmt = conn.createStatement();
+    stmt.execute("use test_ws_parabind");
+
+
+    ResultSet resultSet = stmt.executeQuery(sql);
+    RecordBuilder.me.build(null, resultSet);
+
+    return null;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/stable1")
+public class Stable1Controller {
+
+  public List<Map<String, Object>> list() {
+    List<Record> records = Db.findAll("stable1");
+    List<Map<String, Object>> result = records.stream().map((t) -> t.toMap()).collect(Collectors.toList());
+    return result;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/stable2")
+public class Stable2Controller {
+
+  public List<Map<String, Object>> list() {
+    List<Record> records = Db.findAll("stable2");
+    List<Map<String, Object>> result = records.stream().map((t) -> t.toMap()).collect(Collectors.toList());
+    return result;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/stable3")
+public class Stable3Controller {
+
+  public List<Map<String, Object>> list() {
+    List<Record> records = Db.findAll("stable3");
+    List<Map<String, Object>> result = records.stream().map((t) -> t.toMap()).collect(Collectors.toList());
+    return result;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/stable4")
+public class Stable4Controller {
+
+  public List<Map<String, Object>> list() {
+    List<Record> records = Db.findAll("stable4");
+    List<Map<String, Object>> result = records.stream().map((t) -> t.toMap()).collect(Collectors.toList());
+    return result;
+  }
+}
+```
+
+```java
+package com.litongjava.tio.web.hello.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/stable5")
+public class Stable5Controller {
+
+  public List<Map<String, Object>> list() {
+    List<Record> records = Db.findAll("stable5");
+    List<Map<String, Object>> result = records.stream().map((t) -> t.toMap()).collect(Collectors.toList());
+    return result;
+  }
+}
+```
+
+测试
+
+- http://localhost/stable1/list
+- http://localhost/stable2/list
+- http://localhost/stable3/list
+- http://localhost/stable4/list
+- http://localhost/stable5/list
 
 ## 性能测试
 
