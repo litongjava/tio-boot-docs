@@ -9584,7 +9584,9 @@ public class Stable1Controller {
 
 ## tio-boot 使用 jfinal-plugin 整合 TDEngine
 
-添加依赖
+### 添加依赖
+
+本节列出了整合 TDEngine 所需的 Maven 依赖。这些依赖包括 tio-boot 用于构建基于事件驱动的应用程序，以及相关的 JDBC 驱动和连接池用于数据库连接。
 
 ```xml
 <dependency>
@@ -9629,7 +9631,9 @@ public class Stable1Controller {
 </dependency>
 ```
 
-启动类
+### 启动类
+
+`HelloApp` 类定义了应用的入口，使用 `TioApplicationWrapper.run` 方法启动基于 tio 的 web 应用。这种快速启动方法显著提高了开发效率。
 
 ```java
 package com.litongjava.tio.web.hello;
@@ -9648,6 +9652,10 @@ public class HelloApp {
 }
 ```
 
+### 数据源配置
+
+`TDUtils` 类作为一个工具类，负责存储和管理 `DataSource` 实例，为整个应用提供统一的数据源访问点。
+
 ```java
 package com.litongjava.tio.web.hello.config.utils;
 
@@ -9662,6 +9670,8 @@ public class TDUtils {
   }
 }
 ```
+
+`TdEngineDataSourceConfig` 类配置了 HikariCP 连接池并设置了数据库连接属性。这个配置确保了高效且稳定的数据库连接。
 
 ```java
 package com.litongjava.tio.web.hello.config;
@@ -9711,8 +9721,11 @@ public class TdEngineDataSourceConfig {
         + "&batchfetch=true";
   }
 }
-
 ```
+
+### ActiveRecord 配置
+
+`ActiveRecordPluginConfig` 类通过 ActiveRecord 插件配置了数据库访问。这个配置允许应用使用 ActiveRecord 模式与数据库交互，简化了数据库操作。
 
 ```java
 package com.litongjava.tio.web.hello.config;
@@ -9746,6 +9759,14 @@ public class ActiveRecordPluginConfig {
   }
 }
 ```
+
+### 控制器层
+
+以下控制器类展示了如何通过 TDengine 进行数据库操作，包括创建表、插入数据和数据查询。
+
+#### `TbEngineTestController`
+
+负责初始化数据库环境，包括创建表和数据库，以及执行不同类型的数据插入操作。
 
 ```java
 package com.litongjava.tio.web.hello.controller;
@@ -9974,7 +9995,13 @@ public class TbEngineTestController {
 }
 ```
 
-```java
+#### StableX Controllers
+
+这些控制器提供了不同数据表的查询接口，允许应用通过 HTTP 请求访问和展示数据。
+
+Stable1Controller
+
+```
 package com.litongjava.tio.web.hello.controller;
 
 import java.util.List;
@@ -9996,7 +10023,9 @@ public class Stable1Controller {
 }
 ```
 
-```java
+Stable2Controller
+
+```
 package com.litongjava.tio.web.hello.controller;
 
 import java.util.List;
@@ -10018,7 +10047,9 @@ public class Stable2Controller {
 }
 ```
 
-```java
+Stable3Controller
+
+```
 package com.litongjava.tio.web.hello.controller;
 
 import java.util.List;
@@ -10040,7 +10071,9 @@ public class Stable3Controller {
 }
 ```
 
-```java
+Stable4Controller
+
+```
 package com.litongjava.tio.web.hello.controller;
 
 import java.util.List;
@@ -10062,7 +10095,9 @@ public class Stable4Controller {
 }
 ```
 
-```java
+Stable5Controller
+
+```
 package com.litongjava.tio.web.hello.controller;
 
 import java.util.List;
@@ -10084,7 +10119,9 @@ public class Stable5Controller {
 }
 ```
 
-测试
+### 测试
+
+通过以下 URL 可以测试应用程序的不同功能，验证数据的创建、插入和查询是否正常工作。
 
 - http://localhost/stable1/list
 - http://localhost/stable2/list
