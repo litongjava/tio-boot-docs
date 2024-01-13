@@ -7879,7 +7879,7 @@ http://localhost/mybatis/getUserMapper
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.3.4</version>
+      <version>1.3.5</version>
     </dependency>
 
     <dependency>
@@ -8224,7 +8224,7 @@ public class UserServiceTest {
   <dependency>
     <groupId>com.litongjava</groupId>
     <artifactId>tio-boot</artifactId>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
   </dependency>
 
   <dependency>
