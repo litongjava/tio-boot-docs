@@ -4187,11 +4187,12 @@ public class CacheCaffeineTestController {
 ```
 package com.litongjava.tio.boot.hello.config;
 
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
 
 @AConfiguration
 public class RedissonConfig {
@@ -4581,28 +4582,25 @@ public class DemoListener implements ServerHanlderListener {
 ```
 package com.litongjava.tio.boot.hello.config;
 
-import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.AInitialization;
 import com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration;
 import com.litongjava.tio.boot.hello.tcp.DemoHandler;
 import com.litongjava.tio.boot.hello.tcp.DemoListener;
-import com.litongjava.tio.boot.tcp.ServerHanlderListener;
+import com.litongjava.tio.boot.server.TioBootServer;
 import com.litongjava.tio.boot.tcp.ServerTcpHandler;
 
 @BeforeStartConfiguration
-public class ServerConfig {
+public class TioBootServerConfig {
 
-  @ABean
-  public ServerTcpHandler demoHandler() {
+  @AInitialization
+  public void config() {
     ServerTcpHandler demoHandler = new DemoHandler();
-    return demoHandler;
-  }
+    TioBootServer.setServerTcpHandler(demoHandler);
 
-  @ABean
-  public ServerHanlderListener serverListener() {
-    return new DemoListener();
+    DemoListener demoListener = new DemoListener();
+    TioBootServer.setServerAioListener(demoListener);
   }
 }
-
 ```
 
 ### 1. `DemoPacket` 类
@@ -4688,7 +4686,7 @@ public class ServerConfig {
 
 ### 4. `ServerConfig` 类
 
-- @BeforeStartConfiguration:使用该注解标记的配置类会自在启动服务器之前执行,这里的功能是在服务器启动之前完成 ServerTcpHandler 和 ServerListener 初始化,为为后面的使用做好准备.这里是放到了 Bean 容器中,可以在后面需要时从 bean 容器中的获取
+- @BeforeStartConfiguration:使用该注解标记的配置类会自在启动服务器之前执行,这里的功能是在服务器启动之前完成 ServerTcpHandler 和 ServerListener 初始化.
 
 ### 总结
 
@@ -4819,14 +4817,11 @@ public class NettyServerBootstrap {
 ```
 
 ```
-package com.litongjava.tio.boot.hello.AController;
-
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.tio.boot.context.Enviorment;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
 import com.litongjava.tio.boot.hello.nettyserver.NettyChannelHandler;
 import com.litongjava.tio.boot.hello.nettyserver.NettyServerBootstrap;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
 
 import cn.hutool.core.thread.ThreadUtil;
 
@@ -4835,8 +4830,7 @@ public class NettyServerConfig {
 
   @ABean(destroyMethod = "close")
   public NettyServerBootstrap nettyServerBootstrap() {
-    Enviorment enviorment = Aop.get(Enviorment.class);
-    int nioPort = enviorment.getInt("noi.server.port", 17902);
+    int nioPort = EnvironmentUtils.getInt("noi.server.port", 17902);
 
     NettyChannelHandler nettyChannelHandler = new NettyChannelHandler();
     NettyServerBootstrap nettyServerBootstrap = new NettyServerBootstrap(nioPort, nettyChannelHandler);
@@ -4846,6 +4840,7 @@ public class NettyServerConfig {
     return nettyServerBootstrap;
   }
 }
+
 ```
 
 ```
@@ -5143,8 +5138,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.ABean;
 import com.litongjava.tio.boot.hello.job.MyJobHandler;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.executor.impl.XxlJobSimpleExecutor;
@@ -5152,7 +5146,7 @@ import com.xxl.job.core.executor.impl.XxlJobSimpleExecutor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@AConfiguration
+//@Configuration
 public class XxlJobExecutorConfig {
 
   @ABean(destroyMethod = "destroy")
@@ -5205,6 +5199,7 @@ public class XxlJobExecutorConfig {
     return null;
   }
 }
+
 ```
 
 这段 Java 代码是用于在使用 tio-boot 框架的项目中设置 XXL-Job 执行器的配置类。以下是代码的详细解释：
