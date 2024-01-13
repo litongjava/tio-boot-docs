@@ -2614,41 +2614,81 @@ public class TemplatesController {
 
 3.HandlerDispatcher.afterExecuteAction(HttpRequest, HttpResponse, Object) 方法中会 Template 类进行渲染并返回,可以在 action 使用 request.setAttribute("key", "value");设置参数到模版中
 
-## 10.常用 web 组件
+## 10. tio-boot 请求拦截器
 
-### 10.1.请求拦截器
+### 概述
 
-#### 10.1.1.使用拦截器
+这个文档提供了如何在 tio-boot 中配置和使用自定义的 HTTP 拦截器。拦截器可用于控制对特定 URL 路径的访问，允许您定义哪些路径应被拦截（`blockedUrls`）和哪些路径应被允许（`allowedUrls`）。
 
+### tio-boot 拦击器常用类
+
+#### HttpServerInterceptorModel
+
+`HttpServerInterceptorModel` 类是拦截器的配置模型，包含拦截器的名称、被允许和被拦截的 URL 列表，以及拦截器实例。
+
+##### 使用方法
+
+- **添加允许的 URL**: 使用 `addAllowedUrl(String url)` 和 `addAllowedUrls(String... urls)` 方法添加一个或多个允许的 URL。
+- **添加被拦截的 URL**: 使用 `addblockedUrl(String url)` 和 `addBlockedUrls(String... urls)` 方法添加一个或多个被拦截的 URL。
+- **设置拦截器**: 提供一个实现了 `HttpServerInterceptor` 接口的拦截器实例。
+
+#### DefaultHttpServerInterceptor
+
+`DefaultHttpServerInterceptor` 类是实际执行拦截操作的类，它实现了 `HttpServerInterceptor` 接口。
+
+##### 实现细节
+
+- **拦截处理**: `doBeforeHandler` 方法在 HTTP 请求处理之前执行。它会检查请求的 URL 是否匹配任何拦截器的 `blockedUrls` 和 `allowedUrls` 规则。
+- **后处理**: `doAfterHandler` 方法在 HTTP 请求处理之后执行。它可以用于执行清理操作或后续处理。
+
+#### ServerInteceptorConfigure
+
+`ServerInteceptorConfigure` 类用于管理和配置所有的拦截器。
+
+##### 使用方法
+
+- **添加拦截器**: 使用 `add(HttpServerInterceptorModel model)` 方法添加一个拦截器模型。
+- **移除拦截器**: 使用 `remove(String name)` 方法通过名称移除一个拦截器。
+- **获取所有拦截器**: 使用 `getInteceptors()` 方法获取当前配置的所有拦截器模型。
+
+#### 示例代码
+
+```java
+// 创建拦截器模型
+HttpServerInterceptorModel model = new HttpServerInterceptorModel()
+    .setName("exampleInterceptor")
+    .addBlockedUrl("/admin/*")
+    .addAllowedUrl("/admin/login")
+    .setInterceptor(new YourCustomInterceptor()); // YourCustomInterceptor 应实现 HttpServerInterceptor
+
+// 配置拦截器
+ServerInteceptorConfigure configure = new ServerInteceptorConfigure();
+configure.add(model);
+
+// 在 TioBootServer 中设置拦
+
+截器配置
+TioBootServer.setServerInteceptorConfigure(configure);
 ```
 
-package com.litongjava.tio.boot.admin.config;
+### 注意事项
 
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.litongjava.tio.boot.admin.inteceptor.GlobalInteceptor;
-import com.litongjava.tio.boot.admin.inteceptor.HelloInteceptor;
-import com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure;
+- 确保 `allowedUrls` 和 `blockedUrls` 之间的规则不发生冲突，即同一路径不应同时出现在两个列表中。
+- 通配符 `/**` 和 `/*` 用于匹配特定路径下的所有子路径。例如，`/admin/**` 会匹配 `/admin` 下的所有路径。
+- 在 `DefaultHttpServerInterceptor` 的 `doBeforeHandler` 方法中，如果请求的 URL 匹配 `blockedUrls` 且不匹配 `allowedUrls`，则请求将被拦截。
+- 自定义拦截器应实现 `HttpServerInterceptor` 接口，并定义适当的处理逻辑。
 
-@AConfiguration
-public class IntecpetorConfig {
+### 自定义拦截器示例
 
-@ABean
-public ServerInteceptorConfigure serverInteceptorRoutes() {
-ServerInteceptorConfigure config = new ServerInteceptorConfigure();
-config.add("/\*\*", GlobalInteceptor.class);
-config.add("/hello", HelloInteceptor.class);
-return config;
-}
+定义一个拦击器需要实现 `HttpServerInterceptor` 接口，用于拦截 HTTP 请求。它主要包含两个方法：
 
-}
+1. `doBeforeHandler`：在处理 HTTP 请求之前被调用。这个方法记录了请求的信息，并返回原来的响应对象（`responseFromCache`），如果有的话。如果返回值为 null 则会执行后续拦击器,如果返回的值不为 null 则不会执行后续的拦击器
 
-```
+2. `doAfterHandler`：在处理 HTTP 请求之后被调用。这个方法再次记录了请求的信息，并可以进行额外的处理。
 
-定义全局拦截器
+通过拦截器，可以在请求处理的前后阶段记录日志，监控请求的详细情况或执行其他自定义逻辑。这在跟踪和分析 HTTP 请求流程时非常有用。
 
-```
-
+```java
 package com.litongjava.tio.boot.admin.inteceptor;
 
 import com.litongjava.tio.http.common.HttpRequest;
@@ -2661,26 +2701,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalInteceptor implements HttpServerInterceptor {
 
-public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
-throws Exception {
-log.info("request:{}", request);
-return responseFromCache;
-}
+  public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
+      throws Exception {
+    log.info("request:{}", request);
+    return responseFromCache;
+  }
 
-public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
-throws Exception {
-log.info("request:{}", request);
+  public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
+      throws Exception {
+    log.info("request:{}", request);
 
-}
+  }
 
 }
 
 ```
 
-定义普通拦击器
-
-```
-
+```java
 package com.litongjava.tio.boot.admin.inteceptor;
 
 import com.litongjava.tio.http.common.HttpRequest;
@@ -2693,22 +2730,60 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HelloInteceptor implements HttpServerInterceptor {
 
-public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
-throws Exception {
-log.info("request", request);
-return null;
-}
+  public HttpResponse doBeforeHandler(HttpRequest request, RequestLine requestLine, HttpResponse responseFromCache)
+      throws Exception {
+    log.info("request", request);
+    return null;
+  }
 
-public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
-throws Exception {
-log.info("request", request);
+  public void doAfterHandler(HttpRequest request, RequestLine requestLine, HttpResponse response, long cost)
+      throws Exception {
+    log.info("request", request);
+
+  }
 
 }
-}
-
 ```
 
-1. `IntecpetorConfig` 类：
+```java
+
+ package com.litongjava.tio.boot.admin.config;
+
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.aop.annotation.AInitialization;
+import com.litongjava.tio.boot.admin.inteceptor.GlobalInteceptor;
+import com.litongjava.tio.boot.admin.inteceptor.HelloInteceptor;
+import com.litongjava.tio.boot.http.interceptor.HttpServerInterceptorModel;
+import com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure;
+import com.litongjava.tio.boot.server.TioBootServer;
+
+@AConfiguration
+public class IntecpetorConfiguration {
+
+  @AInitialization
+  public void serverInteceptorRoutes() {
+    ServerInteceptorConfigure config = new ServerInteceptorConfigure();
+    // add global
+    HttpServerInterceptorModel global = new HttpServerInterceptorModel();
+    global.setName("global");
+    global.addblockeUrl("/**");
+    global.setInterceptor(new GlobalInteceptor());
+
+    HttpServerInterceptorModel hello = new HttpServerInterceptorModel();
+    hello.setName("hello");
+    hello.addblockeUrl("/hello");
+    hello.setInterceptor(new HelloInteceptor());
+
+    config.add(global);
+    config.add(hello);
+
+    TioBootServer.setServerInteceptorConfigure(config);
+  }
+
+}
+```
+
+1. `IntecpetorConfiguration` 类：
 
    - 用 `@AConfiguration` 注解标记，表明它是一个配置类。
    - 定义了 `serverInteceptorRoutes` 方法，用 `@ABean` 注解标记，表明它提供一个 bean 实例。
@@ -2720,21 +2795,9 @@ log.info("request", request);
    - `doBeforeHandler` 方法在处理 HTTP 请求之前执行。对于 `GlobalInteceptor`，它返回 `responseFromCache`，而 `HelloInteceptor` 返回 `null`。
    - `doAfterHandler` 方法在请求处理后执行，记录请求信息。
 
-3. DefaultHttpServerInterceptor 会执行拦截器,拦截器的执行顺序是 config.add 添加的顺序
+3. DefaultHttpServerInterceptor 用于执行拦截器,拦截器的执行顺序是 config.add 添加的顺序
 
-#### 10.1.2.拦截器讲解
-
-定义一个拦击器需要实现 `HttpServerInterceptor` 接口，用于拦截 HTTP 请求。它主要包含两个方法：
-
-1. `doBeforeHandler`：在处理 HTTP 请求之前被调用。这个方法记录了请求的信息，并返回原来的响应对象（`responseFromCache`），如果有的话。如果返回值为 null 则会执行后续拦击器,如果返回的值不为 null 则不会执行后续的拦击器
-
-2. `doAfterHandler`：在处理 HTTP 请求之后被调用。这个方法再次记录了请求的信息，并可以进行额外的处理。
-
-通过这个拦截器，可以在请求处理的前后阶段记录日志，监控请求的详细情况或执行其他自定义逻辑。这在跟踪和分析 HTTP 请求流程时非常有用。
-
-### 10.2.WebSocket
-
-#### 10.2.1.使用 WebSocket
+## 11.使用 WebSocket
 
 配置 websocket 路由
 
@@ -2901,451 +2964,6 @@ Tio.sendToGroup(channelContext.tioConfig, GROUP_ID, wsResponse);
 如果 onBytes 和 onText 和 onClose 返回值不为 null.DefaultWebSocketHandler 会获取返回值发送到客户端,推荐返回值为 null,自己在方法中发送数据到客户端
 
 因为 Websocket 协议的特殊性,http 的拦截器不会在 websocket 之前执行,如果包含验证功能,你需要再 WebsocketHanlder 中再次进行验证
-
-## 11.数据库 - table-to-json
-
-### 11.1.整合 SQLLite 数据库
-
-#### 11.1.1.创建 sqllite 数据库
-
-sqllite 是一个嵌入式的数据库
-使用 Navicat Premium 创建 sqllite 文件
-
-创建表,插入数据
-
-CREATE TABLE "student" (
-"id" integer NOT NULL,
-"name" text NOT NULL,
-"grade" textNOT NULL,
-PRIMARY KEY ("id")
-);
-
-INSERT INTO "student" VALUES (1, '沈', '一年级');
-
-#### 11.1.2.整合 sqllite
-
-添加依赖
-
-```
-
-<dependency>
-  <groupId>com.zaxxer</groupId>
-  <artifactId>HikariCP</artifactId>
-  <version>4.0.3</version>
-</dependency>
-
-<!-- sqlite-jdbc -->
-<dependency>
-  <groupId>org.xerial</groupId>
-  <artifactId>sqlite-jdbc</artifactId>
-  <version>3.7.2</version>
-</dependency>
-
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
-</dependency>
-```
-
-添加配置文件 app.properties
-
-```
-server.port = 80
-http.page = classpath:/pages
-
-http.404 = /404
-http.500 = /500
-http.maxLiveTimeOfStaticRes=0
-
-#jdbc-sqlliste
-jdbc.url=jdbc:sqlite:D:/sqllite/student.db
-jdbc.user=
-jdbc.pswd=
-jdbc.showSql=true
-```
-
-添加配置类
-
-添加 Controller
-
-启动测试
-
-### 11.2.整合 Mysql 数据库
-
-#### 11.2.1.创建表,插入数据
-
-创建一张简单的 student 表
-
-```
-CREATE TABLE `student` (
-`id` bigint(20) NOT NULL,
-`name` varchar(255),
-`grade` varchar(255),
-PRIMARY KEY (`id`)
-);
-
-INSERT INTO student VALUES (1, '沈', '一年级');
-INSERT INTO student VALUES (2, '李', '一年级');
-INSERT INTO student VALUES (3,'张', '二年级');
-```
-
-#### 11.2.2.添加依赖
-
-```
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
-</dependency>
-
-
-<dependency>
-  <groupId>mysql</groupId>
-  <artifactId>mysql-connector-java</artifactId>
-  <version>5.1.46</version>
-</dependency>
-
-<dependency>
-  <groupId>com.zaxxer</groupId>
-  <artifactId>HikariCP</artifactId>
-  <version>4.0.3</version>
-</dependency>
-```
-
-#### 11.2.3.配置文件-app.properties
-
-```
-server.port = 80
-http.page = classpath:/pages
-
-http.404 = /404
-http.500 = /500
-
-http.maxLiveTimeOfStaticRes=0
-
-jdbc.url=jdbc:mysql://192.168.3.9/table_to_json_test?characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
-jdbc.user=root
-jdbc.pswd=robot_123456#
-```
-
-#### 11.2.4.编写启动类
-
-```
-import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
-import com.litongjava.jfinal.aop.annotation.AComponentScan;
-
-@AComponentScan
-public class TioBootWebApp {
-
-  public static void main(String[] args) throws Exception {
-    long start = System.currentTimeMillis();
-    TioApplicationWrapper.run(TioBootWebApp.class, args);
-    long end = System.currentTimeMillis();
-    System.out.println("started:" + (end - start) + "(ms)");
-  }
-}
-```
-
-#### 11.2.5.编写配置类
-
-TableToJsonConfig.java,
-注意观察 DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
-
-```
-import javax.sql.DataSource;
-
-import org.tio.utils.jfinal.P;
-
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
-import com.jfinal.template.Engine;
-import com.jfinal.template.source.ClassPathSourceFactory;
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-@AConfiguration
-public class TableToJsonConfig {
-
-  /
-   * config datasource
-   * @return
-   */
-  @ABean(priority = 1)
-  public DataSource dataSource() {
-    String jdbcUrl = EnvironmentUtils.get("jdbc.url");
-    String jdbcUser = EnvironmentUtils.get("jdbc.user");
-
-    String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
-
-    HikariConfig config = new HikariConfig();
-    // 设定基本参数
-    config.setJdbcUrl(jdbcUrl);
-    config.setUsername(jdbcUser);
-    config.setPassword(jdbcPswd);
-//    config.setMaximumPoolSize(2);
-
-    return new HikariDataSource(config);
-  }
-
-  /
-   * config ActiveRecordPlugin
-   * @return
-   * @throws Exception
-   */
-  @ABean(destroyMethod = "stop", initMethod = "start")
-  public ActiveRecordPlugin activeRecordPlugin() throws Exception {
-    DataSource dataSource = Aop.get(DataSource.class);
-    String property = EnvironmentUtils.get("tio.mode");
-    ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
-    arp.setContainerFactory(new OrderedFieldContainerFactory());
-    if ("dev".equals(property)) {
-      arp.setDevMode(true);
-    }
-
-    Engine engine = arp.getEngine();
-    engine.setSourceFactory(new ClassPathSourceFactory());
-    engine.setCompressorOn(' ');
-    engine.setCompressorOn('\n');
-    // arp.addSqlTemplate("/sql/all_sqls.sql");
-//    arp.start();
-    return arp;
-  }
-}
-```
-
-#### 11.2.6.编写 Controller
-
-查询 student 表中的所有数据,代码如下
-
-```
-import java.util.List;
-
-import org.tio.http.common.HttpRequest;
-import org.tio.http.server.annotation.RequestPath;
-
-import com.jfinal.kit.Kv;
-import com.litongjava.data.model.DbJsonBean;
-import com.litongjava.data.services.DbJsonService;
-import com.litongjava.data.utils.DbJsonBeanUtils;
-import com.litongjava.jfinal.aop.Aop;
-@AController
-@RequestPath("/db/student")
-public class DbTestController {
-
-  DbJsonService dbJsonService = Aop.get(DbJsonService.class);
-
-  @RequestPath("/list")
-  public DbJsonBean<List<Kv>> list(HttpRequest request) {
-    String tableName = "student";
-    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
-    return jsonBean;
-  }
-}
-```
-
-访问 http://localhost/db/student/list 输出如下
-
-```
-{"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
-```
-
-### 11.3.整合 PostGresql 数据库
-
-#### 11.3.3.创建表,插入数据
-
-创建一张简单的 student 表
-
-```
-CREATE TABLE "public"."student" (
-"id" int8 NOT NULL,
-"name" varchar(255),
-"grade" varchar(255),
-PRIMARY KEY ("id")
-);
-
-INSERT INTO student VALUES (1, '沈', '一年级');
-INSERT INTO student VALUES (2, '李', '一年级');
-INSERT INTO student VALUES (3,'张', '二年级');
-```
-
-#### 11.3.3.添加依赖
-
-新建工程 tio-boot-postgresql-demo
-
-```
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
-</dependency>
-
-<dependency>
-  <groupId>org.postgresql</groupId>
-  <artifactId>postgresql</artifactId>
-  <version>42.2.24</version>
-</dependency>
-
-<dependency>
-  <groupId>com.zaxxer</groupId>
-  <artifactId>HikariCP</artifactId>
-  <version>4.0.3</version>
-</dependency>
-```
-
-#### 11.3.3.配置文件 app.properties
-
-```
-server.port = 80
-http.page = classpath:/pages
-
-http.404 = /404
-http.500 = /500
-
-http.maxLiveTimeOfStaticRes=0
-
-jdbc.url=jdbc:postgresql://192.168.3.7/student
-jdbc.user=postgres
-jdbc.pswd=robot_1234546
-```
-
-#### 11.3.4.编写启动类
-
-```
-package com.litongjava.tio.boot.postgresql.demo;
-
-import org.tio.utils.jfinal.P;
-
-import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
-import com.litongjava.jfinal.aop.annotation.AComponentScan;
-
-@AComponentScan
-public class PostgresqlApp {
-
-  public static void main(String[] args) throws Exception {
-    long start = System.currentTimeMillis();
-    EnvironmentUtils.use("app.properties");
-    TioApplicationWrapper.run(PostgresqlApp.class, args);
-    long end = System.currentTimeMillis();
-    System.out.println("started:" + (end - start) + "(ms)");
-  }
-}
-```
-
-#### 11.3.5.编写配置类
-
-TableToJsonConfig.java,
-注意观察
-
-- DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
-- arp.setDialect(new PostgreSqlDialect()); 设置了数据库方言为 PostgreSQLDialect
-
-```
-package com.litongjava.tio.boot.postgresql.demo.config;
-
-import javax.sql.DataSource;
-
-import org.tio.utils.jfinal.P;
-
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
-import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
-import com.jfinal.template.Engine;
-import com.jfinal.template.source.ClassPathSourceFactory;
-import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-@AConfiguration
-public class TableToJsonConfig {
-
-  /
-   * config datasource
-   * @return
-   */
-  @ABean(priority = 1)
-  public DataSource dataSource() {
-    String jdbcUrl = EnvironmentUtils.get("jdbc.url");
-    String jdbcUser = EnvironmentUtils.get("jdbc.user");
-
-    String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
-
-    HikariConfig config = new HikariConfig();
-    // 设定基本参数
-    config.setJdbcUrl(jdbcUrl);
-    config.setUsername(jdbcUser);
-    config.setPassword(jdbcPswd);
-    return new HikariDataSource(config);
-  }
-
-  /
-   * config ActiveRecordPlugin
-   * @return
-   * @throws Exception
-   */
-  @ABean(destroyMethod = "stop", initMethod = "start")
-  public ActiveRecordPlugin activeRecordPlugin() throws Exception {
-    DataSource dataSource = Aop.get(DataSource.class);
-    String property = EnvironmentUtils.get("tio.mode");
-    ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
-    arp.setContainerFactory(new OrderedFieldContainerFactory());
-    arp.setDialect(new PostgreSqlDialect());
-    if ("dev".equals(property)) {
-      arp.setDevMode(true);
-    }
-
-    Engine engine = arp.getEngine();
-    engine.setSourceFactory(new ClassPathSourceFactory());
-    engine.setCompressorOn(' ');
-    engine.setCompressorOn('\n');
-    return arp;
-  }
-}
-```
-
-#### 11.3.6.编写 Controller
-
-查询 student 表中的所有数据,代码如下
-
-```
-package com.litongjava.tio.boot.hello.AController;
-
-import java.util.List;
-
-import org.tio.http.common.HttpRequest;
-import org.tio.http.server.annotation.RequestPath;
-
-import com.jfinal.kit.Kv;
-import com.litongjava.data.model.DbJsonBean;
-import com.litongjava.data.services.DbJsonService;
-import com.litongjava.data.utils.DbJsonBeanUtils;
-import com.litongjava.jfinal.aop.Aop;
-@AController
-@RequestPath("/db/student")
-public class DbTestController {
-
-  DbJsonService dbJsonService = Aop.get(DbJsonService.class);
-
-  @RequestPath("/list")
-  public DbJsonBean<List<Kv>> list(HttpRequest request) {
-    String tableName = "student";
-    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
-    return jsonBean;
-  }
-}
-```
-
-访问 http://localhost/db/student/list
-输出如下
-
-```
-{"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
-```
 
 ## 12.JWT
 
@@ -10007,6 +9625,451 @@ public class Stable5Controller {
 - http://localhost/stable3/list
 - http://localhost/stable4/list
 - http://localhost/stable5/list
+
+## 使用 table-to-json 连接数据库
+
+### 11.1.整合 SQLLite 数据库
+
+#### 11.1.1.创建 sqllite 数据库
+
+sqllite 是一个嵌入式的数据库
+使用 Navicat Premium 创建 sqllite 文件
+
+创建表,插入数据
+
+CREATE TABLE "student" (
+"id" integer NOT NULL,
+"name" text NOT NULL,
+"grade" textNOT NULL,
+PRIMARY KEY ("id")
+);
+
+INSERT INTO "student" VALUES (1, '沈', '一年级');
+
+#### 11.1.2.整合 sqllite
+
+添加依赖
+
+```
+
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
+
+<!-- sqlite-jdbc -->
+<dependency>
+  <groupId>org.xerial</groupId>
+  <artifactId>sqlite-jdbc</artifactId>
+  <version>3.7.2</version>
+</dependency>
+
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
+```
+
+添加配置文件 app.properties
+
+```
+server.port = 80
+http.page = classpath:/pages
+
+http.404 = /404
+http.500 = /500
+http.maxLiveTimeOfStaticRes=0
+
+#jdbc-sqlliste
+jdbc.url=jdbc:sqlite:D:/sqllite/student.db
+jdbc.user=
+jdbc.pswd=
+jdbc.showSql=true
+```
+
+添加配置类
+
+添加 Controller
+
+启动测试
+
+### 11.2.整合 Mysql 数据库
+
+#### 11.2.1.创建表,插入数据
+
+创建一张简单的 student 表
+
+```
+CREATE TABLE `student` (
+`id` bigint(20) NOT NULL,
+`name` varchar(255),
+`grade` varchar(255),
+PRIMARY KEY (`id`)
+);
+
+INSERT INTO student VALUES (1, '沈', '一年级');
+INSERT INTO student VALUES (2, '李', '一年级');
+INSERT INTO student VALUES (3,'张', '二年级');
+```
+
+#### 11.2.2.添加依赖
+
+```
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
+
+
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>5.1.46</version>
+</dependency>
+
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
+```
+
+#### 11.2.3.配置文件-app.properties
+
+```
+server.port = 80
+http.page = classpath:/pages
+
+http.404 = /404
+http.500 = /500
+
+http.maxLiveTimeOfStaticRes=0
+
+jdbc.url=jdbc:mysql://192.168.3.9/table_to_json_test?characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+jdbc.user=root
+jdbc.pswd=robot_123456#
+```
+
+#### 11.2.4.编写启动类
+
+```
+import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+
+@AComponentScan
+public class TioBootWebApp {
+
+  public static void main(String[] args) throws Exception {
+    long start = System.currentTimeMillis();
+    TioApplicationWrapper.run(TioBootWebApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println("started:" + (end - start) + "(ms)");
+  }
+}
+```
+
+#### 11.2.5.编写配置类
+
+TableToJsonConfig.java,
+注意观察 DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
+
+```
+import javax.sql.DataSource;
+
+import org.tio.utils.jfinal.P;
+
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.jfinal.template.Engine;
+import com.jfinal.template.source.ClassPathSourceFactory;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+@AConfiguration
+public class TableToJsonConfig {
+
+  /
+   * config datasource
+   * @return
+   */
+  @ABean(priority = 1)
+  public DataSource dataSource() {
+    String jdbcUrl = EnvironmentUtils.get("jdbc.url");
+    String jdbcUser = EnvironmentUtils.get("jdbc.user");
+
+    String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
+
+    HikariConfig config = new HikariConfig();
+    // 设定基本参数
+    config.setJdbcUrl(jdbcUrl);
+    config.setUsername(jdbcUser);
+    config.setPassword(jdbcPswd);
+//    config.setMaximumPoolSize(2);
+
+    return new HikariDataSource(config);
+  }
+
+  /
+   * config ActiveRecordPlugin
+   * @return
+   * @throws Exception
+   */
+  @ABean(destroyMethod = "stop", initMethod = "start")
+  public ActiveRecordPlugin activeRecordPlugin() throws Exception {
+    DataSource dataSource = Aop.get(DataSource.class);
+    String property = EnvironmentUtils.get("tio.mode");
+    ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
+    arp.setContainerFactory(new OrderedFieldContainerFactory());
+    if ("dev".equals(property)) {
+      arp.setDevMode(true);
+    }
+
+    Engine engine = arp.getEngine();
+    engine.setSourceFactory(new ClassPathSourceFactory());
+    engine.setCompressorOn(' ');
+    engine.setCompressorOn('\n');
+    // arp.addSqlTemplate("/sql/all_sqls.sql");
+//    arp.start();
+    return arp;
+  }
+}
+```
+
+#### 11.2.6.编写 Controller
+
+查询 student 表中的所有数据,代码如下
+
+```
+import java.util.List;
+
+import org.tio.http.common.HttpRequest;
+import org.tio.http.server.annotation.RequestPath;
+
+import com.jfinal.kit.Kv;
+import com.litongjava.data.model.DbJsonBean;
+import com.litongjava.data.services.DbJsonService;
+import com.litongjava.data.utils.DbJsonBeanUtils;
+import com.litongjava.jfinal.aop.Aop;
+@AController
+@RequestPath("/db/student")
+public class DbTestController {
+
+  DbJsonService dbJsonService = Aop.get(DbJsonService.class);
+
+  @RequestPath("/list")
+  public DbJsonBean<List<Kv>> list(HttpRequest request) {
+    String tableName = "student";
+    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
+    return jsonBean;
+  }
+}
+```
+
+访问 http://localhost/db/student/list 输出如下
+
+```
+{"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
+```
+
+### 11.3.整合 PostGresql 数据库
+
+#### 11.3.3.创建表,插入数据
+
+创建一张简单的 student 表
+
+```
+CREATE TABLE "public"."student" (
+"id" int8 NOT NULL,
+"name" varchar(255),
+"grade" varchar(255),
+PRIMARY KEY ("id")
+);
+
+INSERT INTO student VALUES (1, '沈', '一年级');
+INSERT INTO student VALUES (2, '李', '一年级');
+INSERT INTO student VALUES (3,'张', '二年级');
+```
+
+#### 11.3.3.添加依赖
+
+新建工程 tio-boot-postgresql-demo
+
+```
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.1</version>
+</dependency>
+
+<dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <version>42.2.24</version>
+</dependency>
+
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
+```
+
+#### 11.3.3.配置文件 app.properties
+
+```
+server.port = 80
+http.page = classpath:/pages
+
+http.404 = /404
+http.500 = /500
+
+http.maxLiveTimeOfStaticRes=0
+
+jdbc.url=jdbc:postgresql://192.168.3.7/student
+jdbc.user=postgres
+jdbc.pswd=robot_1234546
+```
+
+#### 11.3.4.编写启动类
+
+```
+package com.litongjava.tio.boot.postgresql.demo;
+
+import org.tio.utils.jfinal.P;
+
+import com.litongjava.hotswap.wrapper.tio.boot.TioApplicationWrapper;
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+
+@AComponentScan
+public class PostgresqlApp {
+
+  public static void main(String[] args) throws Exception {
+    long start = System.currentTimeMillis();
+    EnvironmentUtils.use("app.properties");
+    TioApplicationWrapper.run(PostgresqlApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println("started:" + (end - start) + "(ms)");
+  }
+}
+```
+
+#### 11.3.5.编写配置类
+
+TableToJsonConfig.java,
+注意观察
+
+- DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
+- arp.setDialect(new PostgreSqlDialect()); 设置了数据库方言为 PostgreSQLDialect
+
+```
+package com.litongjava.tio.boot.postgresql.demo.config;
+
+import javax.sql.DataSource;
+
+import org.tio.utils.jfinal.P;
+
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
+import com.jfinal.template.Engine;
+import com.jfinal.template.source.ClassPathSourceFactory;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.annotation.Bean;
+import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+@AConfiguration
+public class TableToJsonConfig {
+
+  /
+   * config datasource
+   * @return
+   */
+  @ABean(priority = 1)
+  public DataSource dataSource() {
+    String jdbcUrl = EnvironmentUtils.get("jdbc.url");
+    String jdbcUser = EnvironmentUtils.get("jdbc.user");
+
+    String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
+
+    HikariConfig config = new HikariConfig();
+    // 设定基本参数
+    config.setJdbcUrl(jdbcUrl);
+    config.setUsername(jdbcUser);
+    config.setPassword(jdbcPswd);
+    return new HikariDataSource(config);
+  }
+
+  /
+   * config ActiveRecordPlugin
+   * @return
+   * @throws Exception
+   */
+  @ABean(destroyMethod = "stop", initMethod = "start")
+  public ActiveRecordPlugin activeRecordPlugin() throws Exception {
+    DataSource dataSource = Aop.get(DataSource.class);
+    String property = EnvironmentUtils.get("tio.mode");
+    ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
+    arp.setContainerFactory(new OrderedFieldContainerFactory());
+    arp.setDialect(new PostgreSqlDialect());
+    if ("dev".equals(property)) {
+      arp.setDevMode(true);
+    }
+
+    Engine engine = arp.getEngine();
+    engine.setSourceFactory(new ClassPathSourceFactory());
+    engine.setCompressorOn(' ');
+    engine.setCompressorOn('\n');
+    return arp;
+  }
+}
+```
+
+#### 11.3.6.编写 Controller
+
+查询 student 表中的所有数据,代码如下
+
+```
+package com.litongjava.tio.boot.hello.AController;
+
+import java.util.List;
+
+import org.tio.http.common.HttpRequest;
+import org.tio.http.server.annotation.RequestPath;
+
+import com.jfinal.kit.Kv;
+import com.litongjava.data.model.DbJsonBean;
+import com.litongjava.data.services.DbJsonService;
+import com.litongjava.data.utils.DbJsonBeanUtils;
+import com.litongjava.jfinal.aop.Aop;
+@AController
+@RequestPath("/db/student")
+public class DbTestController {
+
+  DbJsonService dbJsonService = Aop.get(DbJsonService.class);
+
+  @RequestPath("/list")
+  public DbJsonBean<List<Kv>> list(HttpRequest request) {
+    String tableName = "student";
+    DbJsonBean<List<Kv>> jsonBean = DbJsonBeanUtils.recordsToKv(dbJsonService.listAll(tableName));
+    return jsonBean;
+  }
+}
+```
+
+访问 http://localhost/db/student/list
+输出如下
+
+```
+{"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
+```
 
 ## 性能测试
 
