@@ -10040,6 +10040,65 @@ public class DbTestController {
 {"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
 ```
 
+### Junit 单元测试
+
+使用 Junit 对连接数据库的部分进行单元测试
+
+```
+import java.util.List;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.tio.boot.constatns.ConfigKeys;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
+import com.litongjava.tio.utils.environment.PropUtils;
+import com.litongjava.tio.utils.hutool.ResourceUtil;
+
+public class TioBootTest {
+
+  public void before() throws Exception {
+    String env = EnvironmentUtils.get("app.env");
+    if (ResourceUtil.getResource(ConfigKeys.DEFAULT_CONFIG_FILE_NAME) != null) {
+      PropUtils.use(ConfigKeys.DEFAULT_CONFIG_FILE_NAME, env);
+    } else {
+      if (env != null) {
+        PropUtils.use("app-" + env + ".properties");
+      }
+    }
+    List<Class<?>> scannedClasses = Aop.scan(MaLiangPenAiServerApp.class);
+    Aop.initAnnotation(scannedClasses);
+  }
+}
+```
+
+```
+import org.junit.Before;
+import org.junit.Test;
+
+import com.enoleap.manglang.pen.api.server.TioBootTest;
+import com.enoleap.manglang.pen.api.server.model.UserRegisterVO;
+import com.litongjava.tio.utils.resp.RespVo;
+
+public class UserRegisterServiceTest {
+
+  @Before
+  public void before() throws Exception {
+    new TioBootTest().before();
+  }
+
+  @Test
+  public void test() {
+    UserRegisterService userRegisterService = new UserRegisterService();
+    UserRegisterVO reqVo = UserRegisterVO.builder().username("litong").password("Litong2516").lang("zh_CN")
+        .userChannel(1).appId(1).userFrom(4).v(1)
+        .build();
+    RespVo respVo = userRegisterService.index(reqVo);
+    if (!respVo.isOk()) {
+      System.out.println(respVo.getMsg());
+    }
+  }
+}
+```
+
 ## Tio-Boot 整合 Sa-Token 进行登录验证
 
 ### 概述
