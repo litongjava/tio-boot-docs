@@ -9751,9 +9751,7 @@ public class TioBootWebApp {
 TableToJsonConfig.java,
 注意观察 DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
 
-```
-package com.enoleap.manglang.pen.api.server.config;
-
+```java
 import javax.sql.DataSource;
 
 import com.jfinal.template.Engine;
@@ -9771,7 +9769,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @AConfiguration
 public class TableToJsonConfig {
 
-  @ABean(priority = 1)
+  @ABean(priority = 1, destroyMethod = "close")
   public DataSource dataSource() {
     String jdbcUrl = EnvironmentUtils.get("jdbc.url");
     String jdbcUser = EnvironmentUtils.get("jdbc.user");
@@ -9786,7 +9784,8 @@ public class TableToJsonConfig {
     config.setPassword(jdbcPswd);
     config.setMaximumPoolSize(maximumPoolSize);
 
-    return new HikariDataSource(config);
+    HikariDataSource hikariDataSource = new HikariDataSource(config);
+    return hikariDataSource;
   }
 
   /*
@@ -9810,7 +9809,7 @@ public class TableToJsonConfig {
     engine.setCompressorOn(' ');
     engine.setCompressorOn('\n');
     arp.addSqlTemplate("/sql/all_sqls.sql");
-//    arp.start();
+	//arp.start();
     return arp;
   }
 }
@@ -9944,57 +9943,54 @@ TableToJsonConfig.java,
 - arp.setDialect(new PostgreSqlDialect()); 设置了数据库方言为 PostgreSQLDialect
 
 ```
-package com.litongjava.tio.boot.postgresql.demo.config;
-
 import javax.sql.DataSource;
 
-import org.tio.utils.jfinal.P;
-
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
-import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.litongjava.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.litongjava.tio.boot.constatns.ConfigKeys;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @AConfiguration
 public class TableToJsonConfig {
 
-  /
-   * config datasource
-   * @return
-   */
-  @ABean(priority = 1)
+  @ABean(priority = 1, destroyMethod = "close")
   public DataSource dataSource() {
     String jdbcUrl = EnvironmentUtils.get("jdbc.url");
     String jdbcUser = EnvironmentUtils.get("jdbc.user");
 
     String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
+    int maximumPoolSize = EnvironmentUtils.getInt("jdbc.MaximumPoolSize", 2);
 
     HikariConfig config = new HikariConfig();
     // 设定基本参数
     config.setJdbcUrl(jdbcUrl);
     config.setUsername(jdbcUser);
     config.setPassword(jdbcPswd);
-    return new HikariDataSource(config);
+    config.setMaximumPoolSize(maximumPoolSize);
+
+    HikariDataSource hikariDataSource = new HikariDataSource(config);
+    return hikariDataSource;
   }
 
-  /
+  /*
+   *
    * config ActiveRecordPlugin
-   * @return
-   * @throws Exception
    */
+
   @ABean(destroyMethod = "stop", initMethod = "start")
   public ActiveRecordPlugin activeRecordPlugin() throws Exception {
     DataSource dataSource = Aop.get(DataSource.class);
-    String property = EnvironmentUtils.get("tio.mode");
+    String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
+
     ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
     arp.setContainerFactory(new OrderedFieldContainerFactory());
-    arp.setDialect(new PostgreSqlDialect());
     if ("dev".equals(property)) {
       arp.setDevMode(true);
     }
@@ -10003,6 +9999,8 @@ public class TableToJsonConfig {
     engine.setSourceFactory(new ClassPathSourceFactory());
     engine.setCompressorOn(' ');
     engine.setCompressorOn('\n');
+    arp.addSqlTemplate("/sql/all_sqls.sql");
+	//arp.start();
     return arp;
   }
 }
