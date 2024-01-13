@@ -5818,63 +5818,18 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
 ### 添加依赖
 
 ```
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.3</tio.boot.version>
-    <lombok-version>1.18.30</lombok-version>
-    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
-    <final.name>web-hello</final.name>
-    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>tio-boot</artifactId>
-      <version>${tio.boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok-version}</version>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>hotswap-classloader</artifactId>
-      <version>${hotswap-classloader.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>jfinal-plugins</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.jfinal</groupId>
-      <artifactId>activerecord</artifactId>
-      <version>5.1.2</version>
-    </dependency>
-  </dependencies>
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>jfinal-plugins</artifactId>
+  <version>1.0.5</version>
+</dependency>
+<dependency>
+  <groupId>net.sf.ehcache</groupId>
+  <artifactId>ehcache-core</artifactId>
+  <version>2.6.11</version>
+</dependency>
 
 ```
-
-依赖解释
-
-- tio-boot 是框架核心，
-- jfinal-plugins 提供与 Ehcache 的集成
-- activerecord jfinal-plugins 依赖 jfinal-plugins
-
-jfinal-plugins 依赖如下
-
-> cron4j:2.2.5
-> ehcache-core:2.6.11
-> jedis:3.6.3
-> fst:2.57
 
 ### 添加配置文件 ehcache.xml
 
@@ -6049,73 +6004,37 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
 ### 添加依赖
 
 ```
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.3</tio.boot.version>
-    <lombok-version>1.18.30</lombok-version>
-    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
-    <final.name>web-hello</final.name>
-    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>tio-boot</artifactId>
-      <version>${tio.boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok-version}</version>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>hotswap-classloader</artifactId>
-      <version>${hotswap-classloader.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>jfinal-plugins</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.jfinal</groupId>
-      <artifactId>activerecord</artifactId>
-      <version>5.1.2</version>
-    </dependency>
-  </dependencies>
-
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>jfinal-plugins</artifactId>
+  <version>1.0.5</version>
+</dependency>
+<dependency>
+  <groupId>redis.clients</groupId>
+  <artifactId>jedis</artifactId>
+  <version>3.6.3</version>
+</dependency>
+<dependency>
+  <groupId>de.ruedigermoeller</groupId>
+  <artifactId>fst</artifactId>
+  <version>2.57</version> <!-- 注意：更高版本不支持 jdk 8 -->
+</dependency>
 ```
 
 依赖解释
 
-- tio-boot 是框架核心，
 - jfinal-plugins 提供与 Ehcache 的集成
-- activerecord jfinal-plugins 依赖 jfinal-plugins
-
-jfinal-plugins 依赖如下
-
-> cron4j:2.2.5
-> ehcache-core:2.6.11
-> jedis:3.6.3
-> fst:2.57
+- jedis:3.6.3 连接 reids
+- fst:2.57 序列化支持
 
 ### RedisPluginConfig 配置类
 
 这个类是一个配置类，用于初始化和配置 EhCache 插件。它通过 @AConfiguration 注解标记为配置类。类中的方法 redisPlugin 通过 @ABean 注解标记为 Bean 方法,框架启动时会执行该方法并将返回值放到 bean 容器中。在这个方法中，创建了一个 Plugin 实例并启动它。destroyMethod 指定在服务关闭时将会调用该方法,关闭该插件
 
 ```
-package com.litongjava.tio.web.hello.config;
-
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.redis.Cache;
 import com.litongjava.jfinal.plugin.redis.Redis;
 import com.litongjava.jfinal.plugin.redis.RedisPlugin;
 
@@ -6125,10 +6044,11 @@ public class RedisPluginConfig {
   @ABean(destroyMethod = "stop")
   public RedisPlugin redisPlugin() {
     // 用于缓存bbs模块的redis服务
-    RedisPlugin bbsRedis = new RedisPlugin("bbs", "localhost");
+    RedisPlugin bbsRedis = new RedisPlugin("main", "localhost");
     bbsRedis.start();
     // 测试连接
-    Redis.use("bbs").getJedis().connect();
+    Cache cache = Redis.use("main");
+    cache.getJedis().connect();
     return bbsRedis;
   }
 }
@@ -6246,63 +6166,22 @@ https://central.sonatype.com/artifact/com.litongjava/jfinal-plugins
 ### 添加依赖
 
 ```
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
-    <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.3</tio.boot.version>
-    <lombok-version>1.18.30</lombok-version>
-    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
-    <final.name>web-hello</final.name>
-    <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>tio-boot</artifactId>
-      <version>${tio.boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>${lombok-version}</version>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>hotswap-classloader</artifactId>
-      <version>${hotswap-classloader.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>jfinal-plugins</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.jfinal</groupId>
-      <artifactId>activerecord</artifactId>
-      <version>5.1.2</version>
-    </dependency>
-  </dependencies>
-
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>jfinal-plugins</artifactId>
+  <version>1.0.5</version>
+</dependency>
+<dependency>
+  <groupId>it.sauronsoftware.cron4j</groupId>
+  <artifactId>cron4j</artifactId>
+  <version>2.2.5</version>
+</dependency>
 ```
 
 依赖解释
 
-- tio-boot 是框架核心，
-- jfinal-plugins 提供与 Ehcache 的集成
-- activerecord jfinal-plugins 依赖 jfinal-plugins
-
-jfinal-plugins 依赖如下
-
-> cron4j:2.2.5
-> ehcache-core:2.6.11
-> jedis:3.6.3
-> fst:2.57
+- jfinal-plugins
+- cron4j
 
 ### Cron4jPluginConfig 配置类
 
