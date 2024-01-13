@@ -10071,6 +10071,254 @@ public class DbTestController {
 {"code":0,"data":[{"grade":"一年级","name":"沈","id":"1"},{"grade":"一年级","name":"李","id":"2"},{"grade":"二年级","name":"张","id":"3"}],"msg":""}
 ```
 
+## Tio-Boot 整合 Sa-Token 进行登录验证
+
+### 概述
+
+Tio-Boot 已经内了内置对 Sa-Token 支持 ,提供了一种有效的方式来处理身份验证和授权。虽然 Tio-Boot 已有内置支持，但仍需手动添加 `sa-token-core` 依赖。此外，若希望将 token 存储在 Redis 中，还需要添加 `jfinal-plugins`、`jedis` 和 `fst` 依赖。
+
+### 使用 Sa-Token 实现登录功能
+
+#### 添加依赖
+
+首先，需要在项目的 `pom.xml` 文件中添加以下依赖，以便引入必要的库：
+
+```xml
+<!-- Sa-Token 核心库 -->
+<dependency>
+  <groupId>cn.dev33</groupId>
+  <artifactId>sa-token-core</artifactId>
+  <version>1.37.0</version>
+</dependency>
+
+<!-- JFinal 插件，用于与 Redis 交互 -->
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>jfinal-plugins</artifactId>
+  <version>1.0.5</version>
+</dependency>
+
+<!-- Jedis，Redis 的 Java 客户端 -->
+<dependency>
+  <groupId>redis.clients</groupId>
+  <artifactId>jedis</artifactId>
+  <version>3.6.3</version>
+</dependency>
+
+<!-- FST 序列化工具，用于对象和字节流间的转换 -->
+<dependency>
+  <groupId>de.ruedigermoeller</groupId>
+  <artifactId>fst</artifactId>
+  <version>2.57</version> <!-- 注意：更高版本不支持 JDK 8 -->
+</dependency>
+```
+
+#### 配置 Sa-Token
+
+接下来，需要设置 Sa-Token 的配置类。此类负责初始化 Sa-Token 相关的配置，如 token 的存储方式、有效期、cookie 配置等。
+
+```java
+// 导入必要的类和注解
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.aop.annotation.AInitialization;
+import com.litongjava.jfinal.plugin.satoken.SaTokenDaoRedis;
+import com.litongjava.tio.boot.satoken.SaTokenContextForTio;
+import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.config.SaCookieConfig;
+import cn.dev33.satoken.config.SaTokenConfig;
+import cn.dev33.satoken.context.SaTokenContext;
+import cn.dev33.satoken.util.SaTokenConsts;
+
+@AConfiguration
+public class SaTokenConfiguration {
+
+  @AInitialization
+  public void config() {
+    // 初始化 Sa-Token 上下文
+    SaTokenContext saTokenContext = new SaTokenContextForTio();
+
+    // 设置 Cookie 配置，例如启用 HttpOnly 属性
+    SaCookieConfig saCookieConfig = new SaCookieConfig();
+    saCookieConfig.setHttpOnly(true);
+
+    // 初始化和配置 Sa-Token 主配置
+    SaTokenConfig saTokenConfig = new SaTokenConfig();
+    saTokenConfig.setTokenStyle(SaTokenConsts.TOKEN_STYLE_SIMPLE_UUID);
+    saTokenConfig.setActiveTimeout(50 * 60); // 设置活动超时时间为 50 分钟
+
+    saTokenConfig.setIsShare(false);
+    saTokenConfig.setTokenName("token"); // 设置 token 的名称
+    saTokenConfig.setIsWriteHeader(true); // 将 token 写入响应头
+    saTokenConfig.setIsReadHeader(true); // 从请求头中读取 token
+
+    saTokenConfig.setCookie(saCookieConfig);
+
+    // 应用配置到 Sa-Token 管理器
+    SaManager.setConfig(saTokenConfig);
+    SaManager.setSaTokenContext(saTokenContext);
+  }
+}
+```
+
+#### 添加拦截器
+
+为了对请求进行验证，需要设置一个拦截器，该拦截器将根据配置的规则允许或阻止请求。
+
+```java
+// 导入必要的类和注解
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.j
+
+final.aop.annotation.AInitialization;
+import com.litongjava.tio.boot.http.interceptor.HttpServerInterceptorModel;
+import com.litongjava.tio.boot.satoken.SaTokenInterceptor;
+import com.litongjava.tio.boot.server.TioBootServer;
+
+@AConfiguration
+public class InterceptorConfiguration {
+
+  @AInitialization
+  public void config() {
+    // 创建 SaToken 拦截器实例
+    SaTokenInterceptor saTokenInterceptor = new SaTokenInterceptor();
+    HttpServerInterceptorModel model = new HttpServerInterceptorModel();
+    model.setInterceptor(saTokenInterceptor);
+    model.addblockeUrl("/**"); // 拦截所有路由
+    model.addAlloweUrls("/register/*", "/auth/*"); // 设置例外路由
+
+    // 将拦截器配置添加到 Tio 服务器
+    TioBootServer.getServerInteceptorConfigure().add(model);
+  }
+}
+```
+
+#### 实现登录和登出逻辑
+
+接下来，可以在控制器中实现登录和登出的逻辑。这将使应用能够处理用户身份验证。
+
+```java
+// 导入必要的类和注解
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.tio.boot.http.TioControllerContext;
+import com.litongjava.tio.http.common.HttpResponse;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+import com.litongjava.tio.http.server.util.Resps;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath("/auth")
+@Slf4j
+public class AuthController {
+
+  public Object doLogin() {
+    StpUtil.login("litong");
+    HttpResponse response = TioControllerContext.getResponse();
+    log.info("response", response);
+    return response;
+  }
+
+  public HttpResponse logout() {
+    StpUtil.logout();
+    SaResult ok = SaResult.ok("ok");
+    HttpResponse response = TioControllerContext.getResponse();
+    return Resps.json(response, ok);
+  }
+
+  public boolean validateToken() {
+    try {
+      StpUtil.checkActiveTimeout();
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+}
+```
+
+#### 验证访问权限
+
+最后，可以创建一个 `IndexController` 来验证用户的登录状态。如果用户没有登录，他们将无法访问此控制器的路由。
+
+```java
+// 导入必要的类和注解
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath("/")
+public class IndexController {
+  @RequestPath()
+  public String index() {
+    return "index";
+  }
+}
+```
+
+#### 测试应用
+
+运行应用后，可以通过以下 URL 测试登录、登出和验证 token 的功能：
+
+- 登录：`http://localhost:8080/auth/doLogin?username=zhang&password=123456`
+- 登出：`http://localhost:8080/auth/logout`
+- 验证 Token：`http://localhost:8080/auth/validateToken`
+- 访问首页：`http://localhost:8080/`
+
+### 将 Token 存入 Redis
+
+为了将 token 存储在 Redis 中，需要配置 Redis 连接，并让 Sa-Token 使用 Redis 来存储 token。
+
+#### 配置 Redis 连接
+
+首先，创建一个配置类来启动和配置 Redis。
+
+```java
+// 导入必要的类和注解
+package com.litongjava.tio.web.hello;
+
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.redis.Cache;
+import com.litongjava.jfinal.plugin.redis.Redis;
+import com.litongjava.jfinal.plugin.redis.RedisPlugin;
+
+@AConfiguration
+public class RedisPluginConfig {
+
+  @ABean(destroyMethod = "stop")
+  public RedisPlugin redisPlugin() {
+    // 创建并启动 Redis 插件
+    RedisPlugin bbsRedis = new RedisPlugin("main", "localhost");
+    bbsRedis.start();
+
+    // 测试连接
+    Cache cache = Redis.use("main");
+    cache.getJedis().connect();
+    return bbsRedis;
+  }
+}
+```
+
+#### 使用 Sa-Token 的 Redis 存储
+
+然后，在 Sa-Token 的配置中指定使用 Redis 来存储 token。
+
+```java
+// 在 Sa-Token 配置类中添加
+SaManager.setSaTokenDao(new SaTokenDaoRedis("main"));
+```
+
+通过这种方式，Sa-Token 将使用 Redis 作为 token 的存储介质，提高了应用的可伸缩性和性能。
+
+#### 总结
+
+整合 Sa-Token 到并使用 Redis 作为存储，为应用提供了一种强大且灵活的方式来处理用户认证和会话管理。通过上述步骤，您可以轻松地在 Tio-Boot 项目中实现基于 token 的身份验证系统，并利用 Redis 的高性能和持久化特性来管理这些 token。
+
+记得在实际部署应用时，根据实际环境调整 Redis 的连接配置，确保应用的安全性和性能。同时，您可能还需要对登录逻辑进行进一步的扩展，以支持例如用户验证、密码加密等功能。
+
+这样，您就完成了 Sa-Token 在 Tio-Boot 中的整合，并能够处理复杂的身份验证和授权场景，为您的应用添加了一层安全的保护。
+
 ## 性能测试
 
 ### tio-http-server apache benchmark
