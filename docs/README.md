@@ -46,7 +46,7 @@ If you are developing with Java 8, please use the following dependency:
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <tio-boot.version>1.3.3</tio-boot.version>
+    <tio-boot.version>1.3.4</tio-boot.version>
   </properties>
   <dependencies>
     <dependency>
@@ -106,7 +106,7 @@ public class IndexController {
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.3.3</tio.boot.version>
+  <tio.boot.version>1.3.4</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -757,7 +757,7 @@ mvn package -DskipTests -Pnative
 实际执行的打包命令如下,笔者在打包时移除了 hotswap-classloader
 
 ```shell
-/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.3/tio-boot-1.3.3.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
+/root/program/graalvm-jdk-21.0.1+12.1/lib/svm/bin/native-image -cp /root/.m2/repository/com/litongjava/tio-boot/1.3.4/tio-boot-1.3.4.jar:/root/.m2/repository/commons-io/commons-io/2.10.0/commons-io-2.10.0.jar:/root/.m2/repository/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar:/root/.m2/repository/com/esotericsoftware/reflectasm/1.11.9/reflectasm-1.11.9.jar:/root/.m2/repository/com/litongjava/tio-websocket-server/3.7.3.v20231224-RELEASE/tio-websocket-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-websocket-common/3.7.3.v20231224-RELEASE/tio-websocket-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-common/3.7.3.v20231224-RELEASE/tio-http-common-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-core/3.7.3.v20231224-RELEASE/tio-core-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-utils/3.7.3.v20231224-RELEASE/tio-utils-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/litongjava/tio-http-server/3.7.3.v20231224-RELEASE/tio-http-server-3.7.3.v20231224-RELEASE.jar:/root/.m2/repository/com/alibaba/fastjson2/fastjson2/2.0.43/fastjson2-2.0.43.jar:/root/.m2/repository/com/litongjava/jfinal-aop/1.1.7/jfinal-aop-1.1.7.jar:/root/.m2/repository/com/jfinal/enjoy/5.1.3/enjoy-5.1.3.jar:/root/.m2/repository/org/slf4j/slf4j-jdk14/1.7.31/slf4j-jdk14-1.7.31.jar:/root/.m2/repository/org/slf4j/slf4j-api/1.7.31/slf4j-api-1.7.31.jar:/root/code/java-ee-tio-boot-study/tio-boot-latest-study/tio-boot-web-hello/target/web-hello.jar -H:+RemoveSaturatedTypeFlows --allow-incomplete-classpath --no-fallback -H:Class=com.litongjava.tio.web.hello.HelloApp -H:Name=web-hello
 ```
 
 启动
@@ -6695,7 +6695,7 @@ MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型�
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.3</tio.boot.version>
+    <tio.boot.version>1.3.4</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
     <final.name>web-hello</final.name>
@@ -7877,7 +7877,7 @@ http://localhost/mybatis/getUserMapper
     <dependency>
       <groupId>com.litongjava</groupId>
       <artifactId>tio-boot</artifactId>
-      <version>1.3.3</version>
+      <version>1.3.4</version>
     </dependency>
 
     <dependency>
@@ -8222,7 +8222,7 @@ public class UserServiceTest {
   <dependency>
     <groupId>com.litongjava</groupId>
     <artifactId>tio-boot</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
   </dependency>
 
   <dependency>
@@ -9879,7 +9879,7 @@ public class DbTestController {
 
 ### 11.3.整合 PostGresql 数据库
 
-#### 11.3.3.创建表,插入数据
+#### 11.3.4.创建表,插入数据
 
 创建一张简单的 student 表
 
@@ -9896,7 +9896,7 @@ INSERT INTO student VALUES (2, '李', '一年级');
 INSERT INTO student VALUES (3,'张', '二年级');
 ```
 
-#### 11.3.3.添加依赖
+#### 11.3.4.添加依赖
 
 新建工程 tio-boot-postgresql-demo
 
@@ -9920,7 +9920,7 @@ INSERT INTO student VALUES (3,'张', '二年级');
 </dependency>
 ```
 
-#### 11.3.3.配置文件 app.properties
+#### 11.3.4.配置文件 app.properties
 
 ```
 server.port = 80
