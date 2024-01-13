@@ -898,20 +898,22 @@ tio-boot 框架启动时 加载主 app.properties 配置文件。这个文件应
 
 1. **在 `app.properties` 中设置环境**：
 
-   ```properties
-   app.env=dev  # 或 prod
-   ```
+```properties
+# 或 prod
+app.env=dev
+```
 
 2. **启动 `tio-boot`**：
 
-   ```java
-   TioApplication.run(HelloApp.class, args);
-   ```
+```java
+TioApplication.run(HelloApp.class, args);
+```
 
 3. **获取指定当前环境的键值**：
-   ```java
-   String env = EnviormentUtils.get(ConfigKeys.appEnv);
-   ```
+
+```java
+String env = EnviormentUtils.get(ConfigKeys.appEnv);
+```
 
 当你调用 `TioApplication.run(HelloApp.class, args)`后，`tio-boot` 会根据 `app.properties` 中的 `app.env` 值加载对应的环境文件（`app-dev.properties` 或 `app-prod.properties`）。这样，你就可以根据不同的环境自动加载相应的配置文件。
 
@@ -8481,25 +8483,6 @@ public class UserServiceTest {
 - mybatis-plus-extension: MyBatis-Plus 扩展，用于简化数据库操作
 
 ```xml
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>tio-boot</artifactId>
-  <version>${tio.boot.version}</version>
-</dependency>
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-api</artifactId>
-  <version>1.7.25</version>
-</dependency>
-
-<dependency>
-  <groupId>org.projectlombok</groupId>
-  <artifactId>lombok</artifactId>
-  <version>${lombok-version}</version>
-  <optional>true</optional>
-  <scope>provided</scope>
-</dependency>
-
 <!--数据库驱动-->
 <dependency>
   <groupId>com.taosdata.jdbc</groupId>
@@ -8529,12 +8512,6 @@ public class UserServiceTest {
   <groupId>com.litongjava</groupId>
   <artifactId>table-to-json</artifactId>
   <version>1.2.4</version>
-</dependency>
-
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>hotswap-classloader</artifactId>
-  <version>${hotswap-classloader.version}</version>
 </dependency>
 ```
 
@@ -9668,7 +9645,7 @@ INSERT INTO "student" VALUES (1, '沈', '一年级');
 <dependency>
   <groupId>com.litongjava</groupId>
   <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.4</version>
 </dependency>
 ```
 
@@ -9718,11 +9695,16 @@ INSERT INTO student VALUES (3,'张', '二年级');
 
 ```
 <dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-api</artifactId>
+  <version>1.7.25</version>
 </dependency>
 
+<dependency>
+  <groupId>com.litongjava</groupId>
+  <artifactId>table-to-json</artifactId>
+  <version>1.2.4</version>
+</dependency>
 
 <dependency>
   <groupId>mysql</groupId>
@@ -9740,17 +9722,10 @@ INSERT INTO student VALUES (3,'张', '二年级');
 #### 11.2.3.配置文件-app.properties
 
 ```
-server.port = 80
-http.page = classpath:/pages
-
-http.404 = /404
-http.500 = /500
-
-http.maxLiveTimeOfStaticRes=0
-
 jdbc.url=jdbc:mysql://192.168.3.9/table_to_json_test?characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
 jdbc.user=root
 jdbc.pswd=robot_123456#
+jdbc.MaximumPoolSize=2
 ```
 
 #### 11.2.4.编写启动类
@@ -9777,53 +9752,53 @@ TableToJsonConfig.java,
 注意观察 DataSource 的 priority 是 1,priority 表示 bean 启动的优先级,值越小,启动的优先级越高
 
 ```
+package com.enoleap.manglang.pen.api.server.config;
+
 import javax.sql.DataSource;
 
-import org.tio.utils.jfinal.P;
-
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.litongjava.jfinal.aop.Aop;
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.litongjava.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.litongjava.tio.boot.constatns.ConfigKeys;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @AConfiguration
 public class TableToJsonConfig {
 
-  /
-   * config datasource
-   * @return
-   */
   @ABean(priority = 1)
   public DataSource dataSource() {
     String jdbcUrl = EnvironmentUtils.get("jdbc.url");
     String jdbcUser = EnvironmentUtils.get("jdbc.user");
 
     String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
+    int maximumPoolSize = EnvironmentUtils.getInt("jdbc.MaximumPoolSize", 2);
 
     HikariConfig config = new HikariConfig();
     // 设定基本参数
     config.setJdbcUrl(jdbcUrl);
     config.setUsername(jdbcUser);
     config.setPassword(jdbcPswd);
-//    config.setMaximumPoolSize(2);
+    config.setMaximumPoolSize(maximumPoolSize);
 
     return new HikariDataSource(config);
   }
 
-  /
+  /*
+   *
    * config ActiveRecordPlugin
-   * @return
-   * @throws Exception
    */
+
   @ABean(destroyMethod = "stop", initMethod = "start")
   public ActiveRecordPlugin activeRecordPlugin() throws Exception {
     DataSource dataSource = Aop.get(DataSource.class);
-    String property = EnvironmentUtils.get("tio.mode");
+    String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
+
     ActiveRecordPlugin arp = new ActiveRecordPlugin(dataSource);
     arp.setContainerFactory(new OrderedFieldContainerFactory());
     if ("dev".equals(property)) {
@@ -9834,7 +9809,7 @@ public class TableToJsonConfig {
     engine.setSourceFactory(new ClassPathSourceFactory());
     engine.setCompressorOn(' ');
     engine.setCompressorOn('\n');
-    // arp.addSqlTemplate("/sql/all_sqls.sql");
+    arp.addSqlTemplate("/sql/all_sqls.sql");
 //    arp.start();
     return arp;
   }
@@ -9846,17 +9821,18 @@ public class TableToJsonConfig {
 查询 student 表中的所有数据,代码如下
 
 ```
-import java.util.List;
+package com.enoleap.manglang.pen.api.server.controller;
 
-import org.tio.http.common.HttpRequest;
-import org.tio.http.server.annotation.RequestPath;
+import java.util.List;
 
 import com.jfinal.kit.Kv;
 import com.litongjava.data.model.DbJsonBean;
 import com.litongjava.data.services.DbJsonService;
 import com.litongjava.data.utils.DbJsonBeanUtils;
 import com.litongjava.jfinal.aop.Aop;
-@AController
+import com.litongjava.tio.http.common.HttpRequest;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
 @RequestPath("/db/student")
 public class DbTestController {
 
@@ -9904,7 +9880,7 @@ INSERT INTO student VALUES (3,'张', '二年级');
 <dependency>
   <groupId>com.litongjava</groupId>
   <artifactId>table-to-json</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.4</version>
 </dependency>
 
 <dependency>
