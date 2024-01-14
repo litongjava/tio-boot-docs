@@ -4720,7 +4720,7 @@ msg=你好{0}, 今天是{1}.
 
 - 你可以子项目启动时使用 I18n.setDefaultBaseName("i18n")配置资源文件默认 baseName
 
-特别注意，java 国际化规范要求 properties 文件的编辑需要使用专用的编辑器，否则会出乱码，常用的有 Properties Editor，在此可以下载：http://www.oschina.net/p/properties+editor
+特别注意，java 国际化规范要求 properties 文件的编辑需要使用专用的编辑器，否则会出乱码，如果使用 Eclipse 进行开发,推荐安装 Kantan Properties Editor
 
 以下是基于以上步骤以后的代码示例：
 
