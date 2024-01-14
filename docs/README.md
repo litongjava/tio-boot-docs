@@ -10279,9 +10279,7 @@ public class SaTokenConfiguration {
 ```java
 // 导入必要的类和注解
 import com.litongjava.jfinal.aop.annotation.AConfiguration;
-import com.litongjava.j
-
-final.aop.annotation.AInitialization;
+import com.litongjava.jfinal.aop.annotation.AInitialization;
 import com.litongjava.tio.boot.http.interceptor.HttpServerInterceptorModel;
 import com.litongjava.tio.boot.satoken.SaTokenInterceptor;
 import com.litongjava.tio.boot.server.TioBootServer;
@@ -10302,6 +10300,7 @@ public class InterceptorConfiguration {
     TioBootServer.getServerInteceptorConfigure().add(model);
   }
 }
+
 ```
 
 #### 实现登录和登出逻辑
