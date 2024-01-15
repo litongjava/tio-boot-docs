@@ -108,7 +108,7 @@ public class IndexController {
   <graalvm.version>23.1.1</graalvm.version>
   <tio.boot.version>1.3.4</tio.boot.version>
   <lombok-version>1.18.30</lombok-version>
-  <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+  <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
   <final.name>web-hello</final.name>
   <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
 </properties>
@@ -6778,27 +6778,17 @@ MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型�
     <graalvm.version>23.1.1</graalvm.version>
     <tio.boot.version>1.3.4</tio.boot.version>
     <lombok-version>1.18.30</lombok-version>
-    <hotswap-classloader.version>1.2.1</hotswap-classloader.version>
+    <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
     <final.name>web-hello</final.name>
     <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>tio-boot</artifactId>
-      <version>${tio.boot.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok-version}</version>
       <optional>true</optional>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.litongjava</groupId>
-      <artifactId>hotswap-classloader</artifactId>
-      <version>${hotswap-classloader.version}</version>
     </dependency>
 
     <!-- mybatis -->
@@ -9135,7 +9125,7 @@ public class Stable1Controller {
 - http://localhost/stable4/selectList
 - http://localhost/stable5/selectList
 
-## tio-boot 使用 jfinal-plugin 整合 TDEngine
+## tio-boot 使用 table-to-json 整合 TDEngine
 
 ### 添加依赖
 
@@ -9177,11 +9167,6 @@ public class Stable1Controller {
   <version>1.2.4</version>
 </dependency>
 
-<dependency>
-  <groupId>com.litongjava</groupId>
-  <artifactId>hotswap-classloader</artifactId>
-  <version>${hotswap-classloader.version}</version>
-</dependency>
 ```
 
 ### 启动类
