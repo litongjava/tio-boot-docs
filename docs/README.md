@@ -5564,10 +5564,10 @@ ehcache.xml 配置文件内容如下
 这个类是一个配置类，用于初始化和配置 EhCache 插件。它通过 @AConfiguration 注解标记为配置类。类中的方法 ehCachePlugin 通过 @ABean 注解标记为 Bean 方法,框架启动时会执行该方法并将返回值放到 bean 容器中。在这个方法中，创建了一个 Plugin 实例并启动它。destroyMethod 指定在服务关闭时将会调用该方法,关闭该插件
 
 ```
-package com.litongjava.tio.web.hello.config;
+package com.enoleap.manglang.pen.api.server.config;
 
-import com.litongjava.jfinal.aop.annotation.Bean;
-import com.litongjava.jfinal.aop.annotation.Configuration;
+import com.litongjava.jfinal.aop.annotation.ABean;
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
 import com.litongjava.jfinal.plugin.ehcache.EhCachePlugin;
 
 @AConfiguration
@@ -5577,6 +5577,29 @@ public class EhCachePluginConfig {
   public EhCachePlugin ehCachePlugin() {
     EhCachePlugin ehCachePlugin = new EhCachePlugin();
     ehCachePlugin.start();
+    return ehCachePlugin;
+  }
+}
+```
+
+如果不想将 EhCachePlugin 放入 Aop 容器,你可以使用下面的配置类
+
+```
+package com.enoleap.manglang.pen.api.server.config;
+
+import com.litongjava.jfinal.aop.annotation.AConfiguration;
+import com.litongjava.jfinal.aop.annotation.AInitialization;
+import com.litongjava.jfinal.plugin.ehcache.EhCachePlugin;
+import com.litongjava.tio.boot.server.TioBootServer;
+
+@AConfiguration
+public class EhCachePluginConfig {
+
+  @AInitialization
+  public EhCachePlugin ehCachePlugin() {
+    EhCachePlugin ehCachePlugin = new EhCachePlugin();
+    ehCachePlugin.start();
+    TioBootServer.addDestroyMethod(ehCachePlugin::stop);
     return ehCachePlugin;
   }
 }
