@@ -10733,14 +10733,24 @@ public class MongoDb {
 ```
 
 3. **MongoClientConfiguration 配置类**
+   配置文件 app.properties
+
+```properties
+mongodb.host=192.168.3.9
+mongodb.port=27017
+mongodb.authSource=admin
+mongodb.username=admin
+mongodb.password=Litong@123
+mongodb.database=penhub
+```
 
 - 这个类是你应用程序的配置类，它负责设置和初始化 MongoDB 客户端。
 - 它创建了数据库的地址和凭证，并用这些信息初始化了 MongoClient。
 - 然后它使用 MongoClient 来连接到数据库，并将这个连接保存在 MongoDb 工具类中，以便全局使用。
 - 最后，它向`TioBootServer`添加了一个销毁方法，以确保在应用程序关闭时 MongoClient 也会被正确关闭。
 
-```
-package com.litongjava.tio.web.hello.config;
+```java
+package com.enoleap.manglang.pen.api.server.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10748,6 +10758,7 @@ import java.util.List;
 import com.litongjava.jfinal.aop.annotation.AConfiguration;
 import com.litongjava.jfinal.aop.annotation.AInitialization;
 import com.litongjava.tio.boot.server.TioBootServer;
+import com.litongjava.tio.utils.environment.EnvironmentUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -10756,14 +10767,21 @@ import com.mongodb.client.MongoDatabase;
 @AConfiguration
 public class MongoClientConfiguration {
 
-  @AInitialization
-  public void config() {
+@AInitialization
+public void config() {
 
-    String mongodbHost = "192.168.3.9";
-    int mongodbPort = 27017;
-    String mongodbSourceName = "admin";
-    String mongodbUsername = "admin";
-    String mongodbPassword = "Litong@123";
+    // String mongodbHost = "192.168.3.9";
+    // int mongodbPort = 27017;
+    // String mongodbAuthSource = "admin";
+    // String mongodbUsername = "admin";
+    // String mongodbPassword = "Litong@123";
+
+    String mongodbHost = EnvironmentUtils.getStr("mongodb.host");
+    int mongodbPort = EnvironmentUtils.getInt("mongodb.port");
+    String mongodbAuthSource = EnvironmentUtils.get("mongodb.authSource");
+    String mongodbUsername = EnvironmentUtils.get("mongodb.username");
+    String mongodbPassword = EnvironmentUtils.get("mongodb.password");
+    String mongodbDatabase = EnvironmentUtils.get("mongodb.database");
 
     List<ServerAddress> adds = new ArrayList<>();
     // ServerAddress()两个参数分别为 服务器地址 和 端口
@@ -10772,7 +10790,7 @@ public class MongoClientConfiguration {
     List<MongoCredential> credentials = new ArrayList<>();
 
     // MongoCredential.createScramSha1Credential()三个参数分别为 用户名 数据库名称 密码
-    MongoCredential mongoCredential = MongoCredential.createScramSha1Credential(mongodbUsername, mongodbSourceName,
+    MongoCredential mongoCredential = MongoCredential.createScramSha1Credential(mongodbUsername, mongodbAuthSource,
         mongodbPassword.toCharArray());
     credentials.add(mongoCredential);
 
@@ -10780,7 +10798,7 @@ public class MongoClientConfiguration {
     MongoClient mongoClient = new MongoClient(adds, credentials);
 
     // 连接到数据库
-    MongoDatabase mongoDatabase = mongoClient.getDatabase(mongodbSourceName);
+    MongoDatabase mongoDatabase = mongoClient.getDatabase(mongodbDatabase);
 
     // 保持client and database;
     MongoDb.setClient(mongoClient);
@@ -10788,6 +10806,7 @@ public class MongoClientConfiguration {
 
     // 添加addDestroyMethod
     TioBootServer.addDestroyMethod(mongoClient::close);
+
   }
 }
 ```
