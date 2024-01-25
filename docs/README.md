@@ -9,6 +9,7 @@ https://chat.openai.com/g/g-za2zgLE34-jfinal
 
 ## 1.tio-boot 简介
 
+口号:简洁,好用,开发快,运行快
 宗旨:去繁求减,返璞归真,轻装上阵,高效开发  
 tio-boot 是一款基于 Java AIO 高性能 Web 框架,可以 tio-boot 可以简单的让单台服务器承担上万并发
 
