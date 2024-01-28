@@ -9933,13 +9933,13 @@ public class Stable5Controller {
 - http://localhost/stable4/list
 - http://localhost/stable5/list
 
-### 多数据源 mysql and tdengine
+## table-json 多数据源 mysql and tdengine
 
 如何在 tio-boot 应用程序中配置多个数据源，这里以 MySQL 和 TDengine 为例。
 
 #### ActiveRecordPluginConfiguration 类
 
-···
+```java
 import javax.sql.DataSource;
 
 import com.jfinal.template.Engine;
@@ -9949,6 +9949,8 @@ import com.litongjava.jfinal.aop.annotation.AConfiguration;
 import com.litongjava.jfinal.aop.annotation.AInitialization;
 import com.litongjava.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.litongjava.jfinal.plugin.activerecord.OrderedFieldContainerFactory;
+import com.litongjava.jfinal.plugin.activerecord.dialect.TdEngineDialect;
+import com.litongjava.jfinal.plugin.hikaricp.DsContainer;
 import com.litongjava.tio.boot.constatns.ConfigKeys;
 import com.litongjava.tio.boot.server.TioBootServer;
 import com.litongjava.tio.utils.environment.EnvironmentUtils;
@@ -9958,23 +9960,18 @@ import com.zaxxer.hikari.HikariDataSource;
 @AConfiguration
 public class ActiveRecordPluginConfiguration {
 
-/\*
-
--
-- config ActiveRecordPlugin
-  \*/
   @AInitialization
   public void activeRecordPlugin() throws Exception {
-  configArpForMysql();
-  configArpForTdEngine();
+    configArpForMysql();
+    configArpForTdEngine();
 
-}
+  }
 
-public DataSource getMysqlDataSource() {
-String jdbcUrl = EnvironmentUtils.get("jdbc.url");
-String jdbcUser = EnvironmentUtils.get("jdbc.user");
-String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
-int maximumPoolSize = EnvironmentUtils.getInt("jdbc.MaximumPoolSize", 2);
+  public DataSource getMysqlDataSource() {
+    String jdbcUrl = EnvironmentUtils.get("jdbc.url");
+    String jdbcUser = EnvironmentUtils.get("jdbc.user");
+    String jdbcPswd = EnvironmentUtils.get("jdbc.pswd");
+    int maximumPoolSize = EnvironmentUtils.getInt("jdbc.MaximumPoolSize", 2);
 
     HikariConfig config = new HikariConfig();
     // 设定基本参数
@@ -9986,11 +9983,10 @@ int maximumPoolSize = EnvironmentUtils.getInt("jdbc.MaximumPoolSize", 2);
     HikariDataSource hikariDataSource = new HikariDataSource(config);
     TioBootServer.addDestroyMethod(hikariDataSource::close);
     return hikariDataSource;
+  }
 
-}
-
-public ActiveRecordPlugin configArpForMysql() {
-String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
+  public ActiveRecordPlugin configArpForMysql() {
+    String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
 
     DataSource mysqlDataSource = getMysqlDataSource();
     ActiveRecordPlugin mysqlArp = new ActiveRecordPlugin(mysqlDataSource);
@@ -10013,18 +10009,17 @@ String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
     // add
     TioRequestParamUtils.types.add("bigint");
     return mysqlArp;
+  }
 
-}
-
-public DataSource getTdengineDataSource() {
-HikariConfig config = new HikariConfig();
-// jdbc properties
-String host = EnvironmentUtils.get("tdengine.host");
-int port = EnvironmentUtils.getInt("tdengine.port");
-String user = EnvironmentUtils.get("tdengine.username");
-String pswd = EnvironmentUtils.get("tdengine.password");
-String dbName = EnvironmentUtils.get("tdengine.database");
-String driverClassName = EnvironmentUtils.get("tdengine.driverClassName");
+  public DataSource getTdengineDataSource() {
+    HikariConfig config = new HikariConfig();
+    // jdbc properties
+    String host = EnvironmentUtils.get("tdengine.host");
+    int port = EnvironmentUtils.getInt("tdengine.port");
+    String user = EnvironmentUtils.get("tdengine.username");
+    String pswd = EnvironmentUtils.get("tdengine.password");
+    String dbName = EnvironmentUtils.get("tdengine.database");
+    String driverClassName = EnvironmentUtils.get("tdengine.driverClassName");
 
     // String driverClassName = "com.taosdata.jdbc.TSDBDriver";
 
@@ -10040,23 +10035,25 @@ String driverClassName = EnvironmentUtils.get("tdengine.driverClassName");
     config.setConnectionTestQuery("select server_status()"); // validation query
 
     HikariDataSource ds = new HikariDataSource(config); // create datasource
+    DsContainer.setDataSource(ds);
     TioBootServer.addDestroyMethod(ds::close);
 
     return ds;
+  }
 
-}
+  private String getTdEngineJdbcUrl(String host, int port, String user, String pswd, String dbName) {
+    // 添加batchfetch=true属性后得到的Websocket连接
+    return "jdbc:TAOS-RS://" + host + ":" + port + "/" + dbName + "?user=" + user + "&password=" + pswd
+        + "&batchfetch=true";
+  }
 
-private String getTdEngineJdbcUrl(String host, int port, String user, String pswd, String dbName) {
-// 添加 batchfetch=true 属性后得到的 Websocket 连接
-return "jdbc:TAOS-RS://" + host + ":" + port + "/" + dbName + "?user=" + user + "&password=" + pswd + "&batchfetch=true";
-}
-
-public void configArpForTdEngine() {
-String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
-DataSource tdengineDataSource = getTdengineDataSource();
-//指定名称为 tdengine
-ActiveRecordPlugin tdengineArp = new ActiveRecordPlugin("tdengine", tdengineDataSource);
-tdengineArp.setContainerFactory(new OrderedFieldContainerFactory());
+  public void configArpForTdEngine() {
+    String property = EnvironmentUtils.get(ConfigKeys.APP_ENV);
+    DataSource tdengineDataSource = getTdengineDataSource();
+    // 指定名称为 tdengine
+    ActiveRecordPlugin tdengineArp = new ActiveRecordPlugin("tdengine", tdengineDataSource);
+    tdengineArp.setDialect(new TdEngineDialect());
+    tdengineArp.setContainerFactory(new OrderedFieldContainerFactory());
 
     if ("dev".equals(property)) {
       tdengineArp.setDevMode(true);
@@ -10065,10 +10062,9 @@ tdengineArp.setContainerFactory(new OrderedFieldContainerFactory());
 
     tdengineArp.start();
     TioBootServer.addDestroyMethod(tdengineArp::stop);
-
+  }
 }
-}
-···
+```
 
 1. **数据源配置**:
    - `getMysqlDataSource()`: 此方法创建并配置 MySQL 的数据源。使用 HikariCP 作为连接池管理器。
@@ -10086,7 +10082,7 @@ tdengineArp.setContainerFactory(new OrderedFieldContainerFactory());
    - 使用 `TioBootTest.before` 方法初始化测试环境。
    - `test()` 方法中演示了如何使用 `DbJsonService` 从 MySQL 查询数据，并使用 `Db.use("tdengine")` 从 TDengine 查询数据。
 
-···
+```java
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10106,27 +10102,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ActiveRecordPluginConfigurationTest {
 
-@Before
-public void before() {
-TioBootTest.before(ActiveRecordPluginConfiguration.class);
-}
+  @Before
+  public void before() {
+    TioBootTest.before(ActiveRecordPluginConfiguration.class);
+  }
 
-@Test
-public void test() {
-DbJsonService dbJsonService = Aop.get(DbJsonService.class);
-// 查询 mysql
-DbJsonBean<Page<Record>> page = dbJsonService.page("sys_user_info", Kv.create());
-log.info("size:{}", page.getData().getPageSize());
-// 查询 tdgnine
-DbPro dbPro = Db.use("tdengine");
-SqlPara sqlPara = new SqlPara();
-sqlPara.setSql("select \* from sensor_data");
-Page<Record> page2 = dbPro.paginate(1, 10, sqlPara);
-log.info("page size:{}", page2.getPageSize());
-}
+  @Test
+  public void test() {
+    DbJsonService dbJsonService = Aop.get(DbJsonService.class);
+    // 查询 mysql
+    DbJsonBean<Page<Record>> page = dbJsonService.page("sys_user_info", Kv.create());
+    log.info("size:{}", page.getData().getPageSize());
+    // 查询 tdgnine
+    DbPro dbPro = Db.use("tdengine");
+    SqlPara sqlPara = new SqlPara();
+    sqlPara.setSql("select `*` from sensor_data");
+    Page<Record> page2 = dbPro.paginate(1, 10, sqlPara);
+    log.info("page size:{}", page2.getPageSize());
+  }
 
 }
-···
+```
 
 #### 控制器测试类
 
@@ -10134,7 +10130,7 @@ log.info("page size:{}", page2.getPageSize());
    - 提供了一个 `page()` 方法，用于处理分页请求。
    - 通过 `DbJsonService` 和 `Db.use("tdengine")` 从特定的数据源（在这里是 TDengine）查询数据。
 
-···
+```java
 import java.util.Map;
 
 import com.jfinal.kit.Kv;
@@ -10156,19 +10152,91 @@ import lombok.extern.slf4j.Slf4j;
 @RequestPath("/pen/raw/data")
 public class PenRawDataController {
 
-@AAutowired
-private DbJsonService dbJsonService;
+  @AAutowired
+  private DbJsonService dbJsonService;
 
-@RequestPath("/page")
-public DbJsonBean<DbPage<Kv>> page(HttpRequest request) {
-String f = "pen_raw_data_stable";
-Map<String, Object> map = TioRequestParamUtils.getRequestMap(request);
-map.remove("f");
-Kv kv = KvUtils.camelToUnderscore(map);
-log.info("tableName:{},kv:{}", f, kv);
-DbPro dbPro = Db.use("tdengine");
-return DbJsonBeanUtils.pageToDbPage(dbJsonService.page(dbPro, f, kv));
+  @RequestPath("/page")
+  public DbJsonBean<DbPage<Kv>> page(HttpRequest request) {
+    String f = "pen_raw_data_stable";
+    Map<String, Object> map = TioRequestParamUtils.getRequestMap(request);
+    map.remove("f");
+    Kv kv = KvUtils.camelToUnderscore(map);
+    log.info("tableName:{},kv:{}", f, kv);
+    DbPro dbPro = Db.use("tdengine");
+    return DbJsonBeanUtils.pageToDbPage(dbJsonService.page(dbPro, f, kv));
+  }
 }
+```
+
+#### 测试参数查询
+
+```java
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.jfinal.kit.Kv;
+import com.litongjava.data.model.DbJsonBean;
+import com.litongjava.data.services.DbJsonService;
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.plugin.activerecord.Config;
+import com.litongjava.jfinal.plugin.activerecord.Db;
+import com.litongjava.jfinal.plugin.activerecord.DbPro;
+import com.litongjava.jfinal.plugin.activerecord.Record;
+import com.litongjava.jfinal.plugin.activerecord.RecordBuilder;
+import com.litongjava.jfinal.plugin.hikaricp.DsContainer;
+import com.litongjava.tio.boot.tesing.TioBootTest;
+
+import lombok.Cleanup;
+
+public class PenRawDataControllerTest {
+
+  @Before
+  public void before() {
+    TioBootTest.before(ActiveRecordPluginConfiguration.class);
+  }
+
+  @Test
+  public void query() throws SQLException {
+    String sql = "select payload_ts,data_ts,client_id,user_id from manliang_pen.pen_page_stable where user_id=?";
+    String userId = "18374686479671623681";
+    @Cleanup
+    Connection conn = DsContainer.ds.getConnection();
+    Config config = Db.use("tdengine").getConfig();
+
+    List<Record> list = null;
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setString(1, userId);
+      ResultSet executeQuery = pstmt.executeQuery();
+      list = RecordBuilder.me.build(config, executeQuery);
+    }
+    System.out.println(list);
+  }
+
+  @Test
+  public void queryWithDb() {
+    String sql = "select payload_ts,data_ts,client_id,user_id from manliang_pen.pen_page_stable where user_id=?";
+    String userId = "18374686479671623681";
+    List<Record> find = Db.use("tdengine").find(sql, userId);
+    System.out.println(find);
+  }
+
+  @Test
+  public void queryWithDbJsonService() {
+    DbJsonService dbJsonService = Aop.get(DbJsonService.class);
+    Kv kv = Kv.create();
+    kv.set("table_name", "manliang_pen.pen_page_stable");
+    kv.set("columns", "payload_ts,data_ts,client_id,user_id");
+    kv.set("user_id", "18374686479671623681");
+    DbPro dbPro = Db.use("tdengine");
+    DbJsonBean<List<Record>> dbJsonBean = dbJsonService.list(dbPro, kv);
+    System.out.println(dbJsonBean);
+  }
 }
 ···
 
@@ -10618,7 +10686,7 @@ public class DbTestController {
 
 使用 Junit 对连接数据库的部分进行单元测试
 
-```
+```java
 import java.util.List;
 
 import com.litongjava.jfinal.aop.Aop;
