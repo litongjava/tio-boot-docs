@@ -47,7 +47,7 @@ If you are developing with Java 8, please use the following dependency:
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <tio-boot.version>1.3.4</tio-boot.version>
+    <tio-boot.version>1.3.7</tio-boot.version>
   </properties>
   <dependencies>
     <dependency>
@@ -107,7 +107,7 @@ public class IndexController {
   <maven.compiler.source>${java.version}</maven.compiler.source>
   <maven.compiler.target>${java.version}</maven.compiler.target>
   <graalvm.version>23.1.1</graalvm.version>
-  <tio.boot.version>1.3.4</tio.boot.version>
+  <tio-boot.version>1.3.7</tio-boot.version>
   <lombok-version>1.18.30</lombok-version>
   <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
   <final.name>web-hello</final.name>
@@ -7042,7 +7042,7 @@ MyBatis： MyBatis 是一个持久层框架，用于将 Java 对象和关系型�
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <graalvm.version>23.1.1</graalvm.version>
-    <tio.boot.version>1.3.4</tio.boot.version>
+    <tio-boot.version>1.3.7</tio-boot.version>
     <lombok-version>1.18.30</lombok-version>
     <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
     <final.name>web-hello</final.name>
