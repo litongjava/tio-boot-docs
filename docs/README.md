@@ -28,13 +28,13 @@ tio 测试数据
 
 ### 2.1.web hello
 
-#### 2.1.1.新建工程
+#### 新建工程
 
 name:tio-boot-web-hello
 开源地址  
 https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-study/tio-boot-web-hello
 
-#### 2.1.2.添加依赖
+#### 添加依赖
 
 The package is distributed through Maven Central.
 [tio-boot](https://central.sonatype.com/artifact/com.litongjava/tio-boot),
@@ -58,7 +58,7 @@ If you are developing with Java 8, please use the following dependency:
   </dependencies>
 ```
 
-### 编写代码
+#### 编写代码
 
 ```java
 package com.litongjava.tio.web.hello;
@@ -96,236 +96,25 @@ public class IndexController {
 
 访问测试 http://localhost/,显示 index
 
-### 创建 tio-boot 工程常用配置
+### 2.2 创建 tio-boot 工程常用配置
 
-#### 2.1.3.完整依赖
-
-```xml
-<properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <java.version>1.8</java.version>
-  <maven.compiler.source>${java.version}</maven.compiler.source>
-  <maven.compiler.target>${java.version}</maven.compiler.target>
-  <graalvm.version>23.1.1</graalvm.version>
-  <tio-boot.version>1.3.7</tio-boot.version>
-  <lombok-version>1.18.30</lombok-version>
-  <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
-  <final.name>web-hello</final.name>
-  <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
-</properties>
-<dependencies>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>tio-boot</artifactId>
-    <version>${tio.boot.version}</version>
-  </dependency>
-  <dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>${lombok-version}</version>
-    <optional>true</optional>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>com.litongjava</groupId>
-    <artifactId>hotswap-classloader</artifactId>
-    <version>${hotswap-classloader.version}</version>
-  </dependency>
-</dependencies>
-<profiles>
-  <!-- 开发环境 -->
-  <profile>
-    <id>development</id>
-    <activation>
-      <activeByDefault>true</activeByDefault>
-    </activation>
-    <dependencies>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
-      </dependency>
-    </dependencies>
-  </profile>
-
-  <!-- 生产环境 -->
-  <profile>
-    <id>production</id>
-    <dependencies>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
-      </dependency>
-    </dependencies>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>2.7.4</version>
-          <configuration>
-            <mainClass>${main.class}</mainClass>
-            <excludeGroupIds>org.projectlombok</excludeGroupIds>
-          </configuration>
-          <!-- 设置执行目标 -->
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <!-- assembly -->
-  <profile>
-    <id>assembly</id>
-    <dependencies>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
-      </dependency>
-    </dependencies>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.1</version>
-          <configuration>
-            <archive>
-              <manifest>
-                <mainClass>${main.class}</mainClass>
-              </manifest>
-            </archive>
-            <descriptorRefs>
-              <descriptorRef>jar-with-dependencies</descriptorRef>
-            </descriptorRefs>
-            <appendAssemblyId>false</appendAssemblyId>
-          </configuration>
-          <executions>
-            <execution>
-              <id>make-assembly</id>
-              <phase>package</phase>
-              <goals>
-                <goal>single</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-  <profile>
-    <id>native</id>
-    <dependencies>
-      <!-- GraalVM 环境使用 jdk log -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
-        <version>1.7.31</version>
-      </dependency>
-      <!-- GraalVM -->
-      <dependency>
-        <groupId>org.graalvm.sdk</groupId>
-        <artifactId>graal-sdk</artifactId>
-        <version>${graalvm.version}</version>
-        <scope>provided</scope>
-      </dependency>
-    </dependencies>
-    <build>
-      <finalName>${final.name}</finalName>
-      <plugins>
-        <plugin>
-          <groupId>org.graalvm.nativeimage</groupId>
-          <artifactId>native-image-maven-plugin</artifactId>
-          <version>21.2.0</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>native-image</goal>
-              </goals>
-              <phase>package</phase>
-            </execution>
-          </executions>
-          <configuration>
-            <skip>false</skip>
-            <imageName>${final.name}</imageName>
-            <mainClass>${main.class}</mainClass>
-            <buildArgs>
-              -H:+RemoveSaturatedTypeFlows
-              --allow-incomplete-classpath
-              --no-fallback
-            </buildArgs>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-  </profile>
-</profiles>
-```
-
-#### 2.1.4.依赖解释
-
-`<properties>` 部分
-
-- `project.build.sourceEncoding`: 设置项目的源代码编码为 UTF-8。
-- `java.version`: 定义 Java 版本为 1.8。
-- `maven.compiler.source` 和 `maven.compiler.target`: 指定 Maven 编译器使用的 Java 版本。
-- `graalvm.version`: 设置 GraalVM 版本为 23.1.1。
-- `tio.boot.version`: 定义 TIO Boot 版本为
-- `lombok-version`: 指定 Lombok 库的版本为 1.18.30。
-- `final.name`: 指定构建的最终文件名为 `web-hello`。
-- `main.class`: 定义项目的主类为 `com.litongjava.tio.web.hello.App`。
-
-`<dependencies>` 部分
-列出了项目所需的依赖库：
-
-- `tio-boot`: TIO Boot 库，用于 TIO 框架的启动和配置。
-- `lombok`: 一个 Java 库，用于自动处理一些常见的任务，如 getter/setter 的生成。
-- `hotswap-classloader`: 一个类加载器，支持热交换功能，用于动态替换类定义。
-
-`<profiles>` 部分
-定义了不同环境下的特定配置：
-
-1. 开发环境 (development): 当 Maven 构建在开发环境下时，会添加 `logback-classic` 依赖，用于日志管理。
-2. 生产环境 (production): 在生产环境中使用 spring-boot-maven-plugin 打包
-3. 自定义环境(assembly): 同样使用 `logback-classic`，并配置了 `maven-jar-plugin` 和 `maven-assembly-plugin` 用于打包。
-
-4. GraalVM 环境 (native): 用于 GraalVM 的特定配置，包括 `slf4j-jdk14` 和 `graal-sdk` 依赖，以及 `native-image-maven-plugin` 插件，用于生成 GraalVM 的本地映像。
-
-#### 2.1.5.配置文件(可选)
+#### 配置文件(可选)
 
 src\main\resources\app.properties
 
 ```java
 #http 配置
 server.port = 80
-http.page = classpath:/pages
-
-http.404 = /404
-http.500 = /500
-# 页面文件缓存时间，开发时设置成0，生产环境可以设置成1小时(3600)，10分钟(600)等，单位：秒
-http.maxLiveTimeOfStaticRes=0
 ```
 
-如果要使用配置文件,需要在启动类中使用工具类 P 指定配置文件,否则不会生效
+如果指定配置文件,需要在启动类中使用工具类 P 指定配置文件,默认使用的配置文件是 app.properties
 
 ```java
 // 初始化服务器并启动服务器
 P.use("app.properties");
 ```
 
-#### 2.1.6.启动类
+#### 启动类
 
 ```java
 package com.litongjava.tio.web.hello;
@@ -347,7 +136,7 @@ public class HelloApp {
 
 @AComponentScan 注解用来进行组件扫描
 
-#### 2.1.7.AController
+#### AController
 
 ```java
 import org.tio.http.common.HttpRequest;
@@ -371,12 +160,9 @@ public class IndexController {
 ```
 
 @AController and @RequestPath 注解用于指定请求路径,当在启动类上添加@AComponentScan 注解后,启动时注解处理器会处理@RequestPath 注解将 Controller 添加到 bean 容器中并设置路由
+当使用@RequestPath 时@AController 可以不用添加
 
-#### 2.1.8.启动测试
-
-访问 http://localhost/
-
-### 2.2.整合日志
+### 2.3.整合日志 logback
 
 添加 logback
 
@@ -448,7 +234,7 @@ http://ch.qos.logback/xml/ns/logback ">
 </configuration>
 ```
 
-### 2.3.整合热加载
+### 2.3.整合热加载 hotswap-classloader
 
 #### 什么是 `hotswap-classloader`？
 
@@ -678,6 +464,213 @@ mvn clean package -DskipTests -Pproduction
 mvn clean package -DskipTests -Pnative
 ```
 
+### 2.5 完整依赖和 profiles 配置
+
+#### pom.xml
+
+```xml
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <java.version>1.8</java.version>
+  <maven.compiler.source>${java.version}</maven.compiler.source>
+  <maven.compiler.target>${java.version}</maven.compiler.target>
+  <graalvm.version>23.1.1</graalvm.version>
+  <tio-boot.version>1.3.7</tio-boot.version>
+  <lombok-version>1.18.30</lombok-version>
+  <hotswap-classloader.version>1.2.2</hotswap-classloader.version>
+  <final.name>web-hello</final.name>
+  <main.class>com.litongjava.tio.web.hello.HelloApp</main.class>
+</properties>
+<dependencies>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>tio-boot</artifactId>
+    <version>${tio.boot.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>${lombok-version}</version>
+    <optional>true</optional>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.litongjava</groupId>
+    <artifactId>hotswap-classloader</artifactId>
+    <version>${hotswap-classloader.version}</version>
+  </dependency>
+</dependencies>
+<profiles>
+  <!-- 开发环境 -->
+  <profile>
+    <id>development</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+  </profile>
+
+  <!-- 生产环境 -->
+  <profile>
+    <id>production</id>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>2.7.4</version>
+          <configuration>
+            <mainClass>${main.class}</mainClass>
+            <excludeGroupIds>org.projectlombok</excludeGroupIds>
+          </configuration>
+          <!-- 设置执行目标 -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <!-- assembly -->
+  <profile>
+    <id>assembly</id>
+    <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.2.3</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>${main.class}</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <appendAssemblyId>false</appendAssemblyId>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+  <profile>
+    <id>native</id>
+    <dependencies>
+      <!-- GraalVM 环境使用 jdk log -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.31</version>
+      </dependency>
+      <!-- GraalVM -->
+      <dependency>
+        <groupId>org.graalvm.sdk</groupId>
+        <artifactId>graal-sdk</artifactId>
+        <version>${graalvm.version}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+    <build>
+      <finalName>${final.name}</finalName>
+      <plugins>
+        <plugin>
+          <groupId>org.graalvm.nativeimage</groupId>
+          <artifactId>native-image-maven-plugin</artifactId>
+          <version>21.2.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>native-image</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>false</skip>
+            <imageName>${final.name}</imageName>
+            <mainClass>${main.class}</mainClass>
+            <buildArgs>
+              -H:+RemoveSaturatedTypeFlows
+              --allow-incomplete-classpath
+              --no-fallback
+            </buildArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+```
+
+#### 依赖解释
+
+`<properties>` 部分
+
+- `project.build.sourceEncoding`: 设置项目的源代码编码为 UTF-8。
+- `java.version`: 定义 Java 版本为 1.8。
+- `maven.compiler.source` 和 `maven.compiler.target`: 指定 Maven 编译器使用的 Java 版本。
+- `graalvm.version`: 设置 GraalVM 版本为 23.1.1。
+- `tio.boot.version`: 定义 TIO Boot 版本为
+- `lombok-version`: 指定 Lombok 库的版本为 1.18.30。
+- `final.name`: 指定构建的最终文件名为 `web-hello`。
+- `main.class`: 定义项目的主类为 `com.litongjava.tio.web.hello.App`。
+
+`<dependencies>` 部分
+列出了项目所需的依赖库：
+
+- `tio-boot`: TIO Boot 库，用于 TIO 框架的启动和配置。
+- `lombok`: 一个 Java 库，用于自动处理一些常见的任务，如 getter/setter 的生成。
+- `hotswap-classloader`: 一个类加载器，支持热交换功能，用于动态替换类定义。
+
+`<profiles>` 部分
+定义了不同环境下的特定配置：
+
+1. 开发环境 (development): 当 Maven 构建在开发环境下时，会添加 `logback-classic` 依赖，用于日志管理。
+2. 生产环境 (production): 在生产环境中使用 spring-boot-maven-plugin 打包
+3. 自定义环境(assembly): 同样使用 `logback-classic`，并配置了 `maven-jar-plugin` 和 `maven-assembly-plugin` 用于打包。
+
+4. GraalVM 环境 (native): 用于 GraalVM 的特定配置，包括 `slf4j-jdk14` 和 `graal-sdk` 依赖，以及 `native-image-maven-plugin` 插件，用于生成 GraalVM 的本地映像。
+
 ## 3.部署
 
 ### 3.1.打包成 fastjar 文件
@@ -713,7 +706,7 @@ curl http://localhost/
 
 本实验使用的操作系统是 linux
 
-#### 3.2.1.安装 graalvm 和 Maven
+#### 安装 graalvm 和 Maven
 
 安装 GraalVM
 
@@ -749,7 +742,7 @@ export MVN_HOME=~/program/apache-maven-3.8.8/
 export PATH=$MVN_HOME/bin:$PATH
 ```
 
-#### 3.2.2.打包成二进制文件
+#### 打包成二进制文件
 
 ```
 mvn package -DskipTests -Pnative
@@ -767,9 +760,9 @@ mvn package -DskipTests -Pnative
 ./target/web-hello --mode=prod
 ```
 
-### 3.3.打包封装成 Docker
+### 3.3 封装成 Docker
 
-#### 3.3.1.Java
+#### 测试能否使用 docker 启动
 
 打包
 
@@ -791,7 +784,9 @@ litongjava/jdk:8u211 \
 测试
 curl http://localhost:8080
 
-封装成镜像
+#### 封装成镜像
+
+Dockerfile
 
 ```shell
 
@@ -806,6 +801,14 @@ COPY target/tio-boot-web-hello-0.0.1-SNAPSHOT.jar /app/
 
 # Command to run the jar file
 CMD ["/usr/java/jdk1.8.0_211/bin/java", "-jar", "tio-boot-web-hello-0.0.1-SNAPSHOT.jar", "--mode=prod"]
+```
+
+```
+docker build -t litongjava/tio-boot-web-hello .
+```
+
+```
+docker run -dit --restart=always --net=host --name=tio-boot-web-hello litongjava/tio-boot-web-hello
 ```
 
 #### 3.3.2.binary
@@ -860,15 +863,17 @@ docker run --rm -p 8080:80 -v $(pwd)/target:/app -e JAVA_HOME=/usr/java/jdk1.8.0
 
 tio-boot 配置参考源码 com.litongjava.tio.boot.constatns.ConfigKeys
 
-### 4.2.添加静态文件
+### 4.2 常用配置
 
-将 app.properties 中配置 http.page
+#### 设置静态文件目录
+
+将 app.properties 中配置
 
 ```shell
 server.resources.static-locations = classpath:/pages
 ```
 
-### 设置文件上传大小
+#### 设置文件上传大小
 
 ```
 # 设置最大请求大小（包含所有文件）单位 字节,这里设置为1G
@@ -932,7 +937,68 @@ String env = EnviormentUtils.get(ConfigKeys.appEnv);
 - 确保 `app.properties`、`app-dev.properties` 和 `app-prod.properties` 文件都位于 CLASSPATH 下或者在可访问的文件路径中。
 - `tio-boot` 将合并主配置文件和环境特定的配置文件，如果有重复的键，环境特定配置文件中的值将覆盖主配置文件中的值。
 
-### 4.4 监听服务器
+## 5.tio-boot 架构
+
+### 5.1.概述
+
+### 5.2 生命周期
+
+tio-boot 框架的生命周期如下
+
+- 初始化 Bean 容器
+- 扫描所有 Class,查找 AopClass,初始化@com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration 标记的类
+- 启动服务器,监听端口
+- 初始化@com.litongjava.jfinal.aop.annotation.Configuration 标记的配置类,如连接数据库,连接 redis
+- 初始化组件类 如 Controller,Service,Respository,HttpApi
+- 扫描路由,配置 http 路由
+- 运行,接受请求和处理请求
+- 关闭
+
+源码请参考 com.litongjava.tio.boot.context.TioApplicationContext.run(Class<?>[], String[])
+
+### 5.3.请求过程
+
+1. `TioBootServerHandler.handler`: 请求最先到达此处理器，负责协议区分,区分 Http 协议和 WbSocket 协议。
+2. `HttpServerAioHandler.handler`: 负责接收数据,解析成 Http 数据和初步处理请求。
+3. `DefaultHttpRequestHandler.handler`: 此处理器进一步处理 HTTP 请求,将请求分发到相应的处理方法。
+4. `HandlerDispatcher.executeAction`: 该分发器负责执行 Controller 的 Action。
+5. `IndexController.index`: 最终，请求到达控制器的 `index` 方法，这里是请求的具体业务逻辑处理的地方。
+
+### 5.4.默认 bean 类
+
+当启动一个服务后默认会将下面的类放到 bean 容器中
+
+- com.litongjava.tio.boot.context.Enviorment
+- com.litongjava.tio.boot.context.TioApplicationContext
+- com.litongjava.tio.server.TioServer
+- com.litongjava.tio.boot.http.handler.HttpRoutes
+- com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure
+- com.litongjava.tio.boot.http.interceptor.DefaultHttpServerInterceptor
+
+1. **`com.litongjava.tio.boot.context.Enviorment`**:
+
+   - 这个类是一个环境配置类，用于管理和配置应用程序的运行环境。它可能包含了设置如数据库连接、服务地址等环境相关的配置。
+
+2. **`com.litongjava.tio.boot.context.TioApplicationContext`**:
+
+   - 这个类是一个应用程序上下文类，它负责启动程序和初始化和管理应用程序的各个组件，如服务、控制器等。
+
+3. **`com.litongjava.tio.server.TioServer`**:
+
+   - 这个是一个服务器类，用于启动和管理网络服务器。它包含了网络通信的相关功能，比如监听端口，处理客户端请求等。
+
+4. **`com.litongjava.tio.boot.http.handler.HttpRoutes`**:
+
+   - 这个类是一个 HTTP 路由处理器，用于定义和处理 HTTP 请求的路由。它可能包括了映射 URL 到特定处理函数的功能。
+
+5. **`com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure`**:
+
+   - 这个类用于配置服务器拦截器的拦截器通常用于在处理请求前后执行某些操作，比如日志记录、权限检查等。
+
+6. **`com.litongjava.tio.boot.http.interceptor.DefaultHttpServerInterceptor`**:
+   - 这个类是一个默认的 HTTP 服务器拦截器实现。它可能提供了一些基本的拦截功能，比如日志记录或请求预处理。
+
+### 5.4 服务器监听器
 
 ##### 1. 实现服务器监听器
 
@@ -995,67 +1061,6 @@ public class TioBootServerListenerConfig {
 ```
 
 这将确保 `MyServerListener` 能够正确注册并在应用启动时被调用。
-
-## 5.tio-boot 架构
-
-### 5.1.概述
-
-### 5.2 生命周期
-
-tio-boot 框架的生命周期如下
-
-- 初始化 Bean 容器
-- 扫描所有 Class,查找 AopClass,初始化@com.litongjava.jfinal.aop.annotation.BeforeStartConfiguration 标记的类
-- 启动服务器,监听端口
-- 初始化@com.litongjava.jfinal.aop.annotation.Configuration 标记的配置类,如连接数据库,连接 redis
-- 初始化组件类 如 Controller,Service,Respository,HttpApi
-- 扫描路由,配置 http 路由
-- 运行,接受请求和处理请求
-- 关闭
-
-源码请参考 com.litongjava.tio.boot.context.TioApplicationContext.run(Class<?>[], String[])
-
-### 5.3.请求过程
-
-1. `TioBootServerHandler.handler`: 请求最先到达此处理器，负责协议区分,区分 Http 协议和 WbSocket 协议。
-2. `HttpServerAioHandler.handler`: 负责接收数据,解析成 Http 数据和初步处理请求。
-3. `DefaultHttpRequestHandler.handler`: 此处理器进一步处理 HTTP 请求,将请求分发到相应的处理方法。
-4. `HandlerDispatcher.executeAction`: 该分发器负责执行 Controller 的 Action。
-5. `IndexController.index`: 最终，请求到达控制器的 `index` 方法，这里是请求的具体业务逻辑处理的地方。
-
-### 5.4.默认 bean 类
-
-当启动一个服务后默认会将下面的类放到 bean 容器中
-
-- com.litongjava.tio.boot.context.Enviorment
-- com.litongjava.tio.boot.context.TioApplicationContext
-- com.litongjava.tio.server.TioServer
-- com.litongjava.tio.boot.http.handler.HttpRoutes
-- com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure
-- com.litongjava.tio.boot.http.interceptor.DefaultHttpServerInterceptor
-
-1. **`com.litongjava.tio.boot.context.Enviorment`**:
-
-   - 这个类是一个环境配置类，用于管理和配置应用程序的运行环境。它可能包含了设置如数据库连接、服务地址等环境相关的配置。
-
-2. **`com.litongjava.tio.boot.context.TioApplicationContext`**:
-
-   - 这个类是一个应用程序上下文类，它负责启动程序和初始化和管理应用程序的各个组件，如服务、控制器等。
-
-3. **`com.litongjava.tio.server.TioServer`**:
-
-   - 这个是一个服务器类，用于启动和管理网络服务器。它包含了网络通信的相关功能，比如监听端口，处理客户端请求等。
-
-4. **`com.litongjava.tio.boot.http.handler.HttpRoutes`**:
-
-   - 这个类是一个 HTTP 路由处理器，用于定义和处理 HTTP 请求的路由。它可能包括了映射 URL 到特定处理函数的功能。
-
-5. **`com.litongjava.tio.boot.http.interceptor.ServerInteceptorConfigure`**:
-
-   - 这个类用于配置服务器拦截器的拦截器通常用于在处理请求前后执行某些操作，比如日志记录、权限检查等。
-
-6. **`com.litongjava.tio.boot.http.interceptor.DefaultHttpServerInterceptor`**:
-   - 这个类是一个默认的 HTTP 服务器拦截器实现。它可能提供了一些基本的拦截功能，比如日志记录或请求预处理。
 
 ## 6.web 开发
 
