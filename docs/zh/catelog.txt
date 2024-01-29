@@ -1,0 +1,168 @@
+01_tio-boot 简介
+02_快速入门
+02_01_web hello
+02_02_创建 tio-boot 工程常用配置
+2.3.整合日志 logback
+2.3.整合热加载 hotswap-classloader
+2.4.使用 maven profile 分离打包方式
+2.5 完整依赖和 profiles 配置
+3.部署
+3.1.打包成 fastjar 文件
+3.2.打包为二进制文件文件
+3.3 封装成 Docker
+4.tio-boot 配置
+4.1.配置概览
+4.2 常用配置
+4.3 通过命令行指定参数
+4.4 环境配置
+5.tio-boot 架构
+5.1.概述
+5.2 生命周期
+5.3.请求过程
+5.4.默认 bean 类
+5.4 服务器监听器
+6.web 开发
+6.1 概述
+6.2.JSON 数据
+6.3.接收文件
+6.4.返回文件
+6.5.get 获取参数
+6.6.Post 获取参数
+6.7.从请求地址中获取参数
+6.8.接受日期类型
+6.9.接受数组
+5.10 返回字符串
+6.11.返回文本数据
+6.12.返回网页
+6.13 获取请求字节
+6.14 返回图片
+6.15.Session
+6.13.CROS
+6.14 Cookie
+Tio-boot 手动添加路由
+tio-boot 整合 Server-Sent Events (SSE)
+异步响应
+7.整合 jfinal-aoop
+7.1.Aop.get
+7.2.Aop 拦击器@Before
+7.3.Aop 相关注解
+7.4.Aop 其他方法
+8.参数校验
+9.Enjoy 模版引擎
+9.1.返回模版
+10. 请求拦截器
+概述
+tio-boot 拦击器常用类
+注意事项
+自定义拦截器示例
+11.使用 WebSocket
+12.JWT
+13.MQTT
+14.Mica-mqtt
+14. tio-boot 内置 tio-core
+15.Caffine
+Caffeine 简介
+tio-boot 整合 Caffeine
+16.redis
+16.1.redis 简介
+16.2.使用 Jedis 整合 Redis
+16.4.使用 hutool RedisDS
+17.Redisson
+17.1.Redisson 简介
+17.2.使用 Redisson 连接 redis
+17.4.Caffeine 整合 redis
+tio-boot 内置 CacheUtils
+概述
+CacheUtils
+缓存数据到 Caffeine
+缓存数据到 redis
+使用 CacheUtils 整合 caffeine 和 redis 实现的两级缓存
+tio-boot 内置 Tcp 支持
+1. DemoPacket 类
+2. DemoHandler 类
+3. DemoTioServerListener 类
+4. ServerConfig 类
+总结
+tio-boot 内置 i18n
+概述
+I18n 与 Res
+I18nInterceptor
+Netty
+20.xxl-jb
+20.1.简介
+20.2.安装 mysql
+20.3.服务端-任务调度中心 xxl-job-admin 部署
+20.4.客户端 xxl-job 执行器开发
+20.5.手动触发执行任务
+21.简单定时任务 quartz
+tio-boot jfinal-plugins 整合 ehcache
+添加依赖
+添加配置文件 ehcache.xml
+EhCachePluginConfig 配置类
+控制器
+tio-boot jfinal-plugins 整合 redis
+添加依赖
+RedisPluginConfig 配置类
+控制器
+tio-boot jfinal-plugins 整合 cron4j
+添加依赖
+Cron4jPluginConfig 配置类
+22.常用内置类方法说明
+18.1.HttpRequest
+18.2.HttpResponse
+18.3.Resps
+18.4.Tio
+使用@AImport 注解整合 paddle-ocr-server
+数据库 tio-boot 整合 Mybatis
+简介
+使用工具类整合 Mybatis
+使用配类整合 mybatis
+SystemAdminController 测试
+数据库 tio-boot 整合 mybatis-plus
+添加依赖
+初始化测试数据
+添加实体类和 Mapper
+使用工具类类整合 mybatis-plus
+使用 Controller 和 Service 测试
+工具类无配置文件 mybatis.xml 整合 mybatis-plus
+使用配置类整合 mybatis-plus
+在 service 和 controller 中调用测试
+使用 MybatisController 获取其他信息
+Tio Boot 的整合 spring-boot-starter-web
+概述
+添加依赖
+编写代码
+测试 UserService
+Tio Boot 与 Spring Boot Starter 的集成
+背景
+新的整合方式
+Maven 配置（pom.xml）
+启动类（Application）
+配置类（Configuration）
+Service 和 Controller
+启动测试
+tio-boot 使用 mybatis-plus 整合 tdengine
+添加依赖
+启动类
+使用连接池整合 TDEngine
+访问测试
+整合 mybatis-plus
+测试
+tio-boot 使用 table-to-json 整合 TDEngine
+添加依赖
+启动类
+数据源配置
+ActiveRecord 配置
+控制器层
+测试
+table-json 多数据源 mysql and tdengine
+11.2.整合 Mysql 数据库
+11.3.整合 PostGresql 数据库
+Junit 单元测试
+Tio-Boot 整合 Sa-Token 进行登录验证
+概述
+使用 Sa-Token 实现登录功能
+将 Token 存入 Redis
+tio-boot 使用 mongo-java-driver 操作 mongodb
+性能测试
+tio-http-server apache benchmark
