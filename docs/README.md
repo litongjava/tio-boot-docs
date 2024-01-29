@@ -4,7 +4,7 @@ heroImage: ./logo.png
 heroText: Tio-Boot
 tagline: 基于Java的快速开放框架
 actionText: 快速上手 →
-actionLink: /zh/02_快速入门/01.md
+actionLink: /zh/01_tio-boot 简介/02.md
 features:
   - title: 好用至上
     details: 简洁,好用,开发快,运行快,性能高
