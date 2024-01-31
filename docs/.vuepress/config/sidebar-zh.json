@@ -71,7 +71,7 @@
   {
     "title": "07_aop",
     "collapsable": false,
-    "children": ["07_aop/01.md"]
+    "children": ["07_aop/01.md", "07_aop/02.md", "07_aop/03.md", "07_aop/03.md", "07_aop/04.md"]
   },
   {
     "title": "08_token",
