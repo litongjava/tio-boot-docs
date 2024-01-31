@@ -94,7 +94,7 @@
   {
     "title": "10_MQ",
     "collapsable": false,
-    "children": ["10_MQ/01.md"]
+    "children": ["10_MQ/01.md", "10_MQ/02.md"]
   },
   {
     "title": "11_i18n",
