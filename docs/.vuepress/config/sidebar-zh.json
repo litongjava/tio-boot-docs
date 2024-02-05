@@ -169,6 +169,12 @@
     "children": ["25_性能测试/01.md"]
   },
   {
+    "title": "26_spring-cloud",
+    "collapsable": false,
+    "children": ["26_spring-cloud/01.md"]
+  },
+
+  {
     "title": "99_案例",
     "collapsable": false,
     "children": ["99_案例/01.md", "99_案例/02.md"]
