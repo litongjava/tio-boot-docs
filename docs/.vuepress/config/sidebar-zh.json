@@ -177,6 +177,6 @@
   {
     "title": "99_案例",
     "collapsable": false,
-    "children": ["99_案例/01.md", "99_案例/02.md"]
+    "children": ["99_案例/01.md", "99_案例/02.md", "99_案例/03.md"]
   }
 ]
