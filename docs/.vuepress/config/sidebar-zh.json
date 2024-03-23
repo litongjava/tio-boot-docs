@@ -133,7 +133,9 @@
       "15_table-to-json/03.md",
       "15_table-to-json/04.md",
       "15_table-to-json/05.md",
-      "15_table-to-json/06.md"
+      "15_table-to-json/06.md",
+      "15_table-to-json/07.md",
+      "15_table-to-json/08.md"
     ]
   },
   {
@@ -164,7 +166,13 @@
   {
     "title": "22_tio-utils",
     "collapsable": false,
-    "children": ["22_tio-utils/01.md", "22_tio-utils/02.md", "22_tio-utils/03.md", "22_tio-utils/04.md"]
+    "children": [
+      "22_tio-utils/01.md",
+      "22_tio-utils/02.md",
+      "22_tio-utils/03.md",
+      "22_tio-utils/04.md",
+      "22_tio-utils/05.md"
+    ]
   },
   {
     "title": "25_性能测试",
