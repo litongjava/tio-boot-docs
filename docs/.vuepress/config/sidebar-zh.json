@@ -2,13 +2,7 @@
   {
     "title": "01_tio-boot 简介",
     "collapsable": false,
-    "children": [
-      "01_tio-boot 简介/01.md",
-      "01_tio-boot 简介/02.md",
-      "01_tio-boot 简介/03.md",
-      "01_tio-boot 简介/04.md",
-      "01_tio-boot 简介/05.md"
-    ]
+    "children": ["01_tio-boot 简介/01.md", "01_tio-boot 简介/02.md", "01_tio-boot 简介/03.md", "01_tio-boot 简介/04.md"]
   },
   {
     "title": "02_部署",
