@@ -71,7 +71,7 @@
     "children": ["07_aop/01.md", "07_aop/02.md", "07_aop/03.md", "07_aop/03.md", "07_aop/04.md", "07_aop/05.md"]
   },
   {
-    "title": "08_token",
+    "title": "08_认证和授权",
     "collapsable": false,
     "children": ["08_token/01.md", "08_token/02.md"]
   },
