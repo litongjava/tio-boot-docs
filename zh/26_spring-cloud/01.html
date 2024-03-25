@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>tio-boot spring-cloud | Tio Boot Docs</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    <link rel="stylesheet" href="/tio-boot-docs/prism-theme.css">
+    <link rel="icon" href="/tio-boot-docs/logo.png">
+    <link rel="manifest" href="/tio-boot-docs/manifest.json">
+    <link rel="apple-touch-icon" href="/tio-boot-docs/icons/apple-touch-icon-152x152.png">
+    <link rel="mask-icon" href="/tio-boot-docs/icons/safari-pinned-tab.svg" color="#3eaf7c">
+    <link rel="icon" href="/tio-boot-docs/favicon.ico">
+    <script crossorigin="anonymous" async="true" src=""></script>
+    <meta name="description" content="Java 高性能Web 快速开发框架">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-TileImage" content="/icons/msapplication-icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="author" content="litongjava@qq.com,jfinal@qq.com">
+    <meta name="keywords" content="Tio-boot,tio">
+    
+    <link rel="preload" href="/tio-boot-docs/assets/css/0.styles.cb82027b.css" as="style"><link rel="preload" href="/tio-boot-docs/assets/js/app.274a72f9.js" as="script"><link rel="preload" href="/tio-boot-docs/assets/js/7.e04c90a7.js" as="script"><link rel="preload" href="/tio-boot-docs/assets/js/1.4c91522e.js" as="script"><link rel="preload" href="/tio-boot-docs/assets/js/129.bc303005.js" as="script"><link rel="preload" href="/tio-boot-docs/assets/js/20.97d9c2e9.js" as="script"><link rel="prefetch" href="/tio-boot-docs/assets/js/100.6d6599d5.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/101.09ca9375.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/102.6d54866a.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/103.ee1884c8.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/104.b54a7b36.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/105.72a60fc4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/106.82d63de3.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/107.620708a0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/108.4c363427.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/109.017d7f7c.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/11.15d6815e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/110.06ad61ef.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/111.b6c12f2b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/112.895f9f35.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/113.a819185c.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/114.efbd7b80.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/115.b44c132e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/116.6348dac9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/117.caedb74b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/118.9f0612b0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/119.dbc6d377.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/12.9559a75e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/120.d8d3f595.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/121.1119ce2e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/122.2dcdf1f0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/123.fae64c62.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/124.fa0e8ed6.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/125.f916c2bc.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/126.f5c95f2f.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/127.b90345d4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/128.63b4c96e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/13.a546f7af.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/130.e260b5ae.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/131.e8674ae2.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/132.cc0aab93.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/133.c920f787.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/14.3eec96df.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/15.d423265b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/16.413d8cd4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/17.686a22a4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/18.23871b2e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/19.1ee177fc.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/2.ca8ff417.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/21.afec8d36.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/22.04b05eba.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/23.fcf2da0b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/24.e6fde390.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/25.1635e8d9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/26.bc7f05f3.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/27.02d19166.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/28.dd8aeb90.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/29.40563533.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/3.e0b8c2df.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/30.f18f425b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/31.066009bc.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/32.6e23c9f4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/33.6c98c1e4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/34.bb1ff52d.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/35.23615c90.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/36.b86df2aa.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/37.801399e9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/38.95efdc32.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/39.0b1e5cd0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/4.1a55f0b9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/40.e897111c.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/41.a735d75a.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/42.6f2ce59b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/43.1beec1c4.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/44.3e20c4e5.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/45.6476b100.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/46.26de2a3e.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/47.4f0ff0f7.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/48.85f61ce1.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/49.687cd362.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/5.b37491e9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/50.3f3ed507.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/51.ce497446.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/52.7097b28c.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/53.1ddb6fe9.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/54.09d56612.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/55.bb85741d.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/56.c22a7c53.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/57.b2c5ceaa.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/58.81f2527b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/59.d3c8cecb.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/6.aff2de96.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/60.caa1db85.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/61.ec360469.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/62.6420bc11.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/63.c881df87.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/64.097edc0d.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/65.511e12d8.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/66.919fca5f.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/67.0c75b15b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/68.733e0786.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/69.b9074592.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/70.49edeb60.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/71.56dbdfa6.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/72.93b6768a.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/73.60d17aac.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/74.532a8f45.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/75.0c2dfc8b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/76.83eddde5.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/77.6a0e35a7.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/78.297f7eb0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/79.dd1d777b.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/8.a18fc0f3.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/80.43888e16.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/81.d0d7e878.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/82.266df7af.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/83.098ad106.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/84.2f38ef3d.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/85.dcb525e8.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/86.6c3a6c15.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/87.41cee53a.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/88.f26e2736.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/89.d4d9541f.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/90.ad989296.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/91.cc05b426.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/92.5cb2ea22.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/93.9c13ece0.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/94.217a721f.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/95.c930f7e6.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/96.b7ac6526.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/97.41ef7bed.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/98.7b5497b1.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/99.bc0e9d48.js"><link rel="prefetch" href="/tio-boot-docs/assets/js/vendors~docsearch.26f41c14.js">
+    <link rel="stylesheet" href="/tio-boot-docs/assets/css/0.styles.cb82027b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/tio-boot-docs/" class="home-link router-link-active"><img src="./logo.png" alt="Tio Boot Docs" class="logo"> <span class="site-name can-hide">Tio Boot Docs</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Sources Menu" class="dropdown-title"><span class="title">Sources</span> <span class="arrow down"></span></button> <button type="button" aria-label="Sources Menu" class="mobile-dropdown-title"><span class="title">Sources</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://gitee.com/ppnt/tio-boot" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/litongjava/tio-boot" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Language Menu" class="dropdown-title"><span class="title">Languages</span> <span class="arrow down"></span></button> <button type="button" aria-label="Language Menu" class="mobile-dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/tio-boot-docs/zh/01_tio-boot 简介/02.html" class="nav-link">
+  Chinese
+</a></li><li class="dropdown-item"><!----> <a href="/tio-boot-docs/en/1 Quick Start/1.0 Quick Start.html" class="nav-link">
+  English
+</a></li></ul></div></div><div class="nav-item"><a href="/tio-boot-docs/about/" class="nav-link">
+  About
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Sources Menu" class="dropdown-title"><span class="title">Sources</span> <span class="arrow down"></span></button> <button type="button" aria-label="Sources Menu" class="mobile-dropdown-title"><span class="title">Sources</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://gitee.com/ppnt/tio-boot" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Gitee
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/litongjava/tio-boot" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Language Menu" class="dropdown-title"><span class="title">Languages</span> <span class="arrow down"></span></button> <button type="button" aria-label="Language Menu" class="mobile-dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/tio-boot-docs/zh/01_tio-boot 简介/02.html" class="nav-link">
+  Chinese
+</a></li><li class="dropdown-item"><!----> <a href="/tio-boot-docs/en/1 Quick Start/1.0 Quick Start.html" class="nav-link">
+  English
+</a></li></ul></div></div><div class="nav-item"><a href="/tio-boot-docs/about/" class="nav-link">
+  About
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>01_tio-boot 简介</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/01_tio-boot 简介/01.html" class="sidebar-link">tio-boot 简介</a></li><li><a href="/tio-boot-docs/zh/01_tio-boot 简介/02.html" class="sidebar-link">web-hello-入门示例</a></li><li><a href="/tio-boot-docs/zh/01_tio-boot 简介/03.html" class="sidebar-link">配置文件</a></li><li><a href="/tio-boot-docs/zh/01_tio-boot 简介/04.html" class="sidebar-link">整合日志 logback</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>02_部署</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/02_部署/01.html" class="sidebar-link">使用 maven profile 分离打包方式</a></li><li><a href="/tio-boot-docs/zh/02_部署/02.html" class="sidebar-link">完整依赖和 profiles 配置</a></li><li><a href="/tio-boot-docs/zh/02_部署/03.html" class="sidebar-link">打包成 fastjar 文件</a></li><li><a href="/tio-boot-docs/zh/02_部署/04.html" class="sidebar-link">打包为二进制文件文件</a></li><li><a href="/tio-boot-docs/zh/02_部署/05.html" class="sidebar-link">Docker</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>03_配置</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/03_配置/01.html" class="sidebar-link">配置</a></li><li><a href="/tio-boot-docs/zh/03_配置/02.html" class="sidebar-link">通过命令行指定参数</a></li><li><a href="/tio-boot-docs/zh/03_配置/03.html" class="sidebar-link">读取配置</a></li><li><a href="/tio-boot-docs/zh/03_配置/04.html" class="sidebar-link">部分配置详解</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>04_架构</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/04_架构/01.html" class="sidebar-link">生命周期</a></li><li><a href="/tio-boot-docs/zh/04_架构/02.html" class="sidebar-link">请求处理过程</a></li><li><a href="/tio-boot-docs/zh/04_架构/03.html" class="sidebar-link">重要的类</a></li><li><a href="/tio-boot-docs/zh/04_架构/04.html" class="sidebar-link">服务器监听器</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>05_web开发</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/05_web开发/01.html" class="sidebar-link">概述</a></li><li><a href="/tio-boot-docs/zh/05_web开发/02.html" class="sidebar-link">Json 转换</a></li><li><a href="/tio-boot-docs/zh/05_web开发/03.html" class="sidebar-link">JSON</a></li><li><a href="/tio-boot-docs/zh/05_web开发/04.html" class="sidebar-link">文件上传</a></li><li><a href="/tio-boot-docs/zh/05_web开发/05.html" class="sidebar-link">接收请求参数</a></li><li><a href="/tio-boot-docs/zh/05_web开发/06.html" class="sidebar-link">接收日期类型参数</a></li><li><a href="/tio-boot-docs/zh/05_web开发/07.html" class="sidebar-link">接收数组</a></li><li><a href="/tio-boot-docs/zh/05_web开发/08.html" class="sidebar-link">返回字符串</a></li><li><a href="/tio-boot-docs/zh/05_web开发/09.html" class="sidebar-link">返回文本数据</a></li><li><a href="/tio-boot-docs/zh/05_web开发/10.html" class="sidebar-link">返回网页</a></li><li><a href="/tio-boot-docs/zh/05_web开发/11.html" class="sidebar-link">请求和响应字节</a></li><li><a href="/tio-boot-docs/zh/05_web开发/12.html" class="sidebar-link">文件下载</a></li><li><a href="/tio-boot-docs/zh/05_web开发/13.html" class="sidebar-link">http Session</a></li><li><a href="/tio-boot-docs/zh/05_web开发/14.html" class="sidebar-link">CROS 跨域</a></li><li><a href="/tio-boot-docs/zh/05_web开发/15.html" class="sidebar-link">Cookie</a></li><li><a href="/tio-boot-docs/zh/05_web开发/16.html" class="sidebar-link">全局异常处理器</a></li><li><a href="/tio-boot-docs/zh/05_web开发/17.html" class="sidebar-link">参数校验</a></li><li><a href="/tio-boot-docs/zh/05_web开发/18.html" class="sidebar-link">HttpRequest</a></li><li><a href="/tio-boot-docs/zh/05_web开发/19.html" class="sidebar-link">HttpResponse</a></li><li><a href="/tio-boot-docs/zh/05_web开发/20.html" class="sidebar-link">18.3.Resps</a></li><li><a href="/tio-boot-docs/zh/05_web开发/21.html" class="sidebar-link">RespVo</a></li><li><a href="/tio-boot-docs/zh/05_web开发/22.html" class="sidebar-link">异步 Controller</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>06_内置组件</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/06_内置组件/01.html" class="sidebar-link">TioBootServer 文档</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/02.html" class="sidebar-link">Server-Sent Events (SSE)</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/03.html" class="sidebar-link">异步响应</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/04.html" class="sidebar-link">请求拦截器</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/05.html" class="sidebar-link">WebSocket</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/06.html" class="sidebar-link">使用 tio-core 添加独立 tcp 端口的 处理 tcp 请求</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/07.html" class="sidebar-link">使用 tio-boot 内置 tcp 处理器 处理 tcp 请求</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/08.html" class="sidebar-link">/zh/06_内置组件/08.html</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/09.html" class="sidebar-link">Tio 工具类</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/10.html" class="sidebar-link">TioBootTest 类</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/11.html" class="sidebar-link">独立启动 UDPServer</a></li><li><a href="/tio-boot-docs/zh/06_内置组件/12.html" class="sidebar-link">使用内置 UDPServer</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>07_aop</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/07_aop/01.html" class="sidebar-link">jfinal-aoop</a></li><li><a href="/tio-boot-docs/zh/07_aop/02.html" class="sidebar-link">Aop 工具</a></li><li><a href="/tio-boot-docs/zh/07_aop/03.html" class="sidebar-link">Proxy 动态代理</a></li><li><a href="/tio-boot-docs/zh/07_aop/03.html" class="sidebar-link">Proxy 动态代理</a></li><li><a href="/tio-boot-docs/zh/07_aop/04.html" class="sidebar-link">独立使用 JFinal Aop</a></li><li><a href="/tio-boot-docs/zh/07_aop/05.html" class="sidebar-link">@AImport</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>08_token</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/08_token/01.html" class="sidebar-link">hutool-JWT</a></li><li><a href="/tio-boot-docs/zh/08_token/02.html" class="sidebar-link">整合 Sa-Token</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>09_缓存</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/09_缓存/01.html" class="sidebar-link">Caffine</a></li><li><a href="/tio-boot-docs/zh/09_缓存/02.html" class="sidebar-link">Jedis-redis</a></li><li><a href="/tio-boot-docs/zh/09_缓存/03.html" class="sidebar-link">hutool RedisDS</a></li><li><a href="/tio-boot-docs/zh/09_缓存/04.html" class="sidebar-link">Redisson</a></li><li><a href="/tio-boot-docs/zh/09_缓存/05.html" class="sidebar-link">Caffeine and redis</a></li><li><a href="/tio-boot-docs/zh/09_缓存/06.html" class="sidebar-link">tio-boot 内置 CacheUtils</a></li><li><a href="/tio-boot-docs/zh/09_缓存/07.html" class="sidebar-link">使用 CacheUtils 整合 caffeine 和 redis 实现的两级缓存</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>10_MQ</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/10_MQ/01.html" class="sidebar-link">Mica-mqtt</a></li><li><a href="/tio-boot-docs/zh/10_MQ/02.html" class="sidebar-link">EMQX</a></li><li><a href="/tio-boot-docs/zh/10_MQ/03.html" class="sidebar-link">Disruptor</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>11_i18n</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/11_i18n/01.html" class="sidebar-link">i18n</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>12_netty</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/12_netty/01.html" class="sidebar-link">Netty</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>13_定时任务</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/13_定时任务/01.html" class="sidebar-link">简单定时任务 quartz</a></li><li><a href="/tio-boot-docs/zh/13_定时任务/02.html" class="sidebar-link">xxl-jb</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>14_jfinal-plugins</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/14_jfinal-plugins/01.html" class="sidebar-link">概述</a></li><li><a href="/tio-boot-docs/zh/14_jfinal-plugins/02.html" class="sidebar-link">tio-boot jfinal-plugins 整合 ehcache</a></li><li><a href="/tio-boot-docs/zh/14_jfinal-plugins/03.html" class="sidebar-link">tio-boot jfinal-plugins 整合 redis</a></li><li><a href="/tio-boot-docs/zh/14_jfinal-plugins/04.html" class="sidebar-link">tio-boot jfinal-plugins 整合 cron4j</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>15_table-to-json</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/15_table-to-json/01.html" class="sidebar-link">table-to-json 概述</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/02.html" class="sidebar-link">使用 table-to-json 连接 SQLite</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/03.html" class="sidebar-link">使用 table-to-json 连接 Mysql</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/04.html" class="sidebar-link">使用 table-to-json 连接 PostGreSQL</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/05.html" class="sidebar-link">使用 table-to-json 连接 TDEngine</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/06.html" class="sidebar-link">使用 table-json 连接 oracle</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/07.html" class="sidebar-link">使用 table-json 连接 mysql and tdengine 多数据源</a></li><li><a href="/tio-boot-docs/zh/15_table-to-json/08.html" class="sidebar-link">tio-boot 整合 table-to-json 实现增删改查</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>16_模版引擎</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/16_模版引擎/01.html" class="sidebar-link">Enjoy 模版引擎</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>17_mybatis</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/17_mybatis/01.html" class="sidebar-link">数据库 tio-boot 整合 Mybatis</a></li><li><a href="/tio-boot-docs/zh/17_mybatis/02.html" class="sidebar-link">数据库 tio-boot 整合 mybatis-plus</a></li><li><a href="/tio-boot-docs/zh/17_mybatis/03.html" class="sidebar-link">tio-boot 使用 mybatis-plus 整合 tdengine</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>18_spring</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/18_spring/01.html" class="sidebar-link">Tio Boot 的整合 spring-boot-starter-web</a></li><li><a href="/tio-boot-docs/zh/18_spring/02.html" class="sidebar-link">Tio Boot 与 Spring Boot Starter 的集成</a></li><li><a href="/tio-boot-docs/zh/18_spring/03.html" class="sidebar-link">tio-boot 和 spring-boot-starter-webflux 整合</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>19_mongodb</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/19_mongodb/01.html" class="sidebar-link">tio-boot 使用 mongo-java-driver 操作 mongodb</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>20_http-server</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/20_http-server/01.html" class="sidebar-link">tio-http-server handler</a></li><li><a href="/tio-boot-docs/zh/20_http-server/02.html" class="sidebar-link">tio-boot 添加 http-server handler</a></li><li><a href="/tio-boot-docs/zh/20_http-server/03.html" class="sidebar-link">在 Android 上使用 tio-boot 运行 HTTP 服务</a></li><li><a href="/tio-boot-docs/zh/20_http-server/04.html" class="sidebar-link">tio-http-server-native</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>22_tio-utils</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/22_tio-utils/01.html" class="sidebar-link">tio-utils</a></li><li><a href="/tio-boot-docs/zh/22_tio-utils/02.html" class="sidebar-link">HttpUtils</a></li><li><a href="/tio-boot-docs/zh/22_tio-utils/03.html" class="sidebar-link">Notification</a></li><li><a href="/tio-boot-docs/zh/22_tio-utils/04.html" class="sidebar-link">邮箱组件</a></li><li><a href="/tio-boot-docs/zh/22_tio-utils/05.html" class="sidebar-link">JSON</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>25_性能测试</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/25_性能测试/01.html" class="sidebar-link">性能测试</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>26_spring-cloud</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/26_spring-cloud/01.html" aria-current="page" class="active sidebar-link">tio-boot spring-cloud</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/tio-boot-docs/zh/26_spring-cloud/01.html#概述" class="sidebar-link">概述</a></li><li class="sidebar-sub-header"><a href="/tio-boot-docs/zh/26_spring-cloud/01.html#tio-boot-spring-cloud-和-consul" class="sidebar-link">tio-boot, Spring Cloud, 和 Consul</a></li></ul></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>99_案例</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/tio-boot-docs/zh/99_案例/01.html" class="sidebar-link">tio-boot-案例-用户登录和注册</a></li><li><a href="/tio-boot-docs/zh/99_案例/02.html" class="sidebar-link">tio-boot 案例 异常捕获与企业微信群通知</a></li><li><a href="/tio-boot-docs/zh/99_案例/03.html" class="sidebar-link">tio-boot 案例-文件上传和下载</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="tio-boot-spring-cloud"><a href="#tio-boot-spring-cloud" class="header-anchor">#</a> tio-boot spring-cloud</h1> <h2 id="概述"><a href="#概述" class="header-anchor">#</a> 概述</h2> <ul><li>tio-boot 完全支持 spring-cloud</li> <li>仅仅是 web 中间件使用 tio-boot-server,其他组件仍然是 spring-cloud</li></ul> <h2 id="tio-boot-spring-cloud-和-consul"><a href="#tio-boot-spring-cloud-和-consul" class="header-anchor">#</a> tio-boot, Spring Cloud, 和 Consul</h2> <p>整合 tio-boot, Spring Cloud, 和 Consul 实现服务注册与发现是一种提升微服务架构可靠性和灵活性的有效方法。本文档将详细介绍如何创建两个服务，<code>spring-cloud-consul-product-service</code> 和 <code>spring-cloud-consul-order-service</code>，并通过 Consul 实现这两个服务的注册与发现。其中 <code>product-service</code> 提供接口，<code>order-service</code> 调用 <code>product-service</code> 的接口。</p> <h3 id="流程概述"><a href="#流程概述" class="header-anchor">#</a> 流程概述</h3> <ol><li><strong>启动 Consul：</strong> Consul 作为服务注册和服务发现的工具，可以通过简单的命令启动。</li> <li><strong>配置 <code>product-service</code>：</strong> 包括 Maven 依赖配置、application 属性配置、启动类和相关组件的配置，确保服务可以正确注册到 Consul。</li> <li><strong>配置 <code>order-service</code>：</strong> 类似于 <code>product-service</code>，配置相关依赖和属性，以及 RestTemplate 用于服务间的调用。</li> <li><strong>服务注册与发现：</strong> 服务启动后，会自动注册到 Consul，<code>order-service</code> 可以通过 Consul 发现 <code>product-service</code> 并进行调用。</li></ol> <h3 id="启动-consul"><a href="#启动-consul" class="header-anchor">#</a> 启动 Consul</h3> <p>在开始之前，确保你有 Consul 环境，可以通过以下命令启动 Consul：</p> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>consul.exe agent <span class="token parameter variable">-dev</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="product-service"><a href="#product-service" class="header-anchor">#</a> <code>product-service</code></h3> <ol><li><strong>Maven 配置（pom.xml）：</strong> 定义了项目的 Java 版本、依赖项（包括 Spring Boot、tio-boot、Spring Cloud Consul Discovery 等）。</li></ol> <p>pom.xml</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>  &lt;properties&gt;
+    &lt;java.version&gt;1.8&lt;/java.version&gt;
+    &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+    &lt;spring-boot.version&gt;2.1.6.RELEASE&lt;/spring-boot.version&gt;
+    &lt;tio-boot.version&gt;1.4.0&lt;/tio-boot.version&gt;
+    &lt;main.class&gt;demo.ProductApp&lt;/main.class&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+      &lt;exclusions&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-boot-starter-json&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+          &lt;artifactId&gt;spring-boot-starter-reactor-netty&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+      &lt;/exclusions&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.litongjava&lt;/groupId&gt;
+      &lt;artifactId&gt;tio-boot&lt;/artifactId&gt;
+      &lt;version&gt;${tio-boot.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+
+
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+      &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.litongjava&lt;/groupId&gt;
+      &lt;artifactId&gt;hotswap-classloader&lt;/artifactId&gt;
+      &lt;version&gt;1.2.1&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- SpringBoot集成Test --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--SpringCloud提供的基于Consul的服务发现--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-cloud-starter-consul-discovery&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!--actuator用于心跳检查--&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;!-- Spring Boot --&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;${spring-boot.version}&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;includeSystemScope&gt;true&lt;/includeSystemScope&gt;
+          &lt;!--使该插件支持热启动 --&gt;
+          &lt;fork&gt;true&lt;/fork&gt;
+          &lt;mainClass&gt;${main.class}&lt;/mainClass&gt;
+        &lt;/configuration&gt;
+        &lt;!-- 设置执行目标 --&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;repackage&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+
+  &lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+        &lt;version&gt;${spring-boot.version}&lt;/version&gt;
+        &lt;type&gt;pom&lt;/type&gt;
+        &lt;scope&gt;import&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+        &lt;version&gt;Greenwich.RELEASE&lt;/version&gt;
+        &lt;type&gt;pom&lt;/type&gt;
+        &lt;scope&gt;import&lt;/scope&gt;
+      &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+  &lt;/dependencyManagement&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br></div></div><ol start="2"><li><strong>应用配置（application.yml）：</strong> 指定了服务的端口、应用名称和 Consul 服务器的地址。</li></ol> <p>application.yml</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 8001 #端口
+spring:
+  application:
+    #访问名称
+    name: consul-provider-product
+  cloud:
+    consul:
+      #服务地址
+      host: localhost
+      #服务端口
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>app.properties</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server.port=8001
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>app.properties 和 application.yml 都需要指定端口</p> <ol start="3"><li><strong>启动类（ProductApp.java）：</strong> 标记了 Spring Boot 应用、启用了服务发现，并导入了必要的配置。</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Import;
+
+import com.litongjava.jfinal.aop.annotation.AComponentScan;
+import com.litongjava.tio.boot.spring.SpringBootArgs;
+import com.litongjava.tio.boot.spring.TioBootServerAutoConfiguration;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@AComponentScan
+@Import(TioBootServerAutoConfiguration.class)
+public class ProductApp {
+
+  public static void main(String[] args) {
+    long start = System.currentTimeMillis();
+    SpringBootArgs.set(ProductApp.class, args);
+    SpringApplication.run(ProductApp.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println((end - start) + &quot;(ms)&quot;);
+  }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br></div></div><ol start="4"><li><strong>RestTemplate 配置（ApplicationContextConfig.java）：</strong> 配置了 RestTemplate 并启用了负载均衡，使其可以通过服务名调用其他服务。</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo.config;
+
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Configuration
+@Slf4j
+public class ApplicationContextConfig {
+
+
+  @Bean
+  @LoadBalanced
+  public RestTemplate restTemplate() {
+    RestTemplate restTemplate = new RestTemplate();
+    log.info(&quot;restTemplate:{}&quot;, restTemplate.toString());
+    return restTemplate;
+  }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br></div></div><ol start="5"><li><strong>Tio-Boot 集成配置（SpringBeanContextConfig.java）：</strong> 配置了 tio-boot 与 Spring 的集成。</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+
+import com.litongjava.jfinal.aop.Aop;
+import com.litongjava.jfinal.aop.AopManager;
+import com.litongjava.jfinal.spring.SpringBeanContextUtils;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Configuration
+@Slf4j
+public class SpringBeanContextConfig {
+
+  @Autowired
+  private ApplicationContext applicationContext;
+
+  @Bean(destroyMethod = &quot;close&quot;)
+  @DependsOn(&quot;restTemplate&quot;)
+  public void myBean() {
+    log.info(&quot;add Autowired&quot;);
+    // 开启和spring的整合
+    AopManager.me().getAopFactory().setEnableWithSpring(true);
+    SpringBeanContextUtils.setContext(applicationContext);
+    // 让 tio-boot的bean支持Autowired注解
+    Aop.addFetchBeanAnnotation(Autowired.class);
+  }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br></div></div><ol start="6"><li><strong>健康控制器（ActuatorController.java）：</strong> 定义了对外提供的 健康 接口。consul 会通过这个接口检查应用是否健康
+ActuatorController</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath(&quot;/actuator&quot;)
+public class ActuatorController {
+  public Map&lt;String, String&gt; health() {
+    HashMap&lt;String, String&gt; hashMap = new HashMap&lt;&gt;(1);
+    hashMap.put(&quot;status&quot;, &quot;up&quot;);
+    return hashMap;
+  }
+
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><ol start="7"><li><strong>业务控制器（ProductController.java）：</strong> 定义了对外提供的 REST 接口。</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo.controller;
+
+import java.util.UUID;
+
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+@RequestPath
+public class ProductController {
+
+  @RequestPath(&quot;/product/consul&quot;)
+  public String paymentConsul() {
+    return &quot;tio-boot with consul: &quot; + UUID.randomUUID().toString();
+  }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><h3 id="order-service"><a href="#order-service" class="header-anchor">#</a> order-service</h3> <p>与 <code>product-service</code> 配置类似，不同之处主要在于 <code>OrderController.java</code>，在这里通过 <code>RestTemplate</code> 调用 <code>product-service</code> 提供的服务。</p> <ul><li>pom.xml 和 product-service 相同</li> <li>启动类 和 product-service 仅类名不同</li> <li>ApplicationContextConfig 和 product-service 相同</li> <li>SpringBeanContextConfig 和 product-service 相同</li> <li>ActuatorController 和 product-service 相同</li> <li>OrderController 调用 product-server</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>package demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
+
+import com.litongjava.jfinal.spring.SpringBeanContextUtils;
+import com.litongjava.tio.http.server.annotation.RequestPath;
+
+import demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+
+@RequestPath(&quot;/consumer&quot;)
+@Slf4j
+public class OrderController {
+
+  // consul服务中心的服务名称
+  public static final String INVOKE_URL = &quot;http://consul-provider-product&quot;;
+
+  @Autowired
+  RestTemplate restTemplate;
+
+  public String getRestTemplate() {
+    return restTemplate.toString();
+  }
+
+  @RequestPath(value = &quot;/payment/consul&quot;)
+  public String paymentInfo() {
+    log.info(&quot;restTemplate:{}&quot;, restTemplate.toString());
+    String result = restTemplate.getForObject(INVOKE_URL + &quot;/product/consul&quot;, String.class);
+    return result;
+  }
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br></div></div><h3 id="测试服务调用"><a href="#测试服务调用" class="header-anchor">#</a> 测试服务调用</h3> <ol><li>启动 Consul。</li> <li>分别启动 <code>product-service</code> 和 <code>order-service</code>。</li> <li>通过访问 <code>order-service</code> 的 APIhttp://127.0.0.1:8002/consumer/payment/consul测试调用 <code>product-service</code> 是否成功。
+显示如下说明调用成功</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>tio-boot with consul: c78c2ce5-fa6a-4218-94f2-add528f1e04d
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="源码地址"><a href="#源码地址" class="header-anchor">#</a> 源码地址</h3> <p>https://github.com/litongjava/java-ee-spring-cloud-study/tree/main/maven/spring-cloud-consul-study/spring-cloud-consul-tio-boot</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/tio-boot-docs/zh/25_性能测试/01.html" class="prev">
+        性能测试
+      </a></span> <span class="next"><a href="/tio-boot-docs/zh/99_案例/01.html">
+        tio-boot-案例-用户登录和注册
+      </a>
+      →
+    </span></p></div>  <!----></main></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/tio-boot-docs/assets/js/app.274a72f9.js" defer></script><script src="/tio-boot-docs/assets/js/7.e04c90a7.js" defer></script><script src="/tio-boot-docs/assets/js/1.4c91522e.js" defer></script><script src="/tio-boot-docs/assets/js/129.bc303005.js" defer></script><script src="/tio-boot-docs/assets/js/20.97d9c2e9.js" defer></script>
+  </body>
+</html>
