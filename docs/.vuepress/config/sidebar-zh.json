@@ -73,7 +73,7 @@
   {
     "title": "08_认证和授权",
     "collapsable": false,
-    "children": ["08_token/01.md", "08_token/02.md"]
+    "children": ["08_认证和授权/01.md", "08_认证和授权/02.md"]
   },
   {
     "title": "09_缓存",
