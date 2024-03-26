@@ -169,6 +169,11 @@
     ]
   },
   {
+    "title": "23_http-client",
+    "collapsable": false,
+    "children": ["23_http-client/01.md"]
+  },
+  {
     "title": "25_性能测试",
     "collapsable": false,
     "children": ["25_性能测试/01.md"]
