@@ -1,7 +1,10 @@
 {
   "name": "tio-boot-docs",
   "version": "1.0.0",
-  "description": "docs",
+  "description": "tio-boot-docs",
+  "engines": {
+    "node": "=12.10.0"
+  },
   "main": "index.js",
   "repository": "git@github.com:litongjava/tools-ocr.git",
   "author": "litongjava <litongjava@qq.com>",
