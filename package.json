@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "tio-boot-docs",
   "engines": {
-    "node": "12.10.0"
+    "node": "16.x"
   },
   "main": "index.js",
   "repository": "git@github.com:litongjava/tools-ocr.git",
