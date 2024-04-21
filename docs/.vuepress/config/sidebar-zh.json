@@ -196,6 +196,11 @@
     "children": ["26_magic-script/01.md"]
   },
   {
+    "title": "27_groovy",
+    "collapsable": false,
+    "children": ["27_groovy/01.md"]
+  },
+  {
     "title": "30_spring-cloud",
     "collapsable": false,
     "children": ["30_spring-cloud/01.md"]
