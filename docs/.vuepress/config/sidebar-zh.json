@@ -165,14 +165,14 @@
     ]
   },
   {
-    "title": "22_tio_http-server",
+    "title": "22_tio-http-server",
     "collapsable": false,
     "children": [
-      "22_tio_http-server/01.md",
-      "22_tio_http-server/02.md",
-      "22_tio_http-server/03.md",
-      "22_tio_http-server/04.md",
-      "22_tio_http-server/05.md"
+      "22_tio-http-server/01.md",
+      "22_tio-http-server/02.md",
+      "22_tio-http-server/03.md",
+      "22_tio-http-server/04.md",
+      "22_tio-http-server/05.md"
     ]
   },
   {
@@ -189,6 +189,11 @@
     "title": "25_性能测试",
     "collapsable": false,
     "children": ["25_性能测试/01.md"]
+  },
+  {
+    "title": "26_magic-script",
+    "collapsable": false,
+    "children": ["26_magic-script/01.md"]
   },
   {
     "title": "30_spring-cloud",
