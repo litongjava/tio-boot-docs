@@ -4,7 +4,7 @@ const plugin = require("./config/plugins");
 const themeConfig = require("./config/themeConfig");
 const webpack = require("webpack");
 module.exports = {
-  base: "/tio-boot-docs/",
+  base: "/",
   title: "Tio Boot Docs",
   description: "Java 高性能Web 快速开发框架",
   head: head,
