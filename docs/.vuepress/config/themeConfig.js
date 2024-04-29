@@ -6,6 +6,10 @@ import sidebarZh from "./sidebar-zh.json";
 export default defaultTheme({
   logo: "./logo.png",
   lastUpdated: "Last Updated", // string | boolean,K
+  editLink: true,
+  docsRepo: "https://github.com/litongjava/tio-boot-docs",
+  docsBranch: "main",
+  editLinkPattern: ":repo/edit/:branch/docs/:path",
   navbar: navEn,
   sidebar: {
     "/zh/": sidebarZh,
