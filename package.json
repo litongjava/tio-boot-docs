@@ -10,8 +10,8 @@
   "author": "litongjava <litongjava@qq.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "devDependencies": {
     "@vuepress/plugin-active-header-links": "^1.9.10",
