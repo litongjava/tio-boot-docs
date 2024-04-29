@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   ["link", { rel: "stylesheet", href: "/prism-theme.css" }],
   ["link", { rel: "icon", href: "/logo.png" }],
   ["link", { rel: "manifest", href: "/manifest.json" }],

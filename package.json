@@ -2,26 +2,23 @@
   "name": "tio-boot-docs",
   "version": "1.0.0",
   "description": "tio-boot-docs",
-  "engines": {
-    "node": "16.x"
-  },
   "main": "index.js",
   "repository": "git@github.com:litongjava/tools-ocr.git",
   "author": "litongjava <litongjava@qq.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
-    "@vuepress/plugin-active-header-links": "^1.9.10",
-    "@vuepress/plugin-back-to-top": "^1.9.10",
-    "@vuepress/plugin-google-analytics": "^1.9.10",
-    "@vuepress/plugin-medium-zoom": "^1.9.10",
-    "@vuepress/plugin-pwa": "^1.9.10",
-    "vuepress": "^1.8.2",
-    "vuepress-plugin-code-copy": "^1.0.6",
-    "vuepress-plugin-fulltext-search": "^2.2.1"
+    "@vuepress/bundler-vite": "^2.0.0-rc.7",
+    "@vuepress/plugin-pwa": "2.0.0-rc.26",
+    "@vuepress/plugin-search": "2.0.0-rc.26",
+    "@vuepress/plugin-seo": "2.0.0-rc.26",
+    "@vuepress/theme-default": "^2.0.0-rc.11",
+    "vue": "^3.4.0",
+    "vuepress": "^2.0.0-rc.7"
   },
   "dependencies": {
     "@vssue/api-github-v4": "^1.4.7",

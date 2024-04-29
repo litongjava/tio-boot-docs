@@ -1,13 +1,14 @@
-const sidebarZh = require("./sidebar-zh.json");
-const sidebarEn = require("./sidebar-en.json");
-const navEn = require("./nav-en.json");
+import { defaultTheme } from "@vuepress/theme-default";
+import navEn from "./nav-en";
+import sidebarZh from "./sidebar-zh.json";
+// import sidebarEn = require("./sidebar-en.json");
 
-module.exports = {
+export default defaultTheme({
   logo: "./logo.png",
   lastUpdated: "Last Updated", // string | boolean,K
-  nav: navEn,
+  navbar: navEn,
   sidebar: {
     "/zh/": sidebarZh,
-    "/en/": sidebarEn,
+    // "/en/": sidebarEn,
   },
-};
+});
