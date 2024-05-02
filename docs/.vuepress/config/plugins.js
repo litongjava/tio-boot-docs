@@ -2,7 +2,6 @@
 // import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { seoPlugin } from "@vuepress/plugin-seo";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
-import { autoCatalogPlugin } from "vuepress-plugin-auto-catalog";
 export default [
   // searchPlugin({}),
   // pwaPlugin({}),
@@ -13,7 +12,7 @@ export default [
   searchProPlugin({
     // your options
   }),
-  autoCatalogPlugin({
-    //插件选项
-  }),
+  // autoCatalogPlugin({
+  //   //插件选项
+  // }),
 ];
