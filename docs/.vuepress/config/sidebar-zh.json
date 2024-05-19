@@ -91,7 +91,7 @@
   {
     "text": "08_认证和授权",
     "collapsable": false,
-    "children": ["/zh/08_认证/01.md", "/zh/08_认证/02.md"]
+    "children": ["/zh/08_认证/01.md", "/zh/08_认证/02.md", "/zh/08_认证/03.md"]
   },
   {
     "text": "09_缓存",
