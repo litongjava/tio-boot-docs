@@ -153,7 +153,8 @@
       "/zh/14_jfinal-plugins/18_Enjoy SQL 模板.md",
       "/zh/14_jfinal-plugins/19_多数据源支持.md",
       "/zh/14_jfinal-plugins/20_独立使用 ActiveRecord.md",
-      "/zh/14_jfinal-plugins/21_调用存储过程.md"
+      "/zh/14_jfinal-plugins/21_调用存储过程.md",
+      "/zh/14_jfinal-plugins/22.md"
     ]
   },
   {
@@ -199,7 +200,8 @@
       "/zh/21_tio-utils/02.md",
       "/zh/21_tio-utils/03.md",
       "/zh/21_tio-utils/04.md",
-      "/zh/21_tio-utils/05.md"
+      "/zh/21_tio-utils/05.md",
+      "/zh/21_tio-utils/06.md"
     ]
   },
   {
