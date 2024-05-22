@@ -138,7 +138,22 @@
       "/zh/14_jfinal-plugins/03.md",
       "/zh/14_jfinal-plugins/04.md",
       "/zh/14_jfinal-plugins/05.md",
-      "/zh/14_jfinal-plugins/06.md"
+      "/zh/14_jfinal-plugins/06.md",
+      "/zh/14_jfinal-plugins/07_ActiveRecordPlugin",
+      "/zh/14_jfinal-plugins/08_Model.md",
+      "/zh/14_jfinal-plugins/09_生成器与 JavaBean.md",
+      "/zh/14_jfinal-plugins/10_独创Db Record模式.md",
+      "/zh/14_jfinal-plugins/11_paginate 分页.md",
+      "/zh/14_jfinal-plugins/12_数据库事务处理.md",
+      "/zh/14_jfinal-plugins/13_Cache 缓存.md",
+      "/zh/14_jfinal-plugins/14_Dialect多数据库支持.md",
+      "/zh/14_jfinal-plugins/15_表关联操作.md",
+      "/zh/14_jfinal-plugins/16_复合主键.md",
+      "/zh/14_jfinal-plugins/17_Oracle支持.md",
+      "/zh/14_jfinal-plugins/18_Enjoy SQL 模板.md",
+      "/zh/14_jfinal-plugins/19_多数据源支持.md",
+      "/zh/14_jfinal-plugins/20_独立使用 ActiveRecord.md",
+      "/zh/14_jfinal-plugins/21_调用存储过程.md"
     ]
   },
   {
