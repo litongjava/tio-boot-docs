@@ -193,6 +193,12 @@
     "children": ["/zh/19_mongodb/01.md"]
   },
   {
+    "text": "20_integration_thirty_party",
+    "collapsable": false,
+    "children": ["/zh/20_integration_thirty_party/01.md", "/zh/20_integration_thirty_party/02.md"]
+  },
+
+  {
     "text": "21_tio-utils",
     "collapsable": false,
     "children": [
@@ -214,11 +220,6 @@
       "/zh/22_tio-http-server/04.md",
       "/zh/22_tio-http-server/05.md"
     ]
-  },
-  {
-    "text": "23_HTTP-Client",
-    "collapsable": false,
-    "children": ["/zh/23_httpclient/01.md"]
   },
   {
     "text": "24_文件存储",
