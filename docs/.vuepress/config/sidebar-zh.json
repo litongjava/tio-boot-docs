@@ -240,9 +240,14 @@
     ]
   },
   {
+    "text": "23_firebase",
+    "collapsable": false,
+    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md"]
+  },
+  {
     "text": "24_文件存储",
     "collapsable": false,
-    "children": ["/zh/24_文件存储/01.md", "/zh/24_文件存储/02.md", "/zh/24_文件存储/03.md"]
+    "children": ["/zh/24_文件存储/01.md", "/zh/24_文件存储/02.md"]
   },
   {
     "text": "25_性能测试",
