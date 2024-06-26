@@ -242,7 +242,7 @@
   {
     "text": "23_firebase",
     "collapsable": false,
-    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md"]
+    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md", "/zh/23_firebase/03.md"]
   },
   {
     "text": "24_文件存储",
