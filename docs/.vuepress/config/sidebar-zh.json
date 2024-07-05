@@ -274,6 +274,20 @@
   },
 
   {
+    "text": "30_LLM",
+    "collapsable": false,
+    "children": [
+      "/zh/30_LLM/01.md",
+      "/zh/30_LLM/02.md",
+      "/zh/30_LLM/03.md",
+      "/zh/30_LLM/04.md",
+      "/zh/30_LLM/05.md",
+      "/zh/30_LLM/06.md",
+      "/zh/30_LLM/07.md"
+    ]
+  },
+
+  {
     "text": "99_案例",
     "collapsable": false,
     "children": [
