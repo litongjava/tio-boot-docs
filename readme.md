@@ -6,6 +6,12 @@
 [文档地址 1](https://litongjava.github.io/tio-boot-docs/)
 [备用文档地址 1](https://env-00jxgnx7m5of-static.normal.cloudstatic.cn/tio-boot-docs/)
 
-## node version
+## build
 
-16.17.0
+```
+nvm use 20.13.1
+```
+
+```
+pnpm install
+```
