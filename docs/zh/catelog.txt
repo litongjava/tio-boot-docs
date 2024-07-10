@@ -148,14 +148,14 @@ tio-boot 使用 mybatis-plus 整合 tdengine
 访问测试
 整合 mybatis-plus
 测试
-tio-boot 使用 table-to-json 整合 TDEngine
+tio-boot 使用 ApiTable 整合 TDEngine
 添加依赖
 启动类
 数据源配置
 ActiveRecord 配置
 控制器层
 测试
-table-json 多数据源 mysql and tdengine
+api-table 多数据源 mysql and tdengine
 11.2.整合 Mysql 数据库
 11.3.整合 PostGresql 数据库
 Junit 单元测试

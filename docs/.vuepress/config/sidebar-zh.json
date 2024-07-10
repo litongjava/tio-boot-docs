@@ -175,18 +175,19 @@
     ]
   },
   {
-    "text": "15_table-to-json",
+    "text": "15_api-table",
     "collapsable": false,
     "children": [
-      "/zh/15_table-to-json/01.md",
-      "/zh/15_table-to-json/02.md",
-      "/zh/15_table-to-json/03.md",
-      "/zh/15_table-to-json/04.md",
-      "/zh/15_table-to-json/05.md",
-      "/zh/15_table-to-json/06.md",
-      "/zh/15_table-to-json/07.md",
-      "/zh/15_table-to-json/11.md",
-      "/zh/15_table-to-json/12.md"
+      "/zh/15_api-table/01.md",
+      "/zh/15_api-table/02.md",
+      "/zh/15_api-table/03.md",
+      "/zh/15_api-table/04.md",
+      "/zh/15_api-table/05.md",
+      "/zh/15_api-table/06.md",
+      "/zh/15_api-table/07.md",
+      "/zh/15_api-table/08.md",
+      "/zh/15_api-table/11.md",
+      "/zh/15_api-table/12.md"
     ]
   },
   {
