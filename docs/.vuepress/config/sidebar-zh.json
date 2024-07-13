@@ -277,16 +277,18 @@
   },
 
   {
-    "text": "30_LLM",
+    "text": "31_LLM",
     "collapsable": false,
     "children": [
-      "/zh/30_LLM/01.md",
-      "/zh/30_LLM/02.md",
-      "/zh/30_LLM/03.md",
-      "/zh/30_LLM/04.md",
-      "/zh/30_LLM/05.md",
-      "/zh/30_LLM/06.md",
-      "/zh/30_LLM/07.md"
+      "/zh/31_LLM/01.md",
+      "/zh/31_LLM/02.md",
+      "/zh/31_LLM/03.md",
+      "/zh/31_LLM/04.md",
+      "/zh/31_LLM/05.md",
+      "/zh/31_LLM/06.md",
+      "/zh/31_LLM/07.md",
+      "/zh/31_LLM/08.md",
+      "/zh/31_LLM/09.md"
     ]
   },
 
