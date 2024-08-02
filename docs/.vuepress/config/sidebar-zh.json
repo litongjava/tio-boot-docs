@@ -118,7 +118,9 @@
       "/zh/09_缓存/04.md",
       "/zh/09_缓存/05.md",
       "/zh/09_缓存/06.md",
-      "/zh/09_缓存/07.md"
+      "/zh/09_缓存/07.md",
+      "/zh/09_缓存/08.md",
+      "/zh/09_缓存/09.md"
     ]
   },
   {
@@ -139,7 +141,7 @@
   {
     "text": "13_定时任务",
     "collapsable": false,
-    "children": ["/zh/13_定时任务/01.md", "/zh/13_定时任务/02.md"]
+    "children": ["/zh/13_定时任务/01.md", "/zh/13_定时任务/02.md", "/zh/13_定时任务/03.md"]
   },
   {
     "text": "14_java-db",
@@ -147,9 +149,6 @@
     "children": [
       "/zh/14_java-db/01.md",
       "/zh/14_java-db/02.md",
-      "/zh/14_java-db/03.md",
-      "/zh/14_java-db/04.md",
-      "/zh/14_java-db/05.md",
       "/zh/14_java-db/06.md",
       "/zh/14_java-db/07_ActiveRecordPlugin",
       "/zh/14_java-db/08_Model.md",
