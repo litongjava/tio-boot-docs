@@ -259,9 +259,9 @@
     "children": ["/zh/24_文件存储/01.md", "/zh/24_文件存储/02.md", "/zh/24_文件存储/03.md"]
   },
   {
-    "text": "25_性能测试",
+    "text": "25_elastic-search",
     "collapsable": false,
-    "children": ["/zh/25_性能测试/01.md"]
+    "children": ["/zh/25_elastic-search/01.md"]
   },
   {
     "text": "26_magic-script",
@@ -272,6 +272,11 @@
     "text": "27_groovy",
     "collapsable": false,
     "children": ["/zh/27_groovy/01.md"]
+  },
+  {
+    "text": "29_性能测试",
+    "collapsable": false,
+    "children": ["/zh/29_性能测试/01.md"]
   },
   {
     "text": "30_spring-cloud",
