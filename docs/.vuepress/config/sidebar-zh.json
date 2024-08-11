@@ -150,7 +150,7 @@
     "children": [
       "/zh/14_java-db/01.md",
       "/zh/14_java-db/02.md",
-      "/zh/14_java-db/06.md",
+      "/zh/14_java-db/03.md",
       "/zh/14_java-db/07_ActiveRecordPlugin",
       "/zh/14_java-db/08_Model.md",
       "/zh/14_java-db/09_生成器与 JavaBean.md",
@@ -173,7 +173,8 @@
       "/zh/14_java-db/26.md",
       "/zh/14_java-db/28.md",
       "/zh/14_java-db/29.md",
-      "/zh/14_java-db/30.md"
+      "/zh/14_java-db/30.md",
+      "/zh/14_java-db/31.md"
     ]
   },
   {
