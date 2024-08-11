@@ -283,23 +283,28 @@
     "collapsable": false,
     "children": ["/zh/30_spring-cloud/01.md"]
   },
+  {
+    "text": "31_dubbo",
+    "collapsable": false,
+    "children": ["/zh/31_dubbo/01.md", "/zh/31_dubbo/02.md", "/zh/31_dubbo/03.md"]
+  },
 
   {
-    "text": "31_LLM",
+    "text": "41_LLM",
     "collapsable": false,
     "children": [
-      "/zh/31_LLM/01.md",
-      "/zh/31_LLM/02.md",
-      "/zh/31_LLM/03.md",
-      "/zh/31_LLM/04.md",
-      "/zh/31_LLM/05.md",
-      "/zh/31_LLM/06.md",
-      "/zh/31_LLM/07.md",
-      "/zh/31_LLM/08.md",
-      "/zh/31_LLM/09.md",
-      "/zh/31_LLM/10.md",
-      "/zh/31_LLM/11.md",
-      "/zh/31_LLM/12.md"
+      "/zh/41_LLM/01.md",
+      "/zh/41_LLM/02.md",
+      "/zh/41_LLM/03.md",
+      "/zh/41_LLM/04.md",
+      "/zh/41_LLM/05.md",
+      "/zh/41_LLM/06.md",
+      "/zh/41_LLM/07.md",
+      "/zh/41_LLM/08.md",
+      "/zh/41_LLM/09.md",
+      "/zh/41_LLM/10.md",
+      "/zh/41_LLM/11.md",
+      "/zh/41_LLM/12.md"
     ]
   },
 
