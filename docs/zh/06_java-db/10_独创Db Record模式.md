@@ -1,4 +1,4 @@
-# 独创 Db Record 模式
+# Db Record
 
 ### 1､常见用法
 
