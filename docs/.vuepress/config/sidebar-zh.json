@@ -73,7 +73,8 @@
       "/zh/05_web/22.md",
       "/zh/05_web/23.md",
       "/zh/05_web/24.md",
-      "/zh/05_web/25.md"
+      "/zh/05_web/25.md",
+      "/zh/05_web/26.md"
     ]
   },
   {
@@ -260,7 +261,7 @@
   {
     "text": "23_firebase",
     "collapsable": false,
-    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md", "/zh/23_firebase/03.md"]
+    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md", "/zh/23_firebase/03.md", "/zh/23_firebase/04.md"]
   },
   {
     "text": "24_文件存储",
