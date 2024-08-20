@@ -205,7 +205,7 @@
   {
     "text": "16_template_engine",
     "collapsable": false,
-    "children": ["/zh/16_template_engine/01.md", "/zh/16_template_engine/02.md"]
+    "children": ["/zh/16_template_engine/01.md", "/zh/16_template_engine/02.md", "/zh/16_template_engine/03.md"]
   },
   {
     "text": "17_mybatis",
