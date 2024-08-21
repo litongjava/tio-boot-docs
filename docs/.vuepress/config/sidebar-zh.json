@@ -178,7 +178,13 @@
   {
     "text": "13_netty",
     "collapsable": false,
-    "children": ["/zh/13_netty/01.md"]
+    "children": [
+      "/zh/13_netty/01.md",
+      "/zh/13_netty/02.md",
+      "/zh/13_netty/03.md",
+      "/zh/13_netty/04.md",
+      "/zh/13_netty/05.md"
+    ]
   },
   {
     "text": "14_定时任务",
