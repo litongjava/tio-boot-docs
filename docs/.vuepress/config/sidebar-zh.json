@@ -325,6 +325,11 @@
       "/zh/41_LLM/12.md"
     ]
   },
+  {
+    "text": "51_jave",
+    "collapsable": false,
+    "children": ["/zh/51_jave/01.md", "/zh/51_jave/02.md"]
+  },
 
   {
     "text": "99_案例",
