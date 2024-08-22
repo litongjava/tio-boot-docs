@@ -279,7 +279,12 @@
   {
     "text": "25_elastic-search",
     "collapsable": false,
-    "children": ["/zh/25_elastic-search/01.md", "/zh/25_elastic-search/02.md", "/zh/25_elastic-search/03.md"]
+    "children": [
+      "/zh/25_elastic-search/01.md",
+      "/zh/25_elastic-search/02.md",
+      "/zh/25_elastic-search/03.md",
+      "/zh/25_elastic-search/04.md"
+    ]
   },
   {
     "text": "26_magic-script",
