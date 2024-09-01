@@ -74,7 +74,12 @@
       "/zh/05_web/23.md",
       "/zh/05_web/24.md",
       "/zh/05_web/25.md",
-      "/zh/05_web/26.md"
+      "/zh/05_web/26.md",
+      "/zh/05_web/27.md",
+      "/zh/05_web/28.md",
+      "/zh/05_web/29.md",
+      "/zh/05_web/30.md",
+      "/zh/05_web/31.md"
     ]
   },
   {
@@ -114,20 +119,20 @@
     ]
   },
   {
-    "text": "07_cache",
+    "text": "07_api-table",
     "collapsable": false,
     "children": [
-      "/zh/07_cache/01.md",
-      "/zh/07_cache/02.md",
-      "/zh/07_cache/03.md",
-      "/zh/07_cache/04.md",
-      "/zh/07_cache/05.md",
-      "/zh/07_cache/06.md",
-      "/zh/07_cache/07.md",
-      "/zh/07_cache/08.md",
-      "/zh/07_cache/09.md",
-      "/zh/07_cache/10.md",
-      "/zh/07_cache/11.md"
+      "/zh/07_api-table/01.md",
+      "/zh/07_api-table/02.md",
+      "/zh/07_api-table/03.md",
+      "/zh/07_api-table/04.md",
+      "/zh/07_api-table/05.md",
+      "/zh/07_api-table/06.md",
+      "/zh/07_api-table/07.md",
+      "/zh/07_api-table/08.md",
+      "/zh/07_api-table/09.md",
+      "/zh/07_api-table/11.md",
+      "/zh/07_api-table/12.md"
     ]
   },
   {
@@ -143,92 +148,86 @@
     ]
   },
   {
-    "text": "09_认证和权限",
+    "text": "09_cache",
     "collapsable": false,
-    "children": ["/zh/09_认证/01.md", "/zh/09_认证/02.md", "/zh/09_认证/03.md", "/zh/09_认证/05.md"]
+    "children": [
+      "/zh/09_cache/01.md",
+      "/zh/09_cache/02.md",
+      "/zh/09_cache/03.md",
+      "/zh/09_cache/04.md",
+      "/zh/09_cache/05.md",
+      "/zh/09_cache/06.md",
+      "/zh/09_cache/07.md",
+      "/zh/09_cache/08.md",
+      "/zh/09_cache/09.md",
+      "/zh/09_cache/10.md",
+      "/zh/09_cache/11.md"
+    ]
   },
 
   {
-    "text": "10_内置组件",
+    "text": "10_认证和权限",
     "collapsable": false,
-    "children": [
-      "/zh/10_内置组件/01.md",
-      "/zh/10_内置组件/02.md",
-      "/zh/10_内置组件/03.md",
-      "/zh/10_内置组件/04.md",
-      "/zh/10_内置组件/05.md",
-      "/zh/10_内置组件/06.md",
-      "/zh/10_内置组件/07.md",
-      "/zh/10_内置组件/08.md",
-      "/zh/10_内置组件/09.md",
-      "/zh/10_内置组件/10.md",
-      "/zh/10_内置组件/11.md",
-      "/zh/10_内置组件/12.md",
-      "/zh/10_内置组件/13.md",
-      "/zh/10_内置组件/14.md",
-      "/zh/10_内置组件/15.md"
-    ]
+    "children": ["/zh/10_认证/01.md", "/zh/10_认证/02.md", "/zh/10_认证/03.md", "/zh/10_认证/05.md"]
   },
   {
     "text": "11_i18n",
     "collapsable": false,
     "children": ["/zh/11_i18n/01.md"]
   },
-
   {
-    "text": "12_MQ",
+    "text": "12_定时任务",
     "collapsable": false,
-    "children": ["/zh/12_MQ/01.md", "/zh/12_MQ/02.md", "/zh/12_MQ/03.md"]
+    "children": ["/zh/12_定时任务/01.md", "/zh/12_定时任务/02.md", "/zh/12_定时任务/03.md"]
   },
 
   {
-    "text": "13_netty",
+    "text": "13_template_engine",
+    "collapsable": false,
+    "children": ["/zh/13_template_engine/01.md", "/zh/13_template_engine/02.md", "/zh/13_template_engine/03.md"]
+  },
+
+  {
+    "text": "14_tests",
+    "collapsable": false,
+    "children": ["/zh/14_tests/01.md"]
+  },
+
+  {
+    "text": "15_tio",
     "collapsable": false,
     "children": [
-      "/zh/13_netty/01.md",
-      "/zh/13_netty/02.md",
-      "/zh/13_netty/03.md",
-      "/zh/13_netty/04.md",
-      "/zh/13_netty/05.md"
+      "/zh/15_tio/01.md",
+      "/zh/15_tio/02.md",
+      "/zh/15_tio/03.md",
+      "/zh/15_tio/04.md",
+      "/zh/15_tio/05.md",
+      "/zh/15_tio/06.md",
+      "/zh/15_tio/07.md",
+      "/zh/15_tio/08.md",
+      "/zh/15_tio/09.md",
+      "/zh/15_tio/10.md",
+      "/zh/15_tio/11.md",
+      "/zh/15_tio/12.md"
     ]
-  },
-  {
-    "text": "14_定时任务",
-    "collapsable": false,
-    "children": ["/zh/14_定时任务/01.md", "/zh/14_定时任务/02.md", "/zh/14_定时任务/03.md"]
   },
 
   {
-    "text": "15_api-table",
+    "text": "17_netty",
     "collapsable": false,
     "children": [
-      "/zh/15_api-table/01.md",
-      "/zh/15_api-table/02.md",
-      "/zh/15_api-table/03.md",
-      "/zh/15_api-table/04.md",
-      "/zh/15_api-table/05.md",
-      "/zh/15_api-table/06.md",
-      "/zh/15_api-table/07.md",
-      "/zh/15_api-table/08.md",
-      "/zh/15_api-table/09.md",
-      "/zh/15_api-table/11.md",
-      "/zh/15_api-table/12.md"
+      "/zh/17_netty/01.md",
+      "/zh/17_netty/02.md",
+      "/zh/17_netty/03.md",
+      "/zh/17_netty/04.md",
+      "/zh/17_netty/05.md"
     ]
   },
+
   {
-    "text": "16_template_engine",
+    "text": "18_MQ",
     "collapsable": false,
-    "children": ["/zh/16_template_engine/01.md", "/zh/16_template_engine/02.md", "/zh/16_template_engine/03.md"]
-  },
-  {
-    "text": "17_mybatis",
-    "collapsable": false,
-    "children": ["/zh/17_mybatis/01.md", "/zh/17_mybatis/02.md", "/zh/17_mybatis/03.md"]
-  },
-  {
-    "text": "18_spring",
-    "collapsable": false,
-    "children": ["/zh/18_spring/01.md", "/zh/18_spring/02.md", "/zh/18_spring/03.md"]
+    "children": ["/zh/18_MQ/01.md", "/zh/18_MQ/02.md", "/zh/18_MQ/03.md"]
   },
   {
     "text": "19_mongodb",
@@ -274,9 +273,9 @@
     ]
   },
   {
-    "text": "23_firebase",
+    "text": "23_mybatis",
     "collapsable": false,
-    "children": ["/zh/23_firebase/01.md", "/zh/23_firebase/02.md", "/zh/23_firebase/03.md", "/zh/23_firebase/04.md"]
+    "children": ["/zh/23_mybatis/01.md", "/zh/23_mybatis/02.md", "/zh/23_mybatis/03.md"]
   },
   {
     "text": "24_文件存储",
@@ -305,19 +304,25 @@
     "children": ["/zh/27_groovy/01.md"]
   },
   {
-    "text": "29_性能测试",
+    "text": "28_firebase",
     "collapsable": false,
-    "children": ["/zh/29_性能测试/01.md"]
+    "children": ["/zh/28_firebase/01.md", "/zh/28_firebase/02.md", "/zh/28_firebase/03.md", "/zh/28_firebase/04.md"]
+  },
+
+  {
+    "text": "29_dubbo",
+    "collapsable": false,
+    "children": ["/zh/29_dubbo/01.md", "/zh/29_dubbo/02.md", "/zh/29_dubbo/03.md", "/zh/29_dubbo/04.md"]
   },
   {
-    "text": "30_spring-cloud",
+    "text": "30_spring",
     "collapsable": false,
-    "children": ["/zh/30_spring-cloud/01.md"]
+    "children": ["/zh/30_spring/01.md", "/zh/30_spring/02.md", "/zh/30_spring/03.md"]
   },
   {
-    "text": "31_dubbo",
+    "text": "31_spring-cloud",
     "collapsable": false,
-    "children": ["/zh/31_dubbo/01.md", "/zh/31_dubbo/02.md", "/zh/31_dubbo/03.md", "/zh/31_dubbo/04.md"]
+    "children": ["/zh/31_spring-cloud/01.md"]
   },
 
   {
@@ -342,6 +347,11 @@
     "text": "51_jave",
     "collapsable": false,
     "children": ["/zh/51_jave/01.md", "/zh/51_jave/02.md"]
+  },
+  {
+    "text": "80_性能测试",
+    "collapsable": false,
+    "children": ["/zh/80_性能测试/01.md"]
   },
 
   {
