@@ -39,9 +39,7 @@
       "/zh/03_配置/02.md",
       "/zh/03_配置/03.md",
       "/zh/03_配置/04.md",
-      "/zh/03_配置/05.md",
-      "/zh/03_配置/06.md",
-      "/zh/03_配置/07.md"
+      "/zh/03_配置/05.md"
     ]
   },
   {
@@ -221,7 +219,21 @@
       "/zh/15_tio/10.md",
       "/zh/15_tio/11.md",
       "/zh/15_tio/12.md",
-      "/zh/15_tio/13.md"
+      "/zh/15_tio/13.md",
+      "/zh/15_tio/14.md",
+      "/zh/15_tio/15.md",
+      "/zh/15_tio/16.md",
+      "/zh/15_tio/17.md",
+      "/zh/15_tio/18.md",
+      "/zh/15_tio/19.md",
+      "/zh/15_tio/20.md",
+      "/zh/15_tio/21.md",
+      "/zh/15_tio/22.md",
+      "/zh/15_tio/23.md",
+      "/zh/15_tio/24.md",
+      "/zh/15_tio/25.md",
+      "/zh/15_tio/26.md",
+      "/zh/15_tio/27.md"
     ]
   },
   {
@@ -252,101 +264,111 @@
     "collapsable": false,
     "children": ["/zh/19_mongodb/01.md"]
   },
+
   {
-    "text": "20_integration_thirty_party",
+    "text": "20_tio-utils",
     "collapsable": false,
     "children": [
-      "/zh/20_integration_thirty_party/01.md",
-      "/zh/20_integration_thirty_party/02.md",
-      "/zh/20_integration_thirty_party/03.md",
-      "/zh/20_integration_thirty_party/04.md",
-      "/zh/20_integration_thirty_party/05.md",
-      "/zh/20_integration_thirty_party/06.md"
+      "/zh/20_tio-utils/01.md",
+      "/zh/20_tio-utils/02.md",
+      "/zh/20_tio-utils/03.md",
+      "/zh/20_tio-utils/04.md",
+      "/zh/20_tio-utils/05.md",
+      "/zh/20_tio-utils/06.md",
+      "/zh/20_tio-utils/07.md",
+      "/zh/20_tio-utils/08.md",
+      "/zh/20_tio-utils/09.md",
+      "/zh/20_tio-utils/10.md",
+      "/zh/20_tio-utils/11.md",
+      "/zh/20_tio-utils/12.md"
     ]
+  },
+  {
+    "text": "21_tio-http-server",
+    "collapsable": false,
+    "children": [
+      "/zh/21_tio-http-server/01.md",
+      "/zh/21_tio-http-server/02.md",
+      "/zh/21_tio-http-server/03.md",
+      "/zh/21_tio-http-server/04.md",
+      "/zh/21_tio-http-server/05.md"
+    ]
+  },
+  {
+    "text": "22_tio-websocket",
+    "collapsable": false,
+    "children": ["/zh/22_tio-websocket/01.md", "/zh/22_tio-websocket/02.md"]
+  },
+  {
+    "text": "23_tio-im-实战",
+    "collapsable": false,
+    "children": ["/zh/23_tio-im-实战/01.md"]
+  },
+  {
+    "text": "24_mybatis",
+    "collapsable": false,
+    "children": ["/zh/24_mybatis/01.md", "/zh/24_mybatis/02.md", "/zh/24_mybatis/03.md"]
   },
 
   {
-    "text": "21_tio-utils",
+    "text": "26_elastic-search",
     "collapsable": false,
     "children": [
-      "/zh/21_tio-utils/01.md",
-      "/zh/21_tio-utils/02.md",
-      "/zh/21_tio-utils/03.md",
-      "/zh/21_tio-utils/04.md",
-      "/zh/21_tio-utils/05.md",
-      "/zh/21_tio-utils/06.md",
-      "/zh/21_tio-utils/07.md",
-      "/zh/21_tio-utils/08.md",
-      "/zh/21_tio-utils/09.md",
-      "/zh/21_tio-utils/10.md",
-      "/zh/21_tio-utils/11.md",
-      "/zh/21_tio-utils/12.md"
+      "/zh/26_elastic-search/01.md",
+      "/zh/26_elastic-search/02.md",
+      "/zh/26_elastic-search/03.md",
+      "/zh/26_elastic-search/04.md",
+      "/zh/26_elastic-search/05.md"
     ]
   },
   {
-    "text": "22_tio-http-server",
+    "text": "27_magic-script",
     "collapsable": false,
-    "children": [
-      "/zh/22_tio-http-server/01.md",
-      "/zh/22_tio-http-server/02.md",
-      "/zh/22_tio-http-server/03.md",
-      "/zh/22_tio-http-server/04.md",
-      "/zh/22_tio-http-server/05.md"
-    ]
+    "children": ["/zh/27_magic-script/01.md"]
   },
   {
-    "text": "23_mybatis",
+    "text": "28_groovy",
     "collapsable": false,
-    "children": ["/zh/23_mybatis/01.md", "/zh/23_mybatis/02.md", "/zh/23_mybatis/03.md"]
+    "children": ["/zh/28_groovy/01.md"]
   },
   {
-    "text": "24_文件存储",
+    "text": "29_firebase",
     "collapsable": false,
-    "children": ["/zh/24_文件存储/01.md", "/zh/24_文件存储/02.md", "/zh/24_文件存储/03.md"]
-  },
-  {
-    "text": "25_elastic-search",
-    "collapsable": false,
-    "children": [
-      "/zh/25_elastic-search/01.md",
-      "/zh/25_elastic-search/02.md",
-      "/zh/25_elastic-search/03.md",
-      "/zh/25_elastic-search/04.md",
-      "/zh/25_elastic-search/05.md"
-    ]
-  },
-  {
-    "text": "26_magic-script",
-    "collapsable": false,
-    "children": ["/zh/26_magic-script/01.md"]
-  },
-  {
-    "text": "27_groovy",
-    "collapsable": false,
-    "children": ["/zh/27_groovy/01.md"]
-  },
-  {
-    "text": "28_firebase",
-    "collapsable": false,
-    "children": ["/zh/28_firebase/01.md", "/zh/28_firebase/02.md", "/zh/28_firebase/03.md", "/zh/28_firebase/04.md"]
+    "children": ["/zh/29_firebase/01.md", "/zh/29_firebase/02.md", "/zh/29_firebase/03.md", "/zh/29_firebase/04.md"]
   },
 
   {
-    "text": "29_dubbo",
+    "text": "30_文件存储",
     "collapsable": false,
-    "children": ["/zh/29_dubbo/01.md", "/zh/29_dubbo/02.md", "/zh/29_dubbo/03.md", "/zh/29_dubbo/04.md"]
+    "children": ["/zh/30_文件存储/01.md", "/zh/30_文件存储/02.md", "/zh/30_文件存储/03.md"]
   },
   {
-    "text": "30_spring",
+    "text": "31_dubbo",
     "collapsable": false,
-    "children": ["/zh/30_spring/01.md", "/zh/30_spring/02.md", "/zh/30_spring/03.md"]
+    "children": ["/zh/31_dubbo/01.md", "/zh/31_dubbo/02.md", "/zh/31_dubbo/03.md", "/zh/31_dubbo/04.md"]
   },
   {
-    "text": "31_spring-cloud",
+    "text": "32_spring",
     "collapsable": false,
-    "children": ["/zh/31_spring-cloud/01.md"]
+    "children": ["/zh/32_spring/01.md", "/zh/32_spring/02.md", "/zh/32_spring/03.md"]
   },
-
+  {
+    "text": "34_spring-cloud",
+    "collapsable": false,
+    "children": ["/zh/34_spring-cloud/01.md"]
+  },
+  {
+    "text": "40_integration_thirty_party",
+    "collapsable": false,
+    "children": [
+      "/zh/40_integration_thirty_party/01.md",
+      "/zh/40_integration_thirty_party/02.md",
+      "/zh/40_integration_thirty_party/03.md",
+      "/zh/40_integration_thirty_party/04.md",
+      "/zh/40_integration_thirty_party/05.md",
+      "/zh/40_integration_thirty_party/06.md"
+    ]
+  },
   {
     "text": "41_LLM",
     "collapsable": false,
