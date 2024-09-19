@@ -300,9 +300,9 @@
     "children": ["/zh/22_tio-websocket/01.md", "/zh/22_tio-websocket/02.md"]
   },
   {
-    "text": "23_tio-im-实战",
+    "text": "23_tio-im",
     "collapsable": false,
-    "children": ["/zh/23_tio-im-实战/01.md"]
+    "children": ["/zh/23_tio-im/01.md"]
   },
   {
     "text": "24_mybatis",
