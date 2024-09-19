@@ -350,7 +350,7 @@
   {
     "text": "32_spring",
     "collapsable": false,
-    "children": ["/zh/32_spring/01.md", "/zh/32_spring/02.md", "/zh/32_spring/03.md"]
+    "children": ["/zh/32_spring/01.md", "/zh/32_spring/02.md", "/zh/32_spring/03.md", "/zh/32_spring/04.md"]
   },
   {
     "text": "34_spring-cloud",
