@@ -239,7 +239,7 @@
   {
     "text": "16_aio",
     "collapsable": false,
-    "children": ["/zh/16_aio/01.md", "/zh/16_aio/02.md", "/zh/16_aio/03.md"]
+    "children": ["/zh/16_aio/01.md", "/zh/16_aio/02.md", "/zh/16_aio/03.md", "/zh/16_aio/04.md"]
   },
 
   {
@@ -280,7 +280,8 @@
       "/zh/20_tio-utils/09.md",
       "/zh/20_tio-utils/10.md",
       "/zh/20_tio-utils/11.md",
-      "/zh/20_tio-utils/12.md"
+      "/zh/20_tio-utils/19.md",
+      "/zh/20_tio-utils/20.md"
     ]
   },
   {
