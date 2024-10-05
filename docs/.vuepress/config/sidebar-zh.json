@@ -354,7 +354,13 @@
   {
     "text": "29_firebase",
     "collapsable": false,
-    "children": ["/zh/29_firebase/01.md", "/zh/29_firebase/02.md", "/zh/29_firebase/03.md", "/zh/29_firebase/04.md"]
+    "children": [
+      "/zh/29_firebase/01.md",
+      "/zh/29_firebase/02.md",
+      "/zh/29_firebase/03.md",
+      "/zh/29_firebase/04.md",
+      "/zh/29_firebase/05.md"
+    ]
   },
 
   {
