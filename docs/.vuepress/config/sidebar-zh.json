@@ -324,7 +324,13 @@
   {
     "text": "24_mybatis",
     "collapsable": false,
-    "children": ["/zh/24_mybatis/01.md", "/zh/24_mybatis/02.md", "/zh/24_mybatis/03.md", "/zh/24_mybatis/04.md"]
+    "children": [
+      "/zh/24_mybatis/01.md",
+      "/zh/24_mybatis/02.md",
+      "/zh/24_mybatis/03.md",
+      "/zh/24_mybatis/04.md",
+      "/zh/24_mybatis/05.md"
+    ]
   },
   {
     "text": "25_mongodb",
