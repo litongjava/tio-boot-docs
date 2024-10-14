@@ -425,6 +425,11 @@
     ]
   },
   {
+    "text": "42_asr",
+    "collapsable": false,
+    "children": ["/zh/42_asr/01.md"]
+  },
+  {
     "text": "51_jave",
     "collapsable": false,
     "children": ["/zh/51_jave/01.md", "/zh/51_jave/02.md"]
