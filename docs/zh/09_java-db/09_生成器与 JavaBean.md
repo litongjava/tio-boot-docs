@@ -427,18 +427,30 @@ import java.util.List;
 import org.junit.Test;
 
 import com.enoleap.maliang.app.config.EnoteMysqlDbConfig;
+import com.enoleap.maliang.app.db.model.TioBootAdminSystemConstantsConfig;
 import com.litongjava.tio.boot.tesing.TioBootTest;
 import com.litongjava.tio.utils.json.JsonUtils;
+import com.litongjava.tio.utils.snowflake.SnowflakeIdUtils;
 
 public class TioBootAdminSystemConstantsConfigTest {
 
   @Test
   public void test() {
     TioBootTest.runWith(EnoteMysqlDbConfig.class);
+    //save
+    new TioBootAdminSystemConstantsConfig().setId(SnowflakeIdUtils.id()).setKeyName("key_001").setKeyValue("key_002").save();
+
+    //find
     List<TioBootAdminSystemConstantsConfig> all = TioBootAdminSystemConstantsConfig.dao.findAll();
+
     System.out.println(JsonUtils.toJson(all));
+
+    //delete
+    boolean deleted = TioBootAdminSystemConstantsConfig.dao.deleteById(437975050078142464L);
+    System.out.println(deleted);
   }
 }
+
 ```
 
 **运行日志示例**：
@@ -450,6 +462,7 @@ public class TioBootAdminSystemConstantsConfigTest {
 2024-10-20 21:44:05.721 [main] INFO  c.z.h.HikariDataSource.<init>:82 - HikariPool-1 - Start completed.
 Sql: select * from `tio_boot_admin_system_constants_config`
 [{}{}]
+true
 ```
 
 ## 3. 附录
