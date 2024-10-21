@@ -14,7 +14,7 @@ public class User extends Model<User> {
 
 以下为 Model 的一些常见用法：
 
-```
+```java
 // 创建name属性为James,age属性为25的User对象并添加到数据库
 new User().set("name", "James").set("age", 25).save();
 
