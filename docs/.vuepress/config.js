@@ -9,6 +9,7 @@ export default defineUserConfig({
   base: "/",
   title: "Tio Boot Docs",
   description: "Java 高性能Web 快速开发框架",
+  shouldPrefetch: false,
   head: head,
   plugins: plugins,
 
