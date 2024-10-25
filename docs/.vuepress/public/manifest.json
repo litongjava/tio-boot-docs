@@ -10,8 +10,7 @@
   "background_color": "#ffffff",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
-  "icons":
-  [
+  "icons": [
     {
       "src": "logo-192x192.png",
       "sizes": "192x192",
@@ -21,6 +20,14 @@
       "src": "logo-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-desktop-1024x750",
+      "sizes": "1024x768",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
