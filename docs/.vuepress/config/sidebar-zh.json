@@ -128,12 +128,6 @@
       "/zh/09_java-db/21_调用存储过程.md",
       "/zh/09_java-db/22.md",
       "/zh/09_java-db/23.md",
-      "/zh/09_java-db/24.md",
-      "/zh/09_java-db/25.md",
-      "/zh/09_java-db/26.md",
-      "/zh/09_java-db/27.md",
-      "/zh/09_java-db/28.md",
-      "/zh/09_java-db/29.md",
       "/zh/09_java-db/30.md",
       "/zh/09_java-db/31.md",
       "/zh/09_java-db/32.md",
@@ -296,7 +290,8 @@
       "/zh/21_netty-boot/10.md",
       "/zh/21_netty-boot/11.md",
       "/zh/21_netty-boot/12.md",
-      "/zh/21_netty-boot/13.md"
+      "/zh/21_netty-boot/13.md",
+      "/zh/21_netty-boot/14.md"
     ]
   },
   {
@@ -416,50 +411,83 @@
     "children": ["/zh/36_spring-cloud/01.md"]
   },
   {
-    "text": "40_integration_thirty_party",
+    "text": "39_integration_thirty_party",
     "collapsable": false,
     "children": [
-      "/zh/40_integration_thirty_party/01.md",
-      "/zh/40_integration_thirty_party/02.md",
-      "/zh/40_integration_thirty_party/03.md",
-      "/zh/40_integration_thirty_party/04.md",
-      "/zh/40_integration_thirty_party/05.md",
-      "/zh/40_integration_thirty_party/06.md",
-      "/zh/40_integration_thirty_party/07.md"
+      "/zh/39_integration_thirty_party/01.md",
+      "/zh/39_integration_thirty_party/02.md",
+      "/zh/39_integration_thirty_party/03.md",
+      "/zh/39_integration_thirty_party/04.md",
+      "/zh/39_integration_thirty_party/05.md",
+      "/zh/39_integration_thirty_party/06.md",
+      "/zh/39_integration_thirty_party/07.md"
     ]
   },
   {
-    "text": "41_LLM",
+    "text": "41_postgresql",
     "collapsable": false,
     "children": [
-      "/zh/41_LLM/01.md",
-      "/zh/41_LLM/02.md",
-      "/zh/41_LLM/03.md",
-      "/zh/41_LLM/04.md",
-      "/zh/41_LLM/05.md",
-      "/zh/41_LLM/06.md",
-      "/zh/41_LLM/07.md",
-      "/zh/41_LLM/08.md",
-      "/zh/41_LLM/09.md",
-      "/zh/41_LLM/10.md",
-      "/zh/41_LLM/11.md",
-      "/zh/41_LLM/12.md"
+      "/zh/41_postgresql/01.md",
+      "/zh/41_postgresql/02.md",
+      "/zh/41_postgresql/03.md",
+      "/zh/41_postgresql/04.md",
+      "/zh/41_postgresql/05.md"
     ]
   },
   {
-    "text": "42_asr",
+    "text": "43_oceanbase",
     "collapsable": false,
-    "children": ["/zh/42_asr/01.md"]
+    "children": ["/zh/43_oceanbase/01.md"]
   },
+
   {
     "text": "51_jave",
     "collapsable": false,
-    "children": ["/zh/51_jave/01.md", "/zh/51_jave/02.md"]
+    "children": ["/zh/51_jave/01.md"]
+  },
+  {
+    "text": "52_asr",
+    "collapsable": false,
+    "children": ["/zh/52_asr/01.md"]
+  },
+  {
+    "text": "55_LLM",
+    "collapsable": false,
+    "children": [
+      "/zh/55_LLM/01.md",
+      "/zh/55_LLM/02.md",
+      "/zh/55_LLM/03.md",
+      "/zh/55_LLM/04.md",
+      "/zh/55_LLM/05.md",
+      "/zh/55_LLM/06.md",
+      "/zh/55_LLM/07.md",
+      "/zh/55_LLM/08.md",
+      "/zh/55_LLM/09.md",
+      "/zh/55_LLM/10.md",
+      "/zh/55_LLM/11.md",
+      "/zh/55_LLM/12.md"
+    ]
+  },
+  {
+    "text": "56_knowlege_base",
+    "collapsable": false,
+    "children": ["/zh/56_knowlege_base/01.md", "/zh/56_knowlege_base/02.md", "/zh/56_knowlege_base/03.md"]
+  },
+
+  {
+    "text": "79_tio-boot",
+    "collapsable": false,
+    "children": ["/zh/79_tio-boot/01.md"]
   },
   {
     "text": "80_性能测试",
     "collapsable": false,
-    "children": ["/zh/80_性能测试/01.md", "/zh/80_性能测试/02.md"]
+    "children": ["/zh/80_性能测试/01.md", "/zh/80_性能测试/02.md", "/zh/80_性能测试/03.md"]
+  },
+  {
+    "text": "80_性能测试",
+    "collapsable": false,
+    "children": ["/zh/80_性能测试/01.md", "/zh/80_性能测试/02.md", "/zh/80_性能测试/03.md"]
   },
 
   {
