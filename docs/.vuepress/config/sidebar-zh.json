@@ -473,6 +473,11 @@
     "collapsable": false,
     "children": ["/zh/56_knowlege_base/01.md", "/zh/56_knowlege_base/02.md", "/zh/56_knowlege_base/03.md"]
   },
+  {
+    "text": "60_tio-boot-admin",
+    "collapsable": false,
+    "children": ["/zh/60_tio-boot-admin/01.md"]
+  },
 
   {
     "text": "79_tio-boot",
