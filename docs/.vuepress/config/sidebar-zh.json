@@ -478,7 +478,15 @@
   {
     "text": "56_knowlege_base",
     "collapsable": false,
-    "children": ["/zh/56_knowlege_base/01.md", "/zh/56_knowlege_base/02.md", "/zh/56_knowlege_base/03.md"]
+    "children": [
+      "/zh/56_knowlege_base/01.md",
+      "/zh/56_knowlege_base/02.md",
+      "/zh/56_knowlege_base/03.md",
+      "/zh/56_knowlege_base/04.md",
+      "/zh/56_knowlege_base/05.md",
+      "/zh/56_knowlege_base/06.md",
+      "/zh/56_knowlege_base/07.md"
+    ]
   },
   {
     "text": "60_tio-boot-admin",
