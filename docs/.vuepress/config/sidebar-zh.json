@@ -504,7 +504,12 @@
   {
     "text": "60_tio-boot-admin",
     "collapsable": false,
-    "children": ["/zh/60_tio-boot-admin/01.md", "/zh/60_tio-boot-admin/02.md", "/zh/60_tio-boot-admin/03.md"]
+    "children": [
+      "/zh/60_tio-boot-admin/01.md",
+      "/zh/60_tio-boot-admin/02.md",
+      "/zh/60_tio-boot-admin/03.md",
+      "/zh/60_tio-boot-admin/04.md"
+    ]
   },
 
   {
