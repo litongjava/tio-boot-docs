@@ -6,7 +6,7 @@ ActiveRecord 是 JFinal-Plugins 最核心的组成部分之一，通过 ActiveRe
 
 ActiveRecord 模式的核心是：一个 Model 对象唯一对应数据库表中的一条记录，而对应关系依靠的是数据库表的主键值。
 
-因此，ActiveRecord 模式要求数据库表必须要有主键。当数据库表没有主键时，只能使用 Db + Record 模式来操作数据库。
+因此，ActiveRecord 模式要求数据库表必须要有主键。当数据库表没有主键时，只能使用 Db + Row 模式来操作数据库。
 添加了 sql 管理模块，比 mybatis 使用 XML 管理 sql 的方案要爽得多.
 
 # ActiveRecordPlugin

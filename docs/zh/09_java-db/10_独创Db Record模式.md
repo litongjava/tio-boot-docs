@@ -1,12 +1,12 @@
-# Db Record
+# Db Row
 
 ### 1､常见用法
 
-Db 类及其配套的 Record 类，提供了在 Model 类之外更为丰富的数据库操作功能。使用 Db 与 Record 类时，无需对数据库表进行映射，Record 相当于一个通用的 Model。以下为 Db + Record 模式的一些常见用法：
+Db 类及其配套的 Row 类，提供了在 Model 类之外更为丰富的数据库操作功能。使用 Db 与 Row 类时，无需对数据库表进行映射，Row 相当于一个通用的 Model。以下为 Db + Row 模式的一些常见用法：
 
 ```
 // 创建name属性为James,age属性为25的record对象并添加到数据库
-Record user = new Record().set("name", "James").set("age", 25);
+Row user = new Row().set("name", "James").set("age", 25);
 Db.save("user", user);
 
 // 删除id值为25的user表中的记录
@@ -22,10 +22,10 @@ String userName = user.getStr("name");
 Integer userAge = user.getInt("age");
 
 // 查询所有年龄大于18岁的user
-List<Record> users = Db.find("select * from user where age > 18");
+List<Row> users = Db.find("select * from user where age > 18");
 
 // 分页查询年龄大于18的user,当前页号为1,每页10个user
-Page<Record> userPage = Db.paginate(1, 10, "select *", "from user where age > ?", 18);
+Page<Row> userPage = Db.paginate(1, 10, "select *", "from user where age > ?", 18);
 ```
 
 以下为事务处理示例：
@@ -86,7 +86,7 @@ String nickName = Db.queryStr("select nickName from account where id = ? limit 1
 
 ### 4、Db.find(...) 系与 Db.query(...)/Db.queryXxx(...) 系的区别
 
-前者将返回值一律封装到一个 Record 对象中，而后者不封装，只将数据原样返回。查询所使用的 sql 与参数用法完全一样。
+前者将返回值一律封装到一个 Row 对象中，而后者不封装，只将数据原样返回。查询所使用的 sql 与参数用法完全一样。
 
 ### 5､扩展 Db 功能
 
@@ -98,7 +98,7 @@ public class MyDbPro extends DbPro {
     super(configName);
   }
 
-  public List<Record> find(String sql, Object... paras) {
+  public List<Row> find(String sql, Object... paras) {
     System.out.println("Sql: " + sql);
     System.out.println("Paras: " + Arrays.toString(paras));
     return super.find(sql, paras);
