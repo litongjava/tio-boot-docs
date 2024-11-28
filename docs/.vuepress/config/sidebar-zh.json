@@ -483,24 +483,34 @@
     ]
   },
   {
-    "text": "56_knowlege_base",
+    "text": "56_translator",
+    "collapsable": false,
+    "children": ["/zh/56_translator/01.md"]
+  },
+  {
+    "text": "57_agent",
+    "collapsable": false,
+    "children": ["/zh/57_agent/01.md", "/zh/57_agent/02.md", "/zh/57_agent/03.md", "/zh/57_agent/04.md"]
+  },
+  {
+    "text": "58_knowlege_base",
     "collapsable": false,
     "children": [
-      "/zh/56_knowlege_base/01.md",
-      "/zh/56_knowlege_base/02.md",
-      "/zh/56_knowlege_base/03.md",
-      "/zh/56_knowlege_base/04.md",
-      "/zh/56_knowlege_base/05.md",
-      "/zh/56_knowlege_base/06.md",
-      "/zh/56_knowlege_base/07.md",
-      "/zh/56_knowlege_base/08.md",
-      "/zh/56_knowlege_base/09.md",
-      "/zh/56_knowlege_base/10.md",
-      "/zh/56_knowlege_base/11.md",
-      "/zh/56_knowlege_base/12.md",
-      "/zh/56_knowlege_base/13.md",
-      "/zh/56_knowlege_base/14.md",
-      "/zh/56_knowlege_base/15.md"
+      "/zh/58_knowlege_base/01.md",
+      "/zh/58_knowlege_base/02.md",
+      "/zh/58_knowlege_base/03.md",
+      "/zh/58_knowlege_base/04.md",
+      "/zh/58_knowlege_base/05.md",
+      "/zh/58_knowlege_base/06.md",
+      "/zh/58_knowlege_base/07.md",
+      "/zh/58_knowlege_base/08.md",
+      "/zh/58_knowlege_base/09.md",
+      "/zh/58_knowlege_base/10.md",
+      "/zh/58_knowlege_base/11.md",
+      "/zh/58_knowlege_base/12.md",
+      "/zh/58_knowlege_base/13.md",
+      "/zh/58_knowlege_base/14.md",
+      "/zh/58_knowlege_base/15.md"
     ]
   },
   {
