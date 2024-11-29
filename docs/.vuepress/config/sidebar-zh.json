@@ -490,7 +490,15 @@
   {
     "text": "57_agent",
     "collapsable": false,
-    "children": ["/zh/57_agent/01.md", "/zh/57_agent/02.md", "/zh/57_agent/03.md", "/zh/57_agent/04.md"]
+    "children": [
+      "/zh/57_agent/01.md",
+      "/zh/57_agent/02.md",
+      "/zh/57_agent/03.md",
+      "/zh/57_agent/04.md",
+      "/zh/57_agent/05.md",
+      "/zh/57_agent/06.md",
+      "/zh/57_agent/07.md"
+    ]
   },
   {
     "text": "58_knowlege_base",
