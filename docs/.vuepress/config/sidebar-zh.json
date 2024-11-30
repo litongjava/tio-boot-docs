@@ -348,7 +348,16 @@
   {
     "text": "26_tio-im",
     "collapsable": false,
-    "children": ["/zh/26_tio-im/01.md", "/zh/26_tio-im/02.md", "/zh/26_tio-im/03.md"]
+    "children": [
+      "/zh/26_tio-im/01.md",
+      "/zh/26_tio-im/02.md",
+      "/zh/26_tio-im/03.md",
+      "/zh/26_tio-im/04.md",
+      "/zh/26_tio-im/05.md",
+      "/zh/26_tio-im/06.md",
+      "/zh/26_tio-im/07.md",
+      "/zh/26_tio-im/08.md"
+    ]
   },
   {
     "text": "27_mybatis",
