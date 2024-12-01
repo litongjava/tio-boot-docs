@@ -445,6 +445,11 @@
     ]
   },
   {
+    "text": "42_mysql",
+    "collapsable": false,
+    "children": ["/zh/42_mysql/01.md"]
+  },
+  {
     "text": "41_postgresql",
     "collapsable": false,
     "children": [
