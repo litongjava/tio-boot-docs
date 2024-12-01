@@ -34,13 +34,7 @@
   {
     "text": "03_配置",
     "collapsable": false,
-    "children": [
-      "/zh/03_配置/01.md",
-      "/zh/03_配置/02.md",
-      "/zh/03_配置/03.md",
-      "/zh/03_配置/04.md",
-      "/zh/03_配置/05.md"
-    ]
+    "children": ["/zh/03_配置/01.md"]
   },
   {
     "text": "04_架构",
