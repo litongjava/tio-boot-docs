@@ -15,3 +15,7 @@ nvm use 20.13.1
 ```
 pnpm install
 ```
+
+```
+pnpm docs:dev
+```
