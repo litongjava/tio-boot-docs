@@ -493,7 +493,12 @@
   {
     "text": "56_translator",
     "collapsable": false,
-    "children": ["/zh/56_translator/01.md"]
+    "children": [
+      "/zh/56_translator/01.md",
+      "/zh/56_translator/02.md",
+      "/zh/56_translator/03.md",
+      "/zh/56_translator/04.md"
+    ]
   },
   {
     "text": "57_agent",
