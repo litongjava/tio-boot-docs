@@ -442,7 +442,7 @@
   {
     "text": "42_mysql",
     "collapsable": false,
-    "children": ["/zh/42_mysql/01.md"]
+    "children": ["/zh/42_mysql/01.md", "/zh/42_mysql/02.md"]
   },
   {
     "text": "41_postgresql",
@@ -502,7 +502,11 @@
       "/zh/56_translator/05.md",
       "/zh/56_translator/06.md",
       "/zh/56_translator/07.md",
-      "/zh/56_translator/08.md"
+      "/zh/56_translator/08.md",
+      "/zh/56_translator/09.md",
+      "/zh/56_translator/10.md",
+      "/zh/56_translator/11.md",
+      "/zh/56_translator/12.md"
     ]
   },
   {
