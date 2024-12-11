@@ -206,13 +206,22 @@
     "children": ["/zh/14_i18n/01.md"]
   },
   {
-    "text": "15_template_engine",
+    "text": "15_enjoy",
     "collapsable": false,
     "children": [
-      "/zh/15_template_engine/01.md",
-      "/zh/15_template_engine/02.md",
-      "/zh/15_template_engine/03.md",
-      "/zh/15_template_engine/04.md"
+      "/zh/15_enjoy/01.md",
+      "/zh/15_enjoy/02_引擎配置.md",
+      "/zh/15_enjoy/03_表达式.md",
+      "/zh/15_enjoy/04_指令.md",
+      "/zh/15_enjoy/05_注释.md",
+      "/zh/15_enjoy/06_原样输出.md",
+      "/zh/15_enjoy/07_Shared Method 扩展.md",
+      "/zh/15_enjoy/08_Shared Object扩展.md",
+      "/zh/15_enjoy/09_Extension Method扩展.md",
+      "/zh/15_enjoy/10_Spring boot 整合.md",
+      "/zh/15_enjoy/11_独立使用 Enjoy.md",
+      "/zh/15_enjoy/12.md",
+      "/zh/15_enjoy/13.md"
     ]
   },
   {
@@ -436,13 +445,14 @@
       "/zh/39_integration_thirty_party/05.md",
       "/zh/39_integration_thirty_party/06.md",
       "/zh/39_integration_thirty_party/07.md",
-      "/zh/39_integration_thirty_party/08.md"
+      "/zh/39_integration_thirty_party/08.md",
+      "/zh/39_integration_thirty_party/09.md"
     ]
   },
   {
-    "text": "42_mysql",
+    "text": "40_mysql",
     "collapsable": false,
-    "children": ["/zh/42_mysql/01.md", "/zh/42_mysql/02.md"]
+    "children": ["/zh/40_mysql/01.md", "/zh/42_mysql/02.md"]
   },
   {
     "text": "41_postgresql",
