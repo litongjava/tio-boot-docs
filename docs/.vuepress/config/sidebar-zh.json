@@ -554,6 +554,18 @@
     ]
   },
   {
+    "text": "59_ai-search",
+    "collapsable": false,
+    "children": [
+      "/zh/59_ai-search/01.md",
+      "/zh/59_ai-search/02.md",
+      "/zh/59_ai-search/03.md",
+      "/zh/59_ai-search/04.md",
+      "/zh/59_ai-search/05.md",
+      "/zh/59_ai-search/06.md"
+    ]
+  },
+  {
     "text": "60_tio-boot-admin",
     "collapsable": false,
     "children": [
