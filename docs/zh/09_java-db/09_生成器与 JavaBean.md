@@ -418,7 +418,7 @@ public class EnoteMysqlDbConfig {
     config.setConnectionTimeout(30000);
 
     HikariDataSource hikariDataSource = new HikariDataSource(config);
-    TioBootServer.me().addDestroyMethod(hikariDataSource::close);
+    HookCan.me().addDestroyMethod(hikariDataSource::close);
 
     ActiveRecordPlugin mysqlArp = new ActiveRecordPlugin(hikariDataSource);
     mysqlArp.setContainerFactory(new OrderedFieldContainerFactory());
@@ -437,7 +437,7 @@ public class EnoteMysqlDbConfig {
     mysqlArp.addSqlTemplate("/sql/all_sqls.sql");
     _MappingKit.mapping(mysqlArp);
     mysqlArp.start();
-    TioBootServer.me().addDestroyMethod(mysqlArp::stop);
+    HookCan.me().addDestroyMethod(mysqlArp::stop);
     // 添加自定义类型
     TioRequestParamUtils.types.add("bigint");
   }
