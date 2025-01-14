@@ -7,7 +7,7 @@ export default [
   // searchPlugin({}),
   // pwaPlugin({}),
   seoPlugin({
-    hostname: "tio-boot.litongjava.com",
+    hostname: "tio-boot.com",
     // 选项
   }),
   searchProPlugin({
