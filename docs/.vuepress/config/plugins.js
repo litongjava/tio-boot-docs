@@ -2,6 +2,7 @@ import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { seoPlugin } from "@vuepress/plugin-seo";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 import { prismjsPlugin } from "@vuepress/plugin-prismjs";
+import { sitemapPlugin } from "@vuepress/plugin-sitemap";
 
 export default [
   // searchPlugin({}),
@@ -35,4 +36,7 @@ export default [
   // autoCatalogPlugin({
   //   //插件选项
   // }),
+  sitemapPlugin({
+    // 选项
+  }),
 ];
