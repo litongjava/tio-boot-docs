@@ -486,7 +486,13 @@
   {
     "text": "43_oceanbase",
     "collapsable": false,
-    "children": ["/zh/43_oceanbase/01.md"]
+    "children": [
+      "/zh/43_oceanbase/01.md",
+      "/zh/43_oceanbase/02.md",
+      "/zh/43_oceanbase/03.md",
+      "/zh/43_oceanbase/04.md",
+      "/zh/43_oceanbase/05.md"
+    ]
   },
 
   {
