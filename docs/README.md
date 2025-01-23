@@ -28,7 +28,7 @@ features:
 - title: 节约时间
   details: 拥有 Java 的全部优势，同时具备类似 Ruby、Python 等动态语言的动态加载,无须重启,保存即用。为你节省更多宝贵时间，去陪伴挚爱、家人和朋友。
 
-- title: 功能丰富
-  details: 支持 Controller、Handler、Cache、Database、MQ、AOP、TCP、AI 等多种关键功能和服务，满足更多应用场景的需求，助你轻松应对各种开发挑战。
+- title: 一体化
+  details: 内置 Controller、Handler、Cache、AOP、TCP.对 Database、MQ、AI 等多种关键服务 也内置了 支持，节省大量的技术选型工作。
 
 footer: MIT Licensed | Copyright © 2023-present [litongjava](https://github.com/litongjava)
