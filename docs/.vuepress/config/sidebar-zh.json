@@ -499,32 +499,50 @@
   },
 
   {
-    "text": "51_jave",
+    "text": "50_jave",
     "collapsable": false,
-    "children": ["/zh/51_jave/01.md"]
+    "children": ["/zh/50_jave/01.md"]
   },
   {
-    "text": "52_asr",
+    "text": "51_asr",
     "collapsable": false,
-    "children": ["/zh/52_asr/01.md"]
+    "children": ["/zh/51_asr/01.md"]
   },
   {
-    "text": "55_LLM",
+    "text": "54_LLM",
     "collapsable": false,
     "children": [
-      "/zh/55_LLM/01.md",
-      "/zh/55_LLM/02.md",
-      "/zh/55_LLM/03.md",
-      "/zh/55_LLM/04.md",
-      "/zh/55_LLM/05.md",
-      "/zh/55_LLM/06.md",
-      "/zh/55_LLM/07.md",
-      "/zh/55_LLM/08.md",
-      "/zh/55_LLM/09.md",
-      "/zh/55_LLM/10.md",
-      "/zh/55_LLM/11.md",
-      "/zh/55_LLM/12.md",
-      "/zh/55_LLM/13.md"
+      "/zh/54_LLM/01.md",
+      "/zh/54_LLM/02.md",
+      "/zh/54_LLM/03.md",
+      "/zh/54_LLM/04.md",
+      "/zh/54_LLM/05.md",
+      "/zh/54_LLM/06.md",
+      "/zh/54_LLM/07.md",
+      "/zh/54_LLM/08.md",
+      "/zh/54_LLM/09.md",
+      "/zh/54_LLM/10.md",
+      "/zh/54_LLM/11.md",
+      "/zh/54_LLM/12.md",
+      "/zh/54_LLM/13.md"
+    ]
+  },
+  {
+    "text": "55_telegram",
+    "collapsable": false,
+    "children": [
+      "/zh/55_telegram/01.md",
+      "/zh/55_telegram/02.md",
+      "/zh/55_telegram/03.md",
+      "/zh/55_telegram/04.md",
+      "/zh/55_telegram/05.md",
+      "/zh/55_telegram/06.md",
+      "/zh/55_telegram/07.md",
+      "/zh/55_telegram/08.md",
+      "/zh/55_telegram/09.md",
+      "/zh/55_telegram/10.md",
+      "/zh/55_telegram/11.md",
+      "/zh/55_telegram/12.md"
     ]
   },
   {
