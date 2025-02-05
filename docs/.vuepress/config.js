@@ -15,6 +15,9 @@ export default defineUserConfig({
 
   markdown: {
     lineNumbers: true,
+    math: {
+      type: "katex", // 或 'mathjax'
+    },
   },
   theme: themeConfig,
   bundler: viteBundler(),

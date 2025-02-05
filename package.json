@@ -17,6 +17,7 @@
     "@vuepress/plugin-seo": "2.0.0-rc.57",
     "@vuepress/plugin-sitemap": "2.0.0-rc.70",
     "@vuepress/theme-default": "2.0.0-rc.57",
+    "katex": "^0.16.21",
     "vue": "^3.5.12",
     "vuepress": "2.0.0-rc.18",
     "vuepress-plugin-search-pro": "2.0.0-rc.38"
