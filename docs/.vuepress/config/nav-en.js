@@ -19,10 +19,10 @@ export default [
   {
     text: "实战项目",
     children: [
-      { text: "translator", link: "/zh/56_translator/01" },
-      { text: "agent", link: "/zh/57_agent/01" },
-      { text: "knowlege_base", link: "/zh/58_knowlege_base/01" },
-      { text: "ai-search", link: "/zh/59_ai-search/01" },
+      { text: "ai_agent", link: "/zh/61_ai_agent/01" },
+      { text: "translator", link: "/zh/62_translator/01" },
+      { text: "knowlege_base", link: "/zh/63_knowlege_base/01" },
+      { text: "ai-search", link: "/zh/64_ai-search/01" },
     ],
   },
   {
