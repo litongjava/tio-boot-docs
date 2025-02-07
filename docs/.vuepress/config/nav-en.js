@@ -14,7 +14,7 @@ export default [
 
   {
     text: "Tio Boot Admin",
-    children: [{ text: "Tio Boot Admin", link: "/zh/60_tio-boot-admin/01" }],
+    children: [{ text: "Tio Boot Admin", link: "/zh/70_tio-boot-admin/01" }],
   },
   {
     text: "实战项目",
