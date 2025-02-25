@@ -512,25 +512,6 @@
     "children": ["/zh/51_asr/01.md"]
   },
   {
-    "text": "54_LLM",
-    "collapsable": false,
-    "children": [
-      "/zh/54_LLM/01.md",
-      "/zh/54_LLM/02.md",
-      "/zh/54_LLM/03.md",
-      "/zh/54_LLM/04.md",
-      "/zh/54_LLM/05.md",
-      "/zh/54_LLM/06.md",
-      "/zh/54_LLM/07.md",
-      "/zh/54_LLM/08.md",
-      "/zh/54_LLM/09.md",
-      "/zh/54_LLM/10.md",
-      "/zh/54_LLM/11.md",
-      "/zh/54_LLM/12.md",
-      "/zh/54_LLM/13.md"
-    ]
-  },
-  {
     "text": "55_telegram",
     "collapsable": false,
     "children": [
@@ -549,6 +530,25 @@
     ]
   },
   {
+    "text": "60_LLM",
+    "collapsable": false,
+    "children": [
+      "/zh/60_LLM/01.md",
+      "/zh/60_LLM/02.md",
+      "/zh/60_LLM/03.md",
+      "/zh/60_LLM/04.md",
+      "/zh/60_LLM/05.md",
+      "/zh/60_LLM/06.md",
+      "/zh/60_LLM/07.md",
+      "/zh/60_LLM/08.md",
+      "/zh/60_LLM/09.md",
+      "/zh/60_LLM/10.md",
+      "/zh/60_LLM/11.md",
+      "/zh/60_LLM/12.md",
+      "/zh/60_LLM/13.md"
+    ]
+  },
+  {
     "text": "61_ai_agent",
     "collapsable": false,
     "children": [
@@ -559,28 +559,14 @@
       "/zh/61_ai_agent/05.md",
       "/zh/61_ai_agent/06.md",
       "/zh/61_ai_agent/07.md",
-      "/zh/61_ai_agent/10.md",
-      "/zh/61_ai_agent/11.md",
-      "/zh/61_ai_agent/12.md"
+      "/zh/61_ai_agent/08.md",
+      "/zh/61_ai_agent/09.md"
     ]
   },
   {
     "text": "62_translator",
     "collapsable": false,
-    "children": [
-      "/zh/62_translator/01.md",
-      "/zh/62_translator/02.md",
-      "/zh/62_translator/03.md",
-      "/zh/62_translator/04.md",
-      "/zh/62_translator/05.md",
-      "/zh/62_translator/06.md",
-      "/zh/62_translator/07.md",
-      "/zh/62_translator/08.md",
-      "/zh/62_translator/09.md",
-      "/zh/62_translator/10.md",
-      "/zh/62_translator/11.md",
-      "/zh/62_translator/12.md"
-    ]
+    "children": ["/zh/62_translator/01.md"]
   },
   {
     "text": "63_knowlege_base",
