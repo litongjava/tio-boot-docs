@@ -519,6 +519,18 @@
     "children": ["/zh/51_asr/01.md"]
   },
   {
+    "text": "54_native-media",
+    "collapsable": false,
+    "children": [
+      "/zh/54_native-media/01.md",
+      "/zh/54_native-media/02.md",
+      "/zh/54_native-media/03.md",
+      "/zh/54_native-media/04.md",
+      "/zh/54_native-media/05.md",
+      "/zh/54_native-media/06.md"
+    ]
+  },
+  {
     "text": "55_telegram",
     "collapsable": false,
     "children": [
