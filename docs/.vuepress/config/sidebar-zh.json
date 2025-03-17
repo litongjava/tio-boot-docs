@@ -509,9 +509,9 @@
   },
 
   {
-    "text": "50_jave",
+    "text": "50_media",
     "collapsable": false,
-    "children": ["/zh/50_jave/01.md"]
+    "children": ["/zh/50_media/01.md", "/zh/50_media/02.md", "/zh/50_media/03.md"]
   },
   {
     "text": "51_asr",
