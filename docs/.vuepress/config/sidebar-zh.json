@@ -658,6 +658,11 @@
     ]
   },
   {
+    "text": "65_java-linux",
+    "collapsable": false,
+    "children": ["/zh/65_java-linux/01.md", "/zh/65_java-linux/02.md"]
+  },
+  {
     "text": "70_tio-boot-admin",
     "collapsable": false,
     "children": [
