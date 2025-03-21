@@ -38,5 +38,6 @@ export default [
   // }),
   sitemapPlugin({
     // 选项
+    hostname: "tio-boot.com",
   }),
 ];
