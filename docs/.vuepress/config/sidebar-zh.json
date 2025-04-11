@@ -690,6 +690,30 @@
     ]
   },
   {
+    "text": "66_manim",
+    "collapsable": false,
+    "children": [
+      "/zh/66_manim/01.md",
+      "/zh/66_manim/02.md",
+      "/zh/66_manim/03.md",
+      "/zh/66_manim/04.md",
+      "/zh/66_manim/05.md",
+      "/zh/66_manim/06.md",
+      "/zh/66_manim/07.md",
+      "/zh/66_manim/08.md",
+      "/zh/66_manim/09.md",
+      "/zh/66_manim/10.md",
+      "/zh/66_manim/11.md",
+      "/zh/66_manim/12.md",
+      "/zh/66_manim/13.md",
+      "/zh/66_manim/14.md",
+      "/zh/66_manim/15.md",
+      "/zh/66_manim/16.md",
+      "/zh/66_manim/17.md",
+      "/zh/66_manim/18.md"
+    ]
+  },
+  {
     "text": "70_tio-boot-admin",
     "collapsable": false,
     "children": [
