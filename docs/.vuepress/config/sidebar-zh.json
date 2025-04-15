@@ -562,7 +562,7 @@
   {
     "text": "56_telegram-bots",
     "collapsable": false,
-    "children": ["/zh/56_telegram-bots/01.md", "/zh/56_telegram-bots/01.md"]
+    "children": ["/zh/56_telegram-bots/01.md", "/zh/56_telegram-bots/02.md"]
   },
   {
     "text": "60_LLM",
