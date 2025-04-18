@@ -746,7 +746,7 @@
   {
     "text": "71_tio-boot",
     "collapsable": false,
-    "children": ["/zh/71_tio-boot/01.md"]
+    "children": ["/zh/71_tio-boot/01.md", "/zh/71_tio-boot/02.md", "/zh/71_tio-boot/03.md"]
   },
   {
     "text": "80_性能测试",
