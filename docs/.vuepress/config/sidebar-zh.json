@@ -125,7 +125,7 @@
       "/zh/09_java-db/16_复合主键.md",
       "/zh/09_java-db/17_Oracle支持.md",
       "/zh/09_java-db/18_Enjoy SQL 模板.md",
-      "/zh/09_java-db/19",
+      "/zh/09_java-db/19.md",
       "/zh/09_java-db/20_多数据源支持.md",
       "/zh/09_java-db/21_独立使用 ActiveRecord.md",
       "/zh/09_java-db/22_调用存储过程.md",
@@ -136,7 +136,8 @@
       "/zh/09_java-db/27.md",
       "/zh/09_java-db/28.md",
       "/zh/09_java-db/29.md",
-      "/zh/09_java-db/30.md"
+      "/zh/09_java-db/30.md",
+      "/zh/09_java-db/31.md"
     ]
   },
   {
