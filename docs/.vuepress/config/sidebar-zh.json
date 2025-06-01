@@ -733,6 +733,13 @@
     ]
   },
   {
+    "text": "68_java-llm-proxy",
+    "collapsable": false,
+    "children": [
+      "/zh/68_java-llm-proxy/01.md"
+    ]
+  },
+  {
     "text": "70_tio-boot-admin",
     "collapsable": false,
     "children": [
