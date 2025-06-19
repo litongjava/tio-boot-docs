@@ -687,14 +687,14 @@
     ]
   },
   {
-    "text": "65_java-linux",
+    "text": "65_java-kit-server",
     "collapsable": false,
     "children": [
-      "/zh/65_java-linux/01.md",
-      "/zh/65_java-linux/02.md",
-      "/zh/65_java-linux/03.md",
-      "/zh/65_java-linux/04.md",
-      "/zh/65_java-linux/05.md"
+      "/zh/65_java-kit-server/01.md",
+      "/zh/65_java-kit-server/02.md",
+      "/zh/65_java-kit-server/03.md",
+      "/zh/65_java-kit-server/04.md",
+      "/zh/65_java-kit-server/05.md"
     ]
   },
   {
