@@ -751,6 +751,16 @@
     ]
   },
   {
+    "text": "69_ai-brower",
+    "collapsable": false,
+    "children": [
+      "/zh/69_ai-brower/01.md",
+      "/zh/69_ai-brower/02.md",
+      "/zh/69_ai-brower/03.md",
+      "/zh/69_ai-brower/04.md"
+    ]
+  },
+  {
     "text": "70_tio-boot-admin",
     "collapsable": false,
     "children": [
