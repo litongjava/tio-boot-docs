@@ -370,7 +370,7 @@
   {
     "text": "25_tio-websocket",
     "collapsable": false,
-    "children": ["/zh/25_tio-websocket/01.md", "/zh/25_tio-websocket/02.md"]
+    "children": ["/zh/25_tio-websocket/01.md", "/zh/25_tio-websocket/02.md","/zh/25_tio-websocket/03.md"]
   },
   {
     "text": "26_tio-im",
