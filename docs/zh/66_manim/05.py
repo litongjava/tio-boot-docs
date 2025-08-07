@@ -1,8 +1,3 @@
-# 完整脚本示例
-
-大模型生成的完整的脚步如下
-
-```python
 # -*- coding: utf-8 -*-
 import os
 import numpy as np
@@ -772,4 +767,3 @@ if __name__ == "__main__":
     scene.render()
 
     print(f"Scene rendering finished. Output in: {config.media_dir}")
-```
