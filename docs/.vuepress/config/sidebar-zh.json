@@ -233,20 +233,21 @@
     "collapsable": false,
     "children": [
       "/zh/15_enjoy/01.md",
-      "/zh/15_enjoy/02_引擎配置.md",
-      "/zh/15_enjoy/03_表达式.md",
-      "/zh/15_enjoy/04_指令.md",
-      "/zh/15_enjoy/05_注释.md",
-      "/zh/15_enjoy/06_原样输出.md",
-      "/zh/15_enjoy/07_Shared Method 扩展.md",
-      "/zh/15_enjoy/08_Shared Object扩展.md",
-      "/zh/15_enjoy/09_Extension Method扩展.md",
-      "/zh/15_enjoy/10_Spring boot 整合.md",
-      "/zh/15_enjoy/11_独立使用 Enjoy.md",
-      "/zh/15_enjoy/12.md",
+      "/zh/15_enjoy/02.md",
+      "/zh/15_enjoy/03_引擎配置.md",
+      "/zh/15_enjoy/04_表达式.md",
+      "/zh/15_enjoy/05_指令.md",
+      "/zh/15_enjoy/06_注释.md",
+      "/zh/15_enjoy/07_原样输出.md",
+      "/zh/15_enjoy/08_Shared Method 扩展.md",
+      "/zh/15_enjoy/09_Shared Object扩展.md",
+      "/zh/15_enjoy/10_Extension Method扩展.md",
+      "/zh/15_enjoy/11_Spring boot 整合.md",
+      "/zh/15_enjoy/12_独立使用 Enjoy.md",
       "/zh/15_enjoy/13.md",
       "/zh/15_enjoy/14.md",
-      "/zh/15_enjoy/15.md"
+      "/zh/15_enjoy/15.md",
+      "/zh/15_enjoy/16.md"
     ]
   },
   {
