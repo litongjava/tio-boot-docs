@@ -60,11 +60,18 @@ _2023.01 - 至今_
 ---
 
 ### 开源项目
+**study11**
+- Study11.ai 是一个基于 大模型 的智能化学习平台，核心是将学生输入的问题转化为 结构化可视化讲解动画。 平台面向中学理科与大学通识课程，支持 多模态（动效 + 语音 + 字幕）讲解.
+- [GitHub](https://github.com/litongjava/study11-backend) |[体验地址](https://www.study11.ai/)
+
+**java-maxkb**
+- java-maxkb 是一个基于 Java 开发的智能知识库系统，利用先进的自然语言处理和向量检索技术，为用户提供高效、准确的问答服务
+- [GitHub](https://github.com/litongjava/java-maxkb) | [文档](https://www.tio-boot.com/zh/63_knowlege_base/01.html)
 
 **tools-ocr**
 
 - 跨平台离线 OCR 桌面客户端，支持 Windows, Linux, MacOS
-- [GitHub](https://github.com/AnyListen/tools-ocr) | [文档](https://tio-boot.litongjava.com/)
+- [GitHub](https://github.com/AnyListen/tools-ocr) | [文档](https://tree-hole-ocr-docs.vercel.app/)
 
 **tio-boot**
 
