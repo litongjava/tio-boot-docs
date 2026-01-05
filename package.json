@@ -11,15 +11,15 @@
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.7",
-    "@vuepress/plugin-prismjs": "2.0.0-rc.61",
-    "@vuepress/plugin-pwa": "2.0.0-rc.57",
-    "@vuepress/plugin-seo": "2.0.0-rc.57",
-    "@vuepress/plugin-sitemap": "2.0.0-rc.70",
-    "@vuepress/theme-default": "2.0.0-rc.57",
-    "katex": "^0.16.21",
-    "vue": "^3.5.12",
-    "vuepress": "2.0.0-rc.18",
-    "vuepress-plugin-search-pro": "2.0.0-rc.38"
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "@vuepress/plugin-prismjs": "2.0.0-rc.121",
+    "@vuepress/plugin-pwa": "2.0.0-rc.121",
+    "@vuepress/plugin-seo": "2.0.0-rc.121",
+    "@vuepress/plugin-sitemap": "2.0.0-rc.121",
+    "@vuepress/theme-default": "2.0.0-rc.121",
+    "katex": "^0.16.27",
+    "vue": "^3.5.26",
+    "vuepress": "2.0.0-rc.26",
+    "vuepress-plugin-search-pro": "2.0.0-rc.59"
   }
 }
