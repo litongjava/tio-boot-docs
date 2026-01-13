@@ -707,6 +707,14 @@
   },
 
   {
+    "text": "65_ai-coding",
+    "collapsable": false,
+    "children": [
+      "/zh/65_ai-coding/01.md","/zh/65_ai-coding/02.md"
+    ]
+  },
+  
+  {
     "text": "66_java-uni-ai-server",
     "collapsable": false,
     "children": [
