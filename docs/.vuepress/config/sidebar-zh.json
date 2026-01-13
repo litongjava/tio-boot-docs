@@ -705,69 +705,39 @@
       "/zh/64_ai-search/28.md"
     ]
   },
-  {
-    "text": "65_java-kit-server",
-    "collapsable": false,
-    "children": [
-      "/zh/65_java-kit-server/01.md",
-      "/zh/65_java-kit-server/02.md",
-      "/zh/65_java-kit-server/03.md",
-      "/zh/65_java-kit-server/04.md",
-      "/zh/65_java-kit-server/05.md",
-      "/zh/65_java-kit-server/06.md",
-      "/zh/65_java-kit-server/07.md",
-      "/zh/65_java-kit-server/08.md",
-      "/zh/65_java-kit-server/09.md",
-      "/zh/65_java-kit-server/10.md",
-      "/zh/65_java-kit-server/11.md"
 
-      
-    ]
-  },
   {
-    "text": "66_manim",
+    "text": "66_java-uni-ai-server",
     "collapsable": false,
     "children": [
-      "/zh/66_manim/01.md",
-      "/zh/66_manim/02.md",
-      "/zh/66_manim/03.md",
-      "/zh/66_manim/04.md",
-      "/zh/66_manim/05.md",
-      "/zh/66_manim/06.md",
-      "/zh/66_manim/07.md",
-      "/zh/66_manim/08.md",
-      "/zh/66_manim/09.md",
-      "/zh/66_manim/10.md",
-      "/zh/66_manim/11.md",
-      "/zh/66_manim/12.md",
-      "/zh/66_manim/13.md",
-      "/zh/66_manim/14.md",
-      "/zh/66_manim/15.md",
-      "/zh/66_manim/16.md",
-      "/zh/66_manim/17.md",
-      "/zh/66_manim/18.md",
-      "/zh/66_manim/19.md",
-      "/zh/66_manim/20.md",
-      "/zh/66_manim/21.md",
-      "/zh/66_manim/22.md",
-      "/zh/66_manim/23.md",
-      "/zh/66_manim/24.md",
-      "/zh/66_manim/25.md",
-      "/zh/66_manim/26.md",
-      "/zh/66_manim/27.md",
-      "/zh/66_manim/28.md",
-      "/zh/66_manim/29.md",
-      "/zh/66_manim/30.md",
-      "/zh/66_manim/31.md",
-      "/zh/66_manim/32.md",
-      "/zh/66_manim/33.md"
+      "/zh/66_java-uni-ai-server/01.md","/zh/66_java-uni-ai-server/02.md","/zh/66_java-uni-ai-server/03.md"
     ]
   },
+
   {
-    "text": "68_java-llm-proxy",
+    "text": "67_java-llm-proxy",
     "collapsable": false,
     "children": [
-      "/zh/68_java-llm-proxy/01.md"
+      "/zh/67_java-llm-proxy/01.md"
+    ]
+  },
+
+  
+  {
+    "text": "68_java-kit-server",
+    "collapsable": false,
+    "children": [
+      "/zh/68_java-kit-server/01.md",
+      "/zh/68_java-kit-server/02.md",
+      "/zh/68_java-kit-server/03.md",
+      "/zh/68_java-kit-server/04.md",
+      "/zh/68_java-kit-server/05.md",
+      "/zh/68_java-kit-server/06.md",
+      "/zh/68_java-kit-server/07.md",
+      "/zh/68_java-kit-server/08.md",
+      "/zh/68_java-kit-server/09.md",
+      "/zh/68_java-kit-server/10.md",
+      "/zh/68_java-kit-server/11.md"
     ]
   },
   {
@@ -804,12 +774,6 @@
   },
 
   {
-    "text": "71_tio-boot",
-    "collapsable": false,
-    "children": ["/zh/71_tio-boot/01.md", "/zh/71_tio-boot/02.md", "/zh/71_tio-boot/03.md"]
-  },
-
-  {
     "text": "73_tio-mail-wing",
     "collapsable": false,
     "children": [
@@ -831,6 +795,46 @@
       "/zh/73_tio-mail-wing/16.md"
     ]
   },
+
+  {
+    "text": "76_manim",
+    "collapsable": false,
+    "children": [
+      "/zh/76_manim/01.md",
+      "/zh/76_manim/02.md",
+      "/zh/76_manim/03.md",
+      "/zh/76_manim/04.md",
+      "/zh/76_manim/05.md",
+      "/zh/76_manim/06.md",
+      "/zh/76_manim/07.md",
+      "/zh/76_manim/08.md",
+      "/zh/76_manim/09.md",
+      "/zh/76_manim/10.md",
+      "/zh/76_manim/11.md",
+      "/zh/76_manim/12.md",
+      "/zh/76_manim/13.md",
+      "/zh/76_manim/14.md",
+      "/zh/76_manim/15.md",
+      "/zh/76_manim/16.md",
+      "/zh/76_manim/17.md",
+      "/zh/76_manim/18.md",
+      "/zh/76_manim/19.md",
+      "/zh/76_manim/20.md",
+      "/zh/76_manim/21.md",
+      "/zh/76_manim/22.md",
+      "/zh/76_manim/23.md",
+      "/zh/76_manim/24.md",
+      "/zh/76_manim/25.md",
+      "/zh/76_manim/26.md",
+      "/zh/76_manim/27.md",
+      "/zh/76_manim/28.md",
+      "/zh/76_manim/29.md",
+      "/zh/76_manim/30.md",
+      "/zh/76_manim/31.md",
+      "/zh/76_manim/32.md",
+      "/zh/76_manim/33.md"
+    ]
+  },
   
   {
     "text": "80_性能测试",
@@ -844,6 +848,11 @@
       "/zh/80_性能测试/06.md",
       "/zh/80_性能测试/07.md"
     ]
+  },
+  {
+    "text": "81_tio-boot",
+    "collapsable": false,
+    "children": ["/zh/81_tio-boot/01.md", "/zh/81_tio-boot/02.md", "/zh/81_tio-boot/03.md"]
   },
 
   {
