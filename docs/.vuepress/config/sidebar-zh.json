@@ -500,7 +500,7 @@
   {
     "text": "40_mysql",
     "collapsable": false,
-    "children": ["/zh/40_mysql/01.md", "/zh/42_mysql/02.md"]
+    "children": ["/zh/40_mysql/01.md", "/zh/40_mysql/02.md"]
   },
   {
     "text": "41_postgresql",
@@ -634,11 +634,6 @@
     ]
   },
   {
-    "text": "62_translator",
-    "collapsable": false,
-    "children": ["/zh/62_translator/01.md"]
-  },
-  {
     "text": "63_knowlege_base",
     "collapsable": false,
     "children": [
@@ -718,7 +713,7 @@
     "text": "66_java-uni-ai-server",
     "collapsable": false,
     "children": [
-      "/zh/66_java-uni-ai-server/01.md","/zh/66_java-uni-ai-server/02.md","/zh/66_java-uni-ai-server/03.md"
+      "/zh/66_java-uni-ai-server/01.md","/zh/66_java-uni-ai-server/02.md","/zh/66_java-uni-ai-server/03.md","/zh/66_java-uni-ai-server/04.md"
     ]
   },
 
@@ -741,11 +736,7 @@
       "/zh/68_java-kit-server/04.md",
       "/zh/68_java-kit-server/05.md",
       "/zh/68_java-kit-server/06.md",
-      "/zh/68_java-kit-server/07.md",
-      "/zh/68_java-kit-server/08.md",
-      "/zh/68_java-kit-server/09.md",
-      "/zh/68_java-kit-server/10.md",
-      "/zh/68_java-kit-server/11.md"
+      "/zh/68_java-kit-server/07.md"
     ]
   },
   {
@@ -805,6 +796,14 @@
   },
 
   {
+    "text": "74_mcp-server",
+    "collapsable": false,
+    "children": [
+      "/zh/74_mcp-server/01.md"
+    ]
+  },
+
+  {
     "text": "76_manim",
     "collapsable": false,
     "children": [
@@ -836,11 +835,9 @@
       "/zh/76_manim/26.md",
       "/zh/76_manim/27.md",
       "/zh/76_manim/28.md",
-      "/zh/76_manim/29.md",
-      "/zh/76_manim/30.md",
-      "/zh/76_manim/31.md",
-      "/zh/76_manim/32.md",
-      "/zh/76_manim/33.md"
+      "/zh/76_manim/40.md",
+      "/zh/76_manim/41.md"
+      
     ]
   },
   
@@ -854,13 +851,14 @@
       "/zh/80_性能测试/04.md",
       "/zh/80_性能测试/05.md",
       "/zh/80_性能测试/06.md",
-      "/zh/80_性能测试/07.md"
+      "/zh/80_性能测试/07.md",
+      "/zh/80_性能测试/08.md"
     ]
   },
   {
     "text": "81_tio-boot",
     "collapsable": false,
-    "children": ["/zh/81_tio-boot/01.md", "/zh/81_tio-boot/02.md", "/zh/81_tio-boot/03.md"]
+    "children": ["/zh/81_tio-boot/01.md", "/zh/81_tio-boot/02.md", "/zh/81_tio-boot/03.md","/zh/81_tio-boot/04.md","/zh/81_tio-boot/05.md","/zh/81_tio-boot/06.md"]
   },
 
   {
