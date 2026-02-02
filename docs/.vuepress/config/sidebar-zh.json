@@ -491,7 +491,7 @@
   {
     "text": "38_spring",
     "collapsable": false,
-    "children": ["/zh/38_spring/01.md", "/zh/38_spring/02.md", "/zh/38_spring/03.md", "/zh/38_spring/04.md"]
+    "children": ["/zh/38_spring/01.md", "/zh/38_spring/02.md", "/zh/38_spring/03.md", "/zh/38_spring/04.md","/zh/38_spring/05.md"]
   },
   {
     "text": "39_spring-cloud",
