@@ -499,11 +499,6 @@
     "children": ["/zh/39_spring-cloud/01.md"]
   },
   {
-    "text": "40_mysql",
-    "collapsable": false,
-    "children": ["/zh/40_mysql/01.md", "/zh/40_mysql/02.md"]
-  },
-  {
     "text": "41_postgresql",
     "collapsable": false,
     "children": [
@@ -520,6 +515,11 @@
       "/zh/41_postgresql/11.md",
       "/zh/41_postgresql/12.md"
     ]
+  },
+  {
+    "text": "42_mysql",
+    "collapsable": false,
+    "children": ["/zh/42_mysql/01.md", "/zh/42_mysql/02.md"]
   },
   {
     "text": "43_oceanbase",
