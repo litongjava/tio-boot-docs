@@ -499,6 +499,12 @@
     "children": ["/zh/39_spring-cloud/01.md"]
   },
   {
+    "text": "40_quarkus",
+    "collapsable": false,
+    "children": ["/zh/40_quarkus/01.md","/zh/40_quarkus/02.md"]
+  },
+
+  {
     "text": "41_postgresql",
     "collapsable": false,
     "children": [
