@@ -19,3 +19,11 @@ pnpm install
 ```
 pnpm docs:dev
 ```
+
+```
+pnpm docs:build
+```
+
+```
+ls docs/.vuepress/dist
+```
