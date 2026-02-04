@@ -539,7 +539,11 @@
       "/zh/43_oceanbase/05.md"
     ]
   },
-
+  {
+    "text": "49_jooq",
+    "collapsable": false,
+    "children": ["/zh/49_jooq/01.md", "/zh/49_jooq/02.md", "/zh/49_jooq/03.md","/zh/49_jooq/04.md","/zh/49_jooq/05.md"]
+  },
   {
     "text": "50_media",
     "collapsable": false,
