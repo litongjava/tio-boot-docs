@@ -215,7 +215,7 @@ import com.litongjava.tio.boot.testing.TioBootTest;
 
 public class UserServiceTest {
 
-    @BeforeClass
+    @AopBeforeClass
     public static void beforeClass() {
         // 初始化测试环境
         TioBootTest.before(DbConfig.class);
