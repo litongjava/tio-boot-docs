@@ -1,0 +1,4 @@
+[mac.build]
+pnpm install
+pnpm docs:build
+ls docs/.vuepress/dist
