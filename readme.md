@@ -25,5 +25,9 @@ pnpm docs:build
 ```
 
 ```
+NODE_OPTIONS="--max-old-space-size=4096" pnpm docs:build
+```
+
+```
 ls docs/.vuepress/dist
 ```
