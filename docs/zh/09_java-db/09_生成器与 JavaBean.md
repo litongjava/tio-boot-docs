@@ -1,4 +1,4 @@
-# 生成器与 Model
+# Model生成器
 
 本文档介绍了如何使用 ActiveRecord 模块下的 `Generator` 工具类，自动生成 JavaBean 相关的 `Model`、`BaseModel`、`MappingKit`、`DataDictionary` 四类文件。通过生成器，可以快速创建符合 JavaBean 规范的模型类，提升开发效率和代码质量。
 
@@ -162,11 +162,13 @@ gen.generate();
 创建一个 Java 类 `JavaDbGenerator`，配置并运行生成器：
 
 ```java
+package com.litongjava.diamond.boradcast;
 import javax.sql.DataSource;
 
-import com.litongjava.db.activerecord.dialect.MysqlDialect;
+import com.litongjava.db.activerecord.dialect.PostgreSqlDialect;
 import com.litongjava.db.activerecord.generator.Generator;
 import com.litongjava.db.druid.DruidPlugin;
+import com.litongjava.db.hikaricp.HikariCpPlugin;
 import com.litongjava.tio.utils.environment.EnvUtils;
 
 public class JavaDbGenerator {
@@ -189,7 +191,8 @@ public class JavaDbGenerator {
 
     // 配置生成器
     generator.setGenerateRemarks(true); // 生成字段备注
-    generator.setDialect(new MysqlDialect()); // 设置数据库方言
+    //generator.setDialect(new MysqlDialect()); // 设置数据库方言
+    generator.setDialect(new PostgreSqlDialect()); 
     generator.setGenerateChainSetter(true); // 生成链式 setter 方法
     // generator.addExcludedTable("t_db_connect_info"); // 添加不需要生成的表名
     generator.setGenerateDaoInModel(true); // 在 Model 中生成 dao 对象
@@ -205,17 +208,28 @@ public class JavaDbGenerator {
     return "src/main/java/" + replace;
   }
 
-  public static DruidPlugin createDruidPlugin() {
+  public static DataSource getDruidPluginDataSource() {
     String url = EnvUtils.get("jdbc.url").trim();
     String user = EnvUtils.get("jdbc.user").trim();
     String pswd = EnvUtils.get("jdbc.pswd").trim();
-    return new DruidPlugin(url, user, pswd);
+    DruidPlugin druidPlugin = new DruidPlugin(url, user, pswd);
+    druidPlugin.start();
+    return druidPlugin.getDataSource();
+  }
+  
+  public static DataSource getHikariCpDataSource() {
+ // 初始化 HikariCP 数据库连接池
+    String url = EnvUtils.get("jdbc.url").trim();
+    String user = EnvUtils.get("jdbc.user").trim();
+    String pswd = EnvUtils.get("jdbc.pswd").trim();
+    
+    HikariCpPlugin hikariCpPlugin = new HikariCpPlugin(url,user,pswd);
+    hikariCpPlugin.start();
+    return hikariCpPlugin.getDataSource();
   }
 
   public static DataSource getDataSource() {
-    DruidPlugin druidPlugin = createDruidPlugin();
-    druidPlugin.start();
-    return druidPlugin.getDataSource();
+    return getHikariCpDataSource();
   }
 }
 ```

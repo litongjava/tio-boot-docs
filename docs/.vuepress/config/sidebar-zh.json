@@ -583,27 +583,32 @@
     ]
   },
   {
-    "text": "55_telegram4j",
+    "text": "55_cv",
+    "collapsable": false,
+    "children": ["/zh/55_cv/01.md"]
+  },
+  {
+    "text": "58_telegram4j",
     "collapsable": false,
     "children": [
-      "/zh/55_telegram4j/01.md",
-      "/zh/55_telegram4j/02.md",
-      "/zh/55_telegram4j/03.md",
-      "/zh/55_telegram4j/04.md",
-      "/zh/55_telegram4j/05.md",
-      "/zh/55_telegram4j/06.md",
-      "/zh/55_telegram4j/07.md",
-      "/zh/55_telegram4j/08.md",
-      "/zh/55_telegram4j/09.md",
-      "/zh/55_telegram4j/10.md",
-      "/zh/55_telegram4j/11.md",
-      "/zh/55_telegram4j/12.md"
+      "/zh/58_telegram4j/01.md",
+      "/zh/58_telegram4j/02.md",
+      "/zh/58_telegram4j/03.md",
+      "/zh/58_telegram4j/04.md",
+      "/zh/58_telegram4j/05.md",
+      "/zh/58_telegram4j/06.md",
+      "/zh/58_telegram4j/07.md",
+      "/zh/58_telegram4j/08.md",
+      "/zh/58_telegram4j/09.md",
+      "/zh/58_telegram4j/10.md",
+      "/zh/58_telegram4j/11.md",
+      "/zh/58_telegram4j/12.md"
     ]
   },
   {
-    "text": "56_telegram-bots",
+    "text": "59_telegram-bots",
     "collapsable": false,
-    "children": ["/zh/56_telegram-bots/01.md", "/zh/56_telegram-bots/02.md"]
+    "children": ["/zh/59_telegram-bots/01.md", "/zh/59_telegram-bots/02.md"]
   },
   {
     "text": "60_LLM",
