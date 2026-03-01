@@ -151,11 +151,22 @@ gen.generate();
   <version>5.1.26</version>
 </dependency>
 <dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <version>42.2.24</version>
+</dependency>
+<dependency>
   <groupId>com.alibaba</groupId>
   <artifactId>druid</artifactId>
   <version>0.2.9</version>
 </dependency>
+<dependency>
+  <groupId>com.zaxxer</groupId>
+  <artifactId>HikariCP</artifactId>
+  <version>4.0.3</version>
+</dependency>
 ```
+请根据需要选择数据库驱动和数据源池
 
 ### 2.2 生成器配置与运行
 
