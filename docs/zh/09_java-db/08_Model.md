@@ -27,6 +27,8 @@ User.dao.findById(25).set("name", "James").update();
 // 查询id值为25的user, 且仅仅取name与age两个字段的值
 User user = User.dao.findByIdLoadColumns(25, "name, age");
 
+User user = User.dao.findByIdLoadColumns(25, User.name+","+User.age);
+
 // 获取user的name属性
 String userName = user.getStr("name");
 
