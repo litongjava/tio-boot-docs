@@ -822,10 +822,17 @@
   },
 
   {
-    "text": "74_mcp-server",
+    "text": "74_tio-mcp-server",
     "collapsable": false,
     "children": [
-      "/zh/74_mcp-server/01.md"
+      "/zh/74_tio-mcp-server/01.md"
+    ]
+  },
+  {
+    "text": "75_tio-sip",
+    "collapsable": false,
+    "children": [
+      "/zh/75_tio-sip/01.md","/zh/75_tio-sip/02.md","/zh/75_tio-sip/03.md","/zh/75_tio-sip/04.md"
     ]
   },
 
