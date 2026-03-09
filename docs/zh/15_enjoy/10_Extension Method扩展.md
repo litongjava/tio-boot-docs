@@ -62,4 +62,4 @@ Extension Method 的另一个重要的应用场景，是将不确定类型变得
 </select>
 ```
 
-假定 type 为 Integer 类型，上面的 select 域在表单提交后，如果在后端使用了 keepPara()，那么再次渲染该模板时 type 会变为 String 类型，从而引发类型不正确异常，通过 type.toInt()即可解决。当然，你也可以使用 keepPara(Integer.class, “type”) 进行解决。
+假定 type 为 Integer 类型，上面的 select 域在表单提交后，如果在后端使用了 keepPara()，那么再次渲染该模板时 type 会变为 String 类型，从而引发类型不正确异常，通过 type.toInt()即可解决。当然，也可以使用 keepPara(Integer.class, “type”) 进行解决。

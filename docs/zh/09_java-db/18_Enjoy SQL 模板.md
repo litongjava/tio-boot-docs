@@ -169,7 +169,7 @@ girl.template("findGirl", cond).find()
 
 select \* from article where title like concat('%', ?, '%')，也就是仅仅将 #para(0) 替换生成为一个问号占位 ”?” 而已。
 
-如果你使用是其它数据库（不支持 concat 函敉），like 的用法如下：
+如果使用是其它数据库（不支持 concat 函敉），like 的用法如下：
 
 ```
 #sql("search")

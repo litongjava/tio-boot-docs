@@ -700,11 +700,11 @@ class CombinedScene(MovingCameraScene):
         summary_formulas.next_to(summary_title, DOWN, buff=0.8)
 
         # Question at the bottom
-        question = Text("思考 🤔：你认为切线方程还能帮助我们解决哪些类型的问题？", font_size=32, color=MY_LIGHT_GRAY)
+        question = Text("思考 🤔：认为切线方程还能帮助我们解决哪些类型的问题？", font_size=32, color=MY_LIGHT_GRAY)
         question.to_edge(DOWN, buff=1.0)
 
         # --- TTS Integration ---
-        voice_text_05 = "好了，让我们来总结一下。要求函数 f(x) 等于 x 平方的切线方程，你需要记住三个关键点：一是切点坐标 (a, a平方)，二是导数 f'(x) 等于 2x，由此得到切点斜率 2a，三是最终的切线方程 y 等于 2a 乘以 (x 减 a) 加上 a平方。希望通过本期视频，你已经掌握了这个方法！思考一下，切线方程在数学或其他领域还有哪些应用呢？"
+        voice_text_05 = "好了，让我们来总结一下。要求函数 f(x) 等于 x 平方的切线方程，需要记住三个关键点：一是切点坐标 (a, a平方)，二是导数 f'(x) 等于 2x，由此得到切点斜率 2a，三是最终的切线方程 y 等于 2a 乘以 (x 减 a) 加上 a平方。希望通过本期视频，已经掌握了这个方法！思考一下，切线方程在数学或其他领域还有哪些应用呢？"
         with custom_voiceover_tts(voice_text_05) as tracker:
             if tracker.audio_path and tracker.duration > 0:
                 self.add_sound(tracker.audio_path, time_offset=0)
