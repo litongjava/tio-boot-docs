@@ -52,12 +52,20 @@
   {
     "text": "04_原理",
     "collapsable": false,
-    "children": ["/zh/04_原理/01.md", "/zh/04_原理/02.md", "/zh/04_原理/03.md"]
+    "children": [
+      "/zh/04_原理/01.md",
+      "/zh/04_原理/02.md",
+      "/zh/04_原理/03.md"
+    ]
   },
   {
     "text": "05_json",
     "collapsable": false,
-    "children": ["/zh/05_json/01.md", "/zh/05_json/02.md", "/zh/05_json/03.md"]
+    "children": [
+      "/zh/05_json/01.md",
+      "/zh/05_json/02.md",
+      "/zh/05_json/03.md"
+    ]
   },
   {
     "text": "06_web",
@@ -112,12 +120,18 @@
   {
     "text": "07_validate",
     "collapsable": false,
-    "children": ["/zh/07_validate/01.md", "/zh/07_validate/02.md"]
+    "children": [
+      "/zh/07_validate/01.md",
+      "/zh/07_validate/02.md"
+    ]
   },
   {
     "text": "08_websocket",
     "collapsable": false,
-    "children": ["/zh/08_websocket/01.md", "/zh/08_websocket/02.md"]
+    "children": [
+      "/zh/08_websocket/01.md",
+      "/zh/08_websocket/02.md"
+    ]
   },
   {
     "text": "09_java-db",
@@ -208,7 +222,6 @@
       "/zh/12_cache/11.md"
     ]
   },
-
   {
     "text": "13_认证和权限",
     "collapsable": false,
@@ -235,7 +248,9 @@
   {
     "text": "14_i18n",
     "collapsable": false,
-    "children": ["/zh/14_i18n/01.md"]
+    "children": [
+      "/zh/14_i18n/01.md"
+    ]
   },
   {
     "text": "15_enjoy",
@@ -264,15 +279,19 @@
   {
     "text": "16_定时任务",
     "collapsable": false,
-    "children": ["/zh/16_定时任务/01.md", "/zh/16_定时任务/02.md", "/zh/16_定时任务/03.md"]
+    "children": [
+      "/zh/16_定时任务/01.md",
+      "/zh/16_定时任务/02.md",
+      "/zh/16_定时任务/03.md"
+    ]
   },
-
   {
     "text": "17_tests",
     "collapsable": false,
-    "children": ["/zh/17_tests/01.md"]
+    "children": [
+      "/zh/17_tests/01.md"
+    ]
   },
-
   {
     "text": "18_tio",
     "collapsable": false,
@@ -310,9 +329,14 @@
   {
     "text": "19_aio",
     "collapsable": false,
-    "children": ["/zh/19_aio/01.md", "/zh/19_aio/02.md", "/zh/19_aio/03.md", "/zh/19_aio/04.md", "/zh/19_aio/05.md"]
+    "children": [
+      "/zh/19_aio/01.md",
+      "/zh/19_aio/02.md",
+      "/zh/19_aio/03.md",
+      "/zh/19_aio/04.md",
+      "/zh/19_aio/05.md"
+    ]
   },
-
   {
     "text": "20_netty",
     "collapsable": false,
@@ -324,7 +348,6 @@
       "/zh/20_netty/05.md"
     ]
   },
-
   {
     "text": "21_netty-boot",
     "collapsable": false,
@@ -348,7 +371,11 @@
   {
     "text": "22_MQ",
     "collapsable": false,
-    "children": ["/zh/22_MQ/01.md", "/zh/22_MQ/02.md", "/zh/22_MQ/03.md"]
+    "children": [
+      "/zh/22_MQ/01.md",
+      "/zh/22_MQ/02.md",
+      "/zh/22_MQ/03.md"
+    ]
   },
   {
     "text": "23_tio-utils",
@@ -386,7 +413,11 @@
   {
     "text": "25_tio-websocket",
     "collapsable": false,
-    "children": ["/zh/25_tio-websocket/01.md", "/zh/25_tio-websocket/02.md","/zh/25_tio-websocket/03.md"]
+    "children": [
+      "/zh/25_tio-websocket/01.md",
+      "/zh/25_tio-websocket/02.md",
+      "/zh/25_tio-websocket/03.md"
+    ]
   },
   {
     "text": "26_tio-im",
@@ -416,7 +447,9 @@
   {
     "text": "28_mongodb",
     "collapsable": false,
-    "children": ["/zh/28_mongodb/01.md"]
+    "children": [
+      "/zh/28_mongodb/01.md"
+    ]
   },
   {
     "text": "29_elastic-search",
@@ -432,12 +465,16 @@
   {
     "text": "30_magic-script",
     "collapsable": false,
-    "children": ["/zh/30_magic-script/01.md"]
+    "children": [
+      "/zh/30_magic-script/01.md"
+    ]
   },
   {
     "text": "31_groovy",
     "collapsable": false,
-    "children": ["/zh/31_groovy/01.md"]
+    "children": [
+      "/zh/31_groovy/01.md"
+    ]
   },
   {
     "text": "32_firebase",
@@ -452,11 +489,16 @@
       "/zh/32_firebase/06.md"
     ]
   },
-
   {
     "text": "33_文件存储",
     "collapsable": false,
-    "children": ["/zh/33_文件存储/01.md", "/zh/33_文件存储/02.md", "/zh/33_文件存储/03.md", "/zh/33_文件存储/04.md","/zh/33_文件存储/05.md"]
+    "children": [
+      "/zh/33_文件存储/01.md",
+      "/zh/33_文件存储/02.md",
+      "/zh/33_文件存储/03.md",
+      "/zh/33_文件存储/04.md",
+      "/zh/33_文件存储/05.md"
+    ]
   },
   {
     "text": "34_spider",
@@ -491,24 +533,39 @@
   {
     "text": "37_dubbo",
     "collapsable": false,
-    "children": ["/zh/37_dubbo/01.md", "/zh/37_dubbo/02.md", "/zh/37_dubbo/03.md", "/zh/37_dubbo/04.md"]
+    "children": [
+      "/zh/37_dubbo/01.md",
+      "/zh/37_dubbo/02.md",
+      "/zh/37_dubbo/03.md",
+      "/zh/37_dubbo/04.md"
+    ]
   },
   {
     "text": "38_spring",
     "collapsable": false,
-    "children": ["/zh/38_spring/01.md", "/zh/38_spring/02.md", "/zh/38_spring/03.md", "/zh/38_spring/04.md","/zh/38_spring/05.md"]
+    "children": [
+      "/zh/38_spring/01.md",
+      "/zh/38_spring/02.md",
+      "/zh/38_spring/03.md",
+      "/zh/38_spring/04.md",
+      "/zh/38_spring/05.md"
+    ]
   },
   {
     "text": "39_spring-cloud",
     "collapsable": false,
-    "children": ["/zh/39_spring-cloud/01.md"]
+    "children": [
+      "/zh/39_spring-cloud/01.md"
+    ]
   },
   {
     "text": "40_quarkus",
     "collapsable": false,
-    "children": ["/zh/40_quarkus/01.md","/zh/40_quarkus/02.md"]
+    "children": [
+      "/zh/40_quarkus/01.md",
+      "/zh/40_quarkus/02.md"
+    ]
   },
-
   {
     "text": "41_postgresql",
     "collapsable": false,
@@ -530,7 +587,10 @@
   {
     "text": "42_mysql",
     "collapsable": false,
-    "children": ["/zh/42_mysql/01.md", "/zh/42_mysql/02.md"]
+    "children": [
+      "/zh/42_mysql/01.md",
+      "/zh/42_mysql/02.md"
+    ]
   },
   {
     "text": "43_oceanbase",
@@ -546,17 +606,30 @@
   {
     "text": "49_jooq",
     "collapsable": false,
-    "children": ["/zh/49_jooq/01.md", "/zh/49_jooq/02.md", "/zh/49_jooq/03.md","/zh/49_jooq/04.md","/zh/49_jooq/05.md","/zh/49_jooq/06.md"]
+    "children": [
+      "/zh/49_jooq/01.md",
+      "/zh/49_jooq/02.md",
+      "/zh/49_jooq/03.md",
+      "/zh/49_jooq/04.md",
+      "/zh/49_jooq/05.md",
+      "/zh/49_jooq/06.md"
+    ]
   },
   {
     "text": "50_media",
     "collapsable": false,
-    "children": ["/zh/50_media/01.md", "/zh/50_media/02.md", "/zh/50_media/03.md"]
+    "children": [
+      "/zh/50_media/01.md",
+      "/zh/50_media/02.md",
+      "/zh/50_media/03.md"
+    ]
   },
   {
     "text": "51_asr",
     "collapsable": false,
-    "children": ["/zh/51_asr/01.md"]
+    "children": [
+      "/zh/51_asr/01.md"
+    ]
   },
   {
     "text": "54_native-media",
@@ -587,7 +660,11 @@
   {
     "text": "55_cv",
     "collapsable": false,
-    "children": ["/zh/55_cv/01.md","/zh/55_cv/02.md","/zh/55_cv/03.md"]
+    "children": [
+      "/zh/55_cv/01.md",
+      "/zh/55_cv/02.md",
+      "/zh/55_cv/03.md"
+    ]
   },
   {
     "text": "58_telegram4j",
@@ -610,7 +687,10 @@
   {
     "text": "59_telegram-bots",
     "collapsable": false,
-    "children": ["/zh/59_telegram-bots/01.md", "/zh/59_telegram-bots/02.md"]
+    "children": [
+      "/zh/59_telegram-bots/01.md",
+      "/zh/59_telegram-bots/02.md"
+    ]
   },
   {
     "text": "60_LLM",
@@ -724,23 +804,24 @@
       "/zh/64_ai-search/28.md"
     ]
   },
-
   {
     "text": "65_ai-coding",
     "collapsable": false,
     "children": [
-      "/zh/65_ai-coding/01.md","/zh/65_ai-coding/02.md"
+      "/zh/65_ai-coding/01.md",
+      "/zh/65_ai-coding/02.md"
     ]
   },
-  
   {
     "text": "66_java-uni-ai-server",
     "collapsable": false,
     "children": [
-      "/zh/66_java-uni-ai-server/01.md","/zh/66_java-uni-ai-server/02.md","/zh/66_java-uni-ai-server/03.md","/zh/66_java-uni-ai-server/04.md"
+      "/zh/66_java-uni-ai-server/01.md",
+      "/zh/66_java-uni-ai-server/02.md",
+      "/zh/66_java-uni-ai-server/03.md",
+      "/zh/66_java-uni-ai-server/04.md"
     ]
   },
-
   {
     "text": "67_java-llm-proxy",
     "collapsable": false,
@@ -748,8 +829,6 @@
       "/zh/67_java-llm-proxy/01.md"
     ]
   },
-
-  
   {
     "text": "68_java-kit-server",
     "collapsable": false,
@@ -774,7 +853,6 @@
       "/zh/69_ai-brower/05.md",
       "/zh/69_ai-brower/06.md",
       "/zh/69_ai-brower/07.md"
-
     ]
   },
   {
@@ -797,13 +875,12 @@
       "/zh/70_tio-boot-admin/14.md"
     ]
   },
-
   {
     "text": "73_tio-mail-wing",
     "collapsable": false,
     "children": [
-      "/zh/73_tio-mail-wing/01.md", 
-      "/zh/73_tio-mail-wing/02.md", 
+      "/zh/73_tio-mail-wing/01.md",
+      "/zh/73_tio-mail-wing/02.md",
       "/zh/73_tio-mail-wing/03.md",
       "/zh/73_tio-mail-wing/04.md",
       "/zh/73_tio-mail-wing/05.md",
@@ -820,7 +897,6 @@
       "/zh/73_tio-mail-wing/16.md"
     ]
   },
-
   {
     "text": "74_tio-mcp-server",
     "collapsable": false,
@@ -832,10 +908,18 @@
     "text": "75_tio-sip",
     "collapsable": false,
     "children": [
-      "/zh/75_tio-sip/01.md","/zh/75_tio-sip/02.md","/zh/75_tio-sip/03.md","/zh/75_tio-sip/04.md"
+      "/zh/75_tio-sip/01.md",
+      "/zh/75_tio-sip/02.md",
+      "/zh/75_tio-sip/03.md",
+      "/zh/75_tio-sip/04.md",
+      "/zh/75_tio-sip/05.md",
+      "/zh/75_tio-sip/06.md",
+      "/zh/75_tio-sip/07.md",
+      "/zh/75_tio-sip/08.md",
+      "/zh/75_tio-sip/09.md",
+      "/zh/75_tio-sip/10.md"
     ]
   },
-
   {
     "text": "76_manim",
     "collapsable": false,
@@ -870,10 +954,8 @@
       "/zh/76_manim/28.md",
       "/zh/76_manim/40.md",
       "/zh/76_manim/41.md"
-      
     ]
   },
-  
   {
     "text": "80_性能测试",
     "collapsable": false,
@@ -892,9 +974,15 @@
   {
     "text": "81_tio-boot",
     "collapsable": false,
-    "children": ["/zh/81_tio-boot/01.md", "/zh/81_tio-boot/02.md", "/zh/81_tio-boot/03.md","/zh/81_tio-boot/04.md","/zh/81_tio-boot/05.md","/zh/81_tio-boot/06.md"]
+    "children": [
+      "/zh/81_tio-boot/01.md",
+      "/zh/81_tio-boot/02.md",
+      "/zh/81_tio-boot/03.md",
+      "/zh/81_tio-boot/04.md",
+      "/zh/81_tio-boot/05.md",
+      "/zh/81_tio-boot/06.md"
+    ]
   },
-
   {
     "text": "99_案例",
     "collapsable": false,
@@ -912,4 +1000,3 @@
     ]
   }
 ]
-
