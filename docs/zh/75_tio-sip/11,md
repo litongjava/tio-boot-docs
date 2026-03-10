@@ -1,0 +1,673 @@
+# 采样率转换
+```java
+package com.litongjava.sip.rtp.codec;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Objects;
+
+import com.litongjava.media.MediaCodec;
+
+/**
+ * JNI Audio Resampler 封装
+ *
+ * 支持两种用法：
+ * 1. 静态一次性调用：兼容旧代码
+ * 2. 实例复用调用：适合连续流式音频
+ */
+public final class AudioResampler implements AutoCloseable {
+
+  private static final int DEFAULT_CHANNELS = 1;
+  private static final int DEFAULT_QUALITY = 5;
+  private static final int DEFAULT_OPTIONS = 0;
+
+  private final int channels;
+  private final int srcRate;
+  private final int dstRate;
+  @SuppressWarnings("unused")
+  private final int quality;
+  @SuppressWarnings("unused")
+  private final int options;
+
+  private final Object lock = new Object();
+
+  private long handle;
+  private ByteBuffer inputBuffer;
+  private ByteBuffer outputBuffer;
+
+  public AudioResampler(int channels, int srcRate, int dstRate) {
+    this(channels, srcRate, dstRate, DEFAULT_QUALITY, DEFAULT_OPTIONS);
+  }
+
+  public AudioResampler(int channels, int srcRate, int dstRate, int quality, int options) {
+    if (channels <= 0) {
+      throw new IllegalArgumentException("channels must be > 0");
+    }
+    if (srcRate <= 0) {
+      throw new IllegalArgumentException("srcRate must be > 0");
+    }
+    if (dstRate <= 0) {
+      throw new IllegalArgumentException("dstRate must be > 0");
+    }
+    if (quality < 0 || quality > 10) {
+      throw new IllegalArgumentException("quality must be between 0 and 10");
+    }
+
+    this.channels = channels;
+    this.srcRate = srcRate;
+    this.dstRate = dstRate;
+    this.quality = quality;
+    this.options = options;
+
+    this.handle = MediaCodec.createResampler(channels, srcRate, dstRate, quality, options);
+    if (this.handle == 0) {
+      throw new IllegalStateException("Failed to create resampler, channels=" + channels + ", srcRate=" + srcRate
+          + ", dstRate=" + dstRate + ", quality=" + quality);
+    }
+  }
+
+  /**
+   * 兼容旧代码：默认单声道，一次性重采样。
+   */
+  public static short[] resample(short[] input, int srcRate, int dstRate) {
+    return resample(input, DEFAULT_CHANNELS, srcRate, dstRate, DEFAULT_QUALITY, DEFAULT_OPTIONS);
+  }
+
+  /**
+   * 兼容旧代码：可指定完整参数，一次性重采样。
+   */
+  public static short[] resample(short[] input, int channels, int srcRate, int dstRate, int quality, int options) {
+    try (AudioResampler resampler = new AudioResampler(channels, srcRate, dstRate, quality, options)) {
+      return resampler.resample(input);
+    }
+  }
+
+  /**
+   * 实例复用方式：适合连续流式音频。
+   */
+  public short[] resample(short[] input) {
+    Objects.requireNonNull(input, "input");
+
+    if (input.length == 0) {
+      return new short[0];
+    }
+    if (srcRate == dstRate) {
+      return input.clone();
+    }
+    if (input.length % channels != 0) {
+      throw new IllegalArgumentException(
+          "input length must be divisible by channels, length=" + input.length + ", channels=" + channels);
+    }
+
+    synchronized (lock) {
+      ensureOpen();
+
+      int inputSamplesPerChannel = input.length / channels;
+      int outputSamplesPerChannel = MediaCodec.getResamplerExpectedOutputSamples(handle, inputSamplesPerChannel);
+      if (outputSamplesPerChannel < 0) {
+        throw new IllegalStateException("getResamplerExpectedOutputSamples failed, code=" + outputSamplesPerChannel);
+      }
+
+      int inputBytes = input.length * 2;
+      int outputBytes = outputSamplesPerChannel * channels * 2;
+
+      inputBuffer = ensureDirectBuffer(inputBuffer, inputBytes);
+      outputBuffer = ensureDirectBuffer(outputBuffer, outputBytes);
+
+      inputBuffer.clear();
+      outputBuffer.clear();
+
+      for (int i = 0; i < input.length; i++) {
+        inputBuffer.putShort(i * 2, input[i]);
+      }
+
+      int actualOutputSamplesPerChannel = MediaCodec.resampleDirect(handle, inputBuffer, inputSamplesPerChannel,
+          outputBuffer);
+      if (actualOutputSamplesPerChannel < 0) {
+        throw new IllegalStateException("resampleDirect failed, code=" + actualOutputSamplesPerChannel);
+      }
+
+      int totalOutputSamples = actualOutputSamplesPerChannel * channels;
+      short[] out = new short[totalOutputSamples];
+      for (int i = 0; i < totalOutputSamples; i++) {
+        out[i] = outputBuffer.getShort(i * 2);
+      }
+      return out;
+    }
+  }
+
+  public void reset() {
+    synchronized (lock) {
+      ensureOpen();
+      int code = MediaCodec.resetResampler(handle);
+      if (code < 0) {
+        throw new IllegalStateException("resetResampler failed, code=" + code);
+      }
+    }
+  }
+
+  public int getChannels() {
+    return channels;
+  }
+
+  public int getSrcRate() {
+    return srcRate;
+  }
+
+  public int getDstRate() {
+    return dstRate;
+  }
+
+  private void ensureOpen() {
+    if (handle == 0) {
+      throw new IllegalStateException("AudioResampler already closed");
+    }
+  }
+
+  private static ByteBuffer ensureDirectBuffer(ByteBuffer buffer, int capacity) {
+    if (buffer != null && buffer.capacity() >= capacity) {
+      buffer.clear();
+      buffer.order(ByteOrder.LITTLE_ENDIAN);
+      return buffer;
+    }
+    return ByteBuffer.allocateDirect(capacity).order(ByteOrder.LITTLE_ENDIAN);
+  }
+
+  @Override
+  public void close() {
+    synchronized (lock) {
+      if (handle != 0) {
+        MediaCodec.destroyResampler(handle);
+        handle = 0;
+      }
+      inputBuffer = null;
+      outputBuffer = null;
+    }
+  }
+}
+```
+
+```java
+package com.litongjava.sip.model;
+
+import com.litongjava.sip.rtp.RtpUdpServer;
+import com.litongjava.sip.rtp.codec.AudioCodec;
+import com.litongjava.sip.rtp.codec.AudioResampler;
+import com.litongjava.sip.rtp.codec.NegotiatedAudioFormatResolver;
+import com.litongjava.sip.sdp.CodecSpec;
+
+public class CallSession {
+
+  private int pcmSampleRate;
+  private int channels = 1;
+
+  private String callId;
+  private String fromTag;
+  private String toTag;
+
+  private String transport;
+
+  private String remoteSipIp;
+  private int remoteSipPort;
+
+  private String remoteRtpIp;
+  private int remoteRtpPort;
+  private int localRtpPort;
+
+  private long createdTime;
+  private long updatedTime;
+  private long ackDeadline;
+
+  private boolean ackReceived;
+  private boolean terminated;
+
+  private String last200Ok;
+  private RtpUdpServer rtpServer;
+
+  private CodecSpec selectedCodec;
+
+  private AudioResampler inputResampler;
+  private AudioResampler outputResampler;
+  private AudioResampler rtpResampler;
+
+  private boolean telephoneEventSupported;
+  private int remoteTelephoneEventPayloadType = -1;
+  private int ptime = 20;
+
+  /**
+   * 一个 session 一个运行时 codec 实例。
+   * 对于 JNI codec，避免多个会话共享同一个 native 状态对象。
+   */
+  private AudioCodec audioCodec;
+
+  private long localSsrc = System.nanoTime() & 0xFFFFFFFFL;
+  private int sendSequence = 0;
+  private long sendTimestamp = 0;
+  private boolean rtpInitialized = false;
+
+  public synchronized int nextSendSequence() {
+    sendSequence = (sendSequence + 1) & 0xFFFF;
+    return sendSequence;
+  }
+
+  public synchronized long nextSendTimestamp(int pcmSampleCount) {
+    int step = toRtpTimestampStep(pcmSampleCount);
+    if (step <= 0) {
+      step = pcmSampleCount > 0 ? pcmSampleCount : 160;
+    }
+
+    if (!rtpInitialized) {
+      rtpInitialized = true;
+      sendTimestamp = step & 0xFFFFFFFFL;
+      return sendTimestamp;
+    }
+
+    sendTimestamp = (sendTimestamp + step) & 0xFFFFFFFFL;
+    return sendTimestamp;
+  }
+
+  private int toRtpTimestampStep(int pcmSampleCount) {
+    if (pcmSampleCount <= 0) {
+      return 0;
+    }
+
+    CodecSpec codec = this.selectedCodec;
+    int clockRate = codec != null && codec.getClockRate() > 0 ? codec.getClockRate() : 8000;
+    int pcmSampleRate = NegotiatedAudioFormatResolver.resolveSessionPcmSampleRate(codec);
+
+    if (pcmSampleRate <= 0) {
+      pcmSampleRate = clockRate > 0 ? clockRate : 8000;
+    }
+
+    long step = ((long) pcmSampleCount * clockRate) / pcmSampleRate;
+    if (step <= 0) {
+      step = 1;
+    }
+    return (int) step;
+  }
+
+  public synchronized AudioCodec getAudioCodec() {
+    return audioCodec;
+  }
+
+  public synchronized void setAudioCodec(AudioCodec audioCodec) {
+    this.audioCodec = audioCodec;
+  }
+
+  public synchronized void release() {
+    if (audioCodec instanceof AutoCloseable) {
+      try {
+        ((AutoCloseable) audioCodec).close();
+      } catch (Exception e) {
+        // ignore
+      }
+    }
+    audioCodec = null;
+
+    if (inputResampler != null) {
+      try {
+        inputResampler.close();
+      } catch (Exception ignore) {
+      }
+      inputResampler = null;
+    }
+
+    if (outputResampler != null) {
+      try {
+        outputResampler.close();
+      } catch (Exception ignore) {
+      }
+      outputResampler = null;
+    }
+
+    if (rtpResampler != null) {
+      try {
+        rtpResampler.close();
+      } catch (Exception ignore) {
+      }
+      rtpResampler = null;
+    }
+  }
+
+  public long getLocalSsrc() {
+    return localSsrc;
+  }
+
+  public void setLocalSsrc(long localSsrc) {
+    this.localSsrc = localSsrc;
+  }
+
+  public int getSendSequence() {
+    return sendSequence;
+  }
+
+  public void setSendSequence(int sendSequence) {
+    this.sendSequence = sendSequence;
+  }
+
+  public long getSendTimestamp() {
+    return sendTimestamp;
+  }
+
+  public void setSendTimestamp(long sendTimestamp) {
+    this.sendTimestamp = sendTimestamp;
+  }
+
+  public boolean isRtpInitialized() {
+    return rtpInitialized;
+  }
+
+  public void setRtpInitialized(boolean rtpInitialized) {
+    this.rtpInitialized = rtpInitialized;
+  }
+
+  public String getCallId() {
+    return callId;
+  }
+
+  public void setCallId(String callId) {
+    this.callId = callId;
+  }
+
+  public String getFromTag() {
+    return fromTag;
+  }
+
+  public void setFromTag(String fromTag) {
+    this.fromTag = fromTag;
+  }
+
+  public String getToTag() {
+    return toTag;
+  }
+
+  public void setToTag(String toTag) {
+    this.toTag = toTag;
+  }
+
+  public String getTransport() {
+    return transport;
+  }
+
+  public void setTransport(String transport) {
+    this.transport = transport;
+  }
+
+  public String getRemoteSipIp() {
+    return remoteSipIp;
+  }
+
+  public void setRemoteSipIp(String remoteSipIp) {
+    this.remoteSipIp = remoteSipIp;
+  }
+
+  public int getRemoteSipPort() {
+    return remoteSipPort;
+  }
+
+  public void setRemoteSipPort(int remoteSipPort) {
+    this.remoteSipPort = remoteSipPort;
+  }
+
+  public String getRemoteRtpIp() {
+    return remoteRtpIp;
+  }
+
+  public void setRemoteRtpIp(String remoteRtpIp) {
+    this.remoteRtpIp = remoteRtpIp;
+  }
+
+  public int getRemoteRtpPort() {
+    return remoteRtpPort;
+  }
+
+  public void setRemoteRtpPort(int remoteRtpPort) {
+    this.remoteRtpPort = remoteRtpPort;
+  }
+
+  public int getLocalRtpPort() {
+    return localRtpPort;
+  }
+
+  public void setLocalRtpPort(int localRtpPort) {
+    this.localRtpPort = localRtpPort;
+  }
+
+  public long getCreatedTime() {
+    return createdTime;
+  }
+
+  public void setCreatedTime(long createdTime) {
+    this.createdTime = createdTime;
+  }
+
+  public long getUpdatedTime() {
+    return updatedTime;
+  }
+
+  public void setUpdatedTime(long updatedTime) {
+    this.updatedTime = updatedTime;
+  }
+
+  public long getAckDeadline() {
+    return ackDeadline;
+  }
+
+  public void setAckDeadline(long ackDeadline) {
+    this.ackDeadline = ackDeadline;
+  }
+
+  public boolean isAckReceived() {
+    return ackReceived;
+  }
+
+  public void setAckReceived(boolean ackReceived) {
+    this.ackReceived = ackReceived;
+  }
+
+  public boolean isTerminated() {
+    return terminated;
+  }
+
+  public void setTerminated(boolean terminated) {
+    this.terminated = terminated;
+  }
+
+  public String getLast200Ok() {
+    return last200Ok;
+  }
+
+  public void setLast200Ok(String last200Ok) {
+    this.last200Ok = last200Ok;
+  }
+
+  public RtpUdpServer getRtpServer() {
+    return rtpServer;
+  }
+
+  public void setRtpServer(RtpUdpServer rtpServer) {
+    this.rtpServer = rtpServer;
+  }
+
+  public CodecSpec getSelectedCodec() {
+    return selectedCodec;
+  }
+
+  public void setSelectedCodec(CodecSpec selectedCodec) {
+    this.selectedCodec = selectedCodec;
+  }
+
+  public boolean isTelephoneEventSupported() {
+    return telephoneEventSupported;
+  }
+
+  public void setTelephoneEventSupported(boolean telephoneEventSupported) {
+    this.telephoneEventSupported = telephoneEventSupported;
+  }
+
+  public int getRemoteTelephoneEventPayloadType() {
+    return remoteTelephoneEventPayloadType;
+  }
+
+  public void setRemoteTelephoneEventPayloadType(int remoteTelephoneEventPayloadType) {
+    this.remoteTelephoneEventPayloadType = remoteTelephoneEventPayloadType;
+  }
+
+  public int getPtime() {
+    return ptime;
+  }
+
+  public void setPtime(int ptime) {
+    this.ptime = ptime;
+  }
+
+  public int getPcmSampleRate() {
+    return pcmSampleRate;
+  }
+
+  public void setPcmSampleRate(int pcmSampleRate) {
+    this.pcmSampleRate = pcmSampleRate;
+  }
+
+  public int getChannels() {
+    return channels;
+  }
+
+  public void setChannels(int channels) {
+    this.channels = channels;
+  }
+
+  public AudioResampler getInputResampler() {
+    return inputResampler;
+  }
+
+  public void setInputResampler(AudioResampler inputResampler) {
+    this.inputResampler = inputResampler;
+  }
+
+  public AudioResampler getOutputResampler() {
+    return outputResampler;
+  }
+
+  public void setOutputResampler(AudioResampler outputResampler) {
+    this.outputResampler = outputResampler;
+  }
+
+  public AudioResampler getRtpResampler() {
+    return rtpResampler;
+  }
+
+  public void setRtpResampler(AudioResampler rtpResampler) {
+    this.rtpResampler = rtpResampler;
+  }
+
+  public synchronized AudioResampler getOrCreateInputResampler(int srcRate, int dstRate) {
+    if (srcRate <= 0 || dstRate <= 0 || srcRate == dstRate) {
+      return null;
+    }
+
+    if (inputResampler != null) {
+      if (inputResampler.getSrcRate() == srcRate && inputResampler.getDstRate() == dstRate) {
+        return inputResampler;
+      }
+      try {
+        inputResampler.close();
+      } catch (Exception ignore) {
+      }
+      inputResampler = null;
+    }
+
+    inputResampler = new AudioResampler(1, srcRate, dstRate, 5, 0);
+    return inputResampler;
+  }
+
+  public synchronized AudioResampler getOrCreateOutputResampler(int srcRate, int dstRate) {
+    if (srcRate <= 0 || dstRate <= 0 || srcRate == dstRate) {
+      return null;
+    }
+
+    if (outputResampler != null) {
+      if (outputResampler.getSrcRate() == srcRate && outputResampler.getDstRate() == dstRate) {
+        return outputResampler;
+      }
+      try {
+        outputResampler.close();
+      } catch (Exception ignore) {
+      }
+      outputResampler = null;
+    }
+
+    outputResampler = new AudioResampler(1, srcRate, dstRate, 5, 0);
+    return outputResampler;
+  }
+
+  public synchronized AudioResampler getOrCreateRtpResampler(int srcRate, int dstRate) {
+    if (srcRate <= 0 || dstRate <= 0 || srcRate == dstRate) {
+      return null;
+    }
+
+    if (rtpResampler != null) {
+      if (rtpResampler.getSrcRate() == srcRate && rtpResampler.getDstRate() == dstRate) {
+        return rtpResampler;
+      }
+      try {
+        rtpResampler.close();
+      } catch (Exception ignore) {
+      }
+      rtpResampler = null;
+    }
+
+    rtpResampler = new AudioResampler(1, srcRate, dstRate, 5, 0);
+    return rtpResampler;
+  }
+}
+```
+
+1. RealtimeMediaProcessor
+
+这里应该用 inputResampler。
+
+你现在这段：
+```java
+short[] modelInputSamples = inputSamples;
+if (inputSampleRate != MODEL_INPUT_SAMPLE_RATE) {
+  modelInputSamples = AudioResampler.resample(inputSamples, inputSampleRate, MODEL_INPUT_SAMPLE_RATE);
+}
+```
+改成：
+```java
+short[] modelInputSamples = inputSamples;
+if (inputSampleRate != MODEL_INPUT_SAMPLE_RATE) {
+  AudioResampler resampler = session.getOrCreateInputResampler(inputSampleRate, MODEL_INPUT_SAMPLE_RATE);
+  modelInputSamples = resampler.resample(inputSamples);
+}
+```
+这里就是 inputResampler 的正确使用点。
+
+2. SipRealtimeSession
+
+这里应该用 outputResampler。
+
+你现在这段：
+```java
+short[] pcmSessionRate = pcm24k;
+if (MODEL_OUTPUT_SAMPLE_RATE != sessionSampleRate) {
+  pcmSessionRate = AudioResampler.resample(pcm24k, MODEL_OUTPUT_SAMPLE_RATE, sessionSampleRate);
+}
+```
+改成：
+```java
+short[] pcmSessionRate = pcm24k;
+if (MODEL_OUTPUT_SAMPLE_RATE != sessionSampleRate) {
+  AudioResampler resampler = session.getOrCreateOutputResampler(MODEL_OUTPUT_SAMPLE_RATE, sessionSampleRate);
+  pcmSessionRate = resampler.resample(pcm24k);
+}
+````
+RtpUdpHandler
+```java
+
+    if (outputSampleRate != targetSampleRate) {
+        AudioResampler rtpResampler = session.getOrCreateRtpResampler(outputSampleRate, targetSampleRate);
+        outputSamples = rtpResampler.resample(outputSamples);
+      }
+```
