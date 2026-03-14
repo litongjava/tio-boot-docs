@@ -10,5 +10,5 @@ ls docs/.vuepress/dist
 
 [linux.build]
 pnpm install
-pnpm docs:build
+NODE_OPTIONS="--max-old-space-size=4096" npm run docs:build
 ls docs/.vuepress/dist
