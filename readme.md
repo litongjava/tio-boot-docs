@@ -31,3 +31,12 @@ NODE_OPTIONS="--max-old-space-size=4096" pnpm docs:build
 ```
 ls docs/.vuepress/dist
 ```
+
+or
+```
+npx wrangler pages deploy docs/.vuepress/dist --project-name=tio-boot-docs
+```
+
+```
+NODE_OPTIONS="--max-old-space-size=8192" npx wrangler deploy
+```
