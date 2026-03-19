@@ -153,7 +153,7 @@ gen.generate();
 <dependency>
   <groupId>org.postgresql</groupId>
   <artifactId>postgresql</artifactId>
-  <version>42.2.24</version>
+  <version>42.5.0</version>>
 </dependency>
 <dependency>
   <groupId>com.alibaba</groupId>

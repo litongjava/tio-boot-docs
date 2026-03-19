@@ -29,7 +29,7 @@
     <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>42.2.24</version>
+        <version>42.5.0</version>>
     </dependency>
 
     <!-- HikariCP 数据库连接池 -->
