@@ -720,29 +720,13 @@
     ]
   },
   {
-    "text": "61_ai_agent",
+    "text": "61_voice-agent",
     "collapsable": false,
     "children": [
-      "/zh/61_ai_agent/01.md",
-      "/zh/61_ai_agent/02.md",
-      "/zh/61_ai_agent/03.md",
-      "/zh/61_ai_agent/04.md",
-      "/zh/61_ai_agent/05.md",
-      "/zh/61_ai_agent/06.md",
-      "/zh/61_ai_agent/07.md",
-      "/zh/61_ai_agent/08.md",
-      "/zh/61_ai_agent/09.md",
-      "/zh/61_ai_agent/10.md",
-      "/zh/61_ai_agent/11.md",
-      "/zh/61_ai_agent/12.md",
-      "/zh/61_ai_agent/13.md",
-      "/zh/61_ai_agent/14.md",
-      "/zh/61_ai_agent/15.md",
-      "/zh/61_ai_agent/16.md",
-      "/zh/61_ai_agent/17.md",
-      "/zh/61_ai_agent/18.md",
-      "/zh/61_ai_agent/19.md",
-      "/zh/61_ai_agent/16.md"
+      "/zh/61_voice-agent/01.md",
+      "/zh/61_voice-agent/02.md",
+      "/zh/61_voice-agent/03.md",
+      "/zh/61_voice-agent/04.md"
     ]
   },
   {
@@ -779,109 +763,135 @@
     ]
   },
   {
-    "text": "64_ai-search",
+    "text": "64_ai_agent",
     "collapsable": false,
     "children": [
-      "/zh/64_ai-search/01.md",
-      "/zh/64_ai-search/02.md",
-      "/zh/64_ai-search/03.md",
-      "/zh/64_ai-search/04.md",
-      "/zh/64_ai-search/05.md",
-      "/zh/64_ai-search/06.md",
-      "/zh/64_ai-search/07.md",
-      "/zh/64_ai-search/08.md",
-      "/zh/64_ai-search/09.md",
-      "/zh/64_ai-search/10.md",
-      "/zh/64_ai-search/11.md",
-      "/zh/64_ai-search/12.md",
-      "/zh/64_ai-search/13.md",
-      "/zh/64_ai-search/14.md",
-      "/zh/64_ai-search/15.md",
-      "/zh/64_ai-search/16.md",
-      "/zh/64_ai-search/17.md",
-      "/zh/64_ai-search/18.md",
-      "/zh/64_ai-search/19.md",
-      "/zh/64_ai-search/20.md",
-      "/zh/64_ai-search/21.md",
-      "/zh/64_ai-search/22.md",
-      "/zh/64_ai-search/23.md",
-      "/zh/64_ai-search/24.md",
-      "/zh/64_ai-search/25.md",
-      "/zh/64_ai-search/26.md",
-      "/zh/64_ai-search/27.md",
-      "/zh/64_ai-search/28.md"
+      "/zh/64_ai_agent/01.md",
+      "/zh/64_ai_agent/02.md",
+      "/zh/64_ai_agent/03.md",
+      "/zh/64_ai_agent/04.md",
+      "/zh/64_ai_agent/05.md",
+      "/zh/64_ai_agent/06.md",
+      "/zh/64_ai_agent/07.md",
+      "/zh/64_ai_agent/08.md",
+      "/zh/64_ai_agent/09.md",
+      "/zh/64_ai_agent/10.md",
+      "/zh/64_ai_agent/11.md",
+      "/zh/64_ai_agent/12.md",
+      "/zh/64_ai_agent/13.md",
+      "/zh/64_ai_agent/14.md",
+      "/zh/64_ai_agent/15.md",
+      "/zh/64_ai_agent/16.md",
+      "/zh/64_ai_agent/17.md",
+      "/zh/64_ai_agent/18.md",
+      "/zh/64_ai_agent/19.md",
+      "/zh/64_ai_agent/16.md"
     ]
   },
   {
-    "text": "65_ai-coding",
+    "text": "65_ai-search",
     "collapsable": false,
     "children": [
-      "/zh/65_ai-coding/01.md",
-      "/zh/65_ai-coding/02.md"
+      "/zh/65_ai-search/01.md",
+      "/zh/65_ai-search/02.md",
+      "/zh/65_ai-search/03.md",
+      "/zh/65_ai-search/04.md",
+      "/zh/65_ai-search/05.md",
+      "/zh/65_ai-search/06.md",
+      "/zh/65_ai-search/07.md",
+      "/zh/65_ai-search/08.md",
+      "/zh/65_ai-search/09.md",
+      "/zh/65_ai-search/10.md",
+      "/zh/65_ai-search/11.md",
+      "/zh/65_ai-search/12.md",
+      "/zh/65_ai-search/13.md",
+      "/zh/65_ai-search/14.md",
+      "/zh/65_ai-search/15.md",
+      "/zh/65_ai-search/16.md",
+      "/zh/65_ai-search/17.md",
+      "/zh/65_ai-search/18.md",
+      "/zh/65_ai-search/19.md",
+      "/zh/65_ai-search/20.md",
+      "/zh/65_ai-search/21.md",
+      "/zh/65_ai-search/22.md",
+      "/zh/65_ai-search/23.md",
+      "/zh/65_ai-search/24.md",
+      "/zh/65_ai-search/25.md",
+      "/zh/65_ai-search/26.md",
+      "/zh/65_ai-search/27.md",
+      "/zh/65_ai-search/28.md"
     ]
   },
   {
-    "text": "66_java-uni-ai-server",
+    "text": "66_ai-coding",
     "collapsable": false,
     "children": [
-      "/zh/66_java-uni-ai-server/01.md",
-      "/zh/66_java-uni-ai-server/02.md",
-      "/zh/66_java-uni-ai-server/03.md",
-      "/zh/66_java-uni-ai-server/04.md"
+      "/zh/66_ai-coding/01.md",
+      "/zh/66_ai-coding/02.md"
     ]
   },
   {
-    "text": "67_java-llm-proxy",
+    "text": "67_java-uni-ai-server",
     "collapsable": false,
     "children": [
-      "/zh/67_java-llm-proxy/01.md"
+      "/zh/67_java-uni-ai-server/01.md",
+      "/zh/67_java-uni-ai-server/02.md",
+      "/zh/67_java-uni-ai-server/03.md",
+      "/zh/67_java-uni-ai-server/04.md"
     ]
   },
   {
-    "text": "68_java-kit-server",
+    "text": "68_java-llm-proxy",
     "collapsable": false,
     "children": [
-      "/zh/68_java-kit-server/01.md",
-      "/zh/68_java-kit-server/02.md",
-      "/zh/68_java-kit-server/03.md",
-      "/zh/68_java-kit-server/04.md",
-      "/zh/68_java-kit-server/05.md",
-      "/zh/68_java-kit-server/06.md",
-      "/zh/68_java-kit-server/07.md"
+      "/zh/68_java-llm-proxy/01.md"
     ]
   },
   {
-    "text": "69_ai-brower",
+    "text": "69_java-kit-server",
     "collapsable": false,
     "children": [
-      "/zh/69_ai-brower/01.md",
-      "/zh/69_ai-brower/02.md",
-      "/zh/69_ai-brower/03.md",
-      "/zh/69_ai-brower/04.md",
-      "/zh/69_ai-brower/05.md",
-      "/zh/69_ai-brower/06.md",
-      "/zh/69_ai-brower/07.md"
+      "/zh/69_java-kit-server/01.md",
+      "/zh/69_java-kit-server/02.md",
+      "/zh/69_java-kit-server/03.md",
+      "/zh/69_java-kit-server/04.md",
+      "/zh/69_java-kit-server/05.md",
+      "/zh/69_java-kit-server/06.md",
+      "/zh/69_java-kit-server/07.md"
     ]
   },
   {
-    "text": "70_tio-boot-admin",
+    "text": "70_ai-brower",
     "collapsable": false,
     "children": [
-      "/zh/70_tio-boot-admin/01.md",
-      "/zh/70_tio-boot-admin/02.md",
-      "/zh/70_tio-boot-admin/03.md",
-      "/zh/70_tio-boot-admin/04.md",
-      "/zh/70_tio-boot-admin/05.md",
-      "/zh/70_tio-boot-admin/06.md",
-      "/zh/70_tio-boot-admin/07.md",
-      "/zh/70_tio-boot-admin/08.md",
-      "/zh/70_tio-boot-admin/09.md",
-      "/zh/70_tio-boot-admin/10.md",
-      "/zh/70_tio-boot-admin/11.md",
-      "/zh/70_tio-boot-admin/12.md",
-      "/zh/70_tio-boot-admin/13.md",
-      "/zh/70_tio-boot-admin/14.md",
-      "/zh/70_tio-boot-admin/15.md"
+      "/zh/70_ai-brower/01.md",
+      "/zh/70_ai-brower/02.md",
+      "/zh/70_ai-brower/03.md",
+      "/zh/70_ai-brower/04.md",
+      "/zh/70_ai-brower/05.md",
+      "/zh/70_ai-brower/06.md",
+      "/zh/70_ai-brower/07.md"
+    ]
+  },
+  {
+    "text": "71_tio-boot-admin",
+    "collapsable": false,
+    "children": [
+      "/zh/71_tio-boot-admin/01.md",
+      "/zh/71_tio-boot-admin/02.md",
+      "/zh/71_tio-boot-admin/03.md",
+      "/zh/71_tio-boot-admin/04.md",
+      "/zh/71_tio-boot-admin/05.md",
+      "/zh/71_tio-boot-admin/06.md",
+      "/zh/71_tio-boot-admin/07.md",
+      "/zh/71_tio-boot-admin/08.md",
+      "/zh/71_tio-boot-admin/09.md",
+      "/zh/71_tio-boot-admin/10.md",
+      "/zh/71_tio-boot-admin/11.md",
+      "/zh/71_tio-boot-admin/12.md",
+      "/zh/71_tio-boot-admin/13.md",
+      "/zh/71_tio-boot-admin/14.md",
+      "/zh/71_tio-boot-admin/15.md"
     ]
   },
   {
