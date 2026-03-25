@@ -5,7 +5,8 @@ export default [
     children: [
       { text: "java-db", link: "/zh/09_java-db/01" },
       { text: "api-table", link: "/zh/10_api-table/01" },
-      { text: "mysql", link: "/zh/40_mysql/01" },
+      { text: "jooq", link: "/zh/49_jooq/01" },
+      { text: "mysql", link: "/zh/42_mysql/01" },
       { text: "postgresql", link: "/zh/41_postgresql/01" },
       { text: "oceanbase", link: "/zh/43_oceanbase/01" }
     ],
@@ -23,6 +24,7 @@ export default [
     text: "实战项目",
     children: [
       { text: "LLM", link: "/zh/60_LLM/01" },
+      { text: "voice-agent", link: "/zh/61_voice-agent/01" },
       { text: "knowlege_base", link: "/zh/63_knowlege_base/01" },
       { text: "ai_agent", link: "/zh/64_ai_agent/01" },
       { text: "ai-search", link: "/zh/65_ai-search/01" },
