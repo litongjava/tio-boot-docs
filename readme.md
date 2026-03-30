@@ -40,3 +40,28 @@ npx wrangler pages deploy docs/.vuepress/dist --project-name=tio-boot-docs
 ```
 NODE_OPTIONS="--max-old-space-size=8192" npx wrangler deploy
 ```
+
+vi /lib/systemd/system/tio-boot-docs.service
+
+```
+[Unit]
+Description=HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/bin/http-server -port 10062 -dir /root/code/tio-boot-docs/docs/.vuepress/dist/
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+systemctl enable tio-boot-docs
+systemctl start tio-boot-docs
+systemctl status tio-boot-docs
+systemctl stop tio-boot-docs
+```
