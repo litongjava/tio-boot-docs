@@ -20,7 +20,7 @@
 <dependencies>
     <!-- Java-DB 依赖 -->
     <dependency>
-        <groupId>com.litongjava</groupId>
+        <groupId>nexus.io</groupId>
         <artifactId>java-db</artifactId>
         <version>${java.db.version}</version>
     </dependency>
@@ -62,20 +62,20 @@
 创建一个数据库配置类，用于初始化数据库连接和 `ActiveRecordPlugin`。以下是示例代码：
 
 ```java
-package com.litongjava.ai.db.assistant.config;
+package nexus.io.ai.db.assistant.config;
 
 import javax.sql.DataSource;
 
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
-import com.litongjava.annotation.AConfiguration;
-import com.litongjava.annotation.AInitialization;
-import com.litongjava.db.activerecord.ActiveRecordPlugin;
-import com.litongjava.db.activerecord.OrderedFieldContainerFactory;
-import com.litongjava.db.activerecord.dialect.PostgreSqlDialect;
-import com.litongjava.db.hikaricp.DsContainer;
-import com.litongjava.tio.boot.server.TioBootServer;
-import com.litongjava.tio.utils.environment.EnvUtils;
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.AInitialization;
+import nexus.io.db.activerecord.ActiveRecordPlugin;
+import nexus.io.db.activerecord.OrderedFieldContainerFactory;
+import nexus.io.db.activerecord.dialect.PostgreSqlDialect;
+import nexus.io.db.hikaricp.DsContainer;
+import nexus.io.tio.boot.server.TioBootServer;
+import nexus.io.tio.utils.environment.EnvUtils;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -202,16 +202,16 @@ public class DbConfig {
 为验证整合是否成功，我们可以编写测试用例进行查询测试。以下是测试类的示例代码：
 
 ```java
-package com.litongjava.ai.db.assistant.config;
+package nexus.io.ai.db.assistant.config;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.litongjava.db.SqlPara;
-import com.litongjava.db.activerecord.Db;
-import com.litongjava.db.activerecord.DbTemplate;
-import com.litongjava.db.activerecord.Row;
-import com.litongjava.tio.boot.testing.TioBootTest;
+import nexus.io.db.SqlPara;
+import nexus.io.db.activerecord.Db;
+import nexus.io.db.activerecord.DbTemplate;
+import nexus.io.db.activerecord.Row;
+import nexus.io.tio.boot.testing.TioBootTest;
 
 public class UserServiceTest {
 

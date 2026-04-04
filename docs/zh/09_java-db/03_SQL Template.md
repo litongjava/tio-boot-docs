@@ -113,7 +113,7 @@
 通常，您可以在应用启动时加载所有SQL模板。`SqlTemplates` 会自动处理加载逻辑。
 
 ```java
-import com.litongjava.template.SqlTemplates;
+import nexus.io.template.SqlTemplates;
 
 // 在应用启动类或静态初始化块中
 public class Application {
@@ -134,9 +134,9 @@ public class Application {
 在您的Service或DAO层，通过ID获取SQL语句，并配合数据库工具类（如 `litongjava-db` 的 `Db` 类）执行。
 
 ```java
-import com.litongjava.db.activerecord.Db;
-import com.litongjava.db.activerecord.Row;
-import com.litongjava.template.SqlTemplates;
+import nexus.io.db.activerecord.Db;
+import nexus.io.db.activerecord.Row;
+import nexus.io.template.SqlTemplates;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
