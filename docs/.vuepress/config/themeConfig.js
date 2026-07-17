@@ -12,6 +12,8 @@ export default defaultTheme({
   editLinkPattern: ":repo/edit/:branch/docs/:path",
   navbar: navEn,
   sidebar: {
+    "/about": [],
+    "/en/": [],
     "/zh/": sidebarZh,
     // "/en/": sidebarEn,
   },

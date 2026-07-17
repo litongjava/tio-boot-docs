@@ -1,7 +1,6 @@
 import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { seoPlugin } from "@vuepress/plugin-seo";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
-import { prismjsPlugin } from "@vuepress/plugin-prismjs";
 import { sitemapPlugin } from "@vuepress/plugin-sitemap";
 
 export default [
@@ -16,6 +15,45 @@ export default [
   }),
   pwaPlugin({
     serviceWorker: true,
+    favicon: "/logo.png",
+    themeColor: "#3eaf7c",
+    manifest: {
+      name: "Tio Boot Docs",
+      short_name: "tio-boot",
+      description: "Java 高性能Web 快速开发框架",
+      lang: "zh-CN",
+      start_url: "/",
+      scope: "/",
+      display: "standalone",
+      theme_color: "#3eaf7c",
+      background_color: "#ffffff",
+      orientation: "portrait-primary",
+      prefer_related_applications: false,
+      icons: [
+        {
+          src: "/logo-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "/logo-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+      screenshots: [
+        {
+          src: "/screenshot-desktop-1024x750.png",
+          sizes: "1024x768",
+          type: "image/png",
+          form_factor: "wide",
+        },
+      ],
+    },
+    apple: {
+      icon: "/logo-192x192.png",
+      statusBarColor: "black",
+    },
     updatePopup: {
       "/": {
         message: "New content is available.",
@@ -25,12 +63,6 @@ export default [
         message: "发现新内容可用",
         buttonText: "刷新",
       },
-    },
-  }),
-  prismjsPlugin({
-    themes: {
-      light: "vs", // 选择适合的浅色主题
-      dark: "nord", // 选择适合的深色主题
     },
   }),
   // autoCatalogPlugin({
