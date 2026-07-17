@@ -156,3 +156,4 @@ vcpkg_installed/
 .cache/
 push.txt
 .codex/
+.codex
