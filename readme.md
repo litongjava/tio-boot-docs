@@ -63,13 +63,8 @@ ls docs/.vuepress/dist
 使用 Wrangler 部署构建后的静态文件：
 
 ```bash
+NODE_OPTIONS="--max-old-space-size=8192" pnpm docs:build
 npx wrangler pages deploy docs/.vuepress/dist --project-name=tio-boot-docs
-```
-
-Wrangler 部署过程中内存不足时，可以执行：
-
-```bash
-NODE_OPTIONS="--max-old-space-size=8192" npx wrangler deploy docs/.vuepress/dist --project-name=tio-boot-docs
 ```
 
 各部分含义：
