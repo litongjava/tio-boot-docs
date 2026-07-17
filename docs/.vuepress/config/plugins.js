@@ -2,6 +2,7 @@ import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { seoPlugin } from "@vuepress/plugin-seo";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 import { sitemapPlugin } from "@vuepress/plugin-sitemap";
+import { llmsPlugin } from "./llms";
 
 const siteUrl = "https://tio-boot.com";
 const alternateSiteUrl = "https://tio-boot.cn";
@@ -65,6 +66,7 @@ export default [
       addMeta("googlebot", "index,follow");
       addMeta("baiduspider", "index,follow");
       addLink("alternate", `${alternateSiteUrl}${pagePath}`, { hreflang: "zh-CN" });
+      addLink("alternate", "/llms.txt", { type: "text/plain", title: "LLMs.txt" });
     },
   }),
   searchProPlugin({
@@ -127,5 +129,10 @@ export default [
   // }),
   sitemapPlugin({
     hostname: siteUrl,
+  }),
+  llmsPlugin({
+    hostname: siteUrl,
+    siteName,
+    siteDescription,
   }),
 ];
