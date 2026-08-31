@@ -157,3 +157,4 @@ vcpkg_installed/
 push.txt
 .codex/
 .codex
+.pnpm-store/
