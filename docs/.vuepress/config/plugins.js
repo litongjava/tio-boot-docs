@@ -1,8 +1,9 @@
-import { pwaPlugin } from "@vuepress/plugin-pwa";
+import { offlinePwaPlugin } from "./offline-pwa";
 import { seoPlugin } from "@vuepress/plugin-seo";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 import { sitemapPlugin } from "@vuepress/plugin-sitemap";
 import { llmsPlugin } from "./llms";
+import { legacyRedirectsPlugin } from "./legacy-redirects";
 
 const siteUrl = "https://tio-boot.com";
 const alternateSiteUrl = "https://tio-boot.cn";
@@ -72,7 +73,10 @@ export default [
   searchProPlugin({
     // your options
   }),
-  pwaPlugin({
+  sitemapPlugin({ hostname: siteUrl }),
+  llmsPlugin({ hostname: siteUrl, siteName, siteDescription }),
+  legacyRedirectsPlugin({ hostname: siteUrl }),
+  offlinePwaPlugin({
     serviceWorker: true,
     favicon: "/logo.png",
     themeColor: "#3eaf7c",
@@ -127,12 +131,4 @@ export default [
   // autoCatalogPlugin({
   //   //插件选项
   // }),
-  sitemapPlugin({
-    hostname: siteUrl,
-  }),
-  llmsPlugin({
-    hostname: siteUrl,
-    siteName,
-    siteDescription,
-  }),
 ];

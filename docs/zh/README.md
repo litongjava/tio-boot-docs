@@ -3,7 +3,7 @@ home: true
 title: Home
 heroImage: ./logo.png
 heroText: Tio-Boot
-tagline: 基于Java的快速开放框架
+tagline: 基于Java的快速开发框架
 actions:
   - text: Get Started
     link: /zh/01_tio-boot 简介/02.md

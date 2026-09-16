@@ -13,6 +13,7 @@ export default defaultTheme({
   navbar: navEn,
   sidebar: {
     "/about": [],
+    "/ai-retrieval": [],
     "/en/": [],
     "/zh/": sidebarZh,
     // "/en/": sidebarEn,

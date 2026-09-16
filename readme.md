@@ -4,12 +4,13 @@
 
 ## 项目地址
 
+* 文档主站：https://tio-boot.com/
 * GitHub Pages：https://litongjava.github.io/tio-boot-docs/
 * Gitee 仓库：https://gitee.com/ppnt/tio-boot-docs/tree/main/docs
 
 ## 文档地址
 
-* 主站：https://litongjava.github.io/tio-boot-docs/
+* 主站：https://tio-boot.com/
 * 备用地址：https://env-00jxgnx7m5of-static.normal.cloudstatic.cn/tio-boot-docs/
 
 ## 本地开发
@@ -34,9 +35,17 @@ pnpm docs:dev
 
 ## 构建文档
 
-修改章节后先运行 `pnpm docs:check`，检查本地链接、中文侧边栏及短内容占位页。脚本不访问网络、不改写文件；链接缺失返回非零退出码，占位页作为人工审阅清单输出。它不验证外部链接、页内锚点或代码示例语义。
+修改章节后先运行 `pnpm docs:check`，检查本地链接、侧边栏、顶部导航、遗漏的章节页面和连续编号。脚本不访问网络、不改写文件；链接、导航或编号错误返回非零退出码，短内容占位页作为人工审阅清单输出。它不验证外部链接、页内锚点或代码示例语义。
 
 本次补全文档及剩余缺口见 [文档维护记录](./docs-maintenance.md)。
+
+章节已连续编号；第 18—23 章为 MyBatis、Redis、MongoDB、Elasticsearch、MQ、Kafka。旧路径映射见 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json)，构建时生成兼容跳转。
+
+AI 检索入口与数据字段见 [AI 检索说明](./docs/ai-retrieval.md)。构建后运行 `pnpm docs:check-ai` 核验单页 Markdown、JSON/JSONL、内容哈希与旧页面跳转；所有检索产物随站点一起部署。
+
+站内搜索和 AI 语料支持离线使用：首次通过 HTTPS 或 localhost 联网访问，等待 AI 检索页面显示“离线已就绪”，之后可在同一浏览器中断网搜索、打开结果、读取或下载语料。首次准备约需下载 100 MB；清除站点数据或浏览器回收缓存后需要重新准备。下载的 JSONL 也可直接供本地检索工具读取。
+
+`pnpm docs:check-offline` 校验缓存清单，`pnpm docs:test-offline` 执行浏览器断网测试。测试需先安装 Playwright Chromium，或设置 `PLAYWRIGHT_CHANNEL=chrome` 使用已安装的 Chrome。测试同时关闭浏览器网络、清除普通 HTTP 缓存并拒绝本地服务器请求，覆盖搜索、结果页刷新、完整语料读取与下载，以及缓存缺失和首次下载中断。
 
 执行以下命令：
 

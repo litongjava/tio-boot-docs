@@ -4,5 +4,5 @@
 
 ## 文件清单
 
-- [readme.md](./readme.md): 当前目录的导航与文件摘要。
+- [readme.md](<./readme.md>): 当前目录的导航与文件摘要。
 - [gzip_mermaid_20250706_84636f.svg](<./gzip_mermaid_20250706_84636f.svg>): 矢量图资源，用于本目录文档配图或结构示意。

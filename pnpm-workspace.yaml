@@ -4,3 +4,8 @@ allowBuilds:
   sharp: true
   vue-demi: true
   workerd: true
+
+# search-pro rc.59 embeds the 2.1.1 reader in its prebuilt worker.
+# Newer serializers produce an index that this worker cannot deserialize.
+overrides:
+  'vuepress-plugin-search-pro>slimsearch': '2.1.1'

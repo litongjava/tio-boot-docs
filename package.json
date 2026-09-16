@@ -6,12 +6,16 @@
   "type": "module",
   "scripts": {
     "docs:check": "node scripts/audit-docs.mjs",
+    "docs:check-ai": "node scripts/check-ai-artifacts.mjs",
+    "docs:check-offline": "node scripts/check-offline-artifacts.mjs",
+    "docs:test-offline": "playwright test --config=playwright.offline.config.mjs",
     "docs:build": "node --max-old-space-size=8192 node_modules/vuepress/bin/vuepress.js build docs",
     "docs:clean-dev": "vuepress dev docs --clean-cache",
     "docs:dev": "vuepress dev docs",
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@vuepress/bundler-vite": "2.0.0-rc.26",
     "@vuepress/plugin-pwa": "2.0.0-rc.121",
     "@vuepress/plugin-seo": "2.0.0-rc.121",

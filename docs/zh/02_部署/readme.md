@@ -4,7 +4,7 @@
 
 ## 文件清单
 
-- [readme.md](./readme.md): 当前目录的导航与文件摘要。
+- [readme.md](<./readme.md>): 当前目录的导航与文件摘要。
 - [01.md](<./01.md>): 文档《使用 Maven Profile 实现分环境打包 tio-boot 项目》。
 - [02.md](<./02.md>): 文档《Maven 项目配置详解：依赖与 Profiles 配置》。
 - [03.md](<./03.md>): 文档《tio-boot 打包成 FatJar》。

@@ -66,7 +66,7 @@ _2023.01 - 至今_
 
 **java-maxkb**
 - java-maxkb 是一个基于 Java 开发的智能知识库系统，利用先进的自然语言处理和向量检索技术，为用户提供高效、准确的问答服务
-- [GitHub](https://github.com/litongjava/java-maxkb) | [文档](https://www.tio-boot.com/zh/63_knowlege_base/01.html)
+- [GitHub](https://github.com/litongjava/java-maxkb) | [文档](https://www.tio-boot.com/zh/55_knowlege_base/01.html)
 
 **tools-ocr**
 
