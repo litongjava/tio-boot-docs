@@ -40,3 +40,5 @@
 - [image-1.png](<./image-1.png>): 图片资源，用于本目录文档配图或界面示意。
 - [image-2.png](<./image-2.png>): 图片资源，用于本目录文档配图或界面示意。
 - [image.png](<./image.png>): 图片资源，用于本目录文档配图或界面示意。
+
+- [32.md](./32.md): 文档《Db 与 PostgreSQL 业务实践》。

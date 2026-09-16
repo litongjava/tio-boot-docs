@@ -178,7 +178,8 @@
       "/zh/09_java-db/28.md",
       "/zh/09_java-db/29.md",
       "/zh/09_java-db/30.md",
-      "/zh/09_java-db/31.md"
+      "/zh/09_java-db/31.md",
+      "/zh/09_java-db/32.md"
     ]
   },
   {
@@ -308,7 +309,9 @@
     "collapsable": false,
     "children": [
       "/zh/17_tests/readme.md",
-      "/zh/17_tests/01.md"
+      "/zh/17_tests/01.md",
+      "/zh/17_tests/02.md",
+      "/zh/17_tests/03.md"
     ]
   },
   {
@@ -983,7 +986,9 @@
       "/zh/71_tio-boot-admin/13.md",
       "/zh/71_tio-boot-admin/14.md",
       "/zh/71_tio-boot-admin/15.md",
-      "/zh/71_tio-boot-admin/16.md"
+      "/zh/71_tio-boot-admin/16.md",
+      "/zh/71_tio-boot-admin/17.md",
+      "/zh/71_tio-boot-admin/18.md"
     ]
   },
   {

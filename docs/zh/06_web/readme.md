@@ -36,7 +36,7 @@
 - [29.md](<./29.md>): 文档《Server-Sent Events (SSE)》。
 - [30.md](<./30.md>): 文档《handler入门》。
 - [31.md](<./31.md>): 文档《返回 multipart》。
-- [32.md](<./32.md>): 文档《待定》。
+- [32.md](<./32.md>): 文档《Handler 的请求方法与错误响应》。
 - [33.md](<./33.md>): 文档《自定义 Handler 转发请求》。
 - [34.md](<./34.md>): 文档《使用 HttpForwardHandler 转发所有请求》。
 - [35.md](<./35.md>): 文档《常用工具类》。
