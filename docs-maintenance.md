@@ -12,7 +12,7 @@
 - [源码入口](<./docs/zh/70_tio-boot/01.md>)、[启动与关闭](<./docs/zh/70_tio-boot/03.md>)、[请求分发](<./docs/zh/70_tio-boot/04.md>)。
 - [底层 HTTP 服务与 tio-boot 的边界](<./docs/zh/29_tio-http-server/06.md>)。
 - [ApiTable 权限](<./docs/zh/10_api-table/10.md>) 与 [故障定位](<./docs/zh/10_api-table/11.md>)。
-- 后台 [字段联动](<./docs/zh/63_tio-boot-admin/10.md>)、[Word](<./docs/zh/63_tio-boot-admin/11.md>)、[PDF](<./docs/zh/63_tio-boot-admin/12.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
+- 后台 [字段联动](<./docs/zh/63_tio-boot-admin/11.md>)、[Word](<./docs/zh/63_tio-boot-admin/12.md>)、[PDF](<./docs/zh/63_tio-boot-admin/13.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
 - 历史部署页增加替代入口，多图上传补配置引用并取消示例中的 DROP TABLE，修正 PostgreSQL 依赖 XML 和 SMTP 地址链接。
 
 ### 验证范围
@@ -72,7 +72,7 @@
 - tio-boot 和同 reactor HTTP 模块以 JDK 8 本地 install，tio-boot-admin 以 JDK 21 本地 install。已检查 jar 类文件版本：tio-boot 为 52，admin-base/web 为 65。
 - 新增方法路由、RouteMatch/metadata、doBeforeRoute、RequestIdentity；修正拦截器合并及请求上下文释放时机。9 项路由测试、5 项请求链测试、1 项 admin 组合测试实际执行通过。
 - 米旺迁移到方法路由、MiAuthInterceptor 与 DbPro；37 项测试通过，包含独立 PostgreSQL schema、JSONB、共享事务、真实 HTTP 方法/权限/HEAD/预检验证。服务在 8100 完成启动冒烟。
-- 新增 [2.1.5 升级指南](<./docs/zh/63_tio-boot-admin/18.md>)、[Db PostgreSQL 实践](<./docs/zh/09_java-db/32.md>)，同步路由源码说明、入门与相关目录。
+- 新增 [方法路由与业务鉴权](<./docs/zh/63_tio-boot-admin/19.md>)、[Db PostgreSQL 实践](<./docs/zh/09_java-db/32.md>)，同步路由源码说明、入门与相关目录。
 - docs:check：721 个 Markdown，本地链接缺失 0、导航缺失 0；既有 29 个短页候选仍单独记录。
 - docs:build：722 页面，272.26 秒成功。构建仍提示大 chunk 与 15.3 MB 搜索 worker 未预缓存。
 - 本轮未执行生产数据库初始化 SQL；本地 Maven install 不代表已发布 Maven Central。
@@ -83,7 +83,7 @@
 - Redis 从缓存章迁出 9 篇文章，新增 [Docker 安装](./docs/zh/19_redis/00.md) 与章节导读。缓存章保留 Caffeine、CacheUtils 和 Ehcache；Kafka 与 AWS MSK 从 MQ 独立出来。
 - 按用户说明移除 Manim 独立章节，其余章节保持原先相对顺序并连续编号为 71 章，最后三章为性能测试、tio-boot 源码和案例。
 - 同步正文链接、侧边栏、顶部导航和目录摘要。目录迁移表见 [chapter-migration.json](./scripts/chapter-migration.json)，页面迁移表见 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json)。构建生成静态跳转页与 Cloudflare Pages 的 _redirects；仅大小写变化的旧地址在 Windows 静态产物中的限制见 [AI 检索说明](./docs/ai-retrieval.md)。
-- 按本地 project-nexus/java-db 1.5.9 源码修正 RedisDb、IRedisCallback、配置注解与连接释放，重写 Jedis 连接池入门，纠正重复提交示例的原子性错误、分布式锁释放和两级缓存一致性描述。Kafka Java 包仍保留源码中真实存在的 `admin.kafaka` 并作说明。
+- 按本地 java-db 源码修正 RedisDb、IRedisCallback、配置注解与连接释放，重写 Jedis 连接池入门，纠正重复提交示例的原子性错误、分布式锁释放和两级缓存一致性描述。Kafka Java 包仍保留源码中真实存在的 `admin.kafaka` 并作说明。
 - 新增安装文档区分有密码和无密码模式，补全 host 网络适用条件、认证验证、持久化和应用连接参数；未实际启动 Docker 或 Redis 服务。
 - AI 构建产物包含分章节 llms.txt、llms-full.txt、章节正文、单页 Markdown、JSON 页面目录、按标题分段的 JSONL 与内容哈希。兼容 Windows 换行；分段避开代码块内部标题，原文转换不修改代码块内的 Markdown 示例。
 - 验证：本地链接、导航、遗漏页面、章节编号均无错误；检查 814 个已跟踪文件的迁移目标，除明确删除的 Manim 页面外无文件缺失；从正文提取 RedisQuickStart、RedisConfiguration、JedisPoolExample、SubmissionGuard 四个示例，使用 JDK 21 与本地依赖编译通过。

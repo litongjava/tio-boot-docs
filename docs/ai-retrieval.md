@@ -34,7 +34,7 @@
 
 页面记录包含 id、source、title、language、chapter、url、markdownUrl、description、keywords、status 和 sha256。分段记录还包含 pageId、heading、content；分段 id 的序号会随标题调整变化，因此应按页面整体更新分段。
 
-status 为 placeholder 表示按长度或仅含标题识别的短内容候选。它不是对所有内容质量的判定；检索时应结合正文中的版本、源码基线、验证范围和待完成说明。不要将目录页或占位标题推断为已经实现的功能。
+status 为 placeholder 表示按长度或仅含标题识别的短内容候选。它不是对所有内容质量的判定；检索时应结合正文中的适用版本、前置条件和功能限制。不要将目录页或占位标题推断为已经实现的功能。
 
 ## 构建与部署
 
