@@ -32,7 +32,7 @@ export default [
   },
   {
     text: "最佳实践",
-    children: [{ text: "案例", link: "/zh/71_案例/01" }],
+    children: [{ text: "案例", link: "/zh/72_案例/01" }],
   },
 
   "/about",

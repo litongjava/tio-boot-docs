@@ -9,8 +9,8 @@
 - [Web Handler 方法与错误响应](<./docs/zh/06_web/32.md>)：完整 Java 示例、参数与状态码边界。
 - [TioBootTest](<./docs/zh/17_tests/01.md>)：修正初始化、扫描、JUnit 注解和失败行为说明。
 - [真实 HTTP 测试](<./docs/zh/17_tests/02.md>) 与 [数据库隔离测试](<./docs/zh/17_tests/03.md>)。
-- [源码入口](<./docs/zh/70_tio-boot/01.md>)、[启动与关闭](<./docs/zh/70_tio-boot/03.md>)、[请求分发](<./docs/zh/70_tio-boot/04.md>)。
-- [底层 HTTP 服务与 tio-boot 的边界](<./docs/zh/29_tio-http-server/06.md>)。
+- [源码入口](<docs/zh/71_tio-boot/01.md>)、[启动与关闭](<docs/zh/71_tio-boot/03.md>)、[请求分发](<docs/zh/71_tio-boot/04.md>)。
+- [底层 HTTP 服务与 tio-boot 的边界](<docs/zh/30_tio-http-server/06.md>)。
 - [ApiTable 权限](<./docs/zh/10_api-table/10.md>) 与 [故障定位](<./docs/zh/10_api-table/11.md>)。
 - 后台 [字段联动](<./docs/zh/64_tio-boot-admin/11.md>)、[Word](<./docs/zh/64_tio-boot-admin/12.md>)、[PDF](<./docs/zh/64_tio-boot-admin/13.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
 - 历史部署页增加替代入口，多图上传补配置引用并取消示例中的 DROP TABLE，修正 PostgreSQL 依赖 XML 和 SMTP 地址链接。
@@ -31,33 +31,34 @@
 | --- | --- |
 | [docs/en/1 Quick Start/1.0 Quick Start.md](<./docs/en/1 Quick Start/1.0 Quick Start.md>) | Quick Start |
 | [docs/zh/10_api-table/06.md](<./docs/zh/10_api-table/06.md>) | 使用 api-table 连接 oracle |
-| [docs/zh/13_认证/12.md](<./docs/zh/13_认证/12.md>) | 微信登录 |
-| [docs/zh/13_认证/13.md](<./docs/zh/13_认证/13.md>) | 移动端微信登录 |
-| [docs/zh/21_netty-boot/07.md](<./docs/zh/27_netty-boot/07.md>) | 整合 Dubbo |
-| [docs/zh/21_netty-boot/14.md](<./docs/zh/27_netty-boot/14.md>) | Reserve |
-| [docs/zh/26_tio-im/06.md](<./docs/zh/31_tio-im/06.md>) | 登录 |
-| [docs/zh/26_tio-im/07.md](<./docs/zh/31_tio-im/07.md>) | 历史消息 |
-| [docs/zh/26_tio-im/08.md](<./docs/zh/31_tio-im/08.md>) | 发消息 |
-| [docs/zh/31_groovy/02.md](<./docs/zh/33_groovy/02.md>) | 调试常用脚本 |
+| [docs/zh/28_netty-boot/07.md](<./docs/zh/28_netty-boot/07.md>) | 整合 Dubbo |
+| [docs/zh/28_netty-boot/14.md](<./docs/zh/28_netty-boot/14.md>) | Reserve |
+| [docs/zh/32_tio-im/06.md](<./docs/zh/32_tio-im/06.md>) | 登录 |
+| [docs/zh/32_tio-im/07.md](<./docs/zh/32_tio-im/07.md>) | 历史消息 |
+| [docs/zh/32_tio-im/08.md](<./docs/zh/32_tio-im/08.md>) | 发消息 |
+| [docs/zh/34_groovy/02.md](<./docs/zh/34_groovy/02.md>) | 调试常用脚本 |
 | [docs/zh/43_oceanbase/05.md](<./docs/zh/43_oceanbase/05.md>) | 待定 |
-| [docs/zh/50_media/03.md](<./docs/zh/45_media/03.md>) | 待定 |
-| [docs/zh/58_telegram4j/13.md](<./docs/zh/51_telegram4j/13.md>) | 处理回调查询 |
-| [docs/zh/58_telegram4j/20.md](<./docs/zh/51_telegram4j/20.md>) | Telegram-Bot-Utils 使用指南 |
-| [docs/zh/60_LLM/15.md](<./docs/zh/53_LLM/15.md>) | 待定 |
-| [docs/zh/61_voice-agent/06.md](<./docs/zh/54_voice-agent/06.md>) | eleven labs |
-| [docs/zh/64_ai_agent/09.md](<./docs/zh/56_ai_agent/09.md>) | 翻译 |
-| [docs/zh/64_ai_agent/13.md](<./docs/zh/56_ai_agent/13.md>) | 自建 获取 youtube 字幕服务 |
-| [docs/zh/64_ai_agent/15.md](<./docs/zh/56_ai_agent/15.md>) | 定向搜索 |
-| [docs/zh/64_ai_agent/16.md](<./docs/zh/56_ai_agent/16.md>) | 16 |
-| [docs/zh/64_ai_agent/17.md](<./docs/zh/56_ai_agent/17.md>) | 17 |
-| [docs/zh/64_ai_agent/18.md](<./docs/zh/56_ai_agent/18.md>) | 18 |
-| [docs/zh/67_java-uni-ai-server/04.md](<./docs/zh/59_java-uni-ai-server/04.md>) | 待定 |
-| [docs/zh/69_java-kit-server/04.md](<./docs/zh/61_java-kit-server/04.md>) | 待定 |
-| [docs/zh/69_java-kit-server/05.md](<./docs/zh/61_java-kit-server/05.md>) | 待定 |
-| [docs/zh/69_java-kit-server/06.md](<./docs/zh/61_java-kit-server/06.md>) | 待定 |
-| [docs/zh/76_tio-log-server/01.md](<./docs/zh/68_tio-log-server/01.md>) | 简介 |
-| [docs/zh/76_tio-log-server/02.md](<./docs/zh/68_tio-log-server/02.md>) | 收集 docker 日志 |
-| [docs/zh/76_tio-log-server/03.md](<./docs/zh/68_tio-log-server/03.md>) | 入库 |
+| [docs/zh/45_media/03.md](<./docs/zh/45_media/03.md>) | 待定 |
+| [docs/zh/51_telegram4j/13.md](<./docs/zh/51_telegram4j/13.md>) | 处理回调查询 |
+| [docs/zh/51_telegram4j/20.md](<./docs/zh/51_telegram4j/20.md>) | Telegram-Bot-Utils 使用指南 |
+| [docs/zh/53_LLM/15.md](<./docs/zh/53_LLM/15.md>) | 待定 |
+| [docs/zh/54_voice-agent/06.md](<./docs/zh/54_voice-agent/06.md>) | eleven labs |
+| [docs/zh/56_ai_agent/09.md](<./docs/zh/56_ai_agent/09.md>) | 翻译 |
+| [docs/zh/56_ai_agent/13.md](<./docs/zh/56_ai_agent/13.md>) | 自建 获取 youtube 字幕服务 |
+| [docs/zh/56_ai_agent/15.md](<./docs/zh/56_ai_agent/15.md>) | 定向搜索 |
+| [docs/zh/56_ai_agent/16.md](<./docs/zh/56_ai_agent/16.md>) | 16 |
+| [docs/zh/56_ai_agent/17.md](<./docs/zh/56_ai_agent/17.md>) | 17 |
+| [docs/zh/56_ai_agent/18.md](<./docs/zh/56_ai_agent/18.md>) | 18 |
+| [docs/zh/59_java-uni-ai-server/04.md](<./docs/zh/59_java-uni-ai-server/04.md>) | 待定 |
+| [docs/zh/61_java-kit-server/04.md](<./docs/zh/61_java-kit-server/04.md>) | 待定 |
+| [docs/zh/61_java-kit-server/05.md](<./docs/zh/61_java-kit-server/05.md>) | 待定 |
+| [docs/zh/61_java-kit-server/06.md](<./docs/zh/61_java-kit-server/06.md>) | 待定 |
+| [docs/zh/69_tio-log-server/01.md](<./docs/zh/69_tio-log-server/01.md>) | 简介 |
+| [docs/zh/69_tio-log-server/02.md](<./docs/zh/69_tio-log-server/02.md>) | 收集 docker 日志 |
+| [docs/zh/69_tio-log-server/03.md](<./docs/zh/69_tio-log-server/03.md>) | 入库 |
+| [docs/zh/65_第三方登录注册/05.md](<./docs/zh/65_第三方登录注册/05.md>) | 阿里云短信登录和注册 |
+| [docs/zh/65_第三方登录注册/06.md](<./docs/zh/65_第三方登录注册/06.md>) | 阿里云短信重置密码 |
+| [docs/zh/65_第三方登录注册/08.md](<./docs/zh/65_第三方登录注册/08.md>) | 支付宝登录与绑定手机号 |
 
 ## 后续维护规则
 
