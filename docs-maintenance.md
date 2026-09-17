@@ -56,7 +56,6 @@
 | [docs/zh/73_tio-log-server/01.md](<./docs/zh/73_tio-log-server/01.md>) | 简介 |
 | [docs/zh/73_tio-log-server/02.md](<./docs/zh/73_tio-log-server/02.md>) | 收集 docker 日志 |
 | [docs/zh/73_tio-log-server/03.md](<./docs/zh/73_tio-log-server/03.md>) | 入库 |
-| [docs/zh/66_第三方登录注册/05.md](<./docs/zh/66_第三方登录注册/05.md>) | 阿里云短信登录和注册 |
 | [docs/zh/66_第三方登录注册/06.md](<./docs/zh/66_第三方登录注册/06.md>) | 阿里云短信重置密码 |
 | [docs/zh/66_第三方登录注册/08.md](<./docs/zh/66_第三方登录注册/08.md>) | 支付宝登录与绑定手机号 |
 
