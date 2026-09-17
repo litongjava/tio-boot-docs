@@ -12,7 +12,7 @@
 - [源码入口](<./docs/zh/70_tio-boot/01.md>)、[启动与关闭](<./docs/zh/70_tio-boot/03.md>)、[请求分发](<./docs/zh/70_tio-boot/04.md>)。
 - [底层 HTTP 服务与 tio-boot 的边界](<./docs/zh/29_tio-http-server/06.md>)。
 - [ApiTable 权限](<./docs/zh/10_api-table/10.md>) 与 [故障定位](<./docs/zh/10_api-table/11.md>)。
-- 后台 [字段联动](<./docs/zh/63_tio-boot-admin/11.md>)、[Word](<./docs/zh/63_tio-boot-admin/12.md>)、[PDF](<./docs/zh/63_tio-boot-admin/13.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
+- 后台 [字段联动](<./docs/zh/64_tio-boot-admin/11.md>)、[Word](<./docs/zh/64_tio-boot-admin/12.md>)、[PDF](<./docs/zh/64_tio-boot-admin/13.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
 - 历史部署页增加替代入口，多图上传补配置引用并取消示例中的 DROP TABLE，修正 PostgreSQL 依赖 XML 和 SMTP 地址链接。
 
 ### 验证范围
@@ -72,7 +72,7 @@
 - tio-boot 和同 reactor HTTP 模块以 JDK 8 本地 install，tio-boot-admin 以 JDK 21 本地 install。已检查 jar 类文件版本：tio-boot 为 52，admin-base/web 为 65。
 - 新增方法路由、RouteMatch/metadata、doBeforeRoute、RequestIdentity；修正拦截器合并及请求上下文释放时机。9 项路由测试、5 项请求链测试、1 项 admin 组合测试实际执行通过。
 - 米旺迁移到方法路由、MiAuthInterceptor 与 DbPro；37 项测试通过，包含独立 PostgreSQL schema、JSONB、共享事务、真实 HTTP 方法/权限/HEAD/预检验证。服务在 8100 完成启动冒烟。
-- 新增 [方法路由与业务鉴权](<./docs/zh/63_tio-boot-admin/19.md>)、[Db PostgreSQL 实践](<./docs/zh/09_java-db/32.md>)，同步路由源码说明、入门与相关目录。
+- 新增 [方法路由与业务鉴权](<./docs/zh/64_tio-boot-admin/19.md>)、[Db PostgreSQL 实践](<./docs/zh/09_java-db/32.md>)，同步路由源码说明、入门与相关目录。
 - docs:check：721 个 Markdown，本地链接缺失 0、导航缺失 0；既有 29 个短页候选仍单独记录。
 - docs:build：722 页面，272.26 秒成功。构建仍提示大 chunk 与 15.3 MB 搜索 worker 未预缓存。
 - 本轮未执行生产数据库初始化 SQL；本地 Maven install 不代表已发布 Maven Central。
