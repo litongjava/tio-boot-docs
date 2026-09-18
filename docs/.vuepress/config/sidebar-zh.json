@@ -1024,159 +1024,168 @@
       "/zh/66_第三方登录注册/06.md",
       "/zh/66_第三方登录注册/07.md",
       "/zh/66_第三方登录注册/08.md",
-      "/zh/66_第三方登录注册/09.md"
+      "/zh/66_第三方登录注册/09.md",
+      "/zh/66_第三方登录注册/10.md"
     ]
   },
   {
-    "text": "67_firebase",
+    "text": "67_pay",
     "collapsable": false,
     "children": [
-      "/zh/67_firebase/readme.md",
-      "/zh/67_firebase/01.md",
-      "/zh/67_firebase/02.md",
-      "/zh/67_firebase/03.md",
-      "/zh/67_firebase/04.md",
-      "/zh/67_firebase/05.md",
-      "/zh/67_firebase/06.md",
-      "/zh/67_firebase/07.md"
+      "/zh/67_pay/readme.md",
+      "/zh/67_pay/01.md"
     ]
   },
   {
-    "text": "68_clerk",
+    "text": "68_firebase",
     "collapsable": false,
     "children": [
-      "/zh/68_clerk/readme.md",
-      "/zh/68_clerk/01.md"
+      "/zh/68_firebase/readme.md",
+      "/zh/68_firebase/01.md",
+      "/zh/68_firebase/02.md",
+      "/zh/68_firebase/03.md",
+      "/zh/68_firebase/04.md",
+      "/zh/68_firebase/05.md",
+      "/zh/68_firebase/06.md",
+      "/zh/68_firebase/07.md"
     ]
   },
   {
-    "text": "69_tio-im",
+    "text": "69_clerk",
     "collapsable": false,
     "children": [
-      "/zh/69_tio-im/readme.md",
-      "/zh/69_tio-im/01.md",
-      "/zh/69_tio-im/02.md",
-      "/zh/69_tio-im/03.md",
-      "/zh/69_tio-im/04.md",
-      "/zh/69_tio-im/05.md",
-      "/zh/69_tio-im/06.md",
-      "/zh/69_tio-im/07.md",
-      "/zh/69_tio-im/08.md"
+      "/zh/69_clerk/readme.md",
+      "/zh/69_clerk/01.md"
     ]
   },
   {
-    "text": "70_tio-mail-wing",
+    "text": "70_tio-im",
     "collapsable": false,
     "children": [
-      "/zh/70_tio-mail-wing/readme.md",
-      "/zh/70_tio-mail-wing/01.md",
-      "/zh/70_tio-mail-wing/02.md",
-      "/zh/70_tio-mail-wing/03.md",
-      "/zh/70_tio-mail-wing/04.md",
-      "/zh/70_tio-mail-wing/05.md",
-      "/zh/70_tio-mail-wing/06.md",
-      "/zh/70_tio-mail-wing/07.md",
-      "/zh/70_tio-mail-wing/08.md",
-      "/zh/70_tio-mail-wing/09.md",
-      "/zh/70_tio-mail-wing/10.md",
-      "/zh/70_tio-mail-wing/11.md",
-      "/zh/70_tio-mail-wing/12.md",
-      "/zh/70_tio-mail-wing/13.md",
-      "/zh/70_tio-mail-wing/14.md",
-      "/zh/70_tio-mail-wing/15.md",
-      "/zh/70_tio-mail-wing/16.md",
-      "/zh/70_tio-mail-wing/17.md",
-      "/zh/70_tio-mail-wing/18.md"
+      "/zh/70_tio-im/readme.md",
+      "/zh/70_tio-im/01.md",
+      "/zh/70_tio-im/02.md",
+      "/zh/70_tio-im/03.md",
+      "/zh/70_tio-im/04.md",
+      "/zh/70_tio-im/05.md",
+      "/zh/70_tio-im/06.md",
+      "/zh/70_tio-im/07.md",
+      "/zh/70_tio-im/08.md"
     ]
   },
   {
-    "text": "71_tio-mcp-server",
+    "text": "71_tio-mail-wing",
     "collapsable": false,
     "children": [
-      "/zh/71_tio-mcp-server/readme.md",
-      "/zh/71_tio-mcp-server/01.md",
-      "/zh/71_tio-mcp-server/08.md",
-      "/zh/71_tio-mcp-server/11.md"
+      "/zh/71_tio-mail-wing/readme.md",
+      "/zh/71_tio-mail-wing/01.md",
+      "/zh/71_tio-mail-wing/02.md",
+      "/zh/71_tio-mail-wing/03.md",
+      "/zh/71_tio-mail-wing/04.md",
+      "/zh/71_tio-mail-wing/05.md",
+      "/zh/71_tio-mail-wing/06.md",
+      "/zh/71_tio-mail-wing/07.md",
+      "/zh/71_tio-mail-wing/08.md",
+      "/zh/71_tio-mail-wing/09.md",
+      "/zh/71_tio-mail-wing/10.md",
+      "/zh/71_tio-mail-wing/11.md",
+      "/zh/71_tio-mail-wing/12.md",
+      "/zh/71_tio-mail-wing/13.md",
+      "/zh/71_tio-mail-wing/14.md",
+      "/zh/71_tio-mail-wing/15.md",
+      "/zh/71_tio-mail-wing/16.md",
+      "/zh/71_tio-mail-wing/17.md",
+      "/zh/71_tio-mail-wing/18.md"
     ]
   },
   {
-    "text": "72_tio-sip",
+    "text": "72_tio-mcp-server",
     "collapsable": false,
     "children": [
-      "/zh/72_tio-sip/readme.md",
-      "/zh/72_tio-sip/01.md",
-      "/zh/72_tio-sip/02.md",
-      "/zh/72_tio-sip/03.md",
-      "/zh/72_tio-sip/04.md",
-      "/zh/72_tio-sip/05.md",
-      "/zh/72_tio-sip/06.md",
-      "/zh/72_tio-sip/07.md",
-      "/zh/72_tio-sip/08.md",
-      "/zh/72_tio-sip/09.md",
-      "/zh/72_tio-sip/10.md",
-      "/zh/72_tio-sip/11.md",
-      "/zh/72_tio-sip/13.md",
-      "/zh/72_tio-sip/14.md",
-      "/zh/72_tio-sip/15.md"
+      "/zh/72_tio-mcp-server/readme.md",
+      "/zh/72_tio-mcp-server/01.md",
+      "/zh/72_tio-mcp-server/08.md",
+      "/zh/72_tio-mcp-server/11.md"
     ]
   },
   {
-    "text": "73_tio-log-server",
+    "text": "73_tio-sip",
     "collapsable": false,
     "children": [
-      "/zh/73_tio-log-server/readme.md",
-      "/zh/73_tio-log-server/01.md",
-      "/zh/73_tio-log-server/02.md",
-      "/zh/73_tio-log-server/03.md"
+      "/zh/73_tio-sip/readme.md",
+      "/zh/73_tio-sip/01.md",
+      "/zh/73_tio-sip/02.md",
+      "/zh/73_tio-sip/03.md",
+      "/zh/73_tio-sip/04.md",
+      "/zh/73_tio-sip/05.md",
+      "/zh/73_tio-sip/06.md",
+      "/zh/73_tio-sip/07.md",
+      "/zh/73_tio-sip/08.md",
+      "/zh/73_tio-sip/09.md",
+      "/zh/73_tio-sip/10.md",
+      "/zh/73_tio-sip/11.md",
+      "/zh/73_tio-sip/13.md",
+      "/zh/73_tio-sip/14.md",
+      "/zh/73_tio-sip/15.md"
     ]
   },
   {
-    "text": "74_性能测试",
+    "text": "74_tio-log-server",
     "collapsable": false,
     "children": [
-      "/zh/74_性能测试/readme.md",
-      "/zh/74_性能测试/01.md",
-      "/zh/74_性能测试/02.md",
-      "/zh/74_性能测试/03.md",
-      "/zh/74_性能测试/04.md",
-      "/zh/74_性能测试/05.md",
-      "/zh/74_性能测试/06.md",
-      "/zh/74_性能测试/07.md",
-      "/zh/74_性能测试/08.md",
-      "/zh/74_性能测试/09.md"
+      "/zh/74_tio-log-server/readme.md",
+      "/zh/74_tio-log-server/01.md",
+      "/zh/74_tio-log-server/02.md",
+      "/zh/74_tio-log-server/03.md"
     ]
   },
   {
-    "text": "75_tio-boot",
+    "text": "75_性能测试",
     "collapsable": false,
     "children": [
-      "/zh/75_tio-boot/readme.md",
-      "/zh/75_tio-boot/01.md",
-      "/zh/75_tio-boot/02.md",
-      "/zh/75_tio-boot/03.md",
-      "/zh/75_tio-boot/04.md",
-      "/zh/75_tio-boot/05.md",
-      "/zh/75_tio-boot/06.md"
+      "/zh/75_性能测试/readme.md",
+      "/zh/75_性能测试/01.md",
+      "/zh/75_性能测试/02.md",
+      "/zh/75_性能测试/03.md",
+      "/zh/75_性能测试/04.md",
+      "/zh/75_性能测试/05.md",
+      "/zh/75_性能测试/06.md",
+      "/zh/75_性能测试/07.md",
+      "/zh/75_性能测试/08.md",
+      "/zh/75_性能测试/09.md"
     ]
   },
   {
-    "text": "76_案例",
+    "text": "76_tio-boot",
     "collapsable": false,
     "children": [
-      "/zh/76_案例/readme.md",
-      "/zh/76_案例/01.md",
-      "/zh/76_案例/02.md",
-      "/zh/76_案例/03.md",
-      "/zh/76_案例/04.md",
-      "/zh/76_案例/05.md",
-      "/zh/76_案例/06.md",
-      "/zh/76_案例/07.md",
-      "/zh/76_案例/08.md",
-      "/zh/76_案例/09.md",
-      "/zh/76_案例/10.md",
-      "/zh/76_案例/11.md",
-      "/zh/76_案例/12.md",
-      "/zh/76_案例/13.md"
+      "/zh/76_tio-boot/readme.md",
+      "/zh/76_tio-boot/01.md",
+      "/zh/76_tio-boot/02.md",
+      "/zh/76_tio-boot/03.md",
+      "/zh/76_tio-boot/04.md",
+      "/zh/76_tio-boot/05.md",
+      "/zh/76_tio-boot/06.md"
+    ]
+  },
+  {
+    "text": "77_案例",
+    "collapsable": false,
+    "children": [
+      "/zh/77_案例/readme.md",
+      "/zh/77_案例/01.md",
+      "/zh/77_案例/02.md",
+      "/zh/77_案例/03.md",
+      "/zh/77_案例/04.md",
+      "/zh/77_案例/05.md",
+      "/zh/77_案例/06.md",
+      "/zh/77_案例/07.md",
+      "/zh/77_案例/08.md",
+      "/zh/77_案例/09.md",
+      "/zh/77_案例/10.md",
+      "/zh/77_案例/11.md",
+      "/zh/77_案例/12.md",
+      "/zh/77_案例/13.md"
     ]
   }
 ]
