@@ -965,7 +965,8 @@
       "/zh/63_ai-brower/04.md",
       "/zh/63_ai-brower/05.md",
       "/zh/63_ai-brower/06.md",
-      "/zh/63_ai-brower/07.md"
+      "/zh/63_ai-brower/07.md",
+        "/zh/63_ai-brower/08.md"
     ]
   },
   {
@@ -1025,7 +1026,8 @@
       "/zh/66_第三方登录注册/07.md",
       "/zh/66_第三方登录注册/08.md",
       "/zh/66_第三方登录注册/09.md",
-      "/zh/66_第三方登录注册/10.md"
+      "/zh/66_第三方登录注册/10.md",
+      "/zh/66_第三方登录注册/11.md"
     ]
   },
   {
@@ -1033,7 +1035,8 @@
     "collapsable": false,
     "children": [
       "/zh/67_pay/readme.md",
-      "/zh/67_pay/01.md"
+      "/zh/67_pay/01.md",
+      "/zh/67_pay/02.md"
     ]
   },
   {

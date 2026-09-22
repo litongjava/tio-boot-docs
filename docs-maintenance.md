@@ -1,5 +1,85 @@
 # 文档补全与维护记录
 
+## 2026-09-21：AI Browser 批量指令定为 POST-only（去掉 GET／表单／`bodyJson` 残留）
+
+### 已补齐
+
+- 结论：`/commands` **只接受 POST + JSON 请求体**，`GET` 直接返回 `批量指令只支持 POST + JSON 请求体,请用 POST 并把命令放在请求体里`；表单、`bodyJson` 字段与 `getRequestMap()` 读取方式都已从源码移除。文档里「POST 优先、GET 兼容」的写法全部删除，只保留 **POST + JSON 对象载荷** 这一个推荐写法（另附 POST + 命令数组、POST + 单条命令两种同样受支持的写法），段落标题由“为什么推荐 POST”改为“为什么只支持 POST”（会改浏览器状态、命令 JSON 塞进 URL 要百分号编码且受长度限制）。
+- [操作浏览器指令](<./docs/zh/63_ai-brower/07.md>)：接口参数表去掉 `bodyJson`，`id` 说明改为“可选：放在请求体里，数组体时放查询串 `?id=`”；“参数绑定”与 `execute_js` 一节按“**`execute_js` 可以用 JSON 请求体（也支持查询串／表单），`commands` 必须用 POST + JSON 请求体**”重写，不再把两个接口混为一谈；保留一张“老写法”表，只用于说明 GET／表单／`bodyJson` 各自的实际失败提示。
+- [AI Browser 简介](<./docs/zh/63_ai-brower/01.md>)：`commands` 表格行与参数说明同步为 POST-only，并区分 `execute_js` 与 `commands` 的传参方式。
+- [启动浏览器](<./docs/zh/63_ai-brower/06.md>)：参数绑定、`execute_js`、批量指令三处同步；明确 `commands` 不接受 GET、不接受表单，也没有 `bodyJson` 参数。
+- 跟进源码的两处小改动：[操作浏览器指令](<./docs/zh/63_ai-brower/07.md>)“老写法”表里 `bodyJson` 字段一行的实际返回，改为源码新增的显式迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`（原先写的是“被当成一条名为 `bodyJson` 的命令”）；错误信息侧，`briefMessage` 现在会截掉库异常尾部的版本号标记，文档中相关提示本来就写成 `请求体解析失败,批量指令需要 JSON：<原因>`、`set_headers 失败：<原因>` 这类占位形式，无版本号需要删除。
+
+### 验证范围
+
+- 源码核对：`batchExecute(HttpRequest)` 首行只放行 `HttpMethod.POST`，`queryId` 只从查询串取可选的 `id`，`bodyJson` 字段有显式迁移提示分支，`getRequestMap()` 读取已删除；`briefMessage` 会剥离异常尾部的版本号标记。
+- `grep` 复查 `docs/zh/63_ai-brower/`：`bodyJson`、GET、表单在批量语境下只剩“不支持”这类说明性文字，没有任何“兼容”“老写法可用”的表述，也没有“`bodyJson` 被当成命令名”的旧说法。
+- 文档中 9 条中文提示语与源码逐字一致；示例 JSON 与 `curl` 载荷全部解析通过，命令名全部存在于源码命令表。
+- 新增行不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，章节错误 0。
+
+## 2026-09-21：AI Browser 批量指令改为只支持 POST + JSON 请求体
+
+### 已补齐
+
+- [操作浏览器指令](<./docs/zh/63_ai-brower/07.md>)：批量一节按源码改写为 **只支持 POST + JSON 请求体**——新增“请求写法”表格（POST + 对象载荷、POST + 命令数组、POST + 单条命令对象）与三条完整 `curl` 示例；说明只有 POST 的三个理由（`/commands` 会改浏览器状态、命令 JSON 塞进 URL 要百分号编码且受长度限制、POST 请求体不受 URL 长度约束）；新增“老写法”表列出 GET、表单、`bodyJson` 字段各自的结果（GET 返回 `批量指令只支持 POST + JSON 请求体,请用 POST 并把命令放在请求体里`，表单体返回 `请求体解析失败,批量指令需要 JSON：<原因>`，`bodyJson` 字段返回迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`）；请求体出错提示表改为源码当前文案（`请求体不能为空,需要命令数组或含 commands 的对象`、`请求体解析失败,批量指令需要 JSON：<原因>`、`缺少参数 id,可以放在查询串里,也可以放在对象载荷里`、`对象载荷必须包含 commands 数组,或者只写一条命令`、`命令数组为空`）；接口表格行改为“`id`（可选）、命令 JSON 请求体（POST 必需，没有 `bodyJson` 参数）”；PTC 的两个例子改为 `POST` + JSON 请求体；“参数绑定”与 `execute_js` 一节把“只有 `execute_js` 支持 JSON 请求体”改为 `execute_js` 与 `commands` 两个接口，并注明 `commands` 只接受 POST。
+- [AI Browser 简介](<./docs/zh/63_ai-brower/01.md>)：`commands` 表格行与参数说明同步为“只接受 POST + JSON 请求体，`id` 可放查询串或对象载荷里”。
+- [启动浏览器](<./docs/zh/63_ai-brower/06.md>)：参数绑定与“在页面中执行 JavaScript”两节同步改为两个接口支持 JSON 请求体；批量指令示例改为 `POST` + JSON 请求体，并说明请求体直接是命令数组时 `id` 必须放查询串、GET／表单／`bodyJson` 已不支持。
+
+### 验证范围
+
+- 源码逐条核对（以工作区当前源码为准）：`PlaywrightController.batchExecute(HttpRequest)` 只放行 `HttpMethod.POST`，`queryId` 只从查询串取 `id`，`batchParamFailure` 只用于查询串 `id` 的校验错误；`ActionService.batchExecute` 的 `请求体不能为空…`、`请求体解析失败…`、`缺少参数 id,可以放在查询串里…`、`对象载荷必须包含 commands 数组,或者只写一条命令`、`命令数组为空`、`每条命令对象只能包含一个键`、`不支持的命令：…` 与文档逐字一致。
+- 说明：本轮给出的实测表（GET 兼容、POST + 表单、POST + JSON 里的 `bodyJson`、`缺少参数 id,可以在查询参数里传…`）与当前源码不一致——当前源码显式拒绝非 POST 请求，并已移除 `batchProgramOf` 与 `bodyJson` 分支；文档按源码写。
+- `grep` 确认 `docs/zh/63_ai-brower/` 下已无“commands 支持 GET／表单／`bodyJson`”“只有 `execute_js` 支持 JSON 请求体”“直接 POST 纯 JSON 体不生效”等残留说法；保留下来的“JSON 请求体不生效”全部限定在“除 `execute_js` 与 `commands` 以外的接口”。
+- 示例 JSON 与 `curl` 载荷逐条解析通过；新增行不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，章节错误 0。
+
+## 2026-09-21：AI Browser 批量指令与快照文本说明同步
+
+### 已补齐
+
+- [操作浏览器指令](<./docs/zh/63_ai-brower/07.md>)：按源码重写“批量”一节——覆盖范围改为除 `commands` 自身之外的 78 个接口（老 17 个走老处理器注册表，其余 61 个走新命令表，两者对外表现一致），补齐数组与对象两种载荷（`id`、`stopOnError`、`commands` 三个字段）、`count`/`succeeded`/`failed`/`stopped`/`results` 逐步结果、`stopOnError` 默认 `true`、有失败时整体 `code` 为 `0` 但 `data.results` 完整返回、缺参数返回 `第 N 条命令 xxx 失败：缺少参数 xxx`、布尔参数缺失按 `false` 处理（`start` 的 `headless` 例外）、嵌套调用与未知命令的提示语，并新增 PTC 用途说明与“输入 → 回车 → 等待 → 取快照”一次请求完成的例子；新增“快照文本怎么读”小节，用百度首页真实样例逐条解释首尾标记、缩进层级、索引不连续、行尾 `/>`、无文字节点、属性保留范围、`value` 的两种含义、DOM 顺序，以及不可见元素不入快照、快照会过期等实测结论。
+- [AI Browser 简介](<./docs/zh/63_ai-brower/01.md>)：结构化文本样例替换为百度首页真实快照，补充读法要点与指向“快照文本怎么读”的链接；`commands` 一行改为说明批量覆盖范围、逐步结果与 `stopOnError` 默认值。
+- [启动浏览器](<./docs/zh/63_ai-brower/06.md>)：`execute_js` 作为批量指令的说明改为与源码一致（覆盖 78 个接口、对象载荷、逐步结果在 `data.results`），并指向“批量”一节。
+- 复核修正（隐藏元素与边界标记）：此前把“快照里没有的隐藏元素改用选择器类接口”写成兜底手段，实测与源码均不成立——隐藏元素不满足可操作性检查，`input_text_by_selector` 等选择器、文本、角色、标签类接口会等满 5 秒后返回 `没匹配到可操作的元素(不存在或不可见): 选择器 #kw`（源码中该失败分支的注释也以百度首页被隐藏的 `#kw` 为例）。[操作浏览器指令](<./docs/zh/63_ai-brower/07.md>) 的“快照文本怎么读”改为“不可见元素既不在快照里、选择器类接口也操作不了它，只能用 `execute_js` 直接设值并派发 `input` 事件”，并补上可复制的 `execute_js` 示例；“定位方式”一节补上该失败提示与 5 秒等待；批量示例里的 `data.text` 片段由 `[Start of page]...` 改为 `[0]<a >新闻/>...`。[AI Browser 简介](<./docs/zh/63_ai-brower/01.md>) 同步修正读法要点与参数说明，并写明 `[Start of page]` / `[End of page]` 只来自 `src/test` 下测试/demo 代码（`DomServiceTest`、`PlayWrightTaobaoSearch`、`PlayWrightKeheLogin`）的 `System.out.println`，`get_dom_text` 接口不返回这两行（实测 `data.text` 第一行直接是 `[0]<a >新闻/>`）。
+
+### 验证范围
+
+- `grep` 确认 `docs/zh/63_ai-brower/` 下已无“批量仅覆盖老命令”“失败即整体中断且不返回逐步结果”“只返回整体成功与失败”“命令名只有老命令那几个”等过时说法。
+- `grep` 复查“不可见”“隐藏”与选择器类接口名，确认已无“用选择器类接口操作隐藏元素”这类误导说法：命中处均为“选择器类接口要求元素可操作、隐藏元素只能走 `execute_js`”的纠正后表述。
+- 用脚本比对控制器源码的 79 个 `@RequestPath`：除 `commands` 之外的 78 个接口名全部在修改后的文档中出现（缺失 0）；`CommandTable` 61 条加 `HandlerRegistry` 17 条等于 78，与批量覆盖范围一致。
+- 新增内容不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径（统一用 `~/Downloads/` 之类的用户目录写法）。
+- 隐藏元素与边界标记两条结论来自真实服务实测（`input_text_by_selector`、`click_element_by_text` 的失败响应，`execute_js` 设值成功返回），并与 `PlaywrightService` 的失败提示分支核对一致；未覆盖真实网站的登录态与验证码场景。
+
+## 2026-09-21：AI Browser 执行 JavaScript 接口
+
+### 已补齐
+
+- [启动浏览器](<./docs/zh/63_ai-brower/06.md>)：新增“在页面中执行 JavaScript”一节，说明 `/api/v1/playwright/execute_js` 的请求参数、三种脚本写法、返回值限制与错误信息；同时按源码修正包名、`start` 方法签名、`BrowserInstance` 字段、`close` 的资源释放顺序，以及示例中的业务码与端口。
+- [操作浏览器指令](<./docs/zh/63_ai-brower/07.md>) 与 [AI Browser 简介](<./docs/zh/63_ai-brower/01.md>)：指令清单补充 `execute_js`。
+
+### 验证范围
+
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，章节错误 0。
+- 文档中的接口示例在本地服务上实际调用通过：启动浏览器、导航、`execute_js`（表达式、箭头函数、含 `return` 的语句片段、异步函数）与关闭浏览器。
+- 未验证真实网站的登录态与验证码场景，`execute_js` 的鉴权与访问控制需部署方自行补充。
+
+## 2026-09-21：AI Browser 接口清单、元素索引与包名同步
+
+### 已补齐
+
+- [AI Browser 简介](<./docs/zh/63_ai-brower/01.md>)：操作指令集按源码重写为导航、元素交互、信息读取、状态查询、定位方式、标签页、等待、鼠标、截图与 PDF、Cookie 与存储、浏览器设置、弹窗与控制台、网络、批量共 14 组、79 个接口；结构化文本一节说明该文本由 `get_dom_text` 返回，并补充元素索引的来源、失效与 5 秒等待上限；参数说明修正为统一响应体、`id` 序列化为字符串、除 `execute_js` 外只从 query/form 取参，以及坐标与拖拽的真实参数形态。
+- [启动浏览器](<./docs/zh/63_ai-brower/06.md>)：包名统一为 `nexus.io.ai.browser`；按源码补全 `BrowserInstance` 的快照、弹窗、日志与网络字段，补全 `start` 的启动参数、视口、权限与监听挂载；新增启动类 `PlaywrightApp` 与配置类 `PlaywrightAppConfig`、统一响应体与参数绑定两节，使用示例改为完整响应体并新增 `get_dom_text` 示例。
+- [操作浏览器指令](<./docs/zh/63_ai-brower/07.md>)：新增通用约定（统一响应体、参数绑定、元素索引）与全部 79 个接口的完整 URL、参数、返回示例，覆盖超时提示、前进后退的历史记录判断、弹窗默认确认、凭据重建上下文、截图与 PDF 落盘、路由拦截与模拟、控制台日志与请求记录上限等实现细节。
+- [dom构建- 将网页可点击元素提取与可视化](<./docs/zh/63_ai-brower/04.md>)：按源码改正 `DOMState` 的 6 参数构造器与页面高度字段，把 `DomService` 改为静态入口 `buildExpression()`、`evaluate(...)`、`getClickableElements(page, ...)`、`getSimpleText(page)`，同步更新核心类说明、代码块与测试示例。
+
+### 验证范围
+
+- `grep` 确认 4 篇文档中已无旧包名与旧接口名，接口名统一为 `get_dom_text`，启动类全名为 `nexus.io.ai.browser.PlaywrightApp`。
+- 接口清单与参数名逐条比对控制器源码，共 79 个接口，分组顺序与控制器一致；未新增源码中不存在的接口或参数。
+- 本次只修改文档，未启动服务实测接口；文档不记录底层依赖版本号，也不写入本机绝对路径。
+- 未覆盖真实网站的登录态、验证码与反爬场景。
+
 ## 2026-09-15：tio-boot 核心文档检查
 
 本次扫描了 719 个 Markdown 源文件，并按本地 `nexus.io` 源码核对核心启动、路由和测试行为。扫描只检查正文内可识别的本地 Markdown 链接与中文侧边栏，不验证外部站点、页内锚点或所有示例语义。
