@@ -928,69 +928,70 @@
     ]
   },
   {
-    "text": "60_java-uni-ai-server",
+    "text": "60_ai-browser",
     "collapsable": false,
     "children": [
-      "/zh/60_java-uni-ai-server/readme.md",
-      "/zh/60_java-uni-ai-server/01.md",
-      "/zh/60_java-uni-ai-server/02.md",
-      "/zh/60_java-uni-ai-server/03.md",
-      "/zh/60_java-uni-ai-server/04.md"
+      "/zh/60_ai-browser/readme.md",
+      "/zh/60_ai-browser/01.md",
+      "/zh/60_ai-browser/02.md",
+      "/zh/60_ai-browser/03.md",
+      "/zh/60_ai-browser/03_client.md",
+      "/zh/60_ai-browser/04.md",
+      "/zh/60_ai-browser/05.md",
+      "/zh/60_ai-browser/06.md",
+      "/zh/60_ai-browser/07.md",
+      "/zh/60_ai-browser/08.md",
+      "/zh/60_ai-browser/09.md",
+      "/zh/60_ai-browser/10.md",
+      "/zh/60_ai-browser/11.md",
+      "/zh/60_ai-browser/12.md",
+      "/zh/60_ai-browser/13.md",
+      "/zh/60_ai-browser/14.md",
+      "/zh/60_ai-browser/15.md",
+      "/zh/60_ai-browser/16.md",
+      "/zh/60_ai-browser/17.md",
+      "/zh/60_ai-browser/18.md",
+      "/zh/60_ai-browser/19.md",
+      "/zh/60_ai-browser/20.md",
+      "/zh/60_ai-browser/21.md",
+      "/zh/60_ai-browser/22.md",
+      "/zh/60_ai-browser/23.md",
+      "/zh/60_ai-browser/24.md",
+      "/zh/60_ai-browser/25.md",
+      "/zh/60_ai-browser/26.md"
     ]
   },
   {
-    "text": "61_java-llm-proxy",
+    "text": "61_java-uni-ai-server",
     "collapsable": false,
     "children": [
-      "/zh/61_java-llm-proxy/readme.md",
-      "/zh/61_java-llm-proxy/01.md"
+      "/zh/61_java-uni-ai-server/readme.md",
+      "/zh/61_java-uni-ai-server/01.md",
+      "/zh/61_java-uni-ai-server/02.md",
+      "/zh/61_java-uni-ai-server/03.md",
+      "/zh/61_java-uni-ai-server/04.md"
     ]
   },
   {
-    "text": "62_java-kit-server",
+    "text": "62_java-llm-proxy",
     "collapsable": false,
     "children": [
-      "/zh/62_java-kit-server/readme.md",
-      "/zh/62_java-kit-server/01.md",
-      "/zh/62_java-kit-server/02.md",
-      "/zh/62_java-kit-server/03.md",
-      "/zh/62_java-kit-server/04.md",
-      "/zh/62_java-kit-server/05.md",
-      "/zh/62_java-kit-server/06.md",
-      "/zh/62_java-kit-server/07.md"
+      "/zh/62_java-llm-proxy/readme.md",
+      "/zh/62_java-llm-proxy/01.md"
     ]
   },
   {
-    "text": "63_ai-brower",
+    "text": "63_java-kit-server",
     "collapsable": false,
     "children": [
-      "/zh/63_ai-brower/readme.md",
-      "/zh/63_ai-brower/01.md",
-      "/zh/63_ai-brower/02.md",
-      "/zh/63_ai-brower/03.md",
-      "/zh/63_ai-brower/04.md",
-      "/zh/63_ai-brower/05.md",
-      "/zh/63_ai-brower/06.md",
-      "/zh/63_ai-brower/07.md",
-      "/zh/63_ai-brower/08.md",
-      "/zh/63_ai-brower/09.md",
-      "/zh/63_ai-brower/10.md",
-      "/zh/63_ai-brower/11.md",
-      "/zh/63_ai-brower/12.md",
-      "/zh/63_ai-brower/13.md",
-      "/zh/63_ai-brower/14.md",
-      "/zh/63_ai-brower/15.md",
-      "/zh/63_ai-brower/16.md",
-      "/zh/63_ai-brower/17.md",
-      "/zh/63_ai-brower/18.md",
-      "/zh/63_ai-brower/19.md",
-      "/zh/63_ai-brower/20.md",
-      "/zh/63_ai-brower/21.md",
-      "/zh/63_ai-brower/22.md",
-      "/zh/63_ai-brower/23.md",
-      "/zh/63_ai-brower/24.md",
-      "/zh/63_ai-brower/25.md",
-      "/zh/63_ai-brower/26.md"
+      "/zh/63_java-kit-server/readme.md",
+      "/zh/63_java-kit-server/01.md",
+      "/zh/63_java-kit-server/02.md",
+      "/zh/63_java-kit-server/03.md",
+      "/zh/63_java-kit-server/04.md",
+      "/zh/63_java-kit-server/05.md",
+      "/zh/63_java-kit-server/06.md",
+      "/zh/63_java-kit-server/07.md"
     ]
   },
   {

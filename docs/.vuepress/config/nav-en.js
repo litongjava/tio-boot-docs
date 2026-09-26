@@ -28,6 +28,8 @@ export default [
       { text: "knowlege_base", link: "/zh/56_knowlege_base/01" },
       { text: "voice-agent", link: "/zh/57_voice-agent/01" },
       { text: "ai-search", link: "/zh/58_ai-search/01" },
+      { text: "ai-coding", link: "/zh/59_ai-coding/01" },
+      { text: "ai-browser", link: "/zh/60_ai-browser/01" },
     ],
   },
   {
