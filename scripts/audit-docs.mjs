@@ -41,6 +41,10 @@ function visit(value) {
   else if (value && typeof value === 'object') Object.values(value).forEach(visit)
 }
 visit(sidebar)
+const legacyPaths = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/legacy-paths.json'), 'utf8'))
+for (const [from, target] of Object.entries(legacyPaths)) {
+  if (!fs.existsSync(path.join(docs, target))) missingNavigation.push({ redirect: from, target })
+}
 const navigated = new Set(sidebar.flatMap(section => section.children || []).filter(p => typeof p === 'string'))
 const unlistedPages = files.map(p => '/' + path.relative(docs, p).replaceAll('\\', '/'))
   .filter(p => /^\/zh\/\d+_[^/]+\/[^/]+\.md$/.test(p) && !navigated.has(p))
