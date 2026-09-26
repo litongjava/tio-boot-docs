@@ -23,10 +23,10 @@ export default [
   {
     text: "实战项目",
     children: [
-      { text: "LLM", link: "/zh/54_LLM/01" },
-      { text: "voice-agent", link: "/zh/55_voice-agent/01" },
+      { text: "java-openai", link: "/zh/54_java-openai/01" },
+      { text: "ai_agent", link: "/zh/55_ai_agent/01" },
       { text: "knowlege_base", link: "/zh/56_knowlege_base/01" },
-      { text: "ai_agent", link: "/zh/57_ai_agent/01" },
+      { text: "voice-agent", link: "/zh/57_voice-agent/01" },
       { text: "ai-search", link: "/zh/58_ai-search/01" },
     ],
   },

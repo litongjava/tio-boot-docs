@@ -1,5 +1,14 @@
 # 文档补全与维护记录
 
+## 2026-09-26：整理 java-openai、ai_agent、知识库和语音章节
+
+- 章节顺序调整为 java-openai、ai_agent、knowlege_base、voice-agent；同步目录、侧边栏、导航与历史页面跳转。
+- [java-openai](./docs/zh/54_java-openai/readme.md) 聚焦客户端使用：保留统一调用与多模态教程，迁入 Perplexity，拆出 Whisper 和 Supadata 调用说明，补充 Gitee、DeepSeek 与 Bailian 入口。
+- [ai_agent](./docs/zh/55_ai_agent/readme.md) 接收请求记录、限流、RAG、结构化检索、问答与代码执行等应用文章；保留原有业务实现和历史材料。
+- [解析评测](./docs/zh/56_knowlege_base/28.md) 放在知识库解析方案与费用对比之后，保留样本、测量口径、七模型结果与局限。
+- 修正 Perplexity 示例的旧类名与异常处理；依赖示例改用项目管理的版本属性。
+- java-openai 仓库 README 和客户端文档增加 tio-boot.cn、tio-boot.com 对应章节入口。
+
 ## 2026-09-26：AI Browser 按功能补齐源码教程并清理旧文档
 
 - 新增 [公共执行链](./docs/zh/63_ai-brower/17.md) 与 18–26 功能教程，按当前注册表覆盖全部 116 个命令；另讲解 commands 批量入口。内容包含执行机制、注册参数、Java 入口、边界及验证方法。
@@ -159,14 +168,14 @@
 | [docs/zh/46_media/03.md](<./docs/zh/46_media/03.md>) | 待定 |
 | [docs/zh/52_telegram4j/13.md](<./docs/zh/52_telegram4j/13.md>) | 处理回调查询 |
 | [docs/zh/52_telegram4j/20.md](<./docs/zh/52_telegram4j/20.md>) | Telegram-Bot-Utils 使用指南 |
-| [docs/zh/54_LLM/15.md](<./docs/zh/54_LLM/15.md>) | 待定 |
-| [docs/zh/55_voice-agent/06.md](<./docs/zh/55_voice-agent/06.md>) | eleven labs |
-| [docs/zh/57_ai_agent/09.md](<./docs/zh/57_ai_agent/09.md>) | 翻译 |
-| [docs/zh/57_ai_agent/13.md](<./docs/zh/57_ai_agent/13.md>) | 自建 获取 youtube 字幕服务 |
-| [docs/zh/57_ai_agent/15.md](<./docs/zh/57_ai_agent/15.md>) | 定向搜索 |
-| [docs/zh/57_ai_agent/16.md](<./docs/zh/57_ai_agent/16.md>) | 16 |
-| [docs/zh/57_ai_agent/17.md](<./docs/zh/57_ai_agent/17.md>) | 17 |
-| [docs/zh/57_ai_agent/18.md](<./docs/zh/57_ai_agent/18.md>) | 18 |
+| [docs/zh/55_ai_agent/28.md](<./docs/zh/55_ai_agent/28.md>) | 待定 |
+| [docs/zh/57_voice-agent/06.md](<./docs/zh/57_voice-agent/06.md>) | eleven labs |
+| [docs/zh/55_ai_agent/09.md](<./docs/zh/55_ai_agent/09.md>) | 翻译 |
+| [docs/zh/55_ai_agent/13.md](<./docs/zh/55_ai_agent/13.md>) | 自建 获取 youtube 字幕服务 |
+| [docs/zh/55_ai_agent/15.md](<./docs/zh/55_ai_agent/15.md>) | 定向搜索 |
+| [docs/zh/55_ai_agent/16.md](<./docs/zh/55_ai_agent/16.md>) | 16 |
+| [docs/zh/55_ai_agent/17.md](<./docs/zh/55_ai_agent/17.md>) | 17 |
+| [docs/zh/55_ai_agent/18.md](<./docs/zh/55_ai_agent/18.md>) | 18 |
 | [docs/zh/60_java-uni-ai-server/04.md](<./docs/zh/60_java-uni-ai-server/04.md>) | 待定 |
 | [docs/zh/62_java-kit-server/04.md](<./docs/zh/62_java-kit-server/04.md>) | 待定 |
 | [docs/zh/62_java-kit-server/05.md](<./docs/zh/62_java-kit-server/05.md>) | 待定 |
