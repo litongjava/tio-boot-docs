@@ -966,7 +966,13 @@
       "/zh/63_ai-brower/05.md",
       "/zh/63_ai-brower/06.md",
       "/zh/63_ai-brower/07.md",
-        "/zh/63_ai-brower/08.md"
+      "/zh/63_ai-brower/08.md",
+      "/zh/63_ai-brower/09.md",
+      "/zh/63_ai-brower/10.md",
+      "/zh/63_ai-brower/11.md",
+      "/zh/63_ai-brower/12.md",
+      "/zh/63_ai-brower/13.md",
+      "/zh/63_ai-brower/14.md"
     ]
   },
   {
@@ -1036,7 +1042,8 @@
     "children": [
       "/zh/67_pay/readme.md",
       "/zh/67_pay/01.md",
-      "/zh/67_pay/02.md"
+      "/zh/67_pay/02.md",
+      "/zh/67_pay/03.md"
     ]
   },
   {
