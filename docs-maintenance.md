@@ -1,5 +1,45 @@
 # 文档补全与维护记录
 
+## 2026-09-30：新增 `extract_markdown`（页面转 Markdown，表格按 GFM 表格输出）
+
+### 背景与设计
+
+读页面一直是靠 `innerText`（`get_browser_state` 的 `data.text` 与 `extract_structured_data` 的正文都取自它）。`innerText` 会把表格**按单元格逐行摊平**：表头格与数据格交替出现，列与列的对应关系只能靠位置猜，`colspan`/`rowspan` 直接丢失。这在「面积、金额、数量」这类数字上最危险 —— 读出来每个数字都在，配错列却看不出来。实测一份「农用地转用方案」表格，摊平后「农用地 0.1550 / 耕地 0.1285 / 未利用地 0」全部混在一串数字里，无法判断哪个数字属于哪一列。
+
+所以新增一条命令 `extract_markdown`：把页面（或页面上某个元素）取 HTML 后转成 Markdown，**表格输出为 GFM 表格**（表头一行、分隔行、数据各一行），行列关系变成显式的。它不取代 `extract_structured_data`——只想要一段纯文本时后者更省。
+
+设计上的三个取舍：
+
+- **转换放在服务端**，用工程已有的 HTML 解析与 HTML→Markdown 转换两个库完成，调用方拿到的就是 Markdown，不需要自己在客户端拼转换逻辑。
+- **`selector` 可选**：不传转整个 `<body>`；传了只转命中的第一个元素。政府与后台页面普遍是「很长的导航 + 一小块正文」，只要那张表时传选择器能省掉整页噪声（实测同一页整页 37031 字符、只取目标表 2360 字符）。
+- **`frame` 与选择器类命令同一套取值**（序号或 URL / name 子串），选择器落在跨域 iframe 里时照样能用。
+
+### 源码改动
+
+- 新增工具类 `HtmlMarkdown`（`dom/service`）：先用 jsoup 把 HTML 解析成规整 DOM，摘掉 `script` / `style` / `noscript` / `template` / `head` 与本工程自己画的高亮层（`playwright-highlight-container`），再交给转换器，最后压掉成片空行与行尾空格。
+- `PlaywrightService` 新增 `extractMarkdown(...)`：取 `document.body.innerHTML` 或命中元素的 `outerHTML`，转换后按 `maxChars`（默认 20000，与 `extract_structured_data` 的正文上限一致）截断，回执给出 `markdown` / `length`（截断前全长）/ `truncated` / `source` / `url` / `title`，`includeLinks` 时另附链接清单。
+- `CommandTable` 注册 `extract_markdown`（「其它」组，与 `extract_structured_data` 相邻）；`ActionService` 的**伪故障可重发名单**加入它（只读命令）。
+- 工程新增两个依赖：HTML 解析与 HTML→Markdown 转换。
+- 把链接清单的取值抽成 `linksIn(Frame)`，`extractStructuredData` 改用它（主 frame，行为不变），避免同一段脚本写两份。
+
+### 已补全
+
+- [正文提取与上层结构化处理](./docs/zh/60_ai-browser/17.md)：开篇改为两条命令的分工；新增「转成 Markdown」整节 —— 参数表、返回字段表、GFM 输出样例、四处边界（读的是 DOM 不是像素、不自动展开折叠内容也不拼接所有 frame、判据是 `truncated` 不是「看起来到结尾了」、选择器没命中会失败而不是静默返回空），并附 `extract_markdown`、`extractMarkdown`、`HtmlMarkdown` 三段当前源码与三处取舍的理由（为什么先过一遍 jsoup、高亮层为什么必须真的删掉、转换器为什么每次新建）。
+- [DOM、页面状态与元素读取](./docs/zh/60_ai-browser/19.md)：命令到服务的映射表补 `extract_markdown` 一行；逐命令源码新增 `extract_markdown` 小节（注册 + 服务实现 + `HtmlMarkdown`）；**改正一段过时结论** —— 原文写「旧的『把网页转 Markdown 再请求大模型』属于另一种设计，不是当前执行链」，现在转换已是注册命令，改为如实说明两条命令只差「纯文本 / Markdown」。
+- [命令清单](./docs/zh/60_ai-browser/13.md)：新增 `extract_markdown`，「页面读取与差异」由 5 改为 6，并在「按场景查方法」补一行「要读页面上的表格（数字别配错列）」。
+- 方法计数由 116 改为 117：13、14、04、26、27 各处的表述与计数同步；[本章索引](./docs/zh/60_ai-browser/readme.md)「按问题查阅」补一行指向正文提取。
+- 浏览器工程侧技能文档同步（主技能文档的命令表、症状表、命令计数，以及 `references/commands.md` 与 `references/reading-pages.md` 的参数手册与「表格为什么读出来会散架」一节）；这三处由工程内的技能文档一致性测试把关，漏一处构建期就会失败。
+
+### 验证范围
+
+- 新增纯字符串单元测试 `HtmlMarkdownTest` 8 项：表格转 GFM（断言**表头在同一行且有分隔行**，而不只是「文字还在」）、`colspan` 不让后续列错位、`script` / `style` / `noscript` 不进正文（用一个内联 JSON 做反例）、高亮层被摘掉、单个元素的 `outerHTML` 片段能转、空输入返回空串、成片空行压成一个、行尾空格被去掉。
+- 命令表的缺参数守卫用例抓到一处遗漏：`extract_markdown` 的参数全是可选的，必须登记进「没有缺必填参数这一说」的豁免名单，否则构建期失败。已补。
+- 浏览器工程全量测试 307 项通过（0 失败 / 0 错误 / 7 跳过）。
+- **跑全量测试前要先停掉开发态服务**：两个 `Temp*` 诊断用例会用托管 profile 另起 Chrome，此时会失败在「浏览器启动后立即退出」，原因是同一份 profile 上已经有一个浏览器在跑。这不是代码回归，是运行环境冲突。
+- 真实站点实测（有头本机 Chrome）：在民权县人民政府网站的一份「农用地转用方案」页面上，先 `get_element_count` 确认有 2 张表，再用 `extract_markdown` 传选择器只取目标表，转出 22 行 GFM 表格，农用地 0.1550、耕地 0.1285、未利用地 0、补充耕地 0.1285 等数字各归其列；不传选择器时整页 37031 字符并报告 `truncated`。
+- `node scripts/audit-docs.mjs`：**这次不是全 0，但问题都不在本次改动里**。脚本报 `missingLinks` 1 条（`docs/zh/36_integration_thirty_party/07.md` 里把 SMTP 主机名 `smtp.larksuite.com` 当成了本地链接）、`unlistedPages` 569 条、`chapterErrors` 113 条。逐条核对：这些条目**没有一条命中本次改过的文件**（17、19、13、04、14、26、27、readme 与本文）。`chapterErrors` 的判据是「目录名的数字前缀是否等于它在排序中的位置」，而 `docs/zh` 下 130 个章节目录里有 112 个编号重复（例如同时存在 `19_aio` 与 `19_redis`、`20_mongodb` 与 `20_netty`），`60_ai-browser` 只是因为前面的重复被整体错位才出现在名单里 —— 这是仓库既有的编号漂移，与本次改动无关，也不该由这次改动顺手「修」掉（那会牵动 60 之后的全部章节号、侧边栏与历史跳转）。
+- 新增行不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径。
+
 ### 版本对齐（2.1.6）
 
 框架源码 revision 已是 `2.1.6`，而 t-io 与 admin 两套制品在本机仓库里只到 `2.1.5`（`2.1.6` 目录里只剩下载失败的 `.lastUpdated` 标记），项目依赖链也锁在 `2.1.5`。既然 `2.1.5` 已发布，就统一升到 `2.1.6`、不再覆盖已发布版本：
