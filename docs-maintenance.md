@@ -1,5 +1,160 @@
 # 文档补全与维护记录
 
+### 版本对齐（2.1.6）
+
+框架源码 revision 已是 `2.1.6`，而 t-io 与 admin 两套制品在本机仓库里只到 `2.1.5`（`2.1.6` 目录里只剩下载失败的 `.lastUpdated` 标记），项目依赖链也锁在 `2.1.5`。既然 `2.1.5` 已发布，就统一升到 `2.1.6`、不再覆盖已发布版本：
+
+- `t-io`：整仓 `mvn -o -DskipTests install`，9 个模块全部以 `2.1.6` 安装（含本次改动的 `tio-utils`）。
+- `tio-boot-admin`：父 pom 的 `revision` 与 `tio-boot.version` 由 `2.1.5` 改为 `2.1.6`，三模块安装为 `2.1.6`。
+- 浏览器服务：`playwright-server/pom.xml` 的 `tio-boot-admin.version` 改为 `2.1.6`；`mvn dependency:tree` 确认 `tio-boot-admin-web` / `tio-core` / `tio-http-common` / `tio-http-server` / `tio-boot` / `tio-utils` 全部解析到 `2.1.6`；顺带清掉了 `2.1.6` 目录里遗留的 `.lastUpdated` 标记。
+- 本地仓库里 `2.1.5` 那套保持发布时的原样，不再被覆盖。
+- **顺带修掉一处测试抖动**：升到 `2.1.6` 后跑全量时，有两条用例偶发失败，报的全是 Playwright 事件泵的伪故障（`Object doesn't exist: request@… / response@…`，就是服务端一直在识别的那类），而同一条用例单独跑三次都过 —— 属于测试基础设施的问题：**用例里的裸 `page.navigate(..)` / `page.evaluate(..)` 没有享受到生产代码那层伪故障防护**。新增测试侧助手 `TestFlakeGuard`（只对这类伪故障重发，其它异常原样抛出，绝不掩盖真实断言失败），并接到 6 个用例类的 `open()` / `openMain()` 与那条响应关联用例上。修完连跑两次全量都是 292 项 0 失败 0 错误。
+
+## 2026-09-27：本机 Chrome 改走 CDP，新增独立 CDP 客户端
+
+### 背景与设计
+
+本机 Google Chrome 原先走 Playwright 的持久化上下文（管道调试），只有在「用户自己那份 Chrome profile」这一个场景下才另外走 CDP。这一轮把 Chrome **一律改成 CDP**：自己拉进程 + 远程调试端口 + 协议接入。三条理由，按重要性排：
+
+- **不再要求「先关掉你正在用的 Chrome」**。CDP 这条路用的是**托管 profile**，不是用户日常那份 `User Data`，两者互不抢目录；而管道调试从 Chrome 136 起在默认用户数据目录上被拒绝，那条路要用真实 profile 就得先关浏览器并放开机器策略。
+- **视口语义天然正确**。这条路不套视口模拟，页面尺寸一直跟着真实窗口走，正好是默认想要的「所见即所得」，不必再靠「不给默认视口」绕。
+- **创建期参数改为自己补**。持久化上下文有一批创建时才能给的选项（下载目录、权限、UA、HTTP 认证）；走 CDP 之后没有现成入口，改为用协议命令补，**补不上的必须出现在回执里**而不是静默退化。
+
+内置 Chromium 与 Firefox **不动**：内置 Chromium 不需要「本机安装」这个概念，开发态还没有内嵌可执行文件（交给 Playwright 自己解析），换成自己拉进程只会多一份要维护的启动逻辑。
+
+为此新增一个**独立协议客户端**（包名 `nexus.io.chromium.cdp`）。选自己实现而不是引现成库，是因为现成选择分两类都不合适：一类是多年没有发版的社区客户端；另一类是按浏览器里程碑逐个发版的协议绑定 —— 用它等于把「升级浏览器」和「升级依赖」绑在一起，而这个工程本来就自己内嵌浏览器、自己控制版本。这个客户端只用 JDK 自带的 WebSocket 客户端加上工程已有的 JSON 工具，**没有新增依赖**，而且**不 import 工程内任何其它包**，可以整包拿走单独用。
+
+调试端口刻意**不写 9222**：它不是浏览器的内置默认值，只是各类工具约定俗成的端口；跟着用会双向互相抢（别的工具按默认值连到我们的浏览器上，或者别人手工起的调试实例占着端口与 profile 让我们的启动失败）。默认值是 0，由浏览器自己挑空闲端口。
+
+### 源码改动
+
+- 新增包 `nexus.io.chromium.cdp`：`CdpConnection`（WebSocket 传输、命令—回执配对、事件路由、失败分型）、`CdpSession`（按 target 分会话）、`CdpBrowser`（版本、target 与页签、会话挂载、下载目录、权限、自动挂载并放行）、`CdpPage`（导航与等待、求值、截图、UA 覆盖、原生弹窗）、`CdpTarget`、`CdpException`、`CdpEventListener`。
+- 新增 `service/CdpLaunchSupport`：启动时用协议补下载目录与权限，并把浏览器亲口报的身份与补设置结果写进回执。两项都是**尽力而为**：失败只记警告并进 `notes`，绝不让 `start` 失败。
+- `PlaywrightService`：本机 Chrome 一律走 `launchOverCdp`；新增 `cdpArgs` 按配置决定调试端口、`cdpDebugPort()`；共享浏览器上新增 CDP 身份字段；`start` 回执新增 `data.browser.cdp`。
+- `ChromeBrowser`：新增 `cdpManagedProfileDir()` 与两个配置键 `browser.chrome.cdpProfileDir`、`browser.chrome.debugPort`；`BrowserChoice.profileDir()` 让 `chrome` 解析到这条路的目录（「启动要不要重建浏览器」的判断依赖它，否则每次 `start` 都会重建）。
+- `launchOverCdp`：`--profile-directory` 只在用用户数据目录时才传（托管 profile 下传它只会多一层同名子目录）。
+
+**顺带修掉两处「源码与文档不符」**，两处都是这一轮改动引入的：
+
+- `get_config` 的 `profileDir.resolved` 固定报「按端口派生的托管目录」。浏览器类型为 `chrome` 时那是错的 —— `start` 回执报的是 `shared-default`，而这里报 `shared-<端口>`，排查「配置看着对、登录态却没了」时正好被带偏。改为**按这次实际会落到的类型解析**，并新增 `forType` 与 `cdpConfigured` 两个字段。
+- `set_credentials` 的失败文案把原因说成「用用户自己的 Chrome profile」，并在 Edge 分支里建议「改用 `browser=chrome`」。Chrome 现在也走 CDP，那个建议已经失效、原因也不再成立。改为如实说明这条路的原因，并建议 `browser=chromium` 或 `browser=firefox`。
+
+### 已补全
+
+- [源码教程：Chrome 走 CDP 与 CDP 客户端](./docs/zh/60_ai-browser/27.md)（**新增页**）：为什么本机 Chrome 走 CDP、启动链路（含从 stderr 读调试地址与「拒绝」和「提前退出」的区分）、独立客户端的类型分层与「为什么自己写」、三个关键机制（id 配对 / 按 target 分会话与跨域 iframe / 失败分型里「超时不能当成没生效」）、创建期参数怎么补（含**权限名不是 Playwright 那一套**这个静默坑，以及自动挂载必须放行）、回执新增字段、profile 为什么不再按端口派生、排障（退出码 21 与「没有输出」的真实原因、9222 的由来与害处、`set_credentials` 不可用）、自测怎么自证。
+- [浏览器、profile 与登录态](./docs/zh/60_ai-browser/05.md)：`start` 的浏览器表新增「启动方式」一列并写明 CDP 与持久化上下文的分工；第三节由「默认按端口分开」重写为两节（本机 Chrome 固定 `shared-default` / 其余按端口派生），并写清从旧目录切过来**登录态不会跟着走**；第四节由「用用户自己那份 Chrome profile（CDP 模式）」重写为「换一份 profile」，说明该开关只管「用哪份 profile」、不管「走哪条路」；回执字段表补 `cdp` 并更新 `note`、`mode` 说明；第六节补调试端口不要用 9222 的提示。
+- [配置项与运维自省](./docs/zh/60_ai-browser/12.md)：新增 `browser.chrome.cdpProfileDir` 与 `browser.chrome.debugPort` 两行，`browser.profileDir` / `perPort` 两行标明只影响内置 Chromium 与 Firefox；可配项计数 36 改为 38；`get_config` 样例补 `forType` / `cdpConfigured` 并写明 `resolved` 与 `start` 回执同值、`chrome` 时不是 `shared-<端口>`；「停服务前先关任务」一节补上 CDP 那条路特有的孤儿浏览器症状（退出码 21 + 没有输出）。
+- [本章索引](./docs/zh/60_ai-browser/readme.md)：第四阶段目录补 27，并在「按问题查阅」表加一行指向它。
+- 中文侧边栏登记新页（`audit-docs.mjs` 对未登记的章节页会直接判失败）。
+
+### 验证范围
+
+- 协议客户端自测 `CdpClientTest` 7 项通过：**不依赖工程其它代码**（自己探测浏览器可执行文件、自己挑空闲端口、自己拉进程、自己等端口就绪，用临时 profile 不碰开发机登录态），覆盖连接与版本、导航与标题、`document` 求值、**异步表达式求值**、截图字节是合法 PNG、两个页签会话不串台、target 列表解析、页面内异常与协议级拒绝的分型、连接对象自述存活状态；另含一条反向用例，确认 **Playwright 的权限名会被协议拒绝**（`Unknown permission type`），把这个后果静默的错误钉住。
+- 纯单元测试 `ChromeBrowserTest` / `BrowserChoiceTest` / `BrowserEngineTest` 共 41 项通过（0 失败 0 错误 2 跳过）。
+- `BrowserResponseIntegrationTest` 中两条断言随行为变更由 `managed` 改为 `cdp`。
+- 端到端实测（有头 Chrome，`mode=cdp`、`profileDir` 为本机 Chrome 那一条）：确认回执里 `data.browser.cdp.product` 与浏览器自身版本一致、`notes` 显示下载目录与权限均已补上；并在一个**需要登录**的真实站点上验证了登录态复用与页面数据读取（用同一份托管 profile 时登录态仍在，换 profile 后为空 —— 与文档第三节的说明一致）。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，未登记页面 0，章节错误 0。
+
+## 2026-09-27：框架级全局开关 `tio.json.skipNull`（不输出 null 值字段）
+
+### 背景与设计
+
+`/playwright/command` 的每条回执都带 `"msg":null`、`"error":null`，批量回执里每一步都带一份。框架原先只提供**按调用点**的能力（`Json.getSkipNullJson()` / `JsonUtils.toSkipNullJson()`），没有配置项。这一轮把开关做进框架，同时把"影响面"这件事在文档里讲清：
+
+- **开关放在框架**：`tio.json.skipNull`，**默认 false**，所以不配置的项目行为一点不变；每个项目一份配置，打开只影响自己那一个进程（各自是独立进程、各自一份静态状态）。
+- **启动期也能决定**：配置项只在默认工厂静态初始化时读一次，项目要到自己的启动钩子里才知道该不该开。所以框架补了 `Json.installSkipNull()` / `installSkipNull(boolean)` / `uninstallSkipNull()`：无论工厂有没有建好都能立刻切换；`uninstall` **只还原"由代码装上的那一层"**，还的是安装之前那个工厂实例（provider、日期格式等之前的选择不会被抹掉）。`Json.isSkipNull()` 按**输出表现**判断当前状态，对四种实现都成立。
+- **包装只改输出**：包装工厂只覆盖 `getJson()`，`parse*` 一律委托给原工厂 —— 跳过 null 只该管写出去的东西。
+- **影响范围是"这个进程"**：同一个 JVM 里被依赖进来的模块（响应体、controller 返回值、swagger、session、以及 `Http` / Telegram / 企业微信 / 飞书通知这类**出站请求体**）都会跳过 null。文档里明确给出取舍：只想改响应体就按调用点用 `getSkipNullJson()`，不要打开全局开关。
+- 浏览器服务在 `app.properties` 里打开该开关，并用项目自己的键 `browser.json.skipNull`（默认 true、优先级更高）在启动时对齐框架开关、把结果打进启动日志（`响应跳过null=`）。
+
+### 源码改动
+
+- 框架 `tio-utils`：`Json` 新增 `KEY_SKIP_NULL`（`tio.json.skipNull`）、`installSkipNull()` / `installSkipNull(boolean)` / `uninstallSkipNull()` / `isSkipNull()`，`buildFactory()` 建默认工厂时按配置包一层"只改输出"的工厂；新增测试 `JsonSkipNullConfigTest` 6 项（配置键、输出与开关一致、`isSkipNull` 如实回报、解析路径不受影响、显式安装幂等、卸载精确还原）。默认工厂静态初始化只发生一次，所以用例以"进用例时的实际表现"为基准，两种配置下都能跑。
+- 浏览器服务：`JsonResponses` 收敛成"读项目配置 + 调框架开关 + 回报状态"，不再自己造第二套包装工厂。
+
+### 已补全
+
+- [Json 转换](./docs/zh/32_tio-utils/05.md)：「不输出 null 值字段」一节重写为三种方式（按调用点 / 全局配置项 / 启动期代码打开），补 `installSkipNull` / `uninstallSkipNull` / `isSkipNull` 的语义与"只还原自己那一层"，并写清影响范围是这个进程、以及同框架下多项目互不影响的理由。
+- [统一命令接口与人机协作](./docs/zh/60_ai-browser/04.md)：响应样例改为不带空字段的形态，新增「响应里不输出 null 值字段」小节。
+- [配置项与运维自省](./docs/zh/60_ai-browser/12.md)：新增 `tio.json.skipNull`（框架级）与 `browser.json.skipNull`（项目级、优先级更高）两行。
+
+### 验证范围
+
+- 框架单元测试：`JsonSkipNullConfigTest` 6 项，分别在**不传参**与 `-Dtio.json.skipNull=true` 两种运行下各跑一遍，都通过（覆盖开关两档）；同模块既有的 `JsonUtilsTest` 同时通过（默认行为未被改变）。
+- 端到端实测（`scripts/verify/verify-framework-skip-null.ps1`，直接改 `app.properties` 里的框架键，两档各重启一次）：`tio.json.skipNull=false` 时 `/playwright/health` 回 `{"data":{"name":"playwright-server"},"ok":true,"msg":null,"code":1,"error":null}`；`=true` 时回 `{"data":{"name":"playwright-server"},"ok":true,"code":1}`；恢复原配置后仍为不带 null 的形态。
+- 应用单元测试：`JsonResponsesTest` 5 项（配置键、默认开、装上后不输出 null、关掉时输出带 null、项目键优先于框架键、`active()` 回报事实）与 `DefaultJsonNullBaselineTest` 1 项（不加载接线类的独立 JVM 基线）；`playwright-server` 全量 292 项通过（0 失败 0 错误 9 跳过）。
+- 本地仓库版本对齐：t-io 与 admin 全部升到 `2.1.6`，项目依赖链同步（细节见上一条「版本对齐（2.1.6）」）；`2.1.5` 那套保持发布时的原样。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，未登记页面 0，章节错误 0。
+
+## 2026-09-27：响应不输出 null 值字段（项目级，不动框架默认行为）
+
+### 背景与判断
+
+`/playwright/command` 的每条回执都带 `"msg":null`、`"error":null`，批量回执里每一步都带一份。框架提供的是**按调用点**的能力（`Json.getSkipNullJson()` / `JsonUtils.toSkipNullJson()`），**没有**全局开关。核对源码后确认这不是遗漏：默认工厂是静态、进程级的，而同一个框架下会同时跑多个项目，把它改成"全局跳过 null"会替别的项目做决定（必须显式传 null 的接口会直接坏掉）。所以这件事由**各自的项目**在启动时装自己的包装工厂：**影响范围限于本进程**（别的项目、别的进程不受影响），换来的是"响应体不输出 null"。
+
+**这条边界必须写进文档**：默认工厂是静态字段，同一个 JVM 里被依赖进来的框架模块也会跟着变 —— 响应体、controller 返回值、swagger 文档、session 存值、以及**出站请求体**（`Http` / Telegram / 企业微信 / 飞书通知等工具都用 `JsonUtils.toJson(..)` 拼报文）都会跳过 null。浏览器服务不调用这类出站工具，所以可以接受；只想改响应体的场景应当改用响应出口的 `Json.getSkipNullJson()`，而不是动默认工厂。
+
+### 源码改动
+
+- 浏览器服务新增 `nexus.io.ai.browser.json.JsonResponses`：把**当前**默认工厂包一层，只覆盖 `getJson()` 让它返回跳过 null 的实现，`parse*` 全部委托给原工厂（跳过 null 只该影响"写出去的东西"）。包装的是 `Json.getJsonFactory()`，所以 `tio.json.provider` 选的实现不会丢。
+- `PlaywrightAppConfig.config()` 启动时调用一次，并把结果写进启动日志（`响应跳过null=`），配置有没有生效一眼可见。开关 `browser.json.skipNull`，默认 `true`。
+- 框架源码未改动（曾按"全局开关"方向改过 `Json.buildFactory()`，确认会波及其他项目后**已完整还原**；本地仓库里那份 `tio-utils` 制品是用还原后的源码重新装回的，并已核对编译产物里不含新增成员）。
+
+### 已补全
+
+- [Json 转换](./docs/zh/32_tio-utils/05.md)：新增「不输出 null 值字段」一节 —— 按调用点的两种用法、为什么框架**刻意不**提供全局开关、项目级包装工厂的完整写法与三个要点（包装"当前"工厂、解析必须委托、只影响本进程），并指向浏览器服务这个实例。
+- [统一命令接口与人机协作](./docs/zh/60_ai-browser/04.md)：响应样例改为不带空字段的形态，并新增「响应里不输出 null 值字段」小节，讲清「字段不在 == 为 null」对读回执的一方的两个影响（判断成败只认 `ok`/`code`；`browser.json.skipNull=false` 可恢复）。
+- [配置项与运维自省](./docs/zh/60_ai-browser/12.md)：新增 `browser.json.skipNull` 一行。
+
+### 验证范围
+
+- 单元测试：新增 `JsonResponsesTest` 5 项（装上后不输出 null、**解析路径不受影响**、显式传 `false` 是空操作且不偷换工厂、重复装不会层层包装、配置项名）与 `DefaultJsonNullBaselineTest` 1 项（**不加载工具类**的独立 JVM 基线：默认行为仍带 null，证明改动只发生在本项目装上包装之后）；`playwright-server` 全量测试通过（见下条）。
+- 端到端实测（`scripts/verify/verify-skip-null.ps1` 两档各跑一次）：`browser.json.skipNull=false` 时 `/playwright/health` 回 `{"data":{"name":"playwright-server"},"ok":true,"msg":null,"code":1,"error":null}`；默认（不配置）时回 `{"data":{"name":"playwright-server"},"ok":true,"code":1}`。`/playwright/command` 的失败回执与 `/playwright/config` 同样不再带空字段。
+- 技能文档同步：主技能文档与 `protocol.md` 的响应样例改为不带空字段，并写明判断成败不要用「字段在不在」；`batch-and-js.md` 的批量回执样例去掉了每步的 `"msg":null`。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，未登记页面 0，章节错误 0。
+
+## 2026-09-27：键盘输入分流、按调用点重发、canvas 文字诊断
+
+### 源码改动（本轮文档跟着源码走）
+
+- `send_keys` 现在按**输入形态**分流：单个键名与「若干个修饰键 + 恰好一个键」的组合仍走 `press`，其余（整段文本、中文、空格）走逐字符 `type`。起因是实测里 `keys:"CRCL"` 会直接得到 `Unknown key`，而另外两条路都要先拿到选择器或元素索引。回执新增 `mode`（`press`/`type`）与 `keys`/`text`。
+- `retryOnSpurious` 从「只有 `execute_js` 认」放开为**按调用点声明**：安全名单仍决定默认行为（只读、幂等导航、覆盖式落盘、等待自动重发；动作类一次都不重发），但调用方可以显式声明这一次重发无害。起因是重度 SPA 上同一个选择器一会儿成功一会儿报伪故障，而调用方在只读诊断确认没生效后仍无路可走。
+- `get_element_text` 新增 `selector`（与 `index` 二选一）与 `canvasOnly`，回执新增 `target`。canvas 通常不进快照（不可交互 → 没有索引），只能按选择器够到；`canvasOnly:true` 时读不到文字会追加 `canvasOnly` 与 `hint`，把「不是选择器错了」直接说清。
+- 客户端 `dsb run` 增加 `--retry-on-spurious`（原先只有 `js` 有）。
+
+### 已补全
+
+- [点击、输入、键盘和鼠标](./docs/zh/60_ai-browser/20.md)：键盘与鼠标一节改写为「输入形态分流」与「按住不放读图上一点」；`send_keys` 补分流判据表、`typesAsText` 源码片段、更新后的 `sendKeys` 实现与参数表；`mouse_click` 补「坐标点击不依赖 DOM 节点句柄，是选择器频繁撞伪故障时的稳定退路」。
+- [DOM、页面状态与元素读取](./docs/zh/60_ai-browser/19.md)：`get_element_text` 更新为 `index`/`selector` 二选一 + `canvasOnly` 的当前实现，并说明为什么这个命令要收选择器（canvas 没有索引）与诊断的边界（诊断取不到不影响文字返回）。
+- [公共执行链](./docs/zh/60_ai-browser/14.md)：重发策略段落改写，并同步 `ActionService.execute` 的当前源码（动作类失败提示新增「确认没生效后可带 `retryOnSpurious` 再发」、只读失败提示改为「可以再发一次」并新增 `retriedByCallerRequest`）。
+- [表单与多层弹窗排障](./docs/zh/60_ai-browser/08.md)：补动作类命令的处置顺序「先读 → 确认没生效再带开关重发 → 仍不行改用坐标点击」，并强调默认行为未变。
+- [源码教程：等待条件与 JavaScript 执行](./docs/zh/60_ai-browser/21.md)：说明 `retryOnSpurious` 是按调用点声明、对任何命令都有效，命令名只决定默认行为。
+- [客户端](./docs/zh/60_ai-browser/03_client.md)：`--retry-on-spurious` 说明改为 `js` 与 `run` 两个子命令都有，并写明动作类要先确认没生效。
+
+### 验证范围
+
+- 单元测试：`playwright-server` 全量 286 项通过（0 失败 / 0 错误 / 9 跳过）。本轮新增或改动 6 项，覆盖：动作类默认不重发、声明后重发到成功、声明后到上限仍如实失败、文本走打字且真的落进输入框、键名与文本的分流判据（含 `Control+A+B` 不算组合键）、`canvas` 只读不到文字时才给诊断。
+- 真实站点实测：在行情图表页上，`send_keys -p keys=CRCL` 回 `mode:"type"` 且搜索框真的收到该文本、下拉结果随之刷新；`get_element_text -p selector="[data-qa-id='pane'] + div canvas" -p canvasOnly=true` 回 `text:""`、`canvasOnly:true`、`hint` 与 `target`（这正是本轮「时间轴日期读不出来」的根因，且该 canvas 确实没有索引）。
+- 技能文档一致性：`SkillDocConsistencyTest` 9 项通过；仓库技能新增一份站点无关的经验手册（网页数据优先取文本），主技能文档与分册同步了新增参数与两条症状（图表文字读不到、按住读数据点）。
+- `node scripts/audit-docs.mjs`：本地链接缺失 0，中文侧边栏缺失 0，未登记页面 0，章节错误 0。
+- 新增行不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径。包名与源码路径沿用本教程既有写法。
+
+## 2026-09-27：快照索引判据改为结构变更 + 逐元素重校验
+
+### 已补全
+
+- [DOM、页面状态与元素读取](./docs/zh/60_ai-browser/19.md)：重写「快照一致性与索引有效性」一节，说明判据为什么从「页面变更计数」换成**结构变更 + 逐元素重校验** —— 索引解析成的是位置型 XPath（只有同级序号、没有 class 谓词），所以文字改写与 class/style 变化不影响索引，只有增删元素才会挪动同级序号。补上 `strictSnapshot` 参数、增量变更计数（`snapshotMutations` / `snapshotStructuralMutations` / `snapshotContentMutations`）与 `snapshotNote` 字段。
+- [DOM、页面状态与元素读取](./docs/zh/60_ai-browser/19.md)：`get_browser_state` 的参数表与两处源码片段同步为带 `strictSnapshot` 的当前签名。
+- [客户端](./docs/zh/60_ai-browser/03_client.md)：补上三处与服务端一致的行为 —— `--select` 对**失败响应同样生效**（批量里某一步失败时 `data.results` 仍在，`--select data.results.N.…` 正是「只看失败那一步」的用法，只有路径不存在才退回整封）；参数文件与 `batch` 都认**整个请求体**；`js` 新增 `--retry-on-spurious`（只读脚本的重发开关）。
+
+### 验证范围
+
+- 源码核对：`snapshotIssues` 现在按 `strict` 选择比较 `mutations` 还是 `structuralMutations`，并新增 `element_identity_changed` 重校验；`snapshotStamp` 把 `childList` 中增删元素节点计为结构变更、其余计为内容变更；`getBrowserState` 增加 `strictSnapshot` 重载，`CommandTable` 同步读取该参数。
+- 单元测试：`BrowserConsistencyTest` 9 项通过，其中新增三项分别覆盖「纯内容变动不作废索引」「`strictSnapshot` 恢复旧判据」「同一位置换了标签必须作废」。
+- 实测：在持续刷新的实时行情页上，修复前每次按索引操作都得到「当前没有页面快照」；修复后同一页面返回 `indicesUsable:true`、`snapshotStructuralMutations:0`、`snapshotContentMutations:1`，按索引点击回执 `changed:true`。
+- 配置读取：`ChromeBrowser` 与 `WindowsOcr` 原先把 `System.getenv` 当作环境变量入口，会绕过 [配置与运维](./docs/zh/60_ai-browser/12.md) 写明的优先级链（配在配置文件里不生效）。两处已改为 `EnvUtils.get`，代码与文档一致。
+- 技能文档与服务端的命令表一致性由构建期测试校验；本次未新增命令，只新增了一个 `get_browser_state` 参数，主技能文档与分册已同步。
+
 ## 2026-09-26：补回浏览器原理与实现代码
 
 - 在智能体接入篇恢复状态评估、任务记忆、下一步目标与动作协议，并加入宿主适配代码。

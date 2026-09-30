@@ -43,6 +43,8 @@ python client/dsb.py --id 1001 run input_text_by_selector --params @params.json
 
 -p k=v 由客户端解析常见数字、布尔和 JSON 值。复杂对象、中文脚本或多行文本适合放在文件中。
 
+参数文件里写**整个请求体**也可以：文件内容为 `{"id":1001,"method":"request_human_input","params":{…}}` 时，客户端按 `method` 字段识别，只取 `params` 那一层再发送。留档文件、文档示例、别人贴过来的载荷都可以原样存下来直接使用。`batch` 同样认三种写法：纯数组、`{"commands":[…]}`、整个请求体。
+
 ### 三种“精简”不是一回事
 
 | 选项 | 行为 |
@@ -52,6 +54,8 @@ python client/dsb.py --id 1001 run input_text_by_selector --params @params.json
 | --select data.fields | 在客户端按字段路径投影结果 |
 
 --diagnostics 与 responseMode 同属请求信封，不放在 params 内。需要完整回执时使用 --json，并按任务需要选择字段。
+
+--select 对**失败响应同样生效**：批量回执里只要有一步失败、整批 `ok` 就是 false，但 `data.results` 依然完整返回，因此 `--select data.results.N.…` 正是「只看失败那一步」的用法。只有路径确实不存在时（例如单条命令没有 data.results）才退回打印整封，并在 stderr 说明。
 
 ## 3. 批量执行与异步查询
 
@@ -125,9 +129,12 @@ Client.command 的业务失败不抛异常，调用方检查 response.ok、msg�
 ```shell
 python client/dsb.py upload data/sample.txt
 python client/dsb.py --id 1001 js @scripts/page-title.js
+python client/dsb.py --id 1001 js @scripts/page-title.js --retry-on-spurious
 ```
 
 upload 将本地文件暂存到服务端；它本身不会选择网页里的文件输入框。读取返回的 path 后，再调用 upload_file，参数见 [文件操作](./22.md)。js 通过 execute_js 执行页面脚本，读取与修改页面的脚本应按任务需要区分，不能对修改操作盲目重试。
+
+--retry-on-spurious 对应服务端的 retryOnSpurious（见[防重复提交](./08.md)与 [JavaScript 执行](./21.md)）：撞上事件泵投递的对象释放异常时，由服务端自动重发一次。`js` 与 `run` 两个子命令都有这个开关 —— `js` 用于只读脚本，`run` 用于任何命令（包含动作类）。**动作类要先确认上一次没生效再加**：重发可能等于重复提交；服务端的默认行为是动作类一次都不重发，只有带上这个开关才放行。
 
 ## 6. PowerShell 客户端
 
