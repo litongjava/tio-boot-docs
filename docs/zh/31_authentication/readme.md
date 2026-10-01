@@ -1,0 +1,15 @@
+# 31_authentication
+
+本章介绍 Token、用户数据、匿名登录、个人中心和权限控制。依赖外部邮件、短信或身份提供方的完整流程，见[第三方登录注册](<../32_third-party-auth/readme.md>)。原有基础认证文章编号保留。
+
+## 文章
+
+- [FixedTokenInterceptor](<./01.md>)
+- [TokenManager](<./02.md>)
+- [数据表](<./03.md>)
+- [匿名登录](<./04.md>)
+- [个人中心](<./06.md>)
+- [权限校验注解](<./14.md>)
+- [Sa-Token](<./15.md>)
+- [sa-token 登录注册](<./16.md>)
+- [`StpUtil.isLogin()` 源码解析](<./17.md>)

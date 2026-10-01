@@ -36,8 +36,8 @@ assert.equal(sections.length,3);
 assert.equal(splitSections(example.replaceAll('\n','\r\n')).length,3);
 assert(sections[1].content.includes('## still code\n```'));
 const llms=read('llms.txt');
-assert(llms.includes('## zh/19_redis'));
-assert(llms.includes('## zh/23_kafka'));
+assert(llms.includes('## zh/28_redis'));
+assert(llms.includes('## zh/30_kafka'));
 assert(!llms.includes('## zh\n'));
 for(const m of llms.matchAll(/\]\((https?:\/\/[^)]+)\)/g))assert(fs.existsSync(local(m[1])),m[1]);
 const redirects=JSON.parse(read('ai/redirects.json'));
@@ -53,6 +53,11 @@ for(const [from,to] of Object.entries(redirects)) {
   assert(html.includes(newUrl.replaceAll('&','&amp;')),oldHtml);
   redirectCount++;
 }
-assert(read('_redirects').includes('/zh/22_MQ/01.html /zh/22_mq/01.html 301'));
+const redirectRules=read('_redirects').trim().split('\n');
+assert(redirectRules.includes('/zh/22_MQ/01.html /zh/29_mq/01.html 301') || redirectRules.includes('/zh/22_MQ/* /zh/29_mq/:splat 301'));
+assert(redirectRules.filter(rule=>!rule.includes('*')).length<=2000);
+assert(redirectRules.filter(rule=>rule.includes('*')).length<=100);
+assert(redirectRules.includes('/zh/java-openai /zh/59_java-openai/ 301'));
+assert(read('zh/java-openai/index.html').includes('location.search+location.hash'));
 assert(read('robots.txt').includes('Sitemap: https://tio-boot.com/sitemap.xml'));
 console.log(JSON.stringify({pages:index.pages.length,chunks:chunks.length,redirectPages:redirectCount,checks:'passed'},null,2));

@@ -1,0 +1,459 @@
+{
+  "groups": [
+    {
+      "title": "入门",
+      "chapters": [
+        {
+          "directory": "01_introduction",
+          "title": "入门",
+          "previous": "01_tio-boot 简介"
+        }
+      ]
+    },
+    {
+      "title": "部署与日志",
+      "chapters": [
+        {
+          "directory": "02_deployment",
+          "title": "部署",
+          "previous": "02_部署"
+        },
+        {
+          "directory": "03_logging",
+          "title": "日志",
+          "previous": null
+        }
+      ]
+    },
+    {
+      "title": "核心开发",
+      "chapters": [
+        {
+          "directory": "04_configuration",
+          "title": "配置",
+          "previous": "03_配置"
+        },
+        {
+          "directory": "05_json",
+          "title": "JSON",
+          "previous": "05_json"
+        },
+        {
+          "directory": "06_web",
+          "title": "Web 开发",
+          "previous": "06_web"
+        },
+        {
+          "directory": "07_validation",
+          "title": "参数校验",
+          "previous": "07_validate"
+        },
+        {
+          "directory": "08_websocket",
+          "title": "WebSocket 应用开发",
+          "previous": "08_websocket"
+        },
+        {
+          "directory": "09_aop",
+          "title": "AOP",
+          "previous": "11_aop"
+        },
+        {
+          "directory": "10_i18n",
+          "title": "国际化",
+          "previous": "14_i18n"
+        },
+        {
+          "directory": "11_enjoy",
+          "title": "Enjoy 模板",
+          "previous": "15_enjoy"
+        },
+        {
+          "directory": "12_scheduling",
+          "title": "定时任务",
+          "previous": "16_定时任务"
+        },
+        {
+          "directory": "13_testing",
+          "title": "测试",
+          "previous": "17_tests"
+        },
+        {
+          "directory": "14_tio-utils",
+          "title": "tio-utils",
+          "previous": "32_tio-utils"
+        }
+      ]
+    },
+    {
+      "title": "数据库与数据访问",
+      "chapters": [
+        {
+          "directory": "15_java-db",
+          "title": "java-db",
+          "previous": "09_java-db"
+        },
+        {
+          "directory": "16_api-table",
+          "title": "api-table",
+          "previous": "10_api-table"
+        },
+        {
+          "directory": "17_mybatis",
+          "title": "MyBatis",
+          "previous": "18_mybatis"
+        },
+        {
+          "directory": "18_jooq",
+          "title": "jOOQ",
+          "previous": "45_jooq"
+        },
+        {
+          "directory": "19_postgresql",
+          "title": "PostgreSQL",
+          "previous": "24_postgresql"
+        },
+        {
+          "directory": "20_mysql",
+          "title": "MySQL",
+          "previous": "25_mysql"
+        },
+        {
+          "directory": "21_oceanbase",
+          "title": "OceanBase",
+          "previous": "26_oceanbase"
+        },
+        {
+          "directory": "22_oracle",
+          "title": "Oracle",
+          "previous": "27_oracle"
+        },
+        {
+          "directory": "23_sqlserver",
+          "title": "SQL Server",
+          "previous": "28_sqlserver"
+        },
+        {
+          "directory": "24_sqlite",
+          "title": "SQLite",
+          "previous": "29_sqlite"
+        },
+        {
+          "directory": "25_mongodb",
+          "title": "MongoDB",
+          "previous": "20_mongodb"
+        },
+        {
+          "directory": "26_elasticsearch",
+          "title": "Elasticsearch",
+          "previous": "21_elastic-search"
+        }
+      ]
+    },
+    {
+      "title": "缓存与消息队列",
+      "chapters": [
+        {
+          "directory": "27_cache",
+          "title": "Cache",
+          "previous": "12_cache"
+        },
+        {
+          "directory": "28_redis",
+          "title": "Redis",
+          "previous": "19_redis"
+        },
+        {
+          "directory": "29_mq",
+          "title": "消息队列",
+          "previous": "22_mq"
+        },
+        {
+          "directory": "30_kafka",
+          "title": "Kafka",
+          "previous": "23_kafka"
+        }
+      ]
+    },
+    {
+      "title": "认证与账号体系",
+      "chapters": [
+        {
+          "directory": "31_authentication",
+          "title": "认证与权限",
+          "previous": "13_认证"
+        },
+        {
+          "directory": "32_third-party-auth",
+          "title": "第三方登录注册",
+          "previous": "66_第三方登录注册"
+        }
+      ]
+    },
+    {
+      "title": "网络通信",
+      "chapters": [
+        {
+          "directory": "33_aio",
+          "title": "AIO",
+          "previous": "41_aio"
+        },
+        {
+          "directory": "34_tio",
+          "title": "t-io",
+          "previous": "31_tio"
+        },
+        {
+          "directory": "35_tio-http-server",
+          "title": "tio-http-server",
+          "previous": "33_tio-http-server"
+        },
+        {
+          "directory": "36_tio-websocket",
+          "title": "tio-websocket",
+          "previous": "34_tio-websocket"
+        },
+        {
+          "directory": "37_netty",
+          "title": "Netty",
+          "previous": "42_netty"
+        },
+        {
+          "directory": "38_netty-boot",
+          "title": "netty-boot",
+          "previous": "43_netty-boot"
+        }
+      ]
+    },
+    {
+      "title": "集成与扩展",
+      "chapters": [
+        {
+          "directory": "39_integrations",
+          "title": "第三方集成",
+          "previous": "30_integration_thirty_party"
+        },
+        {
+          "directory": "40_magic-script",
+          "title": "Magic Script",
+          "previous": "35_magic-script"
+        },
+        {
+          "directory": "41_groovy",
+          "title": "Groovy",
+          "previous": "36_groovy"
+        },
+        {
+          "directory": "42_crawling",
+          "title": "爬虫",
+          "previous": "37_spider"
+        },
+        {
+          "directory": "43_dubbo",
+          "title": "Dubbo",
+          "previous": "38_dubbo"
+        },
+        {
+          "directory": "44_spring",
+          "title": "Spring",
+          "previous": "39_spring"
+        },
+        {
+          "directory": "45_spring-cloud",
+          "title": "Spring Cloud",
+          "previous": "40_spring-cloud"
+        },
+        {
+          "directory": "46_quarkus",
+          "title": "Quarkus",
+          "previous": "44_quarkus"
+        },
+        {
+          "directory": "47_telegram4j",
+          "title": "Telegram4J",
+          "previous": "52_telegram4j"
+        },
+        {
+          "directory": "48_telegram-bots",
+          "title": "Telegram Bots",
+          "previous": "53_telegram-bots"
+        },
+        {
+          "directory": "49_file-storage",
+          "title": "文件存储",
+          "previous": "64_文件存储"
+        },
+        {
+          "directory": "50_payment",
+          "title": "支付",
+          "previous": "67_pay"
+        }
+      ]
+    },
+    {
+      "title": "Firebase 与 Clerk",
+      "chapters": [
+        {
+          "directory": "51_firebase",
+          "title": "Firebase",
+          "previous": "68_firebase"
+        },
+        {
+          "directory": "52_clerk",
+          "title": "Clerk",
+          "previous": "69_clerk"
+        }
+      ]
+    },
+    {
+      "title": "多媒体",
+      "chapters": [
+        {
+          "directory": "53_media",
+          "title": "音视频处理",
+          "previous": "46_media"
+        },
+        {
+          "directory": "54_asr",
+          "title": "语音识别",
+          "previous": "47_asr"
+        },
+        {
+          "directory": "55_tts",
+          "title": "语音合成",
+          "previous": "48_tts"
+        },
+        {
+          "directory": "56_ocr",
+          "title": "文字识别",
+          "previous": "49_ocr"
+        },
+        {
+          "directory": "57_native-media",
+          "title": "Native Media",
+          "previous": "50_native-media"
+        },
+        {
+          "directory": "58_computer-vision",
+          "title": "计算机视觉",
+          "previous": "51_cv"
+        }
+      ]
+    },
+    {
+      "title": "AI 开发",
+      "chapters": [
+        {
+          "directory": "59_java-openai",
+          "title": "java-openai",
+          "previous": "54_java-openai"
+        },
+        {
+          "directory": "60_ai-agent",
+          "title": "AI Agent",
+          "previous": "55_ai_agent"
+        },
+        {
+          "directory": "61_knowledge-base",
+          "title": "知识库",
+          "previous": "56_knowlege_base"
+        },
+        {
+          "directory": "62_ai-search",
+          "title": "AI 搜索",
+          "previous": "58_ai-search"
+        },
+        {
+          "directory": "63_voice-agent",
+          "title": "语音 Agent",
+          "previous": "57_voice-agent"
+        },
+        {
+          "directory": "64_ai-coding",
+          "title": "AI Coding",
+          "previous": "59_ai-coding"
+        },
+        {
+          "directory": "65_ai-browser",
+          "title": "AI Browser",
+          "previous": "60_ai-browser"
+        }
+      ]
+    },
+    {
+      "title": "项目实战",
+      "chapters": [
+        {
+          "directory": "66_java-uni-ai-server",
+          "title": "java-uni-ai-server",
+          "previous": "61_java-uni-ai-server"
+        },
+        {
+          "directory": "67_java-llm-proxy",
+          "title": "java-llm-proxy",
+          "previous": "62_java-llm-proxy"
+        },
+        {
+          "directory": "68_java-kit-server",
+          "title": "java-kit-server",
+          "previous": "63_java-kit-server"
+        },
+        {
+          "directory": "69_tio-im",
+          "title": "tio-im",
+          "previous": "70_tio-im"
+        },
+        {
+          "directory": "70_tio-mail-wing",
+          "title": "tio-mail-wing",
+          "previous": "71_tio-mail-wing"
+        },
+        {
+          "directory": "71_tio-mcp-server",
+          "title": "tio-mcp-server",
+          "previous": "72_tio-mcp-server"
+        },
+        {
+          "directory": "72_tio-log-server",
+          "title": "tio-log-server",
+          "previous": "74_tio-log-server"
+        },
+        {
+          "directory": "73_tio-sip",
+          "title": "tio-sip",
+          "previous": "73_tio-sip"
+        },
+        {
+          "directory": "74_tio-boot-admin",
+          "title": "tio-boot-admin",
+          "previous": "65_tio-boot-admin"
+        },
+        {
+          "directory": "75_examples",
+          "title": "案例",
+          "previous": "77_案例"
+        }
+      ]
+    },
+    {
+      "title": "性能、原理与源码",
+      "chapters": [
+        {
+          "directory": "76_performance",
+          "title": "性能测试",
+          "previous": "75_性能测试"
+        },
+        {
+          "directory": "77_internals",
+          "title": "原理",
+          "previous": "04_原理"
+        },
+        {
+          "directory": "78_source-code",
+          "title": "源码解析",
+          "previous": "76_tio-boot"
+        }
+      ]
+    }
+  ]
+}

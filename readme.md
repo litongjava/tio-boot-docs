@@ -39,13 +39,15 @@ pnpm docs:dev
 
 本次补全文档及剩余缺口见 [文档维护记录](./docs-maintenance.md)。
 
-章节已连续编号；第 18—23 章为 MyBatis、Redis、MongoDB、Elasticsearch、MQ、Kafka。旧路径映射见 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json)，构建时生成兼容跳转。
+章节按 13 个学习主题分组，78 个目录使用连续编号与英文名称。阅读顺序见[文档导航](./docs/zh/guide.md)，旧路径映射见 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json)，构建时生成兼容跳转。
 
 AI 检索入口与数据字段见 [AI 检索说明](./docs/ai-retrieval.md)。构建后运行 `pnpm docs:check-ai` 核验单页 Markdown、JSON/JSONL、内容哈希与旧页面跳转；所有检索产物随站点一起部署。
 
-站内搜索和 AI 语料支持离线使用：首次通过 HTTPS 或 localhost 联网访问，等待 AI 检索页面显示“离线已就绪”，之后可在同一浏览器中断网搜索、打开结果、读取或下载语料。首次准备约需下载 100 MB；清除站点数据或浏览器回收缓存后需要重新准备。下载的 JSONL 也可直接供本地检索工具读取。
+站内浏览与搜索在线使用，资源按需加载；浏览器和 CDN 使用正常的 HTTP 缓存。AI 检索页面提供 JSONL、检索目录和完整文档下载，保存后可供本地检索工具离线读取。
 
-`pnpm docs:check-offline` 校验缓存清单，`pnpm docs:test-offline` 执行浏览器断网测试。测试需先安装 Playwright Chromium，或设置 `PLAYWRIGHT_CHANNEL=chrome` 使用已安装的 Chrome。测试同时关闭浏览器网络、清除普通 HTTP 缓存并拒绝本地服务器请求，覆盖搜索、结果页刷新、完整语料读取与下载，以及缓存缺失和首次下载中断。
+`pnpm docs:test` 执行浏览器测试，覆盖在线搜索、语料下载、章节别名、历史跳转和旧缓存退役。测试需先安装 Playwright Chromium，或设置 `PLAYWRIGHT_CHANNEL=chrome` 使用已安装的 Chrome。
+
+发布时保留 `service-worker.js` 退役脚本及 `_headers`：已安装旧版离线功能的浏览器更新后，会清理本站对应作用域的缓存、注销旧 Service Worker，并重新打开当前地址。新访客不会注册 Service Worker。其他静态服务器也应对该脚本设置 `Cache-Control: no-cache`，并让带查询参数的请求返回同一脚本；不要将其改成 404 或首页。
 
 执行以下命令：
 
@@ -151,3 +153,15 @@ systemctl restart tio-boot-docs
 ```
 
 服务启动后，可通过服务器的 `10062` 端口访问文档站点。
+
+## 稳定的文档地址
+
+对外引用文档时，使用不带章节编号的别名。例如：
+
+- java-openai 章节：<https://tio-boot.cn/zh/java-openai/>
+- java-openai 单篇文章：<https://tio-boot.cn/zh/java-openai/01.html>
+- t-io 章节：<https://tio-boot.cn/zh/tio/>
+
+别名通过静态跳转页和部署重定向指向当前章节，保留查询参数与页内锚点。目录继续使用 `序号_英文`，内部 Markdown 相对链接指向真实源文件。章节编号变化时，只需维护映射，源码仓库 README 无需再次改号。
+
+映射见 [chapter-aliases.json](./docs/.vuepress/config/chapter-aliases.json)；完整页面跳转由 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json) 维护。构建后发布站点即可生效。

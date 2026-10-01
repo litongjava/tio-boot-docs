@@ -8,7 +8,7 @@ tagline: 基于 Java 的快速开放框架
 actions:
 
 - text: Get Started
-  link: /zh/01_tio-boot 简介/02.md
+  link: /zh/01_introduction/02.md
   type: primary
 
 features:

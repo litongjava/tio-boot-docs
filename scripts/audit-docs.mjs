@@ -62,6 +62,11 @@ function checkNavbar(value) {
 checkNavbar(navbar)
 const chapters = fs.readdirSync(path.join(docs,'zh')).filter(n=>/^\d+_/.test(n)).sort()
 const chapterErrors = chapters.flatMap((chapter,index)=> Number(chapter.split('_')[0]) === index+1 ? [] : [chapter])
-if (sidebar.map(s=>s.children?.find(p=>typeof p==='string' && p.startsWith('/zh/'))?.split('/')[2]).join('|') !== chapters.join('|')) chapterErrors.push('Sidebar order differs from directory order')
+const orderedChapters = [...new Set([...navigated].map(p=>p.split('/')[2]).filter(p=>/^\d+_/.test(p)))]
+if (orderedChapters.join('|') !== chapters.join('|')) chapterErrors.push('Sidebar order differs from directory order')
+for (const chapter of chapters) if (!/^\d{2}_[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(chapter)) chapterErrors.push('Invalid chapter name: '+chapter)
+for (const [from, target] of Object.entries(legacyPaths)) {
+  if (from !== target && fs.existsSync(path.join(docs, from))) chapterErrors.push('Redirect overlaps a current page: '+from)
+}
 console.log(JSON.stringify({ markdownFiles: files.length, placeholders, missingLinks, missingNavigation, unlistedPages, chapterErrors }, null, 2))
 if (missingLinks.length || missingNavigation.length || unlistedPages.length || chapterErrors.length) process.exitCode = 1

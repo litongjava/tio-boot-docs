@@ -1,1273 +1,1389 @@
 [
   {
-    "text": "01_tio-boot 简介",
-    "collapsable": false,
+    "text": "入门",
+    "collapsible": true,
     "children": [
-      "/zh/01_tio-boot 简介/readme.md",
-      "/zh/01_tio-boot 简介/01.md",
-      "/zh/01_tio-boot 简介/02.md",
-      "/zh/01_tio-boot 简介/03.md",
-      "/zh/01_tio-boot 简介/04.md",
-      "/zh/01_tio-boot 简介/05.md",
-      "/zh/01_tio-boot 简介/06.md",
-      "/zh/01_tio-boot 简介/07.md",
-      "/zh/01_tio-boot 简介/08.md"
-    ]
-  },
-  {
-    "text": "02_部署",
-    "collapsable": false,
-    "children": [
-      "/zh/02_部署/readme.md",
-      "/zh/02_部署/01.md",
-      "/zh/02_部署/02.md",
-      "/zh/02_部署/03.md",
-      "/zh/02_部署/04.md",
-      "/zh/02_部署/05.md",
-      "/zh/02_部署/06.md",
-      "/zh/02_部署/07.md",
-      "/zh/02_部署/08.md",
-      "/zh/02_部署/09.md",
-      "/zh/02_部署/10.md",
-      "/zh/02_部署/11.md",
-      "/zh/02_部署/12.md",
-      "/zh/02_部署/13.md",
-      "/zh/02_部署/14.md",
-      "/zh/02_部署/15.md"
-    ]
-  },
-  {
-    "text": "03_配置",
-    "collapsable": false,
-    "children": [
-      "/zh/03_配置/readme.md",
-      "/zh/03_配置/01.md",
-      "/zh/03_配置/02.md",
-      "/zh/03_配置/03.md",
-      "/zh/03_配置/04.md",
-      "/zh/03_配置/05.md",
-      "/zh/03_配置/06.md",
-      "/zh/03_配置/07.md",
-      "/zh/03_配置/08.md",
-      "/zh/03_配置/09.md"
-    ]
-  },
-  {
-    "text": "04_原理",
-    "collapsable": false,
-    "children": [
-      "/zh/04_原理/readme.md",
-      "/zh/04_原理/01.md",
-      "/zh/04_原理/02.md",
-      "/zh/04_原理/03.md"
-    ]
-  },
-  {
-    "text": "05_json",
-    "collapsable": false,
-    "children": [
-      "/zh/05_json/readme.md",
-      "/zh/05_json/01.md",
-      "/zh/05_json/02.md",
-      "/zh/05_json/03.md"
-    ]
-  },
-  {
-    "text": "06_web",
-    "collapsable": false,
-    "children": [
-      "/zh/06_web/readme.md",
-      "/zh/06_web/01.md",
-      "/zh/06_web/02.md",
-      "/zh/06_web/03.md",
-      "/zh/06_web/04.md",
-      "/zh/06_web/05.md",
-      "/zh/06_web/06.md",
-      "/zh/06_web/07.md",
-      "/zh/06_web/08.md",
-      "/zh/06_web/09.md",
-      "/zh/06_web/10.md",
-      "/zh/06_web/11.md",
-      "/zh/06_web/12.md",
-      "/zh/06_web/13.md",
-      "/zh/06_web/14.md",
-      "/zh/06_web/15.md",
-      "/zh/06_web/16.md",
-      "/zh/06_web/17.md",
-      "/zh/06_web/18.md",
-      "/zh/06_web/19.md",
-      "/zh/06_web/20.md",
-      "/zh/06_web/21.md",
-      "/zh/06_web/22.md",
-      "/zh/06_web/23.md",
-      "/zh/06_web/24.md",
-      "/zh/06_web/25.md",
-      "/zh/06_web/26.md",
-      "/zh/06_web/27.md",
-      "/zh/06_web/28.md",
-      "/zh/06_web/29.md",
-      "/zh/06_web/30.md",
-      "/zh/06_web/31.md",
-      "/zh/06_web/32.md",
-      "/zh/06_web/33.md",
-      "/zh/06_web/34.md",
-      "/zh/06_web/35.md",
-      "/zh/06_web/36.md",
-      "/zh/06_web/37.md",
-      "/zh/06_web/38.md",
-      "/zh/06_web/39.md",
-      "/zh/06_web/40.md",
-      "/zh/06_web/41.md",
-      "/zh/06_web/42.md",
-      "/zh/06_web/43.md",
-      "/zh/06_web/44.md",
-      "/zh/06_web/45.md"
-    ]
-  },
-  {
-    "text": "07_validate",
-    "collapsable": false,
-    "children": [
-      "/zh/07_validate/readme.md",
-      "/zh/07_validate/01.md",
-      "/zh/07_validate/02.md"
-    ]
-  },
-  {
-    "text": "08_websocket",
-    "collapsable": false,
-    "children": [
-      "/zh/08_websocket/readme.md",
-      "/zh/08_websocket/01.md",
-      "/zh/08_websocket/02.md"
-    ]
-  },
-  {
-    "text": "09_java-db",
-    "collapsable": false,
-    "children": [
-      "/zh/09_java-db/readme.md",
-      "/zh/09_java-db/00.md",
-      "/zh/09_java-db/01.md",
-      "/zh/09_java-db/02.md",
-      "/zh/09_java-db/03_SQL Template.md",
-      "/zh/09_java-db/04_数据源配置与使用.md",
-      "/zh/09_java-db/05_ActiveRecordPlugin.md",
-      "/zh/09_java-db/06_db工具类基础.md",
-      "/zh/09_java-db/07_db工具类高级.md",
-      "/zh/09_java-db/08_Model.md",
-      "/zh/09_java-db/09_生成器与 JavaBean.md",
-      "/zh/09_java-db/10.md",
-      "/zh/09_java-db/11_异常处理.md",
-      "/zh/09_java-db/12_数据库事务处理.md",
-      "/zh/09_java-db/13_Cache 缓存.md",
-      "/zh/09_java-db/14_Dialect多数据库支持.md",
-      "/zh/09_java-db/15_表关联操作.md",
-      "/zh/09_java-db/16_复合主键.md",
-      "/zh/09_java-db/17_Oracle支持.md",
-      "/zh/09_java-db/18_Enjoy SQL 模板.md",
-      "/zh/09_java-db/19_整合 Enjoy 模板最佳实践.md",
-      "/zh/09_java-db/20_多数据源支持.md",
-      "/zh/09_java-db/21_独立使用 ActiveRecord.md",
-      "/zh/09_java-db/22_调用存储过程.md",
-      "/zh/09_java-db/23.md",
-      "/zh/09_java-db/24.md",
-      "/zh/09_java-db/25.md",
-      "/zh/09_java-db/26.md",
-      "/zh/09_java-db/27.md",
-      "/zh/09_java-db/28.md",
-      "/zh/09_java-db/29.md",
-      "/zh/09_java-db/30.md",
-      "/zh/09_java-db/31.md",
-      "/zh/09_java-db/32.md"
-    ]
-  },
-  {
-    "text": "10_api-table",
-    "collapsable": false,
-    "children": [
-      "/zh/10_api-table/readme.md",
-      "/zh/10_api-table/01.md",
-      "/zh/10_api-table/02.md",
-      "/zh/10_api-table/03.md",
-      "/zh/10_api-table/04.md",
-      "/zh/10_api-table/05.md",
-      "/zh/10_api-table/06.md",
-      "/zh/10_api-table/07.md",
-      "/zh/10_api-table/08.md",
-      "/zh/10_api-table/09.md",
-      "/zh/10_api-table/10.md",
-      "/zh/10_api-table/11.md",
-      "/zh/10_api-table/12.md",
-      "/zh/10_api-table/13.md",
-      "/zh/10_api-table/14.md",
-      "/zh/10_api-table/15.md"
-    ]
-  },
-  {
-    "text": "11_aop",
-    "collapsable": false,
-    "children": [
-      "/zh/11_aop/readme.md",
-      "/zh/11_aop/01.md",
-      "/zh/11_aop/02.md",
-      "/zh/11_aop/03.md",
-      "/zh/11_aop/04.md",
-      "/zh/11_aop/05.md",
-      "/zh/11_aop/06.md",
-      "/zh/11_aop/07.md"
-    ]
-  },
-  {
-    "text": "12_cache",
-    "collapsable": false,
-    "children": [
-      "/zh/12_cache/readme.md",
-      "/zh/12_cache/01.md",
-      "/zh/12_cache/06.md",
-      "/zh/12_cache/08.md"
-    ]
-  },
-  {
-    "text": "13_认证和权限",
-    "collapsable": false,
-    "children": [
-      "/zh/13_认证/readme.md",
-      "/zh/13_认证/01.md",
-      "/zh/13_认证/02.md",
-      "/zh/13_认证/03.md",
-      "/zh/13_认证/04.md",
-      "/zh/13_认证/06.md",
-      "/zh/13_认证/14.md",
-      "/zh/13_认证/15.md",
-      "/zh/13_认证/16.md",
-      "/zh/13_认证/17.md"
-    ]
-  },
-  {
-    "text": "14_i18n",
-    "collapsable": false,
-    "children": [
-      "/zh/14_i18n/readme.md",
-      "/zh/14_i18n/01.md"
-    ]
-  },
-  {
-    "text": "15_enjoy",
-    "collapsable": false,
-    "children": [
-      "/zh/15_enjoy/readme.md",
-      "/zh/15_enjoy/01.md",
-      "/zh/15_enjoy/02.md",
-      "/zh/15_enjoy/03_引擎配置.md",
-      "/zh/15_enjoy/04_表达式.md",
-      "/zh/15_enjoy/05_指令.md",
-      "/zh/15_enjoy/06_注释.md",
-      "/zh/15_enjoy/07_原样输出.md",
-      "/zh/15_enjoy/08_Shared Method 扩展.md",
-      "/zh/15_enjoy/09_Shared Object扩展.md",
-      "/zh/15_enjoy/10_Extension Method扩展.md",
-      "/zh/15_enjoy/11_Spring boot 整合.md",
-      "/zh/15_enjoy/12_独立使用 Enjoy.md",
-      "/zh/15_enjoy/13.md",
-      "/zh/15_enjoy/14.md",
-      "/zh/15_enjoy/15.md",
-      "/zh/15_enjoy/16.md",
-      "/zh/15_enjoy/17.md",
-      "/zh/15_enjoy/18.md"
-    ]
-  },
-  {
-    "text": "16_定时任务",
-    "collapsable": false,
-    "children": [
-      "/zh/16_定时任务/readme.md",
-      "/zh/16_定时任务/01.md",
-      "/zh/16_定时任务/02.md",
-      "/zh/16_定时任务/03.md"
-    ]
-  },
-  {
-    "text": "17_tests",
-    "collapsable": false,
-    "children": [
-      "/zh/17_tests/readme.md",
-      "/zh/17_tests/01.md",
-      "/zh/17_tests/02.md",
-      "/zh/17_tests/03.md"
-    ]
-  },
-  {
-    "text": "18_mybatis",
-    "collapsable": false,
-    "children": [
-      "/zh/18_mybatis/readme.md",
-      "/zh/18_mybatis/01.md",
-      "/zh/18_mybatis/02.md",
-      "/zh/18_mybatis/03.md",
-      "/zh/18_mybatis/04.md",
-      "/zh/18_mybatis/05.md"
-    ]
-  },
-  {
-    "text": "19_redis",
-    "collapsable": false,
-    "children": [
-      "/zh/19_redis/readme.md",
-      "/zh/19_redis/00.md",
-      "/zh/19_redis/01.md",
-      "/zh/19_redis/02.md",
-      "/zh/19_redis/03.md",
-      "/zh/19_redis/04.md",
-      "/zh/19_redis/05.md",
-      "/zh/19_redis/06.md",
-      "/zh/19_redis/07.md",
-      "/zh/19_redis/08.md",
-      "/zh/19_redis/09.md"
-    ]
-  },
-  {
-    "text": "20_mongodb",
-    "collapsable": false,
-    "children": [
-      "/zh/20_mongodb/readme.md",
-      "/zh/20_mongodb/01.md"
-    ]
-  },
-  {
-    "text": "21_elastic-search",
-    "collapsable": false,
-    "children": [
-      "/zh/21_elastic-search/readme.md",
-      "/zh/21_elastic-search/01.md",
-      "/zh/21_elastic-search/02.md",
-      "/zh/21_elastic-search/03.md",
-      "/zh/21_elastic-search/04.md",
-      "/zh/21_elastic-search/05.md"
-    ]
-  },
-  {
-    "text": "22_mq",
-    "collapsable": false,
-    "children": [
-      "/zh/22_mq/readme.md",
-      "/zh/22_mq/01.md",
-      "/zh/22_mq/02.md",
-      "/zh/22_mq/03.md"
-    ]
-  },
-  {
-    "text": "23_kafka",
-    "collapsable": false,
-    "children": [
-      "/zh/23_kafka/readme.md",
-      "/zh/23_kafka/01.md",
-      "/zh/23_kafka/02.md"
-    ]
-  },
-  {
-    "text": "24_postgresql",
-    "collapsable": false,
-    "children": [
-      "/zh/24_postgresql/readme.md",
-      "/zh/24_postgresql/01.md",
-      "/zh/24_postgresql/02.md",
-      "/zh/24_postgresql/03.md",
-      "/zh/24_postgresql/04.md",
-      "/zh/24_postgresql/05.md",
-      "/zh/24_postgresql/06.md",
-      "/zh/24_postgresql/07.md",
-      "/zh/24_postgresql/08.md",
-      "/zh/24_postgresql/09.md",
-      "/zh/24_postgresql/10.md",
-      "/zh/24_postgresql/11.md",
-      "/zh/24_postgresql/12.md"
-    ]
-  },
-  {
-    "text": "25_mysql",
-    "collapsable": false,
-    "children": [
-      "/zh/25_mysql/readme.md",
-      "/zh/25_mysql/01.md",
-      "/zh/25_mysql/02.md"
-    ]
-  },
-  {
-    "text": "26_oceanbase",
-    "collapsable": false,
-    "children": [
-      "/zh/26_oceanbase/readme.md",
-      "/zh/26_oceanbase/01.md",
-      "/zh/26_oceanbase/02.md",
-      "/zh/26_oceanbase/03.md",
-      "/zh/26_oceanbase/04.md",
-      "/zh/26_oceanbase/05.md"
-    ]
-  },
-  {
-    "text": "27_oracle",
-    "collapsable": false,
-    "children": [
-      "/zh/27_oracle/readme.md",
-      "/zh/27_oracle/01.md"
-    ]
-  },
-  {
-    "text": "28_sqlserver",
-    "collapsable": false,
-    "children": [
-      "/zh/28_sqlserver/readme.md",
-      "/zh/28_sqlserver/01.md"
-    ]
-  },
-  {
-    "text": "29_sqlite",
-    "collapsable": false,
-    "children": [
-      "/zh/29_sqlite/readme.md",
-      "/zh/29_sqlite/01.md"
-    ]
-  },
-  {
-    "text": "30_integration_thirty_party",
-    "collapsable": false,
-    "children": [
-      "/zh/30_integration_thirty_party/readme.md",
-      "/zh/30_integration_thirty_party/01.md",
-      "/zh/30_integration_thirty_party/02.md",
-      "/zh/30_integration_thirty_party/03.md",
-      "/zh/30_integration_thirty_party/04.md",
-      "/zh/30_integration_thirty_party/05.md",
-      "/zh/30_integration_thirty_party/06.md",
-      "/zh/30_integration_thirty_party/07.md",
-      "/zh/30_integration_thirty_party/08.md",
-      "/zh/30_integration_thirty_party/09.md",
-      "/zh/30_integration_thirty_party/10.md",
-      "/zh/30_integration_thirty_party/11.md"
-    ]
-  },
-  {
-    "text": "31_tio",
-    "collapsable": false,
-    "children": [
-      "/zh/31_tio/readme.md",
       {
-        "text": "认识 t-io",
-        "collapsible": true,
+        "text": "01 · 入门",
         "children": [
-          "/zh/31_tio/01-overview.md",
-          "/zh/31_tio/02-message-flow.md"
-        ]
-      },
-      {
-        "text": "快速上手",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/03-tio-boot-server.md",
-          "/zh/31_tio/04-tcp-server.md",
-          "/zh/31_tio/05-tcp-handler.md",
-          "/zh/31_tio/06-udp-server.md",
-          "/zh/31_tio/07-udp-handler.md"
-        ]
-      },
-      {
-        "text": "核心概念",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/08-tio-config.md",
-          "/zh/31_tio/09-channel-context.md",
-          "/zh/31_tio/10-packet.md",
-          "/zh/31_tio/11-tio-api.md"
-        ]
-      },
-      {
-        "text": "消息与文件传输",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/12-send-data.md",
-          "/zh/31_tio/13-http-keep-alive-file-transfer.md",
-          "/zh/31_tio/14-async-channel-response.md"
-        ]
-      },
-      {
-        "text": "连接管理",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/15-bind-data.md",
-          "/zh/31_tio/16-unbind-data.md",
-          "/zh/31_tio/17-close-connection.md",
-          "/zh/31_tio/18-resource-sharing.md",
-          "/zh/31_tio/19-member-ordering.md",
-          "/zh/31_tio/20-ip-blacklist.md"
-        ]
-      },
-      {
-        "text": "加密通信",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/21-ssl.md",
-          "/zh/31_tio/22-https-handshake.md"
-        ]
-      },
-      {
-        "text": "心跳与监控",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/23-heartbeat.md",
-          "/zh/31_tio/24-client-traffic.md",
-          "/zh/31_tio/25-connection-traffic.md",
-          "/zh/31_tio/26-port-traffic.md",
-          "/zh/31_tio/27-channel-stat.md",
-          "/zh/31_tio/28-group-stat.md"
-        ]
-      },
-      {
-        "text": "深入原理",
-        "collapsible": true,
-        "children": [
-          "/zh/31_tio/29-runtime-internals.md",
-          "/zh/31_tio/30-decode-runnable.md",
-          "/zh/31_tio/31-stability-resource-management.md",
-          "/zh/31_tio/32-source-code-guide.md"
-        ]
+          "/zh/01_introduction/readme.md",
+          "/zh/01_introduction/01.md",
+          "/zh/01_introduction/02.md",
+          "/zh/01_introduction/03.md",
+          "/zh/01_introduction/05.md",
+          "/zh/01_introduction/06.md",
+          "/zh/01_introduction/07.md",
+          "/zh/01_introduction/08.md"
+        ],
+        "collapsible": true
       }
     ]
   },
   {
-    "text": "32_tio-utils",
-    "collapsable": false,
+    "text": "部署与日志",
+    "collapsible": true,
     "children": [
-      "/zh/32_tio-utils/readme.md",
-      "/zh/32_tio-utils/01.md",
-      "/zh/32_tio-utils/02.md",
-      "/zh/32_tio-utils/03.md",
-      "/zh/32_tio-utils/04.md",
-      "/zh/32_tio-utils/05.md",
-      "/zh/32_tio-utils/06.md",
-      "/zh/32_tio-utils/07.md",
-      "/zh/32_tio-utils/08.md",
-      "/zh/32_tio-utils/09.md",
-      "/zh/32_tio-utils/10.md",
-      "/zh/32_tio-utils/11.md",
-      "/zh/32_tio-utils/12.md",
-      "/zh/32_tio-utils/13.md",
-      "/zh/32_tio-utils/19.md",
-      "/zh/32_tio-utils/20.md",
-      "/zh/32_tio-utils/21.md",
-      "/zh/32_tio-utils/30.md"
+      {
+        "text": "02 · 部署",
+        "children": [
+          "/zh/02_deployment/readme.md",
+          "/zh/02_deployment/01.md",
+          "/zh/02_deployment/02.md",
+          "/zh/02_deployment/03.md",
+          "/zh/02_deployment/04.md",
+          "/zh/02_deployment/05.md",
+          "/zh/02_deployment/06.md",
+          "/zh/02_deployment/07.md",
+          "/zh/02_deployment/08.md",
+          "/zh/02_deployment/09.md",
+          "/zh/02_deployment/10.md",
+          "/zh/02_deployment/11.md",
+          "/zh/02_deployment/12.md",
+          "/zh/02_deployment/13.md",
+          "/zh/02_deployment/14.md",
+          "/zh/02_deployment/15.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "children": [
+          "/zh/03_logging/readme.md",
+          "/zh/03_logging/01-logback.md"
+        ],
+        "collapsible": true,
+        "text": "03 · 日志"
+      }
     ]
   },
   {
-    "text": "33_tio-http-server",
-    "collapsable": false,
+    "text": "核心开发",
+    "collapsible": true,
     "children": [
-      "/zh/33_tio-http-server/readme.md",
-      "/zh/33_tio-http-server/01.md",
-      "/zh/33_tio-http-server/02.md",
-      "/zh/33_tio-http-server/03.md",
-      "/zh/33_tio-http-server/04.md",
-      "/zh/33_tio-http-server/05.md",
-      "/zh/33_tio-http-server/06.md"
+      {
+        "text": "04 · 配置",
+        "children": [
+          "/zh/04_configuration/readme.md",
+          "/zh/04_configuration/01.md",
+          "/zh/04_configuration/02.md",
+          "/zh/04_configuration/03.md",
+          "/zh/04_configuration/04.md",
+          "/zh/04_configuration/05.md",
+          "/zh/04_configuration/06.md",
+          "/zh/04_configuration/07.md",
+          "/zh/04_configuration/08.md",
+          "/zh/04_configuration/09.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "05 · JSON",
+        "children": [
+          "/zh/05_json/readme.md",
+          "/zh/05_json/01.md",
+          "/zh/05_json/02.md",
+          "/zh/05_json/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "06 · Web 开发",
+        "children": [
+          "/zh/06_web/readme.md",
+          {
+            "text": "路由与参数",
+            "collapsible": true,
+            "children": [
+              "/zh/06_web/01.md",
+              "/zh/06_web/27.md",
+              "/zh/06_web/30.md",
+              "/zh/06_web/32.md",
+              "/zh/06_web/02.md",
+              "/zh/06_web/03.md",
+              "/zh/06_web/04.md",
+              "/zh/06_web/15.md"
+            ]
+          },
+          {
+            "text": "响应与文件",
+            "collapsible": true,
+            "children": [
+              "/zh/06_web/05.md",
+              "/zh/06_web/06.md",
+              "/zh/06_web/07.md",
+              "/zh/06_web/08.md",
+              "/zh/06_web/09.md",
+              "/zh/06_web/10.md",
+              "/zh/06_web/11.md",
+              "/zh/06_web/16.md",
+              "/zh/06_web/17.md",
+              "/zh/06_web/18.md",
+              "/zh/06_web/24.md",
+              "/zh/06_web/25.md",
+              "/zh/06_web/31.md",
+              "/zh/06_web/38.md",
+              "/zh/06_web/39.md",
+              "/zh/06_web/42.md"
+            ]
+          },
+          {
+            "text": "会话与请求控制",
+            "collapsible": true,
+            "children": [
+              "/zh/06_web/12.md",
+              "/zh/06_web/13.md",
+              "/zh/06_web/14.md",
+              "/zh/06_web/19.md",
+              "/zh/06_web/20.md",
+              "/zh/06_web/21.md",
+              "/zh/06_web/22.md",
+              "/zh/06_web/26.md",
+              "/zh/06_web/33.md",
+              "/zh/06_web/34.md",
+              "/zh/06_web/36.md",
+              "/zh/06_web/37.md"
+            ]
+          },
+          {
+            "text": "异步与流式输出",
+            "collapsible": true,
+            "children": [
+              "/zh/06_web/23.md",
+              "/zh/06_web/28.md",
+              "/zh/06_web/29.md"
+            ]
+          },
+          {
+            "text": "工具与监控",
+            "collapsible": true,
+            "children": [
+              "/zh/06_web/35.md",
+              "/zh/06_web/40.md",
+              "/zh/06_web/41.md",
+              "/zh/06_web/43.md",
+              "/zh/06_web/44.md",
+              "/zh/06_web/45.md"
+            ]
+          }
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "07 · 参数校验",
+        "children": [
+          "/zh/07_validation/readme.md",
+          "/zh/07_validation/01.md",
+          "/zh/07_validation/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "08 · WebSocket 应用开发",
+        "children": [
+          "/zh/08_websocket/readme.md",
+          "/zh/08_websocket/01.md",
+          "/zh/08_websocket/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "09 · AOP",
+        "children": [
+          "/zh/09_aop/readme.md",
+          "/zh/09_aop/01.md",
+          "/zh/09_aop/02.md",
+          "/zh/09_aop/03.md",
+          "/zh/09_aop/04.md",
+          "/zh/09_aop/05.md",
+          "/zh/09_aop/06.md",
+          "/zh/09_aop/07.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "10 · 国际化",
+        "children": [
+          "/zh/10_i18n/readme.md",
+          "/zh/10_i18n/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "11 · Enjoy 模板",
+        "children": [
+          "/zh/11_enjoy/readme.md",
+          "/zh/11_enjoy/01.md",
+          "/zh/11_enjoy/02.md",
+          "/zh/11_enjoy/03_引擎配置.md",
+          "/zh/11_enjoy/04_表达式.md",
+          "/zh/11_enjoy/05_指令.md",
+          "/zh/11_enjoy/06_注释.md",
+          "/zh/11_enjoy/07_原样输出.md",
+          "/zh/11_enjoy/08_Shared Method 扩展.md",
+          "/zh/11_enjoy/09_Shared Object扩展.md",
+          "/zh/11_enjoy/10_Extension Method扩展.md",
+          "/zh/11_enjoy/11_Spring boot 整合.md",
+          "/zh/11_enjoy/12_独立使用 Enjoy.md",
+          "/zh/11_enjoy/13.md",
+          "/zh/11_enjoy/14.md",
+          "/zh/11_enjoy/15.md",
+          "/zh/11_enjoy/16.md",
+          "/zh/11_enjoy/17.md",
+          "/zh/11_enjoy/18.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "12 · 定时任务",
+        "children": [
+          "/zh/12_scheduling/readme.md",
+          "/zh/12_scheduling/01.md",
+          "/zh/12_scheduling/02.md",
+          "/zh/12_scheduling/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "13 · 测试",
+        "children": [
+          "/zh/13_testing/readme.md",
+          "/zh/13_testing/01.md",
+          "/zh/13_testing/02.md",
+          "/zh/13_testing/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "14 · tio-utils",
+        "children": [
+          "/zh/14_tio-utils/readme.md",
+          "/zh/14_tio-utils/01.md",
+          "/zh/14_tio-utils/02.md",
+          "/zh/14_tio-utils/03.md",
+          "/zh/14_tio-utils/04.md",
+          "/zh/14_tio-utils/05.md",
+          "/zh/14_tio-utils/06.md",
+          "/zh/14_tio-utils/07.md",
+          "/zh/14_tio-utils/08.md",
+          "/zh/14_tio-utils/09.md",
+          "/zh/14_tio-utils/10.md",
+          "/zh/14_tio-utils/11.md",
+          "/zh/14_tio-utils/12.md",
+          "/zh/14_tio-utils/13.md",
+          "/zh/14_tio-utils/19.md",
+          "/zh/14_tio-utils/20.md",
+          "/zh/14_tio-utils/21.md",
+          "/zh/14_tio-utils/30.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "34_tio-websocket",
-    "collapsable": false,
+    "text": "数据库与数据访问",
+    "collapsible": true,
     "children": [
-      "/zh/34_tio-websocket/readme.md",
-      "/zh/34_tio-websocket/01.md",
-      "/zh/34_tio-websocket/02.md",
-      "/zh/34_tio-websocket/03.md"
+      {
+        "text": "15 · java-db",
+        "children": [
+          "/zh/15_java-db/readme.md",
+          "/zh/15_java-db/00.md",
+          "/zh/15_java-db/01.md",
+          "/zh/15_java-db/02.md",
+          "/zh/15_java-db/03_SQL Template.md",
+          "/zh/15_java-db/04_数据源配置与使用.md",
+          "/zh/15_java-db/05_ActiveRecordPlugin.md",
+          "/zh/15_java-db/06_db工具类基础.md",
+          "/zh/15_java-db/07_db工具类高级.md",
+          "/zh/15_java-db/08_Model.md",
+          "/zh/15_java-db/09_生成器与 JavaBean.md",
+          "/zh/15_java-db/10.md",
+          "/zh/15_java-db/11_异常处理.md",
+          "/zh/15_java-db/12_数据库事务处理.md",
+          "/zh/15_java-db/13_Cache 缓存.md",
+          "/zh/15_java-db/14_Dialect多数据库支持.md",
+          "/zh/15_java-db/15_表关联操作.md",
+          "/zh/15_java-db/16_复合主键.md",
+          "/zh/15_java-db/17_Oracle支持.md",
+          "/zh/15_java-db/18_Enjoy SQL 模板.md",
+          "/zh/15_java-db/19_整合 Enjoy 模板最佳实践.md",
+          "/zh/15_java-db/20_多数据源支持.md",
+          "/zh/15_java-db/21_独立使用 ActiveRecord.md",
+          "/zh/15_java-db/22_调用存储过程.md",
+          "/zh/15_java-db/23.md",
+          "/zh/15_java-db/24.md",
+          "/zh/15_java-db/25.md",
+          "/zh/15_java-db/26.md",
+          "/zh/15_java-db/27.md",
+          "/zh/15_java-db/28.md",
+          "/zh/15_java-db/29.md",
+          "/zh/15_java-db/30.md",
+          "/zh/15_java-db/31.md",
+          "/zh/15_java-db/32.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "16 · api-table",
+        "children": [
+          "/zh/16_api-table/readme.md",
+          "/zh/16_api-table/01.md",
+          "/zh/16_api-table/02.md",
+          "/zh/16_api-table/03.md",
+          "/zh/16_api-table/04.md",
+          "/zh/16_api-table/05.md",
+          "/zh/16_api-table/06.md",
+          "/zh/16_api-table/07.md",
+          "/zh/16_api-table/08.md",
+          "/zh/16_api-table/09.md",
+          "/zh/16_api-table/10.md",
+          "/zh/16_api-table/11.md",
+          "/zh/16_api-table/12.md",
+          "/zh/16_api-table/13.md",
+          "/zh/16_api-table/14.md",
+          "/zh/16_api-table/15.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "17 · MyBatis",
+        "children": [
+          "/zh/17_mybatis/readme.md",
+          "/zh/17_mybatis/01.md",
+          "/zh/17_mybatis/02.md",
+          "/zh/17_mybatis/03.md",
+          "/zh/17_mybatis/04.md",
+          "/zh/17_mybatis/05.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "18 · jOOQ",
+        "children": [
+          "/zh/18_jooq/readme.md",
+          "/zh/18_jooq/01.md",
+          "/zh/18_jooq/02.md",
+          "/zh/18_jooq/03.md",
+          "/zh/18_jooq/04.md",
+          "/zh/18_jooq/05.md",
+          "/zh/18_jooq/06.md",
+          "/zh/18_jooq/07.md",
+          "/zh/18_jooq/08.md",
+          "/zh/18_jooq/09.md",
+          "/zh/18_jooq/10.md",
+          "/zh/18_jooq/11.md",
+          "/zh/18_jooq/12.md",
+          "/zh/18_jooq/13.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "19 · PostgreSQL",
+        "children": [
+          "/zh/19_postgresql/readme.md",
+          "/zh/19_postgresql/01.md",
+          "/zh/19_postgresql/02.md",
+          "/zh/19_postgresql/03.md",
+          "/zh/19_postgresql/04.md",
+          "/zh/19_postgresql/05.md",
+          "/zh/19_postgresql/06.md",
+          "/zh/19_postgresql/07.md",
+          "/zh/19_postgresql/08.md",
+          "/zh/19_postgresql/09.md",
+          "/zh/19_postgresql/10.md",
+          "/zh/19_postgresql/11.md",
+          "/zh/19_postgresql/12.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "20 · MySQL",
+        "children": [
+          "/zh/20_mysql/readme.md",
+          "/zh/20_mysql/01.md",
+          "/zh/20_mysql/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "21 · OceanBase",
+        "children": [
+          "/zh/21_oceanbase/readme.md",
+          "/zh/21_oceanbase/01.md",
+          "/zh/21_oceanbase/02.md",
+          "/zh/21_oceanbase/03.md",
+          "/zh/21_oceanbase/04.md",
+          "/zh/21_oceanbase/05.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "22 · Oracle",
+        "children": [
+          "/zh/22_oracle/readme.md",
+          "/zh/22_oracle/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "23 · SQL Server",
+        "children": [
+          "/zh/23_sqlserver/readme.md",
+          "/zh/23_sqlserver/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "24 · SQLite",
+        "children": [
+          "/zh/24_sqlite/readme.md",
+          "/zh/24_sqlite/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "25 · MongoDB",
+        "children": [
+          "/zh/25_mongodb/readme.md",
+          "/zh/25_mongodb/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "26 · Elasticsearch",
+        "children": [
+          "/zh/26_elasticsearch/readme.md",
+          "/zh/26_elasticsearch/01.md",
+          "/zh/26_elasticsearch/02.md",
+          "/zh/26_elasticsearch/03.md",
+          "/zh/26_elasticsearch/04.md",
+          "/zh/26_elasticsearch/05.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "35_magic-script",
-    "collapsable": false,
+    "text": "缓存与消息队列",
+    "collapsible": true,
     "children": [
-      "/zh/35_magic-script/readme.md",
-      "/zh/35_magic-script/01.md"
+      {
+        "text": "27 · Cache",
+        "children": [
+          "/zh/27_cache/readme.md",
+          "/zh/27_cache/01.md",
+          "/zh/27_cache/06.md",
+          "/zh/27_cache/08.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "28 · Redis",
+        "children": [
+          "/zh/28_redis/readme.md",
+          "/zh/28_redis/00.md",
+          "/zh/28_redis/01.md",
+          "/zh/28_redis/02.md",
+          "/zh/28_redis/03.md",
+          "/zh/28_redis/04.md",
+          "/zh/28_redis/05.md",
+          "/zh/28_redis/06.md",
+          "/zh/28_redis/07.md",
+          "/zh/28_redis/08.md",
+          "/zh/28_redis/09.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "29 · 消息队列",
+        "children": [
+          "/zh/29_mq/readme.md",
+          "/zh/29_mq/01.md",
+          "/zh/29_mq/02.md",
+          "/zh/29_mq/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "30 · Kafka",
+        "children": [
+          "/zh/30_kafka/readme.md",
+          "/zh/30_kafka/01.md",
+          "/zh/30_kafka/02.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "36_groovy",
-    "collapsable": false,
+    "text": "认证与账号体系",
+    "collapsible": true,
     "children": [
-      "/zh/36_groovy/readme.md",
-      "/zh/36_groovy/01.md",
-      "/zh/36_groovy/02.md"
+      {
+        "text": "31 · 认证与权限",
+        "children": [
+          "/zh/31_authentication/readme.md",
+          "/zh/31_authentication/01.md",
+          "/zh/31_authentication/02.md",
+          "/zh/31_authentication/03.md",
+          "/zh/31_authentication/04.md",
+          "/zh/31_authentication/06.md",
+          "/zh/31_authentication/14.md",
+          "/zh/31_authentication/15.md",
+          "/zh/31_authentication/16.md",
+          "/zh/31_authentication/17.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "32 · 第三方登录注册",
+        "children": [
+          "/zh/32_third-party-auth/readme.md",
+          "/zh/32_third-party-auth/01.md",
+          "/zh/32_third-party-auth/02.md",
+          "/zh/32_third-party-auth/03.md",
+          "/zh/32_third-party-auth/04.md",
+          "/zh/32_third-party-auth/05.md",
+          "/zh/32_third-party-auth/06.md",
+          "/zh/32_third-party-auth/07.md",
+          "/zh/32_third-party-auth/08.md",
+          "/zh/32_third-party-auth/09.md",
+          "/zh/32_third-party-auth/10.md",
+          "/zh/32_third-party-auth/11.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "37_spider",
-    "collapsable": false,
+    "text": "网络通信",
+    "collapsible": true,
     "children": [
-      "/zh/37_spider/readme.md",
-      "/zh/37_spider/01.md",
-      "/zh/37_spider/02.md",
-      "/zh/37_spider/03.md",
-      "/zh/37_spider/04.md",
-      "/zh/37_spider/05.md",
-      "/zh/37_spider/06.md",
-      "/zh/37_spider/07.md",
-      "/zh/37_spider/08.md"
+      {
+        "text": "33 · AIO",
+        "children": [
+          "/zh/33_aio/readme.md",
+          "/zh/33_aio/01.md",
+          "/zh/33_aio/02.md",
+          "/zh/33_aio/03.md",
+          "/zh/33_aio/04.md",
+          "/zh/33_aio/05.md",
+          "/zh/33_aio/06.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "34 · t-io",
+        "children": [
+          "/zh/34_tio/readme.md",
+          {
+            "text": "认识 t-io",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/01-overview.md",
+              "/zh/34_tio/02-message-flow.md"
+            ]
+          },
+          {
+            "text": "快速上手",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/03-tio-boot-server.md",
+              "/zh/34_tio/04-tcp-server.md",
+              "/zh/34_tio/05-tcp-handler.md",
+              "/zh/34_tio/06-udp-server.md",
+              "/zh/34_tio/07-udp-handler.md"
+            ]
+          },
+          {
+            "text": "核心概念",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/08-tio-config.md",
+              "/zh/34_tio/09-channel-context.md",
+              "/zh/34_tio/10-packet.md",
+              "/zh/34_tio/11-tio-api.md"
+            ]
+          },
+          {
+            "text": "消息与文件传输",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/12-send-data.md",
+              "/zh/34_tio/13-http-keep-alive-file-transfer.md",
+              "/zh/34_tio/14-async-channel-response.md"
+            ]
+          },
+          {
+            "text": "连接管理",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/15-bind-data.md",
+              "/zh/34_tio/16-unbind-data.md",
+              "/zh/34_tio/17-close-connection.md",
+              "/zh/34_tio/18-resource-sharing.md",
+              "/zh/34_tio/19-member-ordering.md",
+              "/zh/34_tio/20-ip-blacklist.md"
+            ]
+          },
+          {
+            "text": "加密通信",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/21-ssl.md",
+              "/zh/34_tio/22-https-handshake.md"
+            ]
+          },
+          {
+            "text": "心跳与监控",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/23-heartbeat.md",
+              "/zh/34_tio/24-client-traffic.md",
+              "/zh/34_tio/25-connection-traffic.md",
+              "/zh/34_tio/26-port-traffic.md",
+              "/zh/34_tio/27-channel-stat.md",
+              "/zh/34_tio/28-group-stat.md"
+            ]
+          },
+          {
+            "text": "深入原理",
+            "collapsible": true,
+            "children": [
+              "/zh/34_tio/29-runtime-internals.md",
+              "/zh/34_tio/30-decode-runnable.md",
+              "/zh/34_tio/31-stability-resource-management.md",
+              "/zh/34_tio/32-source-code-guide.md",
+              "/zh/34_tio/33-buffer-reuse.md"
+            ]
+          }
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "35 · tio-http-server",
+        "children": [
+          "/zh/35_tio-http-server/readme.md",
+          "/zh/35_tio-http-server/01.md",
+          "/zh/35_tio-http-server/02.md",
+          "/zh/35_tio-http-server/03.md",
+          "/zh/35_tio-http-server/04.md",
+          "/zh/35_tio-http-server/05.md",
+          "/zh/35_tio-http-server/06.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "36 · tio-websocket",
+        "children": [
+          "/zh/36_tio-websocket/readme.md",
+          "/zh/36_tio-websocket/01.md",
+          "/zh/36_tio-websocket/02.md",
+          "/zh/36_tio-websocket/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "37 · Netty",
+        "children": [
+          "/zh/37_netty/readme.md",
+          "/zh/37_netty/01.md",
+          "/zh/37_netty/02.md",
+          "/zh/37_netty/03.md",
+          "/zh/37_netty/04.md",
+          "/zh/37_netty/05.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "38 · netty-boot",
+        "children": [
+          "/zh/38_netty-boot/readme.md",
+          "/zh/38_netty-boot/01.md",
+          "/zh/38_netty-boot/02.md",
+          "/zh/38_netty-boot/03.md",
+          "/zh/38_netty-boot/04.md",
+          "/zh/38_netty-boot/05.md",
+          "/zh/38_netty-boot/06.md",
+          "/zh/38_netty-boot/07.md",
+          "/zh/38_netty-boot/08.md",
+          "/zh/38_netty-boot/09.md",
+          "/zh/38_netty-boot/10.md",
+          "/zh/38_netty-boot/11.md",
+          "/zh/38_netty-boot/12.md",
+          "/zh/38_netty-boot/13.md",
+          "/zh/38_netty-boot/14.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "38_dubbo",
-    "collapsable": false,
+    "text": "集成与扩展",
+    "collapsible": true,
     "children": [
-      "/zh/38_dubbo/readme.md",
-      "/zh/38_dubbo/01.md",
-      "/zh/38_dubbo/02.md",
-      "/zh/38_dubbo/03.md",
-      "/zh/38_dubbo/04.md"
+      {
+        "text": "39 · 第三方集成",
+        "children": [
+          "/zh/39_integrations/readme.md",
+          "/zh/39_integrations/01.md",
+          "/zh/39_integrations/02.md",
+          "/zh/39_integrations/03.md",
+          "/zh/39_integrations/04.md",
+          "/zh/39_integrations/05.md",
+          "/zh/39_integrations/06.md",
+          "/zh/39_integrations/07.md",
+          "/zh/39_integrations/08.md",
+          "/zh/39_integrations/09.md",
+          "/zh/39_integrations/10.md",
+          "/zh/39_integrations/11.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "40 · Magic Script",
+        "children": [
+          "/zh/40_magic-script/readme.md",
+          "/zh/40_magic-script/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "41 · Groovy",
+        "children": [
+          "/zh/41_groovy/readme.md",
+          "/zh/41_groovy/01.md",
+          "/zh/41_groovy/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "42 · 爬虫",
+        "children": [
+          "/zh/42_crawling/readme.md",
+          "/zh/42_crawling/01.md",
+          "/zh/42_crawling/02.md",
+          "/zh/42_crawling/03.md",
+          "/zh/42_crawling/04.md",
+          "/zh/42_crawling/05.md",
+          "/zh/42_crawling/06.md",
+          "/zh/42_crawling/07.md",
+          "/zh/42_crawling/08.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "43 · Dubbo",
+        "children": [
+          "/zh/43_dubbo/readme.md",
+          "/zh/43_dubbo/01.md",
+          "/zh/43_dubbo/02.md",
+          "/zh/43_dubbo/03.md",
+          "/zh/43_dubbo/04.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "44 · Spring",
+        "children": [
+          "/zh/44_spring/readme.md",
+          "/zh/44_spring/01.md",
+          "/zh/44_spring/02.md",
+          "/zh/44_spring/03.md",
+          "/zh/44_spring/04.md",
+          "/zh/44_spring/05.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "45 · Spring Cloud",
+        "children": [
+          "/zh/45_spring-cloud/readme.md",
+          "/zh/45_spring-cloud/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "46 · Quarkus",
+        "children": [
+          "/zh/46_quarkus/readme.md",
+          "/zh/46_quarkus/01.md",
+          "/zh/46_quarkus/02.md",
+          "/zh/46_quarkus/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "47 · Telegram4J",
+        "children": [
+          "/zh/47_telegram4j/readme.md",
+          "/zh/47_telegram4j/01.md",
+          "/zh/47_telegram4j/02.md",
+          "/zh/47_telegram4j/03.md",
+          "/zh/47_telegram4j/04.md",
+          "/zh/47_telegram4j/05.md",
+          "/zh/47_telegram4j/06.md",
+          "/zh/47_telegram4j/07.md",
+          "/zh/47_telegram4j/08.md",
+          "/zh/47_telegram4j/09.md",
+          "/zh/47_telegram4j/10.md",
+          "/zh/47_telegram4j/11.md",
+          "/zh/47_telegram4j/12.md",
+          "/zh/47_telegram4j/13.md",
+          "/zh/47_telegram4j/14.md",
+          "/zh/47_telegram4j/16.md",
+          "/zh/47_telegram4j/17.md",
+          "/zh/47_telegram4j/18.md",
+          "/zh/47_telegram4j/19.md",
+          "/zh/47_telegram4j/20.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "48 · Telegram Bots",
+        "children": [
+          "/zh/48_telegram-bots/readme.md",
+          "/zh/48_telegram-bots/01.md",
+          "/zh/48_telegram-bots/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "49 · 文件存储",
+        "children": [
+          "/zh/49_file-storage/readme.md",
+          "/zh/49_file-storage/01.md",
+          "/zh/49_file-storage/02.md",
+          "/zh/49_file-storage/03.md",
+          "/zh/49_file-storage/04.md",
+          "/zh/49_file-storage/05.md",
+          "/zh/49_file-storage/06.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "50 · 支付",
+        "children": [
+          "/zh/50_payment/readme.md",
+          "/zh/50_payment/01.md",
+          "/zh/50_payment/02.md",
+          "/zh/50_payment/03.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "39_spring",
-    "collapsable": false,
+    "text": "Firebase 与 Clerk",
+    "collapsible": true,
     "children": [
-      "/zh/39_spring/readme.md",
-      "/zh/39_spring/01.md",
-      "/zh/39_spring/02.md",
-      "/zh/39_spring/03.md",
-      "/zh/39_spring/04.md",
-      "/zh/39_spring/05.md"
+      {
+        "text": "51 · Firebase",
+        "children": [
+          "/zh/51_firebase/readme.md",
+          "/zh/51_firebase/01.md",
+          "/zh/51_firebase/02.md",
+          "/zh/51_firebase/03.md",
+          "/zh/51_firebase/04.md",
+          "/zh/51_firebase/05.md",
+          "/zh/51_firebase/06.md",
+          "/zh/51_firebase/07.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "52 · Clerk",
+        "children": [
+          "/zh/52_clerk/readme.md",
+          "/zh/52_clerk/01.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "40_spring-cloud",
-    "collapsable": false,
+    "text": "多媒体",
+    "collapsible": true,
     "children": [
-      "/zh/40_spring-cloud/readme.md",
-      "/zh/40_spring-cloud/01.md"
+      {
+        "text": "53 · 音视频处理",
+        "children": [
+          "/zh/53_media/readme.md",
+          "/zh/53_media/01.md",
+          "/zh/53_media/02.md",
+          "/zh/53_media/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "54 · 语音识别",
+        "children": [
+          "/zh/54_asr/readme.md",
+          "/zh/54_asr/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "55 · 语音合成",
+        "children": [
+          "/zh/55_tts/readme.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "56 · 文字识别",
+        "children": [
+          "/zh/56_ocr/readme.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "57 · Native Media",
+        "children": [
+          "/zh/57_native-media/readme.md",
+          "/zh/57_native-media/01.md",
+          "/zh/57_native-media/02.md",
+          "/zh/57_native-media/03.md",
+          "/zh/57_native-media/04.md",
+          "/zh/57_native-media/05.md",
+          "/zh/57_native-media/06.md",
+          "/zh/57_native-media/07.md",
+          "/zh/57_native-media/08.md",
+          "/zh/57_native-media/09.md",
+          "/zh/57_native-media/10.md",
+          "/zh/57_native-media/11.md",
+          "/zh/57_native-media/12.md",
+          "/zh/57_native-media/13.md",
+          "/zh/57_native-media/14.md",
+          "/zh/57_native-media/15.md",
+          "/zh/57_native-media/16.md",
+          "/zh/57_native-media/17.md",
+          "/zh/57_native-media/18.md",
+          "/zh/57_native-media/19.md",
+          "/zh/57_native-media/20.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "58 · 计算机视觉",
+        "children": [
+          "/zh/58_computer-vision/readme.md",
+          "/zh/58_computer-vision/01.md",
+          "/zh/58_computer-vision/02.md",
+          "/zh/58_computer-vision/03.md",
+          "/zh/58_computer-vision/04.md",
+          "/zh/58_computer-vision/05.md",
+          "/zh/58_computer-vision/06.md",
+          "/zh/58_computer-vision/07.md",
+          "/zh/58_computer-vision/08.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "41_aio",
-    "collapsable": false,
+    "text": "AI 开发",
+    "collapsible": true,
     "children": [
-      "/zh/41_aio/readme.md",
-      "/zh/41_aio/01.md",
-      "/zh/41_aio/02.md",
-      "/zh/41_aio/03.md",
-      "/zh/41_aio/04.md",
-      "/zh/41_aio/05.md",
-      "/zh/41_aio/06.md"
+      {
+        "text": "59 · java-openai",
+        "children": [
+          "/zh/59_java-openai/readme.md",
+          "/zh/59_java-openai/01.md",
+          "/zh/59_java-openai/02.md",
+          "/zh/59_java-openai/03.md",
+          "/zh/59_java-openai/04.md",
+          "/zh/59_java-openai/05.md",
+          "/zh/59_java-openai/06.md",
+          "/zh/59_java-openai/07.md",
+          "/zh/59_java-openai/08.md",
+          "/zh/59_java-openai/18.md",
+          "/zh/59_java-openai/19.md",
+          "/zh/59_java-openai/20.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "60 · AI Agent",
+        "children": [
+          "/zh/60_ai-agent/readme.md",
+          "/zh/60_ai-agent/01.md",
+          "/zh/60_ai-agent/02.md",
+          "/zh/60_ai-agent/03.md",
+          "/zh/60_ai-agent/04.md",
+          "/zh/60_ai-agent/06.md",
+          "/zh/60_ai-agent/07.md",
+          "/zh/60_ai-agent/08.md",
+          "/zh/60_ai-agent/09.md",
+          "/zh/60_ai-agent/10.md",
+          "/zh/60_ai-agent/11.md",
+          "/zh/60_ai-agent/12.md",
+          "/zh/60_ai-agent/13.md",
+          "/zh/60_ai-agent/14.md",
+          "/zh/60_ai-agent/15.md",
+          "/zh/60_ai-agent/16.md",
+          "/zh/60_ai-agent/17.md",
+          "/zh/60_ai-agent/18.md",
+          "/zh/60_ai-agent/19.md",
+          "/zh/60_ai-agent/20.md",
+          "/zh/60_ai-agent/21.md",
+          "/zh/60_ai-agent/22.md",
+          "/zh/60_ai-agent/23.md",
+          "/zh/60_ai-agent/24.md",
+          "/zh/60_ai-agent/25.md",
+          "/zh/60_ai-agent/26.md",
+          "/zh/60_ai-agent/27.md",
+          "/zh/60_ai-agent/28.md",
+          "/zh/60_ai-agent/29.md",
+          "/zh/60_ai-agent/30.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "61 · 知识库",
+        "children": [
+          "/zh/61_knowledge-base/readme.md",
+          "/zh/61_knowledge-base/00.md",
+          "/zh/61_knowledge-base/01.md",
+          "/zh/61_knowledge-base/02.md",
+          "/zh/61_knowledge-base/03.md",
+          "/zh/61_knowledge-base/04.md",
+          "/zh/61_knowledge-base/05.md",
+          "/zh/61_knowledge-base/06.md",
+          "/zh/61_knowledge-base/07.md",
+          "/zh/61_knowledge-base/08.md",
+          "/zh/61_knowledge-base/09.md",
+          "/zh/61_knowledge-base/10.md",
+          "/zh/61_knowledge-base/11.md",
+          "/zh/61_knowledge-base/12.md",
+          "/zh/61_knowledge-base/13.md",
+          "/zh/61_knowledge-base/14.md",
+          "/zh/61_knowledge-base/15.md",
+          "/zh/61_knowledge-base/16.md",
+          "/zh/61_knowledge-base/17.md",
+          "/zh/61_knowledge-base/18.md",
+          "/zh/61_knowledge-base/19.md",
+          "/zh/61_knowledge-base/20.md",
+          "/zh/61_knowledge-base/21.md",
+          "/zh/61_knowledge-base/22.md",
+          "/zh/61_knowledge-base/23.md",
+          "/zh/61_knowledge-base/24.md",
+          "/zh/61_knowledge-base/25.md",
+          "/zh/61_knowledge-base/26.md",
+          "/zh/61_knowledge-base/28.md",
+          "/zh/61_knowledge-base/27.md",
+          "/zh/61_knowledge-base/30.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "62 · AI 搜索",
+        "children": [
+          "/zh/62_ai-search/readme.md",
+          "/zh/62_ai-search/01.md",
+          "/zh/62_ai-search/02.md",
+          "/zh/62_ai-search/03.md",
+          "/zh/62_ai-search/04.md",
+          "/zh/62_ai-search/05.md",
+          "/zh/62_ai-search/06.md",
+          "/zh/62_ai-search/07.md",
+          "/zh/62_ai-search/08.md",
+          "/zh/62_ai-search/09.md",
+          "/zh/62_ai-search/10.md",
+          "/zh/62_ai-search/11.md",
+          "/zh/62_ai-search/12.md",
+          "/zh/62_ai-search/13.md",
+          "/zh/62_ai-search/14.md",
+          "/zh/62_ai-search/15.md",
+          "/zh/62_ai-search/16.md",
+          "/zh/62_ai-search/17.md",
+          "/zh/62_ai-search/18.md",
+          "/zh/62_ai-search/19.md",
+          "/zh/62_ai-search/20.md",
+          "/zh/62_ai-search/21.md",
+          "/zh/62_ai-search/22.md",
+          "/zh/62_ai-search/23.md",
+          "/zh/62_ai-search/24.md",
+          "/zh/62_ai-search/25.md",
+          "/zh/62_ai-search/26.md",
+          "/zh/62_ai-search/27.md",
+          "/zh/62_ai-search/28.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "63 · 语音 Agent",
+        "children": [
+          "/zh/63_voice-agent/readme.md",
+          "/zh/63_voice-agent/01.md",
+          "/zh/63_voice-agent/02.md",
+          "/zh/63_voice-agent/03.md",
+          "/zh/63_voice-agent/04.md",
+          "/zh/63_voice-agent/05.md",
+          "/zh/63_voice-agent/06.md",
+          "/zh/63_voice-agent/07.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "64 · AI Coding",
+        "children": [
+          "/zh/64_ai-coding/readme.md",
+          "/zh/64_ai-coding/01.md",
+          "/zh/64_ai-coding/02.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "65 · AI Browser",
+        "children": [
+          "/zh/65_ai-browser/readme.md",
+          "/zh/65_ai-browser/01.md",
+          "/zh/65_ai-browser/02.md",
+          "/zh/65_ai-browser/03.md",
+          "/zh/65_ai-browser/03_client.md",
+          "/zh/65_ai-browser/04.md",
+          "/zh/65_ai-browser/05.md",
+          "/zh/65_ai-browser/06.md",
+          "/zh/65_ai-browser/07.md",
+          "/zh/65_ai-browser/08.md",
+          "/zh/65_ai-browser/09.md",
+          "/zh/65_ai-browser/10.md",
+          "/zh/65_ai-browser/11.md",
+          "/zh/65_ai-browser/12.md",
+          "/zh/65_ai-browser/13.md",
+          "/zh/65_ai-browser/14.md",
+          "/zh/65_ai-browser/15.md",
+          "/zh/65_ai-browser/16.md",
+          "/zh/65_ai-browser/17.md",
+          "/zh/65_ai-browser/18.md",
+          "/zh/65_ai-browser/19.md",
+          "/zh/65_ai-browser/20.md",
+          "/zh/65_ai-browser/21.md",
+          "/zh/65_ai-browser/22.md",
+          "/zh/65_ai-browser/23.md",
+          "/zh/65_ai-browser/24.md",
+          "/zh/65_ai-browser/25.md",
+          "/zh/65_ai-browser/26.md",
+          "/zh/65_ai-browser/27.md",
+          "/zh/65_ai-browser/28.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "42_netty",
-    "collapsable": false,
+    "text": "项目实战",
+    "collapsible": true,
     "children": [
-      "/zh/42_netty/readme.md",
-      "/zh/42_netty/01.md",
-      "/zh/42_netty/02.md",
-      "/zh/42_netty/03.md",
-      "/zh/42_netty/04.md",
-      "/zh/42_netty/05.md"
+      {
+        "text": "66 · java-uni-ai-server",
+        "children": [
+          "/zh/66_java-uni-ai-server/readme.md",
+          "/zh/66_java-uni-ai-server/01.md",
+          "/zh/66_java-uni-ai-server/02.md",
+          "/zh/66_java-uni-ai-server/03.md",
+          "/zh/66_java-uni-ai-server/04.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "67 · java-llm-proxy",
+        "children": [
+          "/zh/67_java-llm-proxy/readme.md",
+          "/zh/67_java-llm-proxy/01.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "68 · java-kit-server",
+        "children": [
+          "/zh/68_java-kit-server/readme.md",
+          "/zh/68_java-kit-server/01.md",
+          "/zh/68_java-kit-server/02.md",
+          "/zh/68_java-kit-server/03.md",
+          "/zh/68_java-kit-server/04.md",
+          "/zh/68_java-kit-server/05.md",
+          "/zh/68_java-kit-server/06.md",
+          "/zh/68_java-kit-server/07.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "69 · tio-im",
+        "children": [
+          "/zh/69_tio-im/readme.md",
+          "/zh/69_tio-im/01.md",
+          "/zh/69_tio-im/02.md",
+          "/zh/69_tio-im/03.md",
+          "/zh/69_tio-im/04.md",
+          "/zh/69_tio-im/05.md",
+          "/zh/69_tio-im/06.md",
+          "/zh/69_tio-im/07.md",
+          "/zh/69_tio-im/08.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "70 · tio-mail-wing",
+        "children": [
+          "/zh/70_tio-mail-wing/readme.md",
+          "/zh/70_tio-mail-wing/01.md",
+          "/zh/70_tio-mail-wing/02.md",
+          "/zh/70_tio-mail-wing/03.md",
+          "/zh/70_tio-mail-wing/04.md",
+          "/zh/70_tio-mail-wing/05.md",
+          "/zh/70_tio-mail-wing/06.md",
+          "/zh/70_tio-mail-wing/07.md",
+          "/zh/70_tio-mail-wing/08.md",
+          "/zh/70_tio-mail-wing/09.md",
+          "/zh/70_tio-mail-wing/10.md",
+          "/zh/70_tio-mail-wing/11.md",
+          "/zh/70_tio-mail-wing/12.md",
+          "/zh/70_tio-mail-wing/13.md",
+          "/zh/70_tio-mail-wing/14.md",
+          "/zh/70_tio-mail-wing/15.md",
+          "/zh/70_tio-mail-wing/16.md",
+          "/zh/70_tio-mail-wing/17.md",
+          "/zh/70_tio-mail-wing/18.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "71 · tio-mcp-server",
+        "children": [
+          "/zh/71_tio-mcp-server/readme.md",
+          "/zh/71_tio-mcp-server/01.md",
+          "/zh/71_tio-mcp-server/08.md",
+          "/zh/71_tio-mcp-server/11.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "72 · tio-log-server",
+        "children": [
+          "/zh/72_tio-log-server/readme.md",
+          "/zh/72_tio-log-server/01.md",
+          "/zh/72_tio-log-server/02.md",
+          "/zh/72_tio-log-server/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "73 · tio-sip",
+        "children": [
+          "/zh/73_tio-sip/readme.md",
+          "/zh/73_tio-sip/01.md",
+          "/zh/73_tio-sip/02.md",
+          "/zh/73_tio-sip/03.md",
+          "/zh/73_tio-sip/04.md",
+          "/zh/73_tio-sip/05.md",
+          "/zh/73_tio-sip/06.md",
+          "/zh/73_tio-sip/07.md",
+          "/zh/73_tio-sip/08.md",
+          "/zh/73_tio-sip/09.md",
+          "/zh/73_tio-sip/10.md",
+          "/zh/73_tio-sip/11.md",
+          "/zh/73_tio-sip/13.md",
+          "/zh/73_tio-sip/14.md",
+          "/zh/73_tio-sip/15.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "74 · tio-boot-admin",
+        "children": [
+          "/zh/74_tio-boot-admin/readme.md",
+          "/zh/74_tio-boot-admin/01.md",
+          "/zh/74_tio-boot-admin/02.md",
+          "/zh/74_tio-boot-admin/03.md",
+          "/zh/74_tio-boot-admin/04.md",
+          "/zh/74_tio-boot-admin/05.md",
+          "/zh/74_tio-boot-admin/06.md",
+          "/zh/74_tio-boot-admin/07.md",
+          "/zh/74_tio-boot-admin/08.md",
+          "/zh/74_tio-boot-admin/09.md",
+          "/zh/74_tio-boot-admin/10.md",
+          "/zh/74_tio-boot-admin/11.md",
+          "/zh/74_tio-boot-admin/12.md",
+          "/zh/74_tio-boot-admin/13.md",
+          "/zh/74_tio-boot-admin/14.md",
+          "/zh/74_tio-boot-admin/15.md",
+          "/zh/74_tio-boot-admin/16.md",
+          "/zh/74_tio-boot-admin/17.md",
+          "/zh/74_tio-boot-admin/18.md",
+          "/zh/74_tio-boot-admin/19.md",
+          "/zh/74_tio-boot-admin/20.md",
+          "/zh/74_tio-boot-admin/21.md",
+          "/zh/74_tio-boot-admin/22.md",
+          "/zh/74_tio-boot-admin/23.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "75 · 案例",
+        "children": [
+          "/zh/75_examples/readme.md",
+          "/zh/75_examples/01.md",
+          "/zh/75_examples/02.md",
+          "/zh/75_examples/03.md",
+          "/zh/75_examples/04.md",
+          "/zh/75_examples/05.md",
+          "/zh/75_examples/06.md",
+          "/zh/75_examples/07.md",
+          "/zh/75_examples/08.md",
+          "/zh/75_examples/09.md",
+          "/zh/75_examples/10.md",
+          "/zh/75_examples/11.md",
+          "/zh/75_examples/12.md",
+          "/zh/75_examples/13.md"
+        ],
+        "collapsible": true
+      }
     ]
   },
   {
-    "text": "43_netty-boot",
-    "collapsable": false,
+    "text": "性能、原理与源码",
+    "collapsible": true,
     "children": [
-      "/zh/43_netty-boot/readme.md",
-      "/zh/43_netty-boot/01.md",
-      "/zh/43_netty-boot/02.md",
-      "/zh/43_netty-boot/03.md",
-      "/zh/43_netty-boot/04.md",
-      "/zh/43_netty-boot/05.md",
-      "/zh/43_netty-boot/06.md",
-      "/zh/43_netty-boot/07.md",
-      "/zh/43_netty-boot/08.md",
-      "/zh/43_netty-boot/09.md",
-      "/zh/43_netty-boot/10.md",
-      "/zh/43_netty-boot/11.md",
-      "/zh/43_netty-boot/12.md",
-      "/zh/43_netty-boot/13.md",
-      "/zh/43_netty-boot/14.md"
-    ]
-  },
-  {
-    "text": "44_quarkus",
-    "collapsable": false,
-    "children": [
-      "/zh/44_quarkus/readme.md",
-      "/zh/44_quarkus/01.md",
-      "/zh/44_quarkus/02.md",
-      "/zh/44_quarkus/03.md"
-    ]
-  },
-  {
-    "text": "45_jooq",
-    "collapsable": false,
-    "children": [
-      "/zh/45_jooq/readme.md",
-      "/zh/45_jooq/01.md",
-      "/zh/45_jooq/02.md",
-      "/zh/45_jooq/03.md",
-      "/zh/45_jooq/04.md",
-      "/zh/45_jooq/05.md",
-      "/zh/45_jooq/06.md",
-      "/zh/45_jooq/07.md",
-      "/zh/45_jooq/08.md",
-      "/zh/45_jooq/09.md",
-      "/zh/45_jooq/10.md",
-      "/zh/45_jooq/11.md",
-      "/zh/45_jooq/12.md",
-      "/zh/45_jooq/13.md"
-    ]
-  },
-  {
-    "text": "46_media",
-    "collapsable": false,
-    "children": [
-      "/zh/46_media/readme.md",
-      "/zh/46_media/01.md",
-      "/zh/46_media/02.md",
-      "/zh/46_media/03.md"
-    ]
-  },
-  {
-    "text": "47_asr",
-    "collapsable": false,
-    "children": [
-      "/zh/47_asr/readme.md",
-      "/zh/47_asr/01.md"
-    ]
-  },
-  {
-    "text": "48_tts",
-    "collapsable": false,
-    "children": [
-      "/zh/48_tts/readme.md"
-    ]
-  },
-  {
-    "text": "49_ocr",
-    "collapsable": false,
-    "children": [
-      "/zh/49_ocr/readme.md"
-    ]
-  },
-  {
-    "text": "50_native-media",
-    "collapsable": false,
-    "children": [
-      "/zh/50_native-media/readme.md",
-      "/zh/50_native-media/01.md",
-      "/zh/50_native-media/02.md",
-      "/zh/50_native-media/03.md",
-      "/zh/50_native-media/04.md",
-      "/zh/50_native-media/05.md",
-      "/zh/50_native-media/06.md",
-      "/zh/50_native-media/07.md",
-      "/zh/50_native-media/08.md",
-      "/zh/50_native-media/09.md",
-      "/zh/50_native-media/10.md",
-      "/zh/50_native-media/11.md",
-      "/zh/50_native-media/12.md",
-      "/zh/50_native-media/13.md",
-      "/zh/50_native-media/14.md",
-      "/zh/50_native-media/15.md",
-      "/zh/50_native-media/16.md",
-      "/zh/50_native-media/17.md",
-      "/zh/50_native-media/18.md",
-      "/zh/50_native-media/19.md",
-      "/zh/50_native-media/20.md"
-    ]
-  },
-  {
-    "text": "51_cv",
-    "collapsable": false,
-    "children": [
-      "/zh/51_cv/readme.md",
-      "/zh/51_cv/01.md",
-      "/zh/51_cv/02.md",
-      "/zh/51_cv/03.md",
-      "/zh/51_cv/04.md",
-      "/zh/51_cv/05.md",
-      "/zh/51_cv/06.md",
-      "/zh/51_cv/07.md",
-      "/zh/51_cv/08.md"
-    ]
-  },
-  {
-    "text": "52_telegram4j",
-    "collapsable": false,
-    "children": [
-      "/zh/52_telegram4j/readme.md",
-      "/zh/52_telegram4j/01.md",
-      "/zh/52_telegram4j/02.md",
-      "/zh/52_telegram4j/03.md",
-      "/zh/52_telegram4j/04.md",
-      "/zh/52_telegram4j/05.md",
-      "/zh/52_telegram4j/06.md",
-      "/zh/52_telegram4j/07.md",
-      "/zh/52_telegram4j/08.md",
-      "/zh/52_telegram4j/09.md",
-      "/zh/52_telegram4j/10.md",
-      "/zh/52_telegram4j/11.md",
-      "/zh/52_telegram4j/12.md",
-      "/zh/52_telegram4j/13.md",
-      "/zh/52_telegram4j/14.md",
-      "/zh/52_telegram4j/16.md",
-      "/zh/52_telegram4j/17.md",
-      "/zh/52_telegram4j/18.md",
-      "/zh/52_telegram4j/19.md",
-      "/zh/52_telegram4j/20.md"
-    ]
-  },
-  {
-    "text": "53_telegram-bots",
-    "collapsable": false,
-    "children": [
-      "/zh/53_telegram-bots/readme.md",
-      "/zh/53_telegram-bots/01.md",
-      "/zh/53_telegram-bots/02.md"
-    ]
-  },
-  {
-    "text": "54_java-openai",
-    "collapsable": false,
-    "children": [
-      "/zh/54_java-openai/readme.md",
-      "/zh/54_java-openai/01.md",
-      "/zh/54_java-openai/02.md",
-      "/zh/54_java-openai/03.md",
-      "/zh/54_java-openai/04.md",
-      "/zh/54_java-openai/05.md",
-      "/zh/54_java-openai/06.md",
-      "/zh/54_java-openai/07.md",
-      "/zh/54_java-openai/08.md",
-      "/zh/54_java-openai/18.md",
-      "/zh/54_java-openai/19.md",
-      "/zh/54_java-openai/20.md"
-    ]
-  },
-  {
-    "text": "55_ai_agent",
-    "collapsable": false,
-    "children": [
-      "/zh/55_ai_agent/readme.md",
-      "/zh/55_ai_agent/01.md",
-      "/zh/55_ai_agent/02.md",
-      "/zh/55_ai_agent/03.md",
-      "/zh/55_ai_agent/04.md",
-      "/zh/55_ai_agent/06.md",
-      "/zh/55_ai_agent/07.md",
-      "/zh/55_ai_agent/08.md",
-      "/zh/55_ai_agent/09.md",
-      "/zh/55_ai_agent/10.md",
-      "/zh/55_ai_agent/11.md",
-      "/zh/55_ai_agent/12.md",
-      "/zh/55_ai_agent/13.md",
-      "/zh/55_ai_agent/14.md",
-      "/zh/55_ai_agent/15.md",
-      "/zh/55_ai_agent/16.md",
-      "/zh/55_ai_agent/17.md",
-      "/zh/55_ai_agent/18.md",
-      "/zh/55_ai_agent/19.md",
-      "/zh/55_ai_agent/20.md",
-      "/zh/55_ai_agent/21.md",
-      "/zh/55_ai_agent/22.md",
-      "/zh/55_ai_agent/23.md",
-      "/zh/55_ai_agent/24.md",
-      "/zh/55_ai_agent/25.md",
-      "/zh/55_ai_agent/26.md",
-      "/zh/55_ai_agent/27.md",
-      "/zh/55_ai_agent/28.md",
-      "/zh/55_ai_agent/29.md",
-      "/zh/55_ai_agent/30.md"
-    ]
-  },
-  {
-    "text": "56_knowlege_base",
-    "collapsable": false,
-    "children": [
-      "/zh/56_knowlege_base/readme.md",
-      "/zh/56_knowlege_base/00.md",
-      "/zh/56_knowlege_base/01.md",
-      "/zh/56_knowlege_base/02.md",
-      "/zh/56_knowlege_base/03.md",
-      "/zh/56_knowlege_base/04.md",
-      "/zh/56_knowlege_base/05.md",
-      "/zh/56_knowlege_base/06.md",
-      "/zh/56_knowlege_base/07.md",
-      "/zh/56_knowlege_base/08.md",
-      "/zh/56_knowlege_base/09.md",
-      "/zh/56_knowlege_base/10.md",
-      "/zh/56_knowlege_base/11.md",
-      "/zh/56_knowlege_base/12.md",
-      "/zh/56_knowlege_base/13.md",
-      "/zh/56_knowlege_base/14.md",
-      "/zh/56_knowlege_base/15.md",
-      "/zh/56_knowlege_base/16.md",
-      "/zh/56_knowlege_base/17.md",
-      "/zh/56_knowlege_base/18.md",
-      "/zh/56_knowlege_base/19.md",
-      "/zh/56_knowlege_base/20.md",
-      "/zh/56_knowlege_base/21.md",
-      "/zh/56_knowlege_base/22.md",
-      "/zh/56_knowlege_base/23.md",
-      "/zh/56_knowlege_base/24.md",
-      "/zh/56_knowlege_base/25.md",
-      "/zh/56_knowlege_base/26.md",
-      "/zh/56_knowlege_base/28.md",
-      "/zh/56_knowlege_base/27.md",
-      "/zh/56_knowlege_base/30.md"
-    ]
-  },
-  {
-    "text": "57_voice-agent",
-    "collapsable": false,
-    "children": [
-      "/zh/57_voice-agent/readme.md",
-      "/zh/57_voice-agent/01.md",
-      "/zh/57_voice-agent/02.md",
-      "/zh/57_voice-agent/03.md",
-      "/zh/57_voice-agent/04.md",
-      "/zh/57_voice-agent/05.md",
-      "/zh/57_voice-agent/06.md",
-      "/zh/57_voice-agent/07.md"
-    ]
-  },
-  {
-    "text": "58_ai-search",
-    "collapsable": false,
-    "children": [
-      "/zh/58_ai-search/readme.md",
-      "/zh/58_ai-search/01.md",
-      "/zh/58_ai-search/02.md",
-      "/zh/58_ai-search/03.md",
-      "/zh/58_ai-search/04.md",
-      "/zh/58_ai-search/05.md",
-      "/zh/58_ai-search/06.md",
-      "/zh/58_ai-search/07.md",
-      "/zh/58_ai-search/08.md",
-      "/zh/58_ai-search/09.md",
-      "/zh/58_ai-search/10.md",
-      "/zh/58_ai-search/11.md",
-      "/zh/58_ai-search/12.md",
-      "/zh/58_ai-search/13.md",
-      "/zh/58_ai-search/14.md",
-      "/zh/58_ai-search/15.md",
-      "/zh/58_ai-search/16.md",
-      "/zh/58_ai-search/17.md",
-      "/zh/58_ai-search/18.md",
-      "/zh/58_ai-search/19.md",
-      "/zh/58_ai-search/20.md",
-      "/zh/58_ai-search/21.md",
-      "/zh/58_ai-search/22.md",
-      "/zh/58_ai-search/23.md",
-      "/zh/58_ai-search/24.md",
-      "/zh/58_ai-search/25.md",
-      "/zh/58_ai-search/26.md",
-      "/zh/58_ai-search/27.md",
-      "/zh/58_ai-search/28.md"
-    ]
-  },
-  {
-    "text": "59_ai-coding",
-    "collapsable": false,
-    "children": [
-      "/zh/59_ai-coding/readme.md",
-      "/zh/59_ai-coding/01.md",
-      "/zh/59_ai-coding/02.md"
-    ]
-  },
-  {
-    "text": "60_ai-browser",
-    "collapsable": false,
-    "children": [
-      "/zh/60_ai-browser/readme.md",
-      "/zh/60_ai-browser/01.md",
-      "/zh/60_ai-browser/02.md",
-      "/zh/60_ai-browser/03.md",
-      "/zh/60_ai-browser/03_client.md",
-      "/zh/60_ai-browser/04.md",
-      "/zh/60_ai-browser/05.md",
-      "/zh/60_ai-browser/06.md",
-      "/zh/60_ai-browser/07.md",
-      "/zh/60_ai-browser/08.md",
-      "/zh/60_ai-browser/09.md",
-      "/zh/60_ai-browser/10.md",
-      "/zh/60_ai-browser/11.md",
-      "/zh/60_ai-browser/12.md",
-      "/zh/60_ai-browser/13.md",
-      "/zh/60_ai-browser/14.md",
-      "/zh/60_ai-browser/15.md",
-      "/zh/60_ai-browser/16.md",
-      "/zh/60_ai-browser/17.md",
-      "/zh/60_ai-browser/18.md",
-      "/zh/60_ai-browser/19.md",
-      "/zh/60_ai-browser/20.md",
-      "/zh/60_ai-browser/21.md",
-      "/zh/60_ai-browser/22.md",
-      "/zh/60_ai-browser/23.md",
-      "/zh/60_ai-browser/24.md",
-      "/zh/60_ai-browser/25.md",
-      "/zh/60_ai-browser/26.md",
-      "/zh/60_ai-browser/27.md",
-      "/zh/60_ai-browser/28.md"
-    ]
-  },
-  {
-    "text": "61_java-uni-ai-server",
-    "collapsable": false,
-    "children": [
-      "/zh/61_java-uni-ai-server/readme.md",
-      "/zh/61_java-uni-ai-server/01.md",
-      "/zh/61_java-uni-ai-server/02.md",
-      "/zh/61_java-uni-ai-server/03.md",
-      "/zh/61_java-uni-ai-server/04.md"
-    ]
-  },
-  {
-    "text": "62_java-llm-proxy",
-    "collapsable": false,
-    "children": [
-      "/zh/62_java-llm-proxy/readme.md",
-      "/zh/62_java-llm-proxy/01.md"
-    ]
-  },
-  {
-    "text": "63_java-kit-server",
-    "collapsable": false,
-    "children": [
-      "/zh/63_java-kit-server/readme.md",
-      "/zh/63_java-kit-server/01.md",
-      "/zh/63_java-kit-server/02.md",
-      "/zh/63_java-kit-server/03.md",
-      "/zh/63_java-kit-server/04.md",
-      "/zh/63_java-kit-server/05.md",
-      "/zh/63_java-kit-server/06.md",
-      "/zh/63_java-kit-server/07.md"
-    ]
-  },
-  {
-    "text": "64_文件存储",
-    "collapsable": false,
-    "children": [
-      "/zh/64_文件存储/readme.md",
-      "/zh/64_文件存储/01.md",
-      "/zh/64_文件存储/02.md",
-      "/zh/64_文件存储/03.md",
-      "/zh/64_文件存储/04.md",
-      "/zh/64_文件存储/05.md",
-      "/zh/64_文件存储/06.md"
-    ]
-  },
-  {
-    "text": "65_tio-boot-admin",
-    "collapsable": false,
-    "children": [
-      "/zh/65_tio-boot-admin/readme.md",
-      "/zh/65_tio-boot-admin/01.md",
-      "/zh/65_tio-boot-admin/02.md",
-      "/zh/65_tio-boot-admin/03.md",
-      "/zh/65_tio-boot-admin/04.md",
-      "/zh/65_tio-boot-admin/05.md",
-      "/zh/65_tio-boot-admin/06.md",
-      "/zh/65_tio-boot-admin/07.md",
-      "/zh/65_tio-boot-admin/08.md",
-      "/zh/65_tio-boot-admin/09.md",
-      "/zh/65_tio-boot-admin/10.md",
-      "/zh/65_tio-boot-admin/11.md",
-      "/zh/65_tio-boot-admin/12.md",
-      "/zh/65_tio-boot-admin/13.md",
-      "/zh/65_tio-boot-admin/14.md",
-      "/zh/65_tio-boot-admin/15.md",
-      "/zh/65_tio-boot-admin/16.md",
-      "/zh/65_tio-boot-admin/17.md",
-      "/zh/65_tio-boot-admin/18.md",
-      "/zh/65_tio-boot-admin/19.md",
-      "/zh/65_tio-boot-admin/20.md",
-      "/zh/65_tio-boot-admin/21.md",
-      "/zh/65_tio-boot-admin/22.md",
-      "/zh/65_tio-boot-admin/23.md"
-    ]
-  },
-  {
-    "text": "66_第三方登录注册",
-    "collapsable": false,
-    "children": [
-      "/zh/66_第三方登录注册/readme.md",
-      "/zh/66_第三方登录注册/01.md",
-      "/zh/66_第三方登录注册/02.md",
-      "/zh/66_第三方登录注册/03.md",
-      "/zh/66_第三方登录注册/04.md",
-      "/zh/66_第三方登录注册/05.md",
-      "/zh/66_第三方登录注册/06.md",
-      "/zh/66_第三方登录注册/07.md",
-      "/zh/66_第三方登录注册/08.md",
-      "/zh/66_第三方登录注册/09.md",
-      "/zh/66_第三方登录注册/10.md",
-      "/zh/66_第三方登录注册/11.md"
-    ]
-  },
-  {
-    "text": "67_pay",
-    "collapsable": false,
-    "children": [
-      "/zh/67_pay/readme.md",
-      "/zh/67_pay/01.md",
-      "/zh/67_pay/02.md",
-      "/zh/67_pay/03.md"
-    ]
-  },
-  {
-    "text": "68_firebase",
-    "collapsable": false,
-    "children": [
-      "/zh/68_firebase/readme.md",
-      "/zh/68_firebase/01.md",
-      "/zh/68_firebase/02.md",
-      "/zh/68_firebase/03.md",
-      "/zh/68_firebase/04.md",
-      "/zh/68_firebase/05.md",
-      "/zh/68_firebase/06.md",
-      "/zh/68_firebase/07.md"
-    ]
-  },
-  {
-    "text": "69_clerk",
-    "collapsable": false,
-    "children": [
-      "/zh/69_clerk/readme.md",
-      "/zh/69_clerk/01.md"
-    ]
-  },
-  {
-    "text": "70_tio-im",
-    "collapsable": false,
-    "children": [
-      "/zh/70_tio-im/readme.md",
-      "/zh/70_tio-im/01.md",
-      "/zh/70_tio-im/02.md",
-      "/zh/70_tio-im/03.md",
-      "/zh/70_tio-im/04.md",
-      "/zh/70_tio-im/05.md",
-      "/zh/70_tio-im/06.md",
-      "/zh/70_tio-im/07.md",
-      "/zh/70_tio-im/08.md"
-    ]
-  },
-  {
-    "text": "71_tio-mail-wing",
-    "collapsable": false,
-    "children": [
-      "/zh/71_tio-mail-wing/readme.md",
-      "/zh/71_tio-mail-wing/01.md",
-      "/zh/71_tio-mail-wing/02.md",
-      "/zh/71_tio-mail-wing/03.md",
-      "/zh/71_tio-mail-wing/04.md",
-      "/zh/71_tio-mail-wing/05.md",
-      "/zh/71_tio-mail-wing/06.md",
-      "/zh/71_tio-mail-wing/07.md",
-      "/zh/71_tio-mail-wing/08.md",
-      "/zh/71_tio-mail-wing/09.md",
-      "/zh/71_tio-mail-wing/10.md",
-      "/zh/71_tio-mail-wing/11.md",
-      "/zh/71_tio-mail-wing/12.md",
-      "/zh/71_tio-mail-wing/13.md",
-      "/zh/71_tio-mail-wing/14.md",
-      "/zh/71_tio-mail-wing/15.md",
-      "/zh/71_tio-mail-wing/16.md",
-      "/zh/71_tio-mail-wing/17.md",
-      "/zh/71_tio-mail-wing/18.md"
-    ]
-  },
-  {
-    "text": "72_tio-mcp-server",
-    "collapsable": false,
-    "children": [
-      "/zh/72_tio-mcp-server/readme.md",
-      "/zh/72_tio-mcp-server/01.md",
-      "/zh/72_tio-mcp-server/08.md",
-      "/zh/72_tio-mcp-server/11.md"
-    ]
-  },
-  {
-    "text": "73_tio-sip",
-    "collapsable": false,
-    "children": [
-      "/zh/73_tio-sip/readme.md",
-      "/zh/73_tio-sip/01.md",
-      "/zh/73_tio-sip/02.md",
-      "/zh/73_tio-sip/03.md",
-      "/zh/73_tio-sip/04.md",
-      "/zh/73_tio-sip/05.md",
-      "/zh/73_tio-sip/06.md",
-      "/zh/73_tio-sip/07.md",
-      "/zh/73_tio-sip/08.md",
-      "/zh/73_tio-sip/09.md",
-      "/zh/73_tio-sip/10.md",
-      "/zh/73_tio-sip/11.md",
-      "/zh/73_tio-sip/13.md",
-      "/zh/73_tio-sip/14.md",
-      "/zh/73_tio-sip/15.md"
-    ]
-  },
-  {
-    "text": "74_tio-log-server",
-    "collapsable": false,
-    "children": [
-      "/zh/74_tio-log-server/readme.md",
-      "/zh/74_tio-log-server/01.md",
-      "/zh/74_tio-log-server/02.md",
-      "/zh/74_tio-log-server/03.md"
-    ]
-  },
-  {
-    "text": "75_性能测试",
-    "collapsable": false,
-    "children": [
-      "/zh/75_性能测试/readme.md",
-      "/zh/75_性能测试/01.md",
-      "/zh/75_性能测试/02.md",
-      "/zh/75_性能测试/03.md",
-      "/zh/75_性能测试/04.md",
-      "/zh/75_性能测试/05.md",
-      "/zh/75_性能测试/06.md",
-      "/zh/75_性能测试/07.md",
-      "/zh/75_性能测试/08.md",
-      "/zh/75_性能测试/09.md"
-    ]
-  },
-  {
-    "text": "76_tio-boot",
-    "collapsable": false,
-    "children": [
-      "/zh/76_tio-boot/readme.md",
-      "/zh/76_tio-boot/01.md",
-      "/zh/76_tio-boot/02.md",
-      "/zh/76_tio-boot/03.md",
-      "/zh/76_tio-boot/04.md",
-      "/zh/76_tio-boot/05.md",
-      "/zh/76_tio-boot/06.md"
-    ]
-  },
-  {
-    "text": "77_案例",
-    "collapsable": false,
-    "children": [
-      "/zh/77_案例/readme.md",
-      "/zh/77_案例/01.md",
-      "/zh/77_案例/02.md",
-      "/zh/77_案例/03.md",
-      "/zh/77_案例/04.md",
-      "/zh/77_案例/05.md",
-      "/zh/77_案例/06.md",
-      "/zh/77_案例/07.md",
-      "/zh/77_案例/08.md",
-      "/zh/77_案例/09.md",
-      "/zh/77_案例/10.md",
-      "/zh/77_案例/11.md",
-      "/zh/77_案例/12.md",
-      "/zh/77_案例/13.md"
+      {
+        "text": "76 · 性能测试",
+        "children": [
+          "/zh/76_performance/readme.md",
+          "/zh/76_performance/01.md",
+          "/zh/76_performance/02.md",
+          "/zh/76_performance/03.md",
+          "/zh/76_performance/04.md",
+          "/zh/76_performance/05.md",
+          "/zh/76_performance/06.md",
+          "/zh/76_performance/07.md",
+          "/zh/76_performance/08.md",
+          "/zh/76_performance/09.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "77 · 原理",
+        "children": [
+          "/zh/77_internals/readme.md",
+          "/zh/77_internals/01.md",
+          "/zh/77_internals/02.md",
+          "/zh/77_internals/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "78 · 源码解析",
+        "children": [
+          "/zh/78_source-code/readme.md",
+          "/zh/78_source-code/01.md",
+          "/zh/78_source-code/02.md",
+          "/zh/78_source-code/03.md",
+          "/zh/78_source-code/04.md",
+          "/zh/78_source-code/05.md",
+          "/zh/78_source-code/06.md"
+        ],
+        "collapsible": true
+      }
     ]
   }
 ]

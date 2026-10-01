@@ -6,7 +6,7 @@ heroText: Tio-Boot
 tagline: 基于Java的快速开发框架
 actions:
   - text: Get Started
-    link: /zh/01_tio-boot 简介/02.md
+    link: /zh/01_introduction/02.md
     type: primary
 
 features:
@@ -17,6 +17,8 @@ features:
   - title: 节约时间
     details: 在拥有Java语言所有优势的同时再拥有 ruby、python 等动态语言的开发效率！为您节约更多时间，去陪恋人、家人和朋友 ;)
 ---
+
+[按学习路径浏览全部章节](./guide.md)
 
 ::: slot footer
 MIT Licensed | Copyright © 2023-present [litongjava](https://github.com/litongjava)
