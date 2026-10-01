@@ -452,35 +452,86 @@
     "collapsable": false,
     "children": [
       "/zh/31_tio/readme.md",
-      "/zh/31_tio/01.md",
-      "/zh/31_tio/02.md",
-      "/zh/31_tio/03.md",
-      "/zh/31_tio/04.md",
-      "/zh/31_tio/05.md",
-      "/zh/31_tio/06.md",
-      "/zh/31_tio/07.md",
-      "/zh/31_tio/08.md",
-      "/zh/31_tio/09.md",
-      "/zh/31_tio/10.md",
-      "/zh/31_tio/11.md",
-      "/zh/31_tio/12.md",
-      "/zh/31_tio/13.md",
-      "/zh/31_tio/14.md",
-      "/zh/31_tio/15.md",
-      "/zh/31_tio/16.md",
-      "/zh/31_tio/17.md",
-      "/zh/31_tio/18.md",
-      "/zh/31_tio/19.md",
-      "/zh/31_tio/20.md",
-      "/zh/31_tio/21.md",
-      "/zh/31_tio/22.md",
-      "/zh/31_tio/23.md",
-      "/zh/31_tio/24.md",
-      "/zh/31_tio/25.md",
-      "/zh/31_tio/26.md",
-      "/zh/31_tio/27.md",
-      "/zh/31_tio/28.md",
-      "/zh/31_tio/29.md"
+      {
+        "text": "认识 t-io",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/01-overview.md",
+          "/zh/31_tio/02-message-flow.md"
+        ]
+      },
+      {
+        "text": "快速上手",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/03-tio-boot-server.md",
+          "/zh/31_tio/04-tcp-server.md",
+          "/zh/31_tio/05-tcp-handler.md",
+          "/zh/31_tio/06-udp-server.md",
+          "/zh/31_tio/07-udp-handler.md"
+        ]
+      },
+      {
+        "text": "核心概念",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/08-tio-config.md",
+          "/zh/31_tio/09-channel-context.md",
+          "/zh/31_tio/10-packet.md",
+          "/zh/31_tio/11-tio-api.md"
+        ]
+      },
+      {
+        "text": "消息与文件传输",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/12-send-data.md",
+          "/zh/31_tio/13-http-keep-alive-file-transfer.md",
+          "/zh/31_tio/14-async-channel-response.md"
+        ]
+      },
+      {
+        "text": "连接管理",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/15-bind-data.md",
+          "/zh/31_tio/16-unbind-data.md",
+          "/zh/31_tio/17-close-connection.md",
+          "/zh/31_tio/18-resource-sharing.md",
+          "/zh/31_tio/19-member-ordering.md",
+          "/zh/31_tio/20-ip-blacklist.md"
+        ]
+      },
+      {
+        "text": "加密通信",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/21-ssl.md",
+          "/zh/31_tio/22-https-handshake.md"
+        ]
+      },
+      {
+        "text": "心跳与监控",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/23-heartbeat.md",
+          "/zh/31_tio/24-client-traffic.md",
+          "/zh/31_tio/25-connection-traffic.md",
+          "/zh/31_tio/26-port-traffic.md",
+          "/zh/31_tio/27-channel-stat.md",
+          "/zh/31_tio/28-group-stat.md"
+        ]
+      },
+      {
+        "text": "深入原理",
+        "collapsible": true,
+        "children": [
+          "/zh/31_tio/29-runtime-internals.md",
+          "/zh/31_tio/30-decode-runnable.md",
+          "/zh/31_tio/31-stability-resource-management.md",
+          "/zh/31_tio/32-source-code-guide.md"
+        ]
+      }
     ]
   },
   {
@@ -959,7 +1010,8 @@
       "/zh/60_ai-browser/24.md",
       "/zh/60_ai-browser/25.md",
       "/zh/60_ai-browser/26.md",
-      "/zh/60_ai-browser/27.md"
+      "/zh/60_ai-browser/27.md",
+      "/zh/60_ai-browser/28.md"
     ]
   },
   {

@@ -1,5 +1,86 @@
 # 文档补全与维护记录
 
+## 2026-10-01：31_tio 阅读顺序与文件命名
+
+- 保留章节名称 `31_tio`，按认识框架、快速上手、核心概念、消息与文件传输、连接管理、加密通信、心跳与监控、深入原理划分八组。
+- 32 篇正文采用“序号-主题.md”命名，文件顺序与首页、侧边栏保持一致。
+- 同步章节内外引用和历史地址映射；旧数字文件名由站点迁移插件生成跳转，新地址使用带主题的文件名。
+- 文档审计支持递归检查侧边栏分组，覆盖组内页面的导航登记。
+
+## 2026-10-01：t-io 能力介绍与使用指南
+
+- 将 t-io 相关文档统一为能力、设计与使用收益的介绍，增加[核心优势与应用价值](./docs/zh/31_tio/01-overview.md)的选型入口。
+- [稳定性设计与资源管理](./docs/zh/31_tio/31-stability-resource-management.md)介绍共享 Worker、操作回调、资源交接与分层日志。
+- [HTTP 长连接与高效文件传输](./docs/zh/31_tio/13-http-keep-alive-file-transfer.md)介绍连接复用、明文零拷贝、可写事件调度、TLS 分片与统一发送队列，保留请求格式及资源配置的使用约定。
+- 更新章节索引、源码解析和相关链接；原页面地址通过迁移映射指向新页面。历史排查过程与本地诊断日志不作为能力指南正文。
+- 框架验证包含真实 TCP/TLS 长连接与文件传输：底层 IO 测试 11 项、核心与 HTTP 等模块 JUnit 测试 56 项通过，另执行 5 项 HTTP 用例断言通过。这些结果用于验证对应功能，不作为吞吐量基准。
+
+## 2026-09-30：IO 生命周期与浏览器网络记录
+
+- 补充连接接入、连续读取、发送完成和资源回收的设计说明。
+- [请求响应关联与线程约束](./docs/zh/60_ai-browser/28.md)介绍 requestId 精确关联、下载完成后的正文缓存、容量约定及相关回执字段。
+- 更新[网络记录](./docs/zh/60_ai-browser/24.md)与[Playwright 整合](./docs/zh/34_spider/07.md)，说明浏览器对象、页面与调用线程之间的关系。
+
+## 2026-09-30（第二轮）：读取侧补齐、OCR 后端可插拔、失败回执带上地址
+
+### 背景与设计
+
+这一轮的东西**全部来自一次真实的「上政府网站查资料」任务**，卡点按疼的程度排：
+
+1. **表格读不出列关系**。上一轮加了 `extract_markdown`，但入口太窄：要找一张表得先 `get_element_count` 数出有几张、再写一段 JS 把每张表的 class 与行数打出来，才敢填选择器。
+2. **只想找一行，却要拉整页**。一份公告整页三万七千字符，调用方想确认的只是「文号在不在」。
+3. **关键数据在图片附件里**。地类明细表整份是一张扫描图，正文只写「详见附件」——`innerText`、`extract_structured_data`、`find_text` 一个字都读不到；而工具链恰恰断在「把原图取下来」这一环：截图不是原件，服务端又没有「下载这张图」的口子。
+4. **OCR 只有系统后端**。`Windows.Media.Ocr` 擅长验证码这类短文本，遇到整页扫描件与带合并单元格的表格截图只会吐错乱片段，而这类场景恰恰是「图就是数据」。
+5. **幂等导航报失败，其实已经到了**。站点把 `http` 跳成 `https`，而「到达没到达」的判据把协议算进了差异，于是兜底逻辑永远不生效。
+6. **失败回执不带地址**。只知道「失败」，不知道页面现在在哪，只能再补一次 `get_url`。
+
+设计上的取舍：
+
+- **找东西放服务端，不放调用方**：`find_text` 只回命中与前后文（默认前后各 80 字符、最多 20 条），把「整页进上下文」这件事从根上去掉。
+- **「图就是数据」必须能被自动认出来**：`get_browser_state` 回执加 `mediaCount` / `mediaHint`。判据试了两版 —— 只看「宽高都 ≥200」会漏掉 240×180 的表格截图，只看面积会捞进 1200×90 的装饰横幅，最后定成「宽高都不小于 120 且面积不小于 4 万像素」。
+- **取图要原件、要带登录态**：先让浏览器自己带着 cookie 去取，失败再退回页面内 `fetch`，两条都不行才失败并把原因写进回执。落盘落在 `data/<id>/`，所以回执里的 `url` 能直接贴给人看、`path` 能直接喂给 `ocr_image`。
+- **OCR 后端可插拔，但默认不动**：新增 `browser.ocr.engine=command` 加一条命令模板（`{input}` / `{output}` / `{language}`），把「整页文档识别」交给本机已有的 OCR 命令行工具；默认仍是系统 OCR，零配置场景不受影响。**配了 `command` 却没给命令时如实说明退回了系统 OCR**，不装作生效；外部命令失败也**不静默退回**系统 OCR —— 调用方明确要的是文档级识别。
+- **失败回执统一补地址**：`execute` 外面包一层，所有失败分支自动带上 `urlAfter` / `titleAfter`。各类失败分支有七八处，逐个加必然会漏。
+- **默认上限可配**：`browser.extract.maxChars` 被 `extract_structured_data` 与 `extract_markdown` 共用，并且两条都**如实回报 `length` / `truncated` / `limit`** —— 以前在 JS 里悄悄 `slice` 一刀，回执里既没有全长也没有截断标记，调用方会把半篇文章当成全文。
+
+### 源码改动
+
+- **新增三条命令**（方法数由 117 增至 **120**）：
+  - `download_image`：取页面图片的**原始文件**到 `data/<id>/`，回 `path` / `url` / `size` / `sha256` / `contentType` / `srcUrl` / `via` / `naturalWidth` / `naturalHeight`；
+  - `find_text`：服务端文本检索（字面量或正则），回 `matchCount` / `returned` / `truncated` / `matches[]`（`index` / `line` / `match` / `before` / `after`）；
+  - `list_tables`：列出页面上所有表格（行列数、class、id、预览、内嵌图片数），并给出**可直接填进 `extract_markdown` 的选择器**（`table >> nth=N`）。
+- **新增两个工具类**：`TextSearch`（纯函数检索，不碰浏览器，可独立测）与 `OcrEngine`（后端选择、命令模板解析、外部命令调用）。
+- `PlaywrightService`：新增 `downloadImage` / `findText` / `listTables` / `pageContext`；`getBrowserState` 补大图提示；`extractMarkdown` 支持 `nth`；`extractStructuredData` 回报长度与截断；`ocrImage` 改走 `OcrEngine`；`sameLocation` 忽略协议。
+- `ActionService`：`execute` 改为薄包装，失败时统一补当前地址；伪故障「可重发名单」加入 `find_text` 与 `list_tables`（**`download_image` 刻意不收** —— 它每次落的是新编号的文件，重发会留下重复文件，与「覆盖式落盘」那几条判据不同）。
+- `CommandTable`：注册三条新命令；`click_element_by_selector` / `input_text_by_selector` / `extract_markdown` 支持 `nth`。
+- `get_config` 新增 `extract` 与 `ocr` 两段**生效值**（含一句话描述）。
+
+### 三个被测试逮住的 bug（都是本轮新代码里的）
+
+1. **`download_image` 的路径前缀校验永远为假**。`dataDir()` 给的是相对启动目录的 `data/<id>`，拿它去和绝对前缀比 `startsWith`，结果恒假 —— 表现成「文件名非法：mingxi.png」，而文件名毫无问题。修法是一开始就统一成绝对路径。
+2. **OCR 结果带 BOM**。PowerShell 写结果文件带 UTF-8 BOM，而 `String.trim()` 只吃 `<= U+0020` 的字符，**吃不掉 `U+FEFF`**。于是识别结果变成 `"\ufeff1234"`：肉眼一模一样，拿去比对或填表单必然失败（验证码就是这么被坑的）。修法是先去 BOM 再 trim；顺序反了会留下空格。
+3. **大图判据太严**。只看「宽高都 ≥200」时，240×180 的表格截图被判成图标，`mediaHint` 一声不吭 —— 而这正是最该报出来的那类图。
+
+### 已补全
+
+- [正文提取与上层结构化处理](./docs/zh/60_ai-browser/17.md)：新增「先找表」「只想找一行」「图就是数据」三节，含 `listTables`、`TextSearch.find`、`download_image` 取值链的当前源码，以及落盘路径那个坑的成因；「什么时候使用页面状态」改成六条。
+- [命令清单](./docs/zh/60_ai-browser/13.md)：新增三条命令，「页面读取与差异」由 6 改为 9；方法计数 117 → 120（13、04、14、26、27 同步）。
+- [Windows OCR](./docs/zh/60_ai-browser/11.md)：补第 6 节「外部命令后端」（配置、三个占位符、双引号要求、空输出与超时怎么报、为什么不静默退回），开头与排查表同步改写；明确「有 DOM 文本就别 OCR」的**例外**是内容本身就是图片。
+- [配置项与运维自省](./docs/zh/60_ai-browser/12.md)：新增「正文与 Markdown 提取」「读图与 OCR」两张配置表。
+- [站点配方、技能与异步作业](./docs/zh/60_ai-browser/10.md)：配方表补 `gov-site-search`；新增「站点技能」一节说明技能目录与「单反引号＝命令名」的构建期约定。
+- 浏览器工程侧同样同步了技能文档（主技能的命令表、症状表与计数，`references/commands.md`、`references/reading-pages.md`、`references/client.md`），由工程内的技能文档一致性测试把关。
+- **新增配方** `gov-site-search`：国产政府站站内检索的完整动作序列（填高级搜索表单 → 点搜索 → 等稳定 → 读结果），参数化关键词、匹配方式、日期区间与每页条数。
+- **新增站点技能** `cn-gov-site-search`：把这轮踩过的坑固化成手册 —— 检索参数为什么必须走表单（**直接拼 URL 会静默返回 0 条**，它不报错）、匹配方式默认档会把无关结果混进来、征地类信息的栏目地图、批准文件与公告的文号不能混用、县级公告常常没有文号、中文形近字（实测「褚庙乡」被印成「禇庙乡」，按常用字检索整段漏掉），以及站上确实没有时怎么转依申请公开。
+
+### 验证范围
+
+- 新增纯单元测试：`TextSearchTest` 10 项（含「非法正则当场失败」「不重叠匹配」「空匹配不打转」「上下文超限收紧」）、`OcrEngineTest` 11 项（含命令模板的引号解析、`engine=command` 与 `command` 为空的两种回退、外部命令写 `{output}` 时的结果来源、空输出报错、BOM 清理）。
+- 新增集成测试 `BrowserReadingUpgradeTest` 12 项，跑在**本地 fixture 服务器**上（不起外网）：`find_text` 的命中、上下文、正则、无命中、非法正则、限定范围；`list_tables` 给出的选择器能否**原样**交给 `extract_markdown`；`nth` 取第几张表与越界报总数；`download_image` 的字节数与摘要是否等于原始文件；`mediaHint`；以及**失败回执是否带 `urlAfter`**。
+- 全量测试 **341 项通过、1 项失败、7 项跳过**。这 1 项（`BrowserResponseIntegrationTest` 的响应关联用例）**与本次改动无关**：它依赖「响应事件在 5 秒内投递到位」，本轮把它在一个**独立工作树的改动前检出**上跑，复现了同样的失败。已如实记录，没有把它改成「看起来通过」。
+- 现场实测（本地 fixture 页，非外网）：`list_tables` 报出两张表与可用选择器；`extract_markdown` 传 `nth=1` 得到 GFM 表格且 `source` 写明 `table >> nth=1`；`find_text` 命中并给出前后文与行号；`download_image` 落盘字节数 7261、`sha256` 与本地原件**逐位一致**（`via=browser-context`）；把该文件交给 `ocr_image` 读出文字，**修复后首字符不再是 BOM**；`get_config` 的 `extract` / `ocr` 段给出生效值、`commands` 报 120；客户端的 `--out` 与 `--grep` 均可用。
+- **没做成的一件事**：原计划在民权县人民政府网站上再跑一次端到端，验证时该站已经连不上（浏览器报 `ERR_EMPTY_RESPONSE`，用独立 HTTP 客户端同样失败），所以这一轮的现场实测改在本地 fixture 上做，**外网站点的复测留待该站恢复**。
+- 新增行不含内部项目代号、不含形如三段式的版本号、不含本机绝对路径。
+
 ## 2026-09-30：新增 `extract_markdown`（页面转 Markdown，表格按 GFM 表格输出）
 
 ### 背景与设计

@@ -4,12 +4,12 @@
 
 ## 目录
 
-1. [Tio 框架概述](#tio框架概述)
-2. [核心配置类：TioConfig](#核心配置类-tioconnfig)
-3. [服务器配置：ServerTioConfig](#服务器配置-servertioconnfig)
-4. [服务器启动与监听：TioServer](#服务器启动与监听-ti-server)
+1. [Tio 框架概述](#tio-框架概述)
+2. [核心配置类：TioConfig](#核心配置类-tioconfig)
+3. [服务器配置：ServerTioConfig](#服务器配置-servertioconfig)
+4. [服务器启动与监听：TioServer](#服务器启动与监听-tioserver)
 5. [连接接收处理：AcceptCompletionHandler](#连接接收处理-acceptcompletionhandler)
-6. [数据读取与解码：ReadCompletionHandler 与 DecodeTask](#数据读取与解码-readcompletionhandler与decodetask)
+6. [数据读取与解码：ReadCompletionHandler 与 DecodeTask](#数据读取与解码-readcompletionhandler-与-decodetask)
 7. [消息处理：HandlePacketTask](#消息处理-handlepackettask)
 8. [网络通信管理：Tio](#网络通信管理-tio)
 9. [异常处理与连接关闭：CloseTask](#异常处理与连接关闭-closetask)
@@ -477,353 +477,82 @@ public class TioServer {
 
 ## 连接接收处理：AcceptCompletionHandler
 
-`AcceptCompletionHandler`类实现了`CompletionHandler`接口，负责处理新接收到的客户端连接。
+AcceptCompletionHandler 实现 `CompletionHandler<AsynchronousSocketChannel, TioServer>`。成功回调先检查停服与监听通道状态，再独立提交下一次 accept，随后初始化当前连接。
 
-### 类结构与成员变量
+### 初始化与异常清理
+
+初始化过程包括获取客户端地址、检查 IP 黑名单、设置 socket 选项、建立 ServerChannelContext、通知连接监听器、分配初始 VirtualBuffer，以及提交首次读取。
+
+首次 read 成功提交之前，接收回调负责持有的 socket、上下文和缓冲区。任何提前退出或初始化异常都会进入清理流程；上下文已登记时通过 Tio.close 清理，最后关闭原始 socket 兜底。首次 read 成功提交之后，缓冲区交给读取回调。
+
+以下代码节选展示交接点，省略连接配置与监听器通知：
 
 ```java
-public class AcceptCompletionHandler implements CompletionHandler<AsynchronousSocketChannel, TioServer> {
-    private static Logger log = LoggerFactory.getLogger(AcceptCompletionHandler.class);
-
-    public AcceptCompletionHandler() {}
-
-    @Override
-    public void completed(AsynchronousSocketChannel clientSocketChannel, TioServer tioServer) {
-        // 连接完成后的处理逻辑
-    }
-
-    @Override
-    public void failed(Throwable exc, TioServer tioServer) {
-        // 连接失败后的处理逻辑
-    }
-}
+ReadCompletionHandler readCompletionHandler = new ReadCompletionHandler(channelContext);
+attachment = BufferPoolUtils.allocateRequest(channelContext.getReadBufferSize());
+ByteBuffer readByteBuffer = attachment.buffer();
+readByteBuffer.position(0);
+readByteBuffer.limit(readByteBuffer.capacity());
+clientSocketChannel.read(readByteBuffer, attachment, readCompletionHandler);
+attachment = null;
+handedOff = true;
 ```
 
-### 主要方法解析
+重新监听使用独立的异常边界。检查服务仍在运行且监听通道打开后调用 accept；失败时记录 `Failed to rearm accept; check the listening channel state`。这能保住当前已接收连接，但后续接收能力仍需检查。
 
-1. **连接成功处理**
+### 接收失败与回调失败
 
-   `completed()`方法在成功接收到一个客户端连接时被调用。
+底层 accept 失败会在重置 pending 状态后通知本次 failed。completed 回调自身抛出的异常则单独处理：记录异常并关闭本次 socket，不能再通过可变 handler 字段调用 failed，否则可能误伤回调中刚提交的下一次 accept。
 
-   ```java
-   @Override
-   public void completed(AsynchronousSocketChannel clientSocketChannel, TioServer tioServer) {
-       AsynchronousServerSocketChannel serverSocketChannel = tioServer.getServerSocketChannel();
-
-       if (tioServer.isWaitingStop()) {
-           log.info("The server will be shut down and no new requests will be accepted:{}", tioServer.getServerNode());
-       } else {
-           serverSocketChannel.accept(tioServer, this);
-       }
-       if (serverSocketChannel == null) {
-           log.info("receive serverSocketChannel is null skip");
-           return;
-       }
-
-       if (!serverSocketChannel.isOpen()) {
-           log.info("receive serverSocketChannel is not open skip");
-           return;
-       }
-
-       String clientIp = null;
-       int port = 0;
-       InetSocketAddress inetSocketAddress;
-       try {
-           inetSocketAddress = (InetSocketAddress) clientSocketChannel.getRemoteAddress();
-           clientIp = inetSocketAddress.getHostString();
-           port = inetSocketAddress.getPort();
-           if (EnvUtils.getBoolean(TioCoreConfigKeys.TIO_CORE_DIAGNOSTIC, false)) {
-               log.info("new connection:{},{}", clientIp, port);
-           }
-       } catch (IOException e1) {
-           log.error("Failed to get client ip and port", e1);
-       }
-
-       ServerTioConfig serverTioConfig = tioServer.getServerTioConfig();
-
-       try {
-           if (IpBlacklist.isInBlacklist(serverTioConfig, clientIp)) {
-               log.info("{} on the blacklist, {}", clientIp, serverTioConfig.getName());
-               clientSocketChannel.close();
-               return;
-           }
-
-           if (serverTioConfig.statOn) {
-               ((ServerGroupStat) serverTioConfig.groupStat).accepted.incrementAndGet();
-           }
-
-           clientSocketChannel.setOption(StandardSocketOptions.SO_REUSEADDR, true);
-           clientSocketChannel.setOption(StandardSocketOptions.SO_RCVBUF, 64 * 1024);
-           clientSocketChannel.setOption(StandardSocketOptions.SO_SNDBUF, 64 * 1024);
-           clientSocketChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
-
-           ServerChannelContext channelContext = new ServerChannelContext(serverTioConfig, clientSocketChannel, clientIp, port);
-           channelContext.setClosed(false);
-           channelContext.stat.setTimeFirstConnected(SystemTimer.currTime);
-           channelContext.setServerNode(tioServer.getServerNode());
-
-           boolean isConnected = true;
-           boolean isReconnect = false;
-           if (serverTioConfig.getServerAioListener() != null) {
-               if (!SslUtils.isSsl(channelContext.tioConfig)) {
-                   try {
-                       serverTioConfig.getServerAioListener().onAfterConnected(channelContext, isConnected, isReconnect);
-                   } catch (Throwable e) {
-                       log.error("ServerAioListener onAfterConnected:", e);
-                   }
-               }
-           }
-
-           if (CollUtil.isNotEmpty(serverTioConfig.ipStats.durationList)) {
-               try {
-                   for (Long v : serverTioConfig.ipStats.durationList) {
-                       IpStat ipStat = (IpStat) serverTioConfig.ipStats.get(v, channelContext);
-                       ipStat.getRequestCount().incrementAndGet();
-                       serverTioConfig.getIpStatListener().onAfterConnected(channelContext, isConnected, isReconnect, ipStat);
-                   }
-               } catch (Exception e) {
-                   log.error("IpStatListener onAfterConnected:", e);
-               }
-           }
-
-           if (!tioServer.isWaitingStop()) {
-               ReadCompletionHandler readCompletionHandler = new ReadCompletionHandler(channelContext);
-               ByteBuffer readByteBuffer = ByteBufferPool.BUFFER_POOL.acquire(serverTioConfig.getByteOrder());
-               readByteBuffer.position(0);
-               readByteBuffer.limit(readByteBuffer.capacity());
-               clientSocketChannel.read(readByteBuffer, readByteBuffer, readCompletionHandler);
-           }
-       } catch (Throwable e) {
-           log.error("Failed to read data from :{},{}", clientIp, port);
-           e.printStackTrace();
-       }
-   }
-   ```
-
-   **步骤解析：**
-
-   - **重复接受连接**：在每次成功接受连接后，立即调用`serverSocketChannel.accept()`继续接受下一个连接。
-   - **获取客户端 IP 和端口**：通过`clientSocketChannel.getRemoteAddress()`获取连接的客户端信息。
-   - **IP 黑名单检查**：如果客户端 IP 在黑名单中，则拒绝连接。
-   - **配置 Socket 选项**：设置`SO_REUSEADDR`、接收和发送缓冲区大小、`SO_KEEPALIVE`等选项，优化连接性能。
-   - **创建 ChannelContext**：为新连接创建`ChannelContext`对象，管理连接的状态和统计信息。
-   - **触发连接事件**：调用`serverAioListener.onAfterConnected()`方法，通知监听器连接已建立。
-   - **心跳统计**：更新 IP 统计信息。
-   - **开始读取数据**：为新连接创建`ReadCompletionHandler`，并开始异步读取数据。
-
-2. **连接失败处理**
-
-   `failed()`方法在接受连接失败时被调用。
-
-   ```java
-   @Override
-   public void failed(Throwable exc, TioServer tioServer) {
-       if (tioServer.isWaitingStop()) {
-           log.info("The server will be shut down and no new requests will be accepted:{}", tioServer.getServerNode());
-       } else {
-           AsynchronousServerSocketChannel serverSocketChannel = tioServer.getServerSocketChannel();
-           serverSocketChannel.accept(tioServer, this);
-           log.error("[" + tioServer.getServerNode() + "] listening exception", exc);
-       }
-   }
-   ```
-
-   **步骤解析：**
-
-   - **停止标志检查**：如果服务器正在等待停止，则不再接受新连接。
-   - **继续接受连接**：如果未停止，继续调用`accept()`方法，保持服务器的可用性。
-   - **日志记录**：记录连接失败的异常信息，便于调试和监控。
-
-### 技术细节解析
-
-1. **异步 NIO**
-
-   使用 Java AIO 的`AsynchronousServerSocketChannel`和`AsynchronousSocketChannel`实现非阻塞的连接接受和数据传输，提升系统的并发处理能力。
-
-2. **IP 黑名单**
-
-   在接收到新连接时，首先检查客户端 IP 是否在黑名单中。如果是，则拒绝连接，增强系统的安全性。
-
-3. **Socket 选项优化**
-
-   - `SO_REUSEADDR`：允许重新使用本地地址，避免在服务器重启后因端口占用而无法绑定。
-   - `SO_RCVBUF`和`SO_SNDBUF`：设置接收和发送缓冲区大小，优化数据传输性能。
-   - `SO_KEEPALIVE`：启用 TCP 保活，检测连接的有效性。
-
-4. **连接上下文管理**
-
-   为每个连接创建独立的`ChannelContext`，负责管理连接的状态、统计信息和配置，确保高效的连接管理。
+Worker 将单次操作的异常处理与连接资源管理相结合，支持共享 IO 线程持续处理后续事件。设计说明见 [t-io 稳定性设计与资源管理](./31-stability-resource-management.md)。
 
 ## 数据读取与解码：ReadCompletionHandler 与 DecodeTask
 
-数据读取和解码是网络通信的关键环节，涉及数据的接收、解码、处理等多个步骤。Tio 通过`ReadCompletionHandler`和`DecodeTask`实现这一过程。
+ReadCompletionHandler 当前实现 `CompletionHandler<Integer, VirtualBuffer>`。VirtualBuffer 是异步回调的 attachment，`buffer()` 返回其中的 ByteBuffer。旧示例直接使用 ByteBuffer 作为 attachment，无法反映当前缓冲池的释放责任。
 
-### ReadCompletionHandler
+### 读取、解码与下一次读取
 
-`ReadCompletionHandler`类实现了`CompletionHandler`接口，负责处理异步读取操作完成后的回调。
+正数读取结果先更新连接统计，再把 ByteBuffer 切换到读模式。普通连接交给 DecodeTask 解码；SSL 连接先复制密文并交给 SSL facade 解密。解密后的明文经 `SslListener.onPlainData` 交给 `SslFacadeContext` 持有的解码器，继续完成半包处理与业务分发。
 
-#### 类结构与成员变量
+完成数据处理后，只有 `TioUtils.checkBeforeIO(channelContext)` 通过才会继续读取。读取缓冲区大小发生变化时，先释放旧 VirtualBuffer，再申请新的缓冲区。
+
+以下是下一次读取的交接点：
 
 ```java
-public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuffer> {
-    private static Logger log = LoggerFactory.getLogger(ReadCompletionHandler.class);
-    private ChannelContext channelContext = null;
+if (byteBuffer.capacity() != channelContext.getReadBufferSize()) {
+  release(current);
+  current = null;
+  current = BufferPoolUtils.allocateRequest(channelContext.getReadBufferSize());
+  byteBuffer = current.buffer();
+}
+byteBuffer.clear();
+channelContext.asynchronousSocketChannel.read(byteBuffer, current, this);
+submitted = true;
+```
 
-    public ReadCompletionHandler(ChannelContext channelContext) {
-        this.channelContext = channelContext;
-    }
+当前回调用 submitted 记录是否已把缓冲区交给下一次 read。finally 只在未提交成功时释放 current；不能无条件释放仍在被异步读取使用的缓冲区。分配或提交失败时，释放当前仍持有的缓冲区并清理连接。
 
-    @Override
-    public void completed(Integer result, ByteBuffer byteBuffer) {
-        // 处理读取完成后的逻辑
-    }
+### 终止和失败分支
 
-    @Override
-    public void failed(Throwable exc, ByteBuffer byteBuffer) {
-        // 处理读取失败后的逻辑
-    }
+- 结果为零、EOF 或其他负值时，按相应关闭原因清理连接并释放缓冲区。
+- 解码异常使用 DECODE_ERROR，SSL 解密异常使用 SSL_DECRYPT_ERROR；其他意外错误使用 READ_ERROR。
+- failed 对所有失败类型执行清理，不仅限于 ClosedChannelException。
+- Tio.close 清理抛出异常时，记录错误并尝试直接关闭 socket。
+
+failed 的资源释放结构如下：
+
+```java
+@Override
+public void failed(Throwable exc, VirtualBuffer virtualBuffer) {
+  try {
+    closeSafely(exc, "Failed to read data", ChannelCloseCode.READ_ERROR);
+  } finally {
+    release(virtualBuffer);
+  }
 }
 ```
 
-#### 关键方法解析
-
-1. **读取完成处理**
-
-   `completed()`方法在数据读取完成时被调用，负责处理接收到的数据。
-
-   ```java
-   @Override
-   public void completed(Integer result, ByteBuffer byteBuffer) {
-       if (result > 0) {
-           TioConfig tioConfig = channelContext.tioConfig;
-           if (tioConfig.statOn) {
-               tioConfig.groupStat.receivedBytes.addAndGet(result);
-               tioConfig.groupStat.receivedTcps.incrementAndGet();
-               channelContext.stat.receivedBytes.addAndGet(result);
-               channelContext.stat.receivedTcps.incrementAndGet();
-           }
-
-           channelContext.stat.latestTimeOfReceivedByte = SystemTimer.currTime;
-
-           if (CollUtil.isNotEmpty(tioConfig.ipStats.durationList)) {
-               try {
-                   for (Long v : tioConfig.ipStats.durationList) {
-                       IpStat ipStat = tioConfig.ipStats.get(v, channelContext);
-                       ipStat.getReceivedBytes().addAndGet(result);
-                       ipStat.getReceivedTcps().incrementAndGet();
-                       tioConfig.getIpStatListener().onAfterReceivedBytes(channelContext, result, ipStat);
-                   }
-               } catch (Exception e1) {
-                   log.error(channelContext.toString(), e1);
-               }
-           }
-
-           if (tioConfig.getAioListener() != null) {
-               try {
-                   tioConfig.getAioListener().onAfterReceivedBytes(channelContext, result);
-               } catch (Exception e) {
-                   log.error(channelContext.toString(), e);
-               }
-           }
-
-           byteBuffer.flip();
-           if (channelContext.sslFacadeContext == null) {
-               new DecodeTask().decode(channelContext, byteBuffer);
-           } else {
-               ByteBuffer copiedByteBuffer = null;
-               try {
-                   copiedByteBuffer = ByteBufferUtils.copy(byteBuffer);
-                   log.debug("{},Decrypt SSL data:{}", channelContext, copiedByteBuffer);
-                   channelContext.sslFacadeContext.getSslFacade().decrypt(copiedByteBuffer);
-               } catch (Exception e) {
-                   log.error(channelContext + ", " + e.toString() + copiedByteBuffer, e);
-                   Tio.close(channelContext, e, e.toString(), CloseCode.SSL_DECRYPT_ERROR);
-               }
-           }
-
-           if (TioUtils.checkBeforeIO(channelContext)) {
-               read(byteBuffer);
-           } else {
-               ByteBufferPool.BUFFER_POOL.release(byteBuffer);
-           }
-
-       } else if (result == 0) {
-           String message = "The length of the read data is 0";
-           log.error("close {}, because {}", channelContext, message);
-           Tio.close(channelContext, null, message, CloseCode.READ_COUNT_IS_ZERO);
-           ByteBufferPool.BUFFER_POOL.release(byteBuffer);
-           return;
-       } else if (result < 0) {
-           if (result == -1) {
-               String message = "The connection closed by peer";
-               if (EnvUtils.getBoolean(TioCoreConfigKeys.TIO_CORE_DIAGNOSTIC, false)) {
-                   log.info("close {}, because {}", channelContext.getClientIpAndPort(), message);
-               }
-               Tio.close(channelContext, null, message, CloseCode.CLOSED_BY_PEER);
-               ByteBufferPool.BUFFER_POOL.release(byteBuffer);
-               return;
-           } else {
-               String message = "The length of the read data is less than -1";
-               Tio.close(channelContext, null, "读数据时返回" + result, CloseCode.READ_COUNT_IS_NEGATIVE);
-               log.error("close {}, because {}", channelContext, message);
-               ByteBufferPool.BUFFER_POOL.release(byteBuffer);
-               return;
-           }
-       }
-   }
-   ```
-
-   **步骤解析：**
-
-   - **数据有效性检查**：根据`result`判断读取的数据长度，处理不同情况。
-
-     - `result > 0`：成功读取到数据，进行统计和解码处理。
-     - `result == 0`：读取到的数据长度为 0，关闭连接。
-     - `result < 0`：读取错误，可能是对端关闭连接，进行相应处理。
-
-   - **统计信息更新**：根据读取的数据长度，更新全局和连接级别的统计信息。
-
-   - **SSL 解密**：如果连接启用了 SSL，则对接收到的数据进行解密处理。
-
-   - **数据解码**：通过`DecodeTask`进行数据的解码，转换为业务包。
-
-   - **继续读取数据**：调用`read()`方法，继续异步读取数据，保持连接的持续活跃。
-
-2. **读取失败处理**
-
-   `failed()`方法在数据读取失败时被调用，负责关闭连接。
-
-   ```java
-   @Override
-   public void failed(Throwable exc, ByteBuffer byteBuffer) {
-       Tio.close(channelContext, exc, "Failed to read data: " + exc.getClass().getName(), CloseCode.READ_ERROR);
-   }
-   ```
-
-   **步骤解析：**
-
-   - **关闭连接**：由于读取失败，调用`Tio.close()`方法关闭连接，释放资源。
-   - **日志记录**：记录失败的异常信息，便于问题排查。
-
-### 技术细节解析
-
-1. **异步读取**
-
-   使用 Java AIO 的`AsynchronousSocketChannel`进行非阻塞的数据读取，提升系统的并发处理能力。
-
-2. **心跳机制**
-
-   通过更新`latestTimeOfReceivedByte`和`latestTimeOfSentPacket`，监控连接的活跃性，结合心跳检测线程，确保连接的有效性。
-
-3. **SSL 支持**
-
-   - **解密处理**：在数据读取后，若启用了 SSL，则对接收到的数据进行解密，确保数据的安全性。
-   - **错误处理**：如果解密过程中出现异常，则关闭连接，防止潜在的安全风险。
-
-4. **缓冲区管理**
-
-   - 使用`ByteBufferPool`管理缓冲区，减少内存分配和回收的开销，提升性能。
-   - 通过`ByteBuffer.flip()`准备数据进行读取和解码。
+IO 日志按处理阶段区分位置；操作结果与 attachment 的管理方式见 [t-io 稳定性设计与资源管理](./31-stability-resource-management.md)。
 
 ## 消息处理：HandlePacketTask
 
