@@ -24,6 +24,6 @@
 - [18.md](<./18.md>): 文档《tio-boot 整合 TelegramBots》。
 - [19.md](<./19.md>): 文档《tio-boot 整合 Telegram-Bot-Utils》。
 - [20.md](<./20.md>): 文档《Telegram-Bot-Utils 使用指南》。
-- [image3.png](<./image3.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-1.png](<./image-1.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image.png](<./image.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image3.png](<./assets/image3.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-1.png](<./assets/image-1.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image.png](<./assets/image.png>): 图片资源，用于本目录文档配图或界面示意。

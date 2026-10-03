@@ -4,7 +4,7 @@
 
 ## 文件清单
 
-- [readme.md](<readme.md>): 当前目录的导航与文件摘要。
-- [01.md](<01.md>): 文档《实现 MCP Server 开发指南》。
-- [08.md](<08.md>): 文档《MCP 协议》。
-- [11.md](<11.md>): Markdown 文档。
+- [readme.md](<./readme.md>): 当前目录的导航与文件摘要。
+- [01.md](<./01.md>): 文档《实现 MCP Server 开发指南》。
+- [08.md](<./08.md>): 文档《MCP 协议》。
+- [11.md](<./11.md>): Markdown 文档。

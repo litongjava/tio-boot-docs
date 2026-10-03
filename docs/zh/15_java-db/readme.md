@@ -37,8 +37,8 @@
 - [29.md](<./29.md>): 文档《常用操作示例》。
 - [30.md](<./30.md>): 文档《Druid 监控集成指南》。
 - [31.md](<./31.md>): 文档《SQL 统计》。
-- [image-1.png](<./image-1.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-2.png](<./image-2.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image.png](<./image.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-1.png](<./assets/image-1.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-2.png](<./assets/image-2.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image.png](<./assets/image.png>): 图片资源，用于本目录文档配图或界面示意。
 
 - [32.md](<./32.md>): 文档《Db 与 PostgreSQL 业务实践》。

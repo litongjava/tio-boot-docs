@@ -71,7 +71,7 @@ public interface AioListener {
 
 每当一个 TCP 连接建立时，`t-io` 会为该连接分配一个 `ChannelContext` 对象。这个对象贯穿整个连接的生命周期，并在以下过程中被多次使用。
 
-![过程](<images/01.png>)
+![过程](<./assets/01.png>)
 
 ### 发送端消息处理过程
 

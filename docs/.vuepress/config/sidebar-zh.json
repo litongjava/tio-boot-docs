@@ -867,7 +867,8 @@
           "/zh/50_payment/readme.md",
           "/zh/50_payment/01.md",
           "/zh/50_payment/02.md",
-          "/zh/50_payment/03.md"
+          "/zh/50_payment/03.md",
+          "/zh/50_payment/04.md"
         ],
         "collapsible": true
       }
@@ -1070,9 +1071,16 @@
           "/zh/61_knowledge-base/24.md",
           "/zh/61_knowledge-base/25.md",
           "/zh/61_knowledge-base/26.md",
-          "/zh/61_knowledge-base/28.md",
           "/zh/61_knowledge-base/27.md",
-          "/zh/61_knowledge-base/30.md"
+          "/zh/61_knowledge-base/28.md",
+          "/zh/61_knowledge-base/29.md",
+          "/zh/61_knowledge-base/30.md",
+          "/zh/61_knowledge-base/32.md",
+          "/zh/61_knowledge-base/35.md",
+          "/zh/61_knowledge-base/39.md",
+          "/zh/61_knowledge-base/40.md",
+          "/zh/61_knowledge-base/41.md",
+          "/zh/61_knowledge-base/88.md"
         ],
         "collapsible": true
       },

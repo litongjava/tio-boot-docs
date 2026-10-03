@@ -15,4 +15,4 @@
 
 ## 子目录
 
-- [images](<./images/readme.md>): 子目录说明，当前含 6 个文件和 0 个子目录。
+- [assets](<./assets/readme.md>): 子目录说明，当前含 6 个文件和 0 个子目录。

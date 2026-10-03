@@ -62,4 +62,4 @@
 
 ## 配图资源
 
-- [配图目录](./images/readme.md)
+- [配图目录](./assets/readme.md)

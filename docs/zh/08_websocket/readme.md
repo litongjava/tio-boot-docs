@@ -7,6 +7,6 @@
 - [readme.md](<./readme.md>): 当前目录的导航与文件摘要。
 - [01.md](<./01.md>): 文档《使用 tio-boot 搭建 WebSocket 服务》。
 - [02.md](<./02.md>): 文档《WebSocket 聊天室项目示例》。
-- [demo01.png](<./demo01.png>): 图片资源，用于本目录文档配图或界面示意。
-- [demo02.png](<./demo02.png>): 图片资源，用于本目录文档配图或界面示意。
-- [demo03.png](<./demo03.png>): 图片资源，用于本目录文档配图或界面示意。
+- [demo01.png](<./assets/demo01.png>): 图片资源，用于本目录文档配图或界面示意。
+- [demo02.png](<./assets/demo02.png>): 图片资源，用于本目录文档配图或界面示意。
+- [demo03.png](<./assets/demo03.png>): 图片资源，用于本目录文档配图或界面示意。

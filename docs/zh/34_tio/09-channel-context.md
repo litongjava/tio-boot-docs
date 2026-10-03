@@ -1,7 +1,7 @@
 # ChannelContext
 
 `ChannelContext` 对象是每个 TCP 连接建立后生成的一个关键对象。它是一个抽象类，具体取决于是使用 `t-io` 作为 TCP 客户端还是作为 TCP 服务器。如果使用 `t-io` 作为 TCP 客户端，那么将获得一个 `ClientChannelContext` 对象；如果使用 `t-io` 作为 TCP 服务器，那么将获得一个 `ServerChannelContext` 对象。
-![ChannelContext](<images/02.jpg>)
+![ChannelContext](<./assets/02.jpg>)
 
 ## 业务数据与 TCP 连接的关联
 
@@ -63,7 +63,7 @@ public boolean isUserOnline(String userId) {
 ## ChannelContext 组成部分
 
 第一张图片展示了 `ChannelContext` 的各个组成部分，并简要描述了每个部分的作用。以下是对图片中各部分的解释：
-![ChannelContext](<images/03.png>)
+![ChannelContext](<./assets/03.png>)
 
 1. **tioConfig**
 

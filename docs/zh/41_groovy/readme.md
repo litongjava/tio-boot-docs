@@ -4,6 +4,6 @@
 
 ## 文件清单
 
-- [readme.md](<readme.md>): 当前目录的导航与文件摘要。
-- [01.md](<01.md>): 文档《tio-boot 整合 Groovy》。
-- [02.md](<02.md>): 文档《调试常用脚本》。
+- [readme.md](<./readme.md>): 当前目录的导航与文件摘要。
+- [01.md](<./01.md>): 文档《tio-boot 整合 Groovy》。
+- [02.md](<./02.md>): 文档《调试常用脚本》。

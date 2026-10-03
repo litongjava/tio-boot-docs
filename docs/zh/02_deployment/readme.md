@@ -21,12 +21,12 @@
 - [14.md](<./14.md>): 文档《历史部署页与替代方案》。
 - [15.md](<./15.md>): 文档《胖包与瘦包的打包与部署》。
 - [16.md](<./16.md>): 文档《使用 JDK 8 构建基础库与验证运行环境》。
-- [image-1.png](<./image-1.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-2.png](<./image-2.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-3.png](<./image-3.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-4.png](<./image-4.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-5.png](<./image-5.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-6.png](<./image-6.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-7.png](<./image-7.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image-8.png](<./image-8.png>): 图片资源，用于本目录文档配图或界面示意。
-- [image.png](<./image.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-1.png](<./assets/image-1.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-2.png](<./assets/image-2.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-3.png](<./assets/image-3.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-4.png](<./assets/image-4.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-5.png](<./assets/image-5.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-6.png](<./assets/image-6.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-7.png](<./assets/image-7.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image-8.png](<./assets/image-8.png>): 图片资源，用于本目录文档配图或界面示意。
+- [image.png](<./assets/image.png>): 图片资源，用于本目录文档配图或界面示意。

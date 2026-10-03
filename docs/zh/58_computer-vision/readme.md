@@ -13,5 +13,5 @@
 - [06.md](<./06.md>): 文档《Paddle Structure 提取图片》。
 - [07.md](<./07.md>): 文档《U2Net 图片去背景原理》。
 - [08.md](<./08.md>): 文档《tio-boot 整合 U2Net 实现图片去背景》。
-- [image.png](<./image.png>): 图片资源，用于本目录文档配图或界面示意。
-- [img_v3_02va_afed5083-19aa-46a7-b31a-9409e30744hu.jpg](<./img_v3_02va_afed5083-19aa-46a7-b31a-9409e30744hu.jpg>): 图片资源，用于本目录文档配图或界面示意。
+- [image.png](<./assets/image.png>): 图片资源，用于本目录文档配图或界面示意。
+- [img_v3_02va_afed5083-19aa-46a7-b31a-9409e30744hu.jpg](<./assets/img_v3_02va_afed5083-19aa-46a7-b31a-9409e30744hu.jpg>): 图片资源，用于本目录文档配图或界面示意。

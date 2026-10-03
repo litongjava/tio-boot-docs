@@ -34,4 +34,4 @@
 - [模型编程能力评测](./29.md)
 - [音频会话 SDP 示例](./30.md)
 
-[配图资源](./images/readme.md)
+[配图资源](./assets/readme.md)

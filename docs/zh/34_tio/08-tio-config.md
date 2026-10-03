@@ -36,7 +36,7 @@ ServerTioConfig serverTioConfig = TioBootServer.me().getServerTioConfig();
 ### TioConfig 组成部分
 
 `TioConfig` 对象包含了大量信息，其主要组件如图所示。
-![tio-config](<images/04.png>)
+![tio-config](<./assets/04.png>)
 图片展示了 `TioConfig` 的主要配置项和维护项，分为两大部分：
 
 #### 1. 配置相关
