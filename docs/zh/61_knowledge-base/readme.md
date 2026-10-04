@@ -1,5 +1,20 @@
 # Java MossKB 知识库文档
 
+## 默认模型
+
+推理、OCR 与向量都调用远程模型服务，默认值来自初始化脚本写入的两个默认模型实例。文档与查询必须使用同一个向量模型和同一维度：
+
+| 用途 | 默认模型 ID | 平台与接口 | 说明 |
+| --- | --- | --- | --- |
+| 推理与生成（最终回答、问题改写、证据核验、摘要） | `deepseek-v4.1-flash` | Gitee AI 的 OpenAI 兼容接口，配置键 `kb.chat.model` | 属 DeepSeek Flash 系列；DeepSeek 官方平台把同系列模型 ID 写作 `deepseek-flash`，两者是不同平台的 ID，不要混填 |
+| 向量（片段、段落标题、用户问题） | `Qwen3-Embedding-8B` | Gitee AI 的 embeddings 接口，配置键 `kb.embedding.model` | 固定返回 1024 维；知识库可按 `embedding_mode_id` 绑定其他兼容模型，但维度必须同为 1024 |
+| 扫描页 OCR 与文档解析 | `PaddleOCR-VL-1.5` | Gitee AI 的异步文档解析接口 | 文字 PDF 与 DOCX 先做本地提取，扫描页、图片与内嵌图片才走远程 OCR；模型 ID 写在 `DocumentParsingService.recognize`，不随用户选择的对话模型变化 |
+
+- 未做任何配置时，最终回答使用上表的默认生成模型，检索向量使用上表的默认向量模型。
+- 两个默认值都由 `KnowledgeModelService.chatModel()` 与 `embeddingModel()` 读取环境配置，部署时可以整体切到自建网关或其他兼容平台。
+- 扫描页 OCR 与对话模型是两条互不影响的链路：接入更贵的对话模型只会抬高回答部分的成本。
+- 选择理由、平台对照与切换代价见[支持自定义模型](./33.md)，部署时的默认配置见 [Windows 与 Linux 部署](./38.md)。
+
 ## 章节导航
 
 - [00 学术论文](./00.md)
