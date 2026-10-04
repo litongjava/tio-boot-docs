@@ -1,5 +1,27 @@
 # 文档补全与维护记录
 
+## 2026-10-03：部署文档扩到 Linux，数据库脚本合并，61 章目录重建
+
+### 部署文档（38 章）
+
+- [Windows 与 Linux 部署](./docs/zh/61_knowledge-base/38.md) 由单章 Windows 说明改写为两种系统各一节：数据库准备（Windows 编译 pgvector、Linux 源码编译、放开监听/认证/防火墙、WSL 访问宿主机的地址写法）、本地配置、初始化脚本、Windows 部署、Linux 部署（apt 工具链、构建、脚本启动、nginx + JAR、systemd）、部署验证、检索与多轮问答。
+- 新增国内网络加速一节，给出 apt、npm、Maven 三处镜像配置，并记录实测对比：同一批软件包走 `archive.ubuntu.com` 时 34.6 MB 约 5 分钟，换中科大镜像后 15 秒完成。
+- 新增配图三张：Windows 侧模型设置与登录后界面、Linux 侧 nginx 提供前端并反向代理接口的界面。
+- 验证小节给出两段可直接运行的代码（JDBC 检查表数量、JDK HTTP 客户端调用登录接口），SQL 用文本块书写。
+
+### 数据库脚本合并
+
+- 原 `scripts` 下的 13 个编号脚本（`init-db.sql` 与 `002`–`013`）合并为 `db/schema.sql`、`db/seed.sql`、`db/reset.sql`：结构、初始数据、清空重建各自一个文件，全部幂等。
+- 合并后与线上库逐项比对：29 张表、53 个索引、8 个约束、3 个扩展、375 个列完全一致；重复执行与「先 reset 再重建」都验证通过。
+- 初始化脚本改为读 `db` 目录，Windows 支持省略 `-PostgresBin`（改用 PATH 上的 psql）与 `-Reset`；新增 Linux 版 `Initialize-Database.sh` 与 `Start-Local.sh`，启动脚本改用前端目录 `java-maxkb-ui`。
+
+### 61 章目录重建
+
+- 章节导航（[readme.md](./docs/zh/61_knowledge-base/readme.md)）与站点侧边栏（`docs/.vuepress/config/sidebar-zh.json`）与目录内容对不上：侧边栏漏登记 31、33、34、36、37、38 六页，并保留了一份不存在的 88 页；导航里的 41 章标题与正文不符，另外列着并不存在的 42 章。
+- 按现有文件重建两处目录：补齐 6 页、删掉 88 与 42 两条、按正文标题修正 38 与 41。删掉空的 `61_knowledge-base-exec-backup` 目录——它让「章节编号与目录顺序」校验从 62 章起全部失败。
+- 顺带修掉 [分段预览](./docs/zh/61_knowledge-base/29.md) 里指向已不存在章节的悬空链接，以及[文档解析优化](./docs/zh/61_knowledge-base/19.md)里对 38 章的旧标题引用。
+- 审计结果：793 篇文档，缺失链接 0、缺失导航 0、未登记页面 0、章节错误 0。
+
 ## 2026-10-03：配图统一到 assets，Resps 下载与导出方法落文
 
 ### 配图目录统一

@@ -1075,12 +1075,17 @@
           "/zh/61_knowledge-base/28.md",
           "/zh/61_knowledge-base/29.md",
           "/zh/61_knowledge-base/30.md",
+          "/zh/61_knowledge-base/31.md",
           "/zh/61_knowledge-base/32.md",
+          "/zh/61_knowledge-base/33.md",
+          "/zh/61_knowledge-base/34.md",
           "/zh/61_knowledge-base/35.md",
+          "/zh/61_knowledge-base/36.md",
+          "/zh/61_knowledge-base/37.md",
+          "/zh/61_knowledge-base/38.md",
           "/zh/61_knowledge-base/39.md",
           "/zh/61_knowledge-base/40.md",
-          "/zh/61_knowledge-base/41.md",
-          "/zh/61_knowledge-base/88.md"
+          "/zh/61_knowledge-base/41.md"
         ],
         "collapsible": true
       },
@@ -1324,7 +1329,8 @@
           "/zh/74_tio-boot-admin/20.md",
           "/zh/74_tio-boot-admin/21.md",
           "/zh/74_tio-boot-admin/22.md",
-          "/zh/74_tio-boot-admin/23.md"
+          "/zh/74_tio-boot-admin/23.md",
+          "/zh/74_tio-boot-admin/24.md"
         ],
         "collapsible": true
       },
