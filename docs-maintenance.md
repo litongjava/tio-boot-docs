@@ -1,5 +1,11 @@
 # 文档补全与维护记录
 
+## 2026-10-04：补充 getBearerToken()
+
+- 根据本地 t-io 源码补充 [HttpRequest](./docs/zh/06_web/15.md) 的 `getBearerToken()`：精确前缀、缺失值、原值回退、空白保留，以及提取与鉴权的区别。
+- [身份验证](./docs/zh/31_authentication/02.md) 示例改用框架方法提取 Authorization，不再手工 split。
+- `tio-http-common 2.1.7` 使用 JDK 8 构建并安装到本地 Maven 仓库，10 项模块测试通过，其中新增 3 项 Bearer token 行为测试。
+
 ## 2026-10-03：部署文档扩到 Linux，数据库脚本合并，61 章目录重建
 
 ### 部署文档（38 章）

@@ -1,4 +1,4 @@
-# Java MaxKB 知识库文档
+# Java MossKB 知识库文档
 
 ## 章节导航
 
