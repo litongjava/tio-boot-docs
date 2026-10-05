@@ -273,7 +273,15 @@
           "/zh/14_tio-utils/19.md",
           "/zh/14_tio-utils/20.md",
           "/zh/14_tio-utils/21.md",
-          "/zh/14_tio-utils/30.md"
+          "/zh/14_tio-utils/30.md",
+          "/zh/14_tio-utils/utility-boundaries.md",
+          "/zh/14_tio-utils/compression-buffers.md",
+          "/zh/14_tio-utils/string-and-random.md",
+          "/zh/14_tio-utils/date-and-filename.md",
+          "/zh/14_tio-utils/json-generics.md",
+          "/zh/14_tio-utils/jwt.md",
+          "/zh/14_tio-utils/page.md",
+          "/zh/14_tio-utils/url-and-stream.md"
         ],
         "collapsible": true
       }
@@ -319,7 +327,11 @@
           "/zh/15_java-db/29.md",
           "/zh/15_java-db/30.md",
           "/zh/15_java-db/31.md",
-          "/zh/15_java-db/32.md"
+          "/zh/15_java-db/32.md",
+          "/zh/15_java-db/query-resources.md",
+          "/zh/15_java-db/row-presentation.md",
+          "/zh/15_java-db/33_支付回执与权益事务.md",
+          "/zh/15_java-db/34_商业库存与按量履约事务.md"
         ],
         "collapsible": true
       },
@@ -1085,7 +1097,8 @@
           "/zh/61_knowledge-base/38.md",
           "/zh/61_knowledge-base/39.md",
           "/zh/61_knowledge-base/40.md",
-          "/zh/61_knowledge-base/41.md"
+          "/zh/61_knowledge-base/41.md",
+          "/zh/61_knowledge-base/42.md"
         ],
         "collapsible": true
       },
@@ -1179,7 +1192,14 @@
           "/zh/65_ai-browser/25.md",
           "/zh/65_ai-browser/26.md",
           "/zh/65_ai-browser/27.md",
-          "/zh/65_ai-browser/28.md"
+          "/zh/65_ai-browser/28.md",
+          "/zh/65_ai-browser/29.md",
+          "/zh/65_ai-browser/30.md",
+          "/zh/65_ai-browser/31.md",
+          "/zh/65_ai-browser/32.md",
+          "/zh/65_ai-browser/33.md",
+          "/zh/65_ai-browser/34.md",
+          "/zh/65_ai-browser/35.md"
         ],
         "collapsible": true
       }
@@ -1395,7 +1415,8 @@
           "/zh/78_source-code/03.md",
           "/zh/78_source-code/04.md",
           "/zh/78_source-code/05.md",
-          "/zh/78_source-code/06.md"
+          "/zh/78_source-code/06.md",
+          "/zh/78_source-code/http-connection-lifecycle.md"
         ],
         "collapsible": true
       }

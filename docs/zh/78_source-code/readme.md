@@ -1,6 +1,6 @@
 # 78_source-code
 
-本目录包含 9 个文件和 0 个子目录，下列摘要基于文件名、一级标题或资源类型整理。
+下列条目提供源码阅读文档导航。
 
 ## 文件清单
 
@@ -13,3 +13,5 @@
 - [06.md](<./06.md>): 文档《TioBootServerHandler 源码解析》。
 - [image-1.png](<./assets/image-1.png>): 图片资源，用于本目录文档配图或界面示意。
 - [image.png](<./assets/image.png>): 图片资源，用于本目录文档配图或界面示意。
+
+- [HTTP 请求与连接生命周期](./http-connection-lifecycle.md)

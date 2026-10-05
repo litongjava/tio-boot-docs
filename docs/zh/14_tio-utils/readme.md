@@ -1,6 +1,6 @@
 # 14_tio-utils
 
-本目录包含 18 个文件和 0 个子目录，下列摘要基于文件名、一级标题或资源类型整理。
+下列条目提供工具类文档导航。
 
 ## 文件清单
 
@@ -22,3 +22,19 @@
 - [20.md](<./20.md>): 文档《线程》。
 - [21.md](<./21.md>): 文档《虚拟线程》。
 - [30.md](<./30.md>): 文档《毫秒并发 ID (MCID) 生成方案》。
+
+- [JWT 签发与校验](./jwt.md)
+
+- [URL 与流复制工具](./url-and-stream.md)
+
+- [集合分页 PageUtils](./page.md)
+
+- [日期转换与文件名解析](./date-and-filename.md)
+
+- [JSON 泛型转换与输出配置](./json-generics.md)
+
+- [Base64 输入与锁等待](./utility-boundaries.md)
+
+- [Gzip 与字节缓冲区](./compression-buffers.md)
+
+- [字符串查找与随机整数](./string-and-random.md)
