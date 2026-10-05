@@ -15,3 +15,4 @@
 - [GiteeClient 文档解析与图片 OCR](./18.md)
 - [DeepSeekClient 官方模型查询](./19.md)
 - [BailianTTSClient 语音合成](./20.md)
+- [为单次生成配置独立传输策略](./21.md)
