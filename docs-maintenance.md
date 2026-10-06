@@ -1,5 +1,14 @@
 # 文档补全与维护记录
 
+## 2026-10-06：AI Browser 文档同步「页面正在导航与主 Frame 缺失」
+
+- [执行链与异常处理](./docs/zh/65_ai-browser/14.md)：重写内嵌的 `ActionService` 实现以对齐当前源码 —— 补 `execute → runBounded → run` 的实际分层、`TrackedArgs`/`retryBudget`/`attachUnknownParams`，判伪故障改用原始异常文本，并新增 `PAGE_NAVIGATING` 分支。
+- [统一命令接口与错误码](./docs/zh/65_ai-browser/04.md)：错误码表补 `PAGE_NAVIGATING` 的新成因（主 frame 为 null）与「只读自动重试、动作仍不确定」的分工，说明新增回执字段 `pageNavigatingRetry`；`ACTION_UNCERTAIN` 注明导航类异常已不再落到它。
+- [页面状态与元素读取](./docs/zh/65_ai-browser/19.md)、[DOM 与跨 Frame 索引](./docs/zh/65_ai-browser/16.md)、[等待与重试边界](./docs/zh/65_ai-browser/21.md)：分别补主 frame 为 null 时的快照行为、`frameTree` 的哨兵式保护，以及导航类自动重试与 `pageNavigatingRetry` / `spuriousRetry` 的区分。
+- [安装、启动与健康检查](./docs/zh/65_ai-browser/02.md)：健康检查示例由 curl 改为 `dsb` 客户端调用。
+- 新增 [页面正在导航与主 Frame 缺失](./docs/zh/65_ai-browser/36.md)：症状（`Frame.childFrames() … is null`、`Index 0 out of bounds for length 0`）、成因、服务端分类与自动重试、SSO 重定向循环排查（阿里云账单控制台 `billing-cost` 主机名案例），以及 frame 枚举失效时用坐标点击 + 元素截图 + OCR 操作跨域 iframe 的绕行；同步目录页与站点侧边栏。
+- 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，本次新增页已登记；`unlistedPages` 仍有 3 条历史遗留（`15_java-db/35_会员周期与独立增量池.md`、`59_java-openai/21.md`、`59_java-openai/unichat-owned-client.md`），不在本次改动范围。`placeholders` 为既有的短页清单。
+
 ## 2026-10-04：补充 getBearerToken()
 
 - 根据本地 t-io 源码补充 [HttpRequest](./docs/zh/06_web/15.md) 的 `getBearerToken()`：精确前缀、缺失值、原值回退、空白保留，以及提取与鉴权的区别。
