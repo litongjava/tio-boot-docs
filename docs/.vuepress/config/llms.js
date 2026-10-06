@@ -47,29 +47,64 @@ export function splitSections(markdown) {
   return sections;
 }
 
+const supportsMarkdown = page => Boolean(page.filePathRelative && page.path !== '/404.html' && page.frontmatter?.search !== false);
+const markdownPathOf = page => '/ai/pages/' + page.filePathRelative.replaceAll('\\', '/');
+
+async function pageMarkdown(page, app, hostname) {
+  const source = page.filePathRelative.replaceAll('\\', '/');
+  const url = p => new URL(p, hostname.replace(/\/$/, '') + '/').href;
+  const routes = new Map(app.pages.filter(supportsMarkdown).map(p => [p.filePathRelative, p.path]));
+  let markdown=stripFrontmatter(await readFile(app.dir.source(source),'utf8')).replaceAll('\r\n','\n');
+  // Raw files live under /ai/pages; links must still resolve to canonical site pages.
+  markdown=mapProse(markdown,prose=>prose.replace(/(!?\[[^\]\n]*\]\()(<[^>]+>|[^\s)]+)([^)]*\))/g,(all,start,raw,end)=>{
+    const href=raw.startsWith('<')?raw.slice(1,-1):raw;
+    if(/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href))return all;
+    if(href.startsWith('#'))return `${start}<${url(page.path)+href}>${end}`;
+    const [pathname,...suffix]=href.split(/(?=[?#])/);
+    let decoded;try{decoded=decodeURIComponent(pathname);}catch{return all;}
+    const target=decoded.startsWith('/')?decoded.slice(1):posix.normalize(posix.join(posix.dirname(source),decoded));
+    const route=routes.get(target)||routes.get(target+'.md')||routes.get(target.replace(/\.html$/,'.md'))||routes.get(posix.join(target,'readme.md'))||routes.get(posix.join(target,'README.md'));
+    return `${start}<${url(route||'/'+target)+suffix.join('')}>${end}`;
+  }));
+  return markdown;
+}
+
 export const llmsPlugin = ({hostname, siteName, siteDescription}) => ({
   name: 'tio-boot-llms',
+  extendsPage(page) {
+    if (supportsMarkdown(page)) page.data.markdownUrl = markdownPathOf(page);
+  },
+  extendsBundlerOptions(options, app) {
+    options.viteOptions ??= {};
+    options.viteOptions.plugins ??= [];
+    options.viteOptions.plugins.push({
+      name: 'tio-markdown-preview',
+      configureServer(server) {
+        server.middlewares.use(async (req, res, next) => {
+          let pathname;
+          try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
+          catch { return next(); }
+          const prefix = app.siteData.base.replace(/\/$/, '');
+          const page = app.pages.find(p => supportsMarkdown(p) && prefix + markdownPathOf(p) === pathname);
+          if (!page) return next();
+          try {
+            const markdown = await pageMarkdown(page, app, hostname);
+            res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+            res.end(markdown + '\n');
+          } catch (error) { next(error); }
+        });
+      },
+    });
+  },
   async onGenerated(app) {
     const origin=hostname.replace(/\/$/,'');
     const url=p=>new URL(p,origin+'/').href;
     const pages=app.pages.filter(p=>p.filePathRelative && p.path!=='/404.html' && p.frontmatter?.search!==false)
       .sort((a,b)=>a.filePathRelative.localeCompare(b.filePathRelative,'en'));
-    const routes=new Map(pages.map(p=>[p.filePathRelative,p.path]));
     const records=[]; const chunks=[]; const groups=new Map();
     for(const page of pages) {
       const source=page.filePathRelative.replaceAll('\\','/');
-      let markdown=stripFrontmatter(await readFile(app.dir.source(source),'utf8')).replaceAll('\r\n','\n');
-      // Raw files live under /ai/pages; links must still resolve to canonical site pages.
-      markdown=mapProse(markdown,prose=>prose.replace(/(!?\[[^\]\n]*\]\()(<[^>]+>|[^\s)]+)([^)]*\))/g,(all,start,raw,end)=>{
-        const href=raw.startsWith('<')?raw.slice(1,-1):raw;
-        if(/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href))return all;
-        if(href.startsWith('#'))return `${start}<${url(page.path)+href}>${end}`;
-        const [pathname,...suffix]=href.split(/(?=[?#])/);
-        let decoded;try{decoded=decodeURIComponent(pathname);}catch{return all;}
-        const target=decoded.startsWith('/')?decoded.slice(1):posix.normalize(posix.join(posix.dirname(source),decoded));
-        const route=routes.get(target)||routes.get(target+'.md')||routes.get(target.replace(/\.html$/,'.md'))||routes.get(posix.join(target,'readme.md'))||routes.get(posix.join(target,'README.md'));
-        return `${start}<${url(route||'/'+target)+suffix.join('')}>${end}`;
-      }));
+      const markdown=await pageMarkdown(page, app, hostname);
       const chapter=sectionOf(source);
       const markdownPath='/ai/pages/'+source;
       const description=page.frontmatter?.description || plain(markdown).slice(0,160);

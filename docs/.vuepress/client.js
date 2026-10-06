@@ -1,6 +1,7 @@
 import { defineClientConfig, withBase } from 'vuepress/client';
 import { onMounted } from 'vue';
 import legacyPaths from './config/legacy-paths.json';
+import MarkdownLayout from './components/MarkdownLayout.vue';
 
 const pagePath = source => '/' + source.replace(/readme\.md$/i, '').replace(/\.md$/, '.html');
 const redirects = new Map();
@@ -18,6 +19,7 @@ for (const [source, target] of Object.entries(legacyPaths)) {
 }
 
 export default defineClientConfig({
+  layouts: { Layout: MarkdownLayout },
   enhance({router}) {
     // Resolve stable and historical addresses during client-side navigation too.
     router.beforeEach(to => {
