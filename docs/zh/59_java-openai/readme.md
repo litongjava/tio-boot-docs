@@ -16,3 +16,4 @@
 - [DeepSeekClient 官方模型查询](./19.md)
 - [BailianTTSClient 语音合成](./20.md)
 - [为单次生成配置独立传输策略](./21.md)
+- [UniChatClient 与调用方 HTTP 客户端](./unichat-owned-client.md)
