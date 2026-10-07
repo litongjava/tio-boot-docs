@@ -97,11 +97,13 @@
               "/zh/06_web/01.md",
               "/zh/06_web/27.md",
               "/zh/06_web/30.md",
+              "/zh/06_web/47.md",
               "/zh/06_web/32.md",
               "/zh/06_web/02.md",
               "/zh/06_web/03.md",
               "/zh/06_web/04.md",
-              "/zh/06_web/15.md"
+              "/zh/06_web/15.md",
+              "/zh/06_web/46.md"
             ]
           },
           {
@@ -1012,7 +1014,10 @@
           "/zh/59_java-openai/08.md",
           "/zh/59_java-openai/18.md",
           "/zh/59_java-openai/19.md",
-          "/zh/59_java-openai/20.md"
+          "/zh/59_java-openai/20.md",
+          "/zh/59_java-openai/21.md",
+          "/zh/59_java-openai/22.md",
+          "/zh/59_java-openai/unichat-owned-client.md"
         ],
         "collapsible": true
       },

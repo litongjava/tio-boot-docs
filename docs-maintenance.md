@@ -1,5 +1,11 @@
 # 文档补全与维护记录
 
+## 2026-10-07：java-openai 新增按业务档位选模型
+
+- 新增 [按业务档位选模型](./docs/zh/59_java-openai/22.md)：业务只表达档位意图（`fast` / `thinking` / `expert`），由一层映射翻译成「平台 + 模型」再交给 `UniChatRequest`，避免模型名散落到调用处。含各平台模型常量的引用方式（`ExchangetokenModels.CLAUDE_SONNET_5_5` / `CLAUDE_OPUS_5_5`、`DeepSeekModels.deepseek_flash`）、映射方法的完整实现（先判档位、显式 `model` 优先、档位为空回落快速档）、handler 里通过 `Aop` 调用映射，以及用一行日志回读请求实际命中的平台与模型。示例均带 import。
+- 章节导航与站点侧边栏同步：补登 `21.md`、`22.md`、`unichat-owned-client.md` 三页 —— 前两页原本就没登记在侧边栏里。
+- 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未落入短内容占位清单；`unlistedPages` 剩既有的 2 条历史遗留（`06_web/46.md`、`15_java-db/35_会员周期与独立增量池.md`），不在本次改动范围。
+
 ## 2026-10-07：AI Browser 客户端换成 Go 版 `dsb`，新增多目标与后端管理
 
 - 新增 [dsb 客户端：Go 版本、多目标与后端服务管理](./docs/zh/65_ai-browser/37.md)：为什么把命令行客户端从 Python 换成 Go（少一层运行时依赖、服务没起时自动拉起、去掉脱敏）；安装与目录结构；子命令清单；连别的主机与同机多端口（`--host`/`--port`/`--use`，地址优先级表，具名目标 `server target add|list|remove`，以及「远端目标不自动拉起」这条约束）；`dsb server init/build/start/stop/restart/status/logs` 与 jar 候选优先级（`releases/<commit>` > `target` > `dist`，`status` 会列出全部候选并用 ★ 标出选中的那份）；`server build` 的等价 mvn 命令与 `-Ddriver.platform` 为何不能省；启动参数里 `-Djdk.net.unixdomain.tmpdir` 为什么必须给（不给会在 Windows 上 `Invalid argument: connect`）；以及第 7 节解释**为什么客户端自己实现 JSON 值层**（不是后端的 JSON 不标准，而是 `encoding/json` 面向 `map` 会丢掉键序、把雪花号 jobId 过成 `float64`、且缩进不可控）。同步目录页与站点侧边栏，并登记到「按问题查阅」。
