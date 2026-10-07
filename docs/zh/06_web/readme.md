@@ -7,6 +7,7 @@
 - [概述](./01.md)
 - [添加 Controller](./27.md)
 - [handler入门](./30.md)
+- [HttpRequestFunction：直接注册 Service 方法](./47.md)
 - [Handler 的请求方法与错误响应](./32.md)
 - [接收请求参数](./02.md)
 - [接收日期参数](./03.md)
