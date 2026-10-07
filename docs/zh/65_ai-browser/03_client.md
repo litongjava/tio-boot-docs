@@ -1,17 +1,21 @@
 # 客户端：dsb 命令行、Python 与 PowerShell
 
+> **当前工程的命令行客户端已经是 Go 实现的 `dsb`（源码在仓库 `dsb/`），本章的 Python 客户端 `client/dsb.py` 与它的两个包装脚本（`client/dsb`、`client/dsb.cmd`）已经删除。**
+> 想看现在该装哪个、怎么用、以及多主机与后端服务管理，请读 [dsb 客户端：Go 版本、多目标与后端服务管理](./37.md)。
+> 本章保留下来的是**协议与参数语义**的说明（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），这些在新客户端里完全一致；下面命令示例里的 `python client/dsb.py` 换成 `dsb` 即可（参数一一对应）。
+
 完成 [第一个任务](./03.md) 后，可以选择命令行、Python 库或 PowerShell 客户端接入同一个 HTTP 服务。客户端负责组装请求、处理响应和本地留档；真正的浏览器操作仍由 Java 服务执行。
 
 ## 1. 客户端入口与运行目录
 
 | 入口 | 适用场景 |
 | --- | --- |
-| client/dsb.py | 跨平台命令行和 Python 程序，使用标准库 |
-| client/dsb.cmd | Windows 包装，委托给 Python 客户端 |
-| client/dsb | Linux/macOS 包装 |
+| `dsb`（**当前工程的入口**，Go 二进制，装在 `PATH`） | 跨平台命令行，写进脚本/CI；服务没起会自动拉起，见 [37](./37.md) |
+| client/dsb.py（已删除） | 上一版的 Python 客户端，跨平台命令行和 Python 程序，使用标准库 |
+| client/dsb.cmd、client/dsb（已删除） | 上一版的两层包装，委托给 Python 客户端 |
 | scripts/trace/browse.ps1 | PowerShell 中发送 JSON、筛选结果与留档 |
 
-下面的命令都从项目根目录执行。Windows PowerShell 调用包装脚本时使用 .\\client\\dsb.cmd；参数含 &、^ 或 % 等字符时，优先通过 JSON 文件传递，避免包装层解释特殊字符。
+下面的命令都从项目根目录执行；`dsb` 装在 `PATH` 上，不受工作目录限制。
 
 ## 2. 常用命令行调用
 

@@ -1,5 +1,12 @@
 # 文档补全与维护记录
 
+## 2026-10-07：AI Browser 客户端换成 Go 版 `dsb`，新增多目标与后端管理
+
+- 新增 [dsb 客户端：Go 版本、多目标与后端服务管理](./docs/zh/65_ai-browser/37.md)：为什么把命令行客户端从 Python 换成 Go（少一层运行时依赖、服务没起时自动拉起、去掉脱敏）；安装与目录结构；子命令清单；连别的主机与同机多端口（`--host`/`--port`/`--use`，地址优先级表，具名目标 `server target add|list|remove`，以及「远端目标不自动拉起」这条约束）；`dsb server init/build/start/stop/restart/status/logs` 与 jar 候选优先级（`releases/<commit>` > `target` > `dist`，`status` 会列出全部候选并用 ★ 标出选中的那份）；`server build` 的等价 mvn 命令与 `-Ddriver.platform` 为何不能省；启动参数里 `-Djdk.net.unixdomain.tmpdir` 为什么必须给（不给会在 Windows 上 `Invalid argument: connect`）；以及第 7 节解释**为什么客户端自己实现 JSON 值层**（不是后端的 JSON 不标准，而是 `encoding/json` 面向 `map` 会丢掉键序、把雪花号 jobId 过成 `float64`、且缩进不可控）。同步目录页与站点侧边栏，并登记到「按问题查阅」。
+- [客户端：dsb 命令行、Python 与 PowerShell](./docs/zh/65_ai-browser/03_client.md)：页面开头加显著提示 —— 当前工程的入口是 Go 版 `dsb`，本章的 `client/dsb.py` 与两个包装脚本已删除；本章保留的是协议与参数语义（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），示例里的 `python client/dsb.py` 换成 `dsb` 即可。入口表里两行标注「已删除」。
+- [安装、启动与健康检查](./docs/zh/65_ai-browser/02.md)：环境准备里的「使用 dsb 需要 Python 3」改为「不需要 Python 或其他运行时，它是静态二进制」。
+- 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，本次新增页已登记到导航；`unlistedPages` 仍是既有的 4 条历史遗留（`06_web/46.md`、`15_java-db/35_会员周期与独立增量池.md`、`59_java-openai/21.md`、`59_java-openai/unichat-owned-client.md`），不在本次改动范围。
+
 ## 2026-10-06：AI Browser 文档同步「页面正在导航与主 Frame 缺失」
 
 - [执行链与异常处理](./docs/zh/65_ai-browser/14.md)：重写内嵌的 `ActionService` 实现以对齐当前源码 —— 补 `execute → runBounded → run` 的实际分层、`TrackedArgs`/`retryBudget`/`attachUnknownParams`，判伪故障改用原始异常文本，并新增 `PAGE_NAVIGATING` 分支。
