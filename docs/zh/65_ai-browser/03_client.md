@@ -2,7 +2,8 @@
 
 > **当前工程的命令行客户端已经是 Go 实现的 `dsb`（源码在仓库 `dsb/`），本章的 Python 客户端 `client/dsb.py` 与它的两个包装脚本（`client/dsb`、`client/dsb.cmd`）已经删除。**
 > 想看现在该装哪个、怎么用、以及多主机与后端服务管理，请读 [dsb 客户端：Go 版本、多目标与后端服务管理](./37.md)。
-> 本章保留下来的是**协议与参数语义**的说明（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），这些在新客户端里完全一致；下面命令示例里的 `python client/dsb.py` 换成 `dsb` 即可（参数一一对应）。
+> **本章的命令示例里的 `python client/dsb.py` 是历史写法，该客户端已被 Go 版替换**：把整段前缀换成 `dsb` 即可（参数一一对应）。
+> 保留下来的是**协议与参数语义**的说明（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），这些在新客户端里完全一致。
 
 完成 [第一个任务](./03.md) 后，可以选择命令行、Python 库或 PowerShell 客户端接入同一个 HTTP 服务。客户端负责组装请求、处理响应和本地留档；真正的浏览器操作仍由 Java 服务执行。
 
@@ -59,7 +60,11 @@ python client/dsb.py --id 1001 run input_text_by_selector --params @params.json
 
 --diagnostics 与 responseMode 同属请求信封，不放在 params 内。需要完整回执时使用 --json，并按任务需要选择字段。
 
---select 对**失败响应同样生效**：批量回执里只要有一步失败、整批 `ok` 就是 false，但 `data.results` 依然完整返回，因此 `--select data.results.N.…` 正是「只看失败那一步」的用法。只有路径确实不存在时（例如单条命令没有 data.results）才退回打印整封，并在 stderr 说明。
+--select 对**失败响应同样生效**：批量回执里只要有一步失败、整批 `ok` 就是 false，但 `data.results` 依然完整返回，因此 `--select data.results.N.…` 正是「只看失败那一步」的用法。
+
+**路径不存在时（例如单条命令没有 data.results）**：stdout 打 `null`、退出码为 **3（用法错）**，并在 stderr 说明。要旧的「退回打印整封、退出码不变」行为，加 `--select-lenient`。
+
+> 为什么改成这样：以前是「悄悄换成整封 + 退出码仍是 0」。按路径取值的脚本/智能体会拿到形状完全不同的东西，却看不到任何失败信号 —— 这是最难排查的一类失败（下游解析报错时，已经离现场很远了）。
 
 ## 3. 批量执行与异步查询
 
