@@ -15,6 +15,19 @@ dsb --port 10049 --id 1001 close
 
 1001 为数字示例 ID，使用前确认没有被占用。同一任务复用 ID，结束时只关闭自己的任务。`methods` 是 CLI 子命令，`list_methods` 是协议方法，也可通过 `dsb run list_methods` 调用；不能写成 `dsb list_methods`。
 
+### 选择浏览器 profile
+
+```powershell
+dsb profiles
+dsb profile list
+dsb profile clone --name litongjava --source-user-data-dir "<Chrome User Data>" --source-profile-directory Default
+dsb --id 1001 start --browser chrome --headful --profile litongjava
+# 或选择现有独立目录，不与 --profile 混用
+dsb --id 1001 start --browser chrome --headful --user-data-dir "<独立 User Data>" --profile-directory "Profile 5"
+```
+
+以上两种 `start` 是替代方案，不要连续执行来尝试切换正在运行的共享浏览器。显式 profile 只支持 Chrome；未传浏览器或传 `auto` 也选择 Chrome。未知名称、路径错误与启动失败不回退。先查看任务，只关闭自己的任务，不能为换 profile 关闭别人的页签。字段契约与离线克隆限制见 [profile 列表、克隆与选择](./39.md)。
+
 ## 2. 复杂参数放入文件
 
 保存 `params.json`：
