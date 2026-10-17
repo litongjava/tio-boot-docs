@@ -1,0 +1,452 @@
+# 独立端口启动 TCP 服务器
+
+[[toc]]
+
+## 概述
+
+T-io 是一个高性能、低延迟的 Java AIO 网络编程框架，可用于开发各类 TCP、UDP 或 WebSocket 应用。而 `tio-boot` 则是在 `t-io` 核心之上构建的快速开发框架，它通过约定优于配置和自动化注解，极大地简化了网络应用的开发流程。
+
+`tio-boot` 提供了两种处理 TCP 数据的方式：
+
+1.  **使用 `tio-core` 独立端口**：本文将重点介绍此方式。它允许启动一个专用的 TCP 服务器，监听一个独立的端口，完全控制其协议的编解码和业务处理逻辑。这种方式非常适合需要自定义二进制协议或与现有 TCP 系统集成的场景。
+2.  **使用 `tio-boot` 内置 `TcpHandler`**：这种方式无需独立的 TCP 端口，而是复用 `tio-boot` 的主服务端口。它可以在同一个端口上同时支持 HTTP、WebSocket 和自定义 TCP 协议，但通常需要协议协商来区分不同类型的连接。
+
+本教程将引导您完成第一种方式：创建一个监听独立端口（`9998`）的 TCP 服务器，并编写一个客户端进行测试。
+
+## 第一部分：构建 TCP 服务器
+
+我们将分步创建一个完整的 TCP 服务器，包括定义数据包、实现消息处理器、配置事件监听器以及启动服务。
+
+### 第 1 步：定义通信协议包 (`BytePacket`)
+
+在网络通信中，我们需要一个标准的数据结构来承载信息。`t-io` 要求所有传输的数据都必须是 `Packet` 的子类。我们定义一个简单的 `BytePacket`，它只包含一个字节数组 `body` 用于存放消息内容。
+
+**`BytePacket.java`**
+```java
+略
+```
+
+### 第 2 步：实现服务器处理器 (`DemoTioServerHandler`)
+
+处理器（Handler）是 `t-io` 的核心，它负责三项关键任务：
+1.  **解码 (`decode`)**：将从网络通道读取的原始字节流 (`ByteBuffer`) 转换为我们定义的应用层数据包 (`BytePacket`)。
+2.  **编码 (`encode`)**：将准备发送的应用层数据包 (`BytePacket`) 转换为可以在网络上传输的字节流 (`ByteBuffer`)。
+3.  **处理 (`handler`)**：处理解码后的数据包，执行业务逻辑，并可能发送响应。
+
+**`DemoTioServerHandler.java`**
+```java
+package nexus.io.sip.handler;
+
+import java.nio.ByteBuffer;
+
+import nexus.io.aio.BytePacket;
+import nexus.io.aio.Packet;
+import nexus.io.tio.core.ChannelContext;
+import nexus.io.tio.core.Tio;
+import nexus.io.tio.core.TioConfig;
+import nexus.io.tio.core.exception.TioDecodeException;
+import nexus.io.tio.server.intf.ServerAioHandler;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoTioServerHandler implements ServerAioHandler {
+
+  /**
+   * 解码方法：将接收到的字节流转换为 BytePacket。
+   * 在这个简单的示例中，我们假设每次接收到的数据就是一个完整的包。
+   * @param buffer 包含网络数据的 ByteBuffer
+   * @param readableLength 当前 buffer 中可读的数据长度
+   * @return 解码后的 BytePacket 对象
+   */
+  @Override
+  public Packet decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext)
+      throws TioDecodeException {
+    log.info("接收到原始数据，准备解码... buffer:{}", buffer);
+    // 如果可读长度不足，返回 null，t-io 框架会等待更多数据到达
+    if (readableLength < 1) {
+      return null;
+    }
+    
+    byte[] bytes = new byte[readableLength];
+    buffer.get(bytes); // 从 buffer 中读取所有可读数据
+    
+    BytePacket imPackage = new BytePacket(bytes);
+    return imPackage;
+  }
+
+  /**
+   * 编码方法：将 BytePacket 转换为待发送的 ByteBuffer。
+   * @param packet 待编码的 BytePacket
+   * @return 编码后的 ByteBuffer
+   */
+  @Override
+  public ByteBuffer encode(Packet packet, TioConfig tioConfig, ChannelContext channelContext) {
+    BytePacket helloPacket = (BytePacket) packet;
+    byte[] body = helloPacket.getBytes();
+    int bodyLength = (body != null) ? body.length : 0;
+    
+    log.info("准备编码响应数据，长度: {}", bodyLength);
+
+    // 分配一个与消息体等大的 ByteBuffer
+    ByteBuffer buffer = ByteBuffer.allocate(bodyLength);
+    // 遵循 t-io 的字节序配置
+    buffer.order(tioConfig.getByteOrder());
+    
+    if (body != null) {
+      buffer.put(body);
+    }
+    return buffer;
+  }
+
+  /**
+   * 消息处理方法：执行业务逻辑。
+   * @param packet 解码后得到的 BytePacket
+   * @param channelContext 当前的连接通道上下文
+   */
+  @Override
+  public void handler(Packet packet, ChannelContext channelContext) throws Exception {
+    BytePacket packingPacket = (BytePacket) packet;
+    byte[] body = packingPacket.getBytes();
+    if (body == null) {
+      return;
+    }
+    
+    String receivedMessage = new String(body, "UTF-8");
+    log.info("成功处理消息，收到: {}", receivedMessage);
+
+    // 构造响应消息
+    String responseMessage = "服务器已收到您的消息: " + receivedMessage;
+    log.info("准备响应: {}", responseMessage);
+    
+    // 创建响应包
+    byte[] bytes = responseMessage.getBytes("UTF-8");
+    BytePacket responsePacket = new BytePacket(bytes);
+    
+    // 发送响应
+    log.info("开始发送响应...");
+    Tio.send(channelContext, responsePacket);
+    log.info("响应发送完成。");
+  }
+}
+
+```
+
+### 第 3 步：实现服务器事件监听器 (`DemoTioServerListener`)
+
+监听器（Listener）用于在连接的生命周期中处理各种事件，例如连接建立、断开、心跳超时等。这对于资源管理、状态同步和日志记录非常有用。
+
+**`DemoTioServerListener.java`**
+```java
+package nexus.io.sip.listener;
+
+import nexus.io.aio.Packet;
+import nexus.io.tio.core.ChannelContext;
+import nexus.io.tio.core.Tio;
+import nexus.io.tio.server.intf.ServerAioListener;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoTioServerListener implements ServerAioListener {
+  
+  @Override
+  public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect) throws Exception {
+    log.info("与客户端 {} 成功建立连接。", channelContext.getClientNode());
+  }
+
+  // 其他事件方法可以根据需要实现，此处省略以保持简洁
+  @Override
+  public void onAfterDecoded(ChannelContext channelContext, Packet packet, int packetSize) throws Exception {}
+  @Override
+  public void onAfterReceivedBytes(ChannelContext channelContext, int receivedBytes) throws Exception {}
+  @Override
+  public void onAfterSent(ChannelContext channelContext, Packet packet, boolean isSentSuccess) throws Exception {}
+  @Override
+  public void onAfterHandled(ChannelContext channelContext, Packet packet, long cost) throws Exception {}
+
+  /**
+   * 连接关闭前触发。
+   * 可以在此进行资源清理，例如解绑用户令牌、移除会话等。
+   */
+  @Override
+  public void onBeforeClose(ChannelContext channelContext, Throwable throwable, String remark, boolean isRemove) throws Exception {
+    log.info("连接即将关闭，客户端: {}, 原因: {}", channelContext.getClientNode(), remark);
+    // 如果有绑定用户认证信息，在这里清理
+    Tio.unbindToken(channelContext);
+  }
+
+  /**
+   * 心跳超时处理。
+   * @return 返回 false 将导致服务器关闭此连接，返回 true 则保持连接。
+   */
+  @Override
+  public boolean onHeartbeatTimeout(ChannelContext channelContext, Long interval, int heartbeatTimeoutCount) {
+    log.warn("客户端 {} 心跳超时 {} 次，即将断开连接。", channelContext.getClientNode(), heartbeatTimeoutCount);
+    Tio.unbindToken(channelContext);
+    return false; // 关闭连接
+  }
+}
+```
+
+### 第 4 步：配置并启动服务器 (`TioServerConfig`)
+
+在 `tio-boot` 中，我们使用一个带有 `@AConfiguration` 注解的配置类来组装和启动服务器。`@Initialization` 注解确保被标记的方法在应用启动时自动执行。
+
+**`TioServerConfig.java`**
+```java
+package nexus.io.sip.config;
+
+import java.io.IOException;
+
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.Initialization;
+import nexus.io.sip.handler.DemoTioServerHandler;
+import nexus.io.sip.listener.DemoTioServerListener;
+import nexus.io.tio.server.ServerTioConfig;
+import nexus.io.tio.server.TioServer;
+import nexus.io.tio.server.intf.ServerAioHandler;
+import nexus.io.tio.server.intf.ServerAioListener;
+
+import lombok.extern.slf4j.Slf4j;
+
+@AConfiguration
+@Slf4j
+public class TioServerConfig {
+
+  @Initialization
+  public void demoTioServer() {
+    // 1. 实例化处理器和监听器
+    ServerAioHandler serverHandler = new DemoTioServerHandler();
+    ServerAioListener serverListener = new DemoTioServerListener();
+
+    // 2. 创建服务器配置对象，并命名为 "tcp-server"
+    ServerTioConfig serverTioConfig = new ServerTioConfig("tcp-server");
+    serverTioConfig.setServerAioHandler(serverHandler);
+    serverTioConfig.setServerAioListener(serverListener);
+
+    // 3. 设置心跳超时时间（单位：毫秒）。-1 表示禁用框架层面的心跳检测。
+    serverTioConfig.setHeartbeatTimeout(-1L);
+
+    // 4. 创建 TioServer 实例
+    TioServer tioServer = new TioServer(serverTioConfig);
+
+    // 5. 启动服务器，监听 9998 端口
+    int port = 9998;
+    try {
+      tioServer.start(null, port); // 第一个参数为 IP，null 表示监听所有网卡
+      log.info("独立 TCP 服务器已成功启动，监听端口: {}", port);
+    } catch (IOException e) {
+      log.error("启动 TCP 服务器失败", e);
+    }
+  }
+}
+```
+
+### 第 5 步：创建应用主入口 (`Main`)
+
+最后，创建一个标准的 `main` 方法作为应用的启动入口，并使用 `TioApplicationWrapper.run()` 来启动整个 `tio-boot` 应用。`@AComponentScan` 注解会自动扫描并加载我们之前创建的配置类。
+
+**`Main.java`**
+```java
+package demo.tcp;
+
+import nexus.io.hotswap.wrapper.tio.boot.TioApplicationWrapper;
+import nexus.io.jfinal.aop.annotation.AComponentScan;
+
+@AComponentScan // 扫描当前包及子包下的所有 tio-boot 组件
+public class Main {
+  public static void main(String[] args) {
+    System.out.println("正在启动 tio-boot 应用...");
+    long start = System.currentTimeMillis();
+    TioApplicationWrapper.run(Main.class, args);
+    long end = System.currentTimeMillis();
+    System.out.println("应用启动完成，耗时: " + (end - start) + "ms");
+  }
+}
+```
+
+至此，TCP 服务器端代码已全部完成。
+
+## 第二部分：构建 TCP 客户端
+
+为了测试服务器，我们需要一个 TCP 客户端。`t-io` 同样提供了完整的客户端 API。
+
+### 第 1 步：实现客户端处理器 (`DemoClientAioHandler`)
+
+客户端处理器与服务器端类似，也需要实现 `decode`、`encode` 和 `handler` 方法。
+
+**`DemoClientAioHandler.java`**
+```java
+
+import java.nio.ByteBuffer;
+
+import nexus.io.aio.BytePacket;
+import nexus.io.aio.Packet;
+import nexus.io.tio.client.intf.ClientAioHandler;
+import nexus.io.tio.core.ChannelContext;
+import nexus.io.tio.core.TioConfig;
+import nexus.io.tio.core.exception.TioDecodeException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoClientAioHandler implements ClientAioHandler {
+
+  /**
+   * 解码：将从服务器收到的 ByteBuffer 解码为 BytePacket。
+   */
+  @Override
+  public Packet decode(ByteBuffer buffer, int limit, int position, int readableLength, ChannelContext channelContext) throws TioDecodeException {
+    byte[] bytes = new byte[readableLength];
+    buffer.get(bytes);
+    BytePacket imPackage = new BytePacket(bytes);
+    return imPackage;
+  }
+
+  /**
+   * 编码：将待发送的 BytePacket 编码为 ByteBuffer。
+   */
+  @Override
+  public ByteBuffer encode(Packet packet, TioConfig tioConfig, ChannelContext channelContext) {
+    BytePacket helloPacket = (BytePacket) packet;
+    byte[] body = helloPacket.getBytes();
+    int bodyLength = (body != null) ? body.length : 0;
+    log.info("客户端编码消息，长度: {}", bodyLength);
+    ByteBuffer buffer = ByteBuffer.allocate(bodyLength);
+    buffer.order(tioConfig.getByteOrder());
+    if (body != null) {
+      buffer.put(body);
+    }
+    return buffer;
+  }
+
+  /**
+   * 处理从服务器收到的消息。
+   */
+  @Override
+  public void handler(Packet packet, ChannelContext channelContext) throws Exception {
+    BytePacket helloPacket = (BytePacket) packet;
+    byte[] body = helloPacket.getBytes();
+    if (body != null) {
+      String message = new String(body, "UTF-8");
+      log.info("客户端收到服务器响应: {}", message);
+    }
+  }
+
+  /**
+   * 心跳包。如果返回 null，框架将不会发送心跳。
+   */
+  @Override
+  public Packet heartbeatPacket(ChannelContext channelContext) {
+    return null;
+  }
+}
+```
+
+### 第 2 步：创建并运行客户端 (`DemoTioClient`)
+
+客户端主程序负责配置、连接服务器并发送消息。
+
+**`DemoTioClient.java`**
+```java
+package nexus.io.websockify.client;
+
+import nexus.io.aio.BytePacket;
+import nexus.io.tio.client.ClientChannelContext;
+import nexus.io.tio.client.ClientTioConfig;
+import nexus.io.tio.client.ReconnConf;
+import nexus.io.tio.client.TioClient;
+import nexus.io.tio.client.intf.ClientAioHandler;
+import nexus.io.tio.client.intf.ClientAioListener;
+import nexus.io.tio.core.Node;
+import nexus.io.tio.core.Tio;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DemoTioClient {
+
+  public static void main(String[] args) throws Exception {
+    // 1. 定义服务器节点信息
+    Node serverNode = new Node("127.0.0.1", 9998);
+
+    // 2. 实例化客户端处理器和监听器
+    ClientAioHandler clientAioHandler = new DemoClientAioHandler();
+    ClientAioListener clientAioListener = null; // 可为 null
+
+    // 3. 配置重连策略（5秒一次），如果不需要重连，设为 null
+    ReconnConf reconnConf = new ReconnConf(5000L);
+
+    // 4. 创建客户端配置对象
+    ClientTioConfig clientTioConfig = new ClientTioConfig(clientAioHandler, clientAioListener, reconnConf);
+    clientTioConfig.setHeartbeatTimeout(0); // 禁用客户端心跳
+
+    // 5. 创建 TioClient 实例并连接服务器
+    TioClient tioClient = new TioClient(clientTioConfig);
+    log.info("正在连接服务器 {}:{}...", serverNode.getIp(), serverNode.getPort());
+    ClientChannelContext clientChannelContext = tioClient.connect(serverNode);
+
+    // 6. 检查连接状态并发送消息
+    if (clientChannelContext != null && clientChannelContext.isClosed == false) {
+      log.info("成功连接到服务器，准备发送消息...");
+      send(clientChannelContext, "Hello, T-io Server!");
+    } else {
+      log.error("连接服务器失败。");
+    }
+  }
+
+  private static void send(ClientChannelContext clientChannelContext, String message) {
+    BytePacket packet = new BytePacket(message.getBytes());
+    Tio.send(clientChannelContext, packet);
+  }
+}
+```
+
+## 第三部分：运行与测试
+
+1.  **启动服务器**：运行 `demo.tcp.Main` 类的 `main` 方法。
+2.  **启动客户端**：运行 `com.tio.mail.wing.client.DemoTioClient` 类的 `main` 方法。
+
+### 预期日志输出
+
+**服务端日志**
+```
+// ... tio-boot 启动日志 ...
+2025-06-21 19:03:52.202 [main] INFO   c.t.m.w.c.TioServerConfig.demoTioServer - 独立 TCP 服务器已成功启动，监听端口: 9998
+// ...
+2025-06-21 19:03:57.130 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.l.DemoTioServerListener - 与客户端 /127.0.0.1:xxxxx 成功建立连接。
+2025-06-21 19:03:57.140 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 接收到原始数据，准备解码...
+2025-06-21 19:03:57.143 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 成功处理消息，收到: Hello, T-io Server!
+2025-06-21 19:03:57.144 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 准备响应: 服务器已收到您的消息: Hello, T-io Server!
+2025-06-21 19:03:57.144 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 开始发送响应...
+2025-06-21 19:03:57.147 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 准备编码响应数据，长度: xx
+2025-06-21 19:03:57.150 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.h.DemoTioServerHandler - 响应发送完成。
+// ...
+2025-06-21 19:03:57.631 [t-io-group-tcp-server-thread-1] INFO c.t.m.w.l.DemoTioServerListener - 连接即将关闭...
+```
+
+**客户端日志**
+```
+2025-06-21 19:03:56.929 [main] INFO   c.t.m.w.c.DemoTioClient - 正在连接服务器 127.0.0.1:9998...
+2025-06-21 19:03:57.128 [TioClient-Connector-Thread-1] INFO c.l.t.c.TioClient - connected to /127.0.0.1:9998
+2025-06-21 19:03:57.130 [main] INFO   c.t.m.w.c.DemoTioClient - 成功连接到服务器，准备发送消息...
+2025-06-21 19:03:57.132 [main] INFO   c.t.m.w.h.DemoClientAioHandler - 客户端编码消息，长度: 20
+2025-06-21 19:03:57.155 [t-io-client-thread-1] INFO   c.t.m.w.h.DemoClientAioHandler - 客户端收到服务器响应: 服务器已收到您的消息: Hello, T-io Server!
+```
+*注意：日志中的时间戳、线程名和端口号可能与您的实际输出略有不同。*
+
+## 总结
+
+通过本教程，我们成功地使用 `tio-core` 和 `tio-boot` 构建了一个功能完整的、监听独立端口的 TCP 服务器和客户端。关键步骤回顾：
+
+1.  **定义协议**：创建 `Packet` 子类来封装数据。
+2.  **实现核心逻辑**：在 `ServerAioHandler` 中完成编解码和业务处理。
+3.  **管理连接生命周期**：通过 `ServerAioListener` 监听和响应连接事件。
+4.  **自动化配置与启动**：利用 `tio-boot` 的 `@AConfiguration` 和 `@Initialization` 注解，优雅地组装并启动服务。
+
+这种模式提供了最大的灵活性，非常适合需要深度定制网络协议和处理逻辑的场景。
+
+## 附录：参考资料
+
+*   **本文示例代码仓库**: [tio-boot-tcp-server-demo01](https://github.com/litongjava/java-ee-tio-boot-study/tree/main/tio-boot-latest-study/tio-boot-tcp-server-demo01)
+*   **T-io 官方文档**: [https://www.tiocloud.com/doc/tio/](https://www.tiocloud.com/doc/tio/)

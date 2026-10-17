@@ -1,0 +1,16 @@
+[win.build]
+pnpm install
+pnpm docs:build
+ls docs/.vuepress/dist
+
+[mac.build]
+pnpm install
+pnpm docs:build
+ls docs/.vuepress/dist
+
+[linux.build]
+pnpm install
+NODE_OPTIONS="--max-old-space-size=8192" npm run docs:build
+ls docs/.vuepress/dist
+
+
