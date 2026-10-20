@@ -95,8 +95,8 @@ public class TcpUdpServer {
 package demo.udp;
 
 import nexus.io.hotswap.wrapper.tio.boot.TioApplicationWrapper;
-import nexus.io.jfinal.aop.annotation.AComponent;
-import nexus.io.jfinal.aop.annotation.AComponentScan;
+import nexus.io.annotation.AComponent;
+import nexus.io.annotation.AComponentScan;
 
 @AComponentScan
 public class Main {
@@ -156,8 +156,8 @@ public class DemoUdpHandler implements UdpHandler {
 ```
 import java.net.SocketException;
 
-import nexus.io.jfinal.aop.annotation.AConfiguration;
-import nexus.io.jfinal.aop.annotation.AInitialization;
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.Initialization;
 import nexus.io.tio.core.udp.UdpServer;
 import nexus.io.tio.core.udp.UdpServerConf;
 

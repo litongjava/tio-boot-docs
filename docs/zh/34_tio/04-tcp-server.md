@@ -251,7 +251,7 @@ public class TioServerConfig {
 package demo.tcp;
 
 import nexus.io.hotswap.wrapper.tio.boot.TioApplicationWrapper;
-import nexus.io.jfinal.aop.annotation.AComponentScan;
+import nexus.io.annotation.AComponentScan;
 
 @AComponentScan // 扫描当前包及子包下的所有 tio-boot 组件
 public class Main {

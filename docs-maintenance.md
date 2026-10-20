@@ -1,5 +1,15 @@
 # 文档补全与维护记录
 
+## 2026-10-19：注解包名、WebSocket 绑定接口与按方法注册路由
+
+- 全站代码示例的注解导入统一为 `nexus.io.annotation.*`（`AConfiguration`、`Initialization`、`AComponentScan`、`ABean`、`AImport` 等），并把示例里的 `@Bean`、`@Configuration`、`@Import`、`@AInitialization` 改为对应的 `@ABean`、`@AConfiguration`、`@AImport`、`@Initialization`。
+- `Cron4jPlugin` 导入改为 `nexus.io.cron4j.Cron4jPlugin`；`SsePacket` 导入改为 `nexus.io.http.common.sse.SsePacket`。
+- [搭建 WebSocket 服务](./docs/zh/08_websocket/01.md)、[WebSocket 聊天室](./docs/zh/08_websocket/02.md)、[ChannelContext](./docs/zh/34_tio/09-channel-context.md) 等页：`Tio.bindUser` 改为 `Tio.bindUserId`，`channelContext.userid` 改为 `channelContext.userId`，`getChannelContextsByUserid` 改为 `getChannelContextsByUserId`。
+- [心跳](./docs/zh/34_tio/23-heartbeat.md) 与 [配置参数](./docs/zh/04_configuration/01.md)：心跳配置项使用 `server.heartbeat.timeout`。
+- [全局异常处理器](./docs/zh/06_web/22.md)：补充 `ZonedDateTime` 导入，类名统一为 `GlobalExceptionHandler`。
+- [Handler 的请求方法与错误响应](./docs/zh/06_web/32.md)：新增“按请求方法注册路由”，用可运行示例介绍 `get/post/put/delete/patch` 与 `add(HttpMethod, ...)`。
+- [请求校验与响应转换](./docs/zh/06_web/46.md)：说明 `BusinessException` 的 `status` 取值 400～599，业务错误码放在 `code` 参数。
+
 ## 2026-10-11：密码注册、密码登录与验证码用途隔离
 
 - 修正 [修改密码](./docs/zh/31_authentication/06.md) 中的 `AppUserService` 示例：原先写入的哈希为 `sha256(新密码 + 新密码)`，与登录校验的 `sha256(密码 + 盐)` 不一致，改密码后无法登录。示例改为调用 `setPassword`，盐与哈希一并更新，并给出 `createPasswordSalt`、`hashPassword`、`verifyPassword` 的完整实现与 import。

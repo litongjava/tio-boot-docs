@@ -7,8 +7,8 @@ tio-boot 内置了 UDPServer tio-boot 内置了 UDP Server,只需要配置 UDPHa
 ```
 import java.net.SocketException;
 
-import nexus.io.jfinal.aop.annotation.AConfiguration;
-import nexus.io.jfinal.aop.annotation.AInitialization;
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.Initialization;
 import nexus.io.tio.boot.constatns.ConfigKeys;
 import nexus.io.tio.core.udp.UdpServer;
 import nexus.io.tio.core.udp.UdpServerConf;

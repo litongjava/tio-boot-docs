@@ -3,7 +3,7 @@
 在网络编程中，资源绑定是将业务相关的数据和 TCP 连接（即 `ChannelContext`）关联起来的关键过程。例如，将一个连接表示为一个特定用户。假设 `ChannelContext-A` 代表了用户张三，张三的 `userid` 为 `333`，可以使用以下代码进行绑定：
 
 ```java
-Tio.bindUser(ChannelContext-A, "333");
+Tio.bindUserId(ChannelContext-A, "333");
 ```
 
 t-io 提供了 4 种内置的资源绑定方式。用户可以灵活运用这些绑定方法来满足业务层面的各种需求。例如，可以为群组 ID 添加前缀，如 `"ios-"`，用以标识该用户使用的是 iOS 设备：
@@ -50,7 +50,7 @@ public static void bindToken(ChannelContext channelContext, String token) {
  * @param channelContext
  * @param userid
  */
-public static void bindUser(ChannelContext channelContext, String userid) {
+public static void bindUser(ChannelContext channelContext, String userId) {
     channelContext.tioConfig.users.bind(userid, channelContext);
 }
 ```

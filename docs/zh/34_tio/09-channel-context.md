@@ -15,13 +15,13 @@
 
 然而，在实际开发中，更常用的方法是使用 `t-io` 提供的强大绑定功能。下面介绍了几种常见的绑定操作：
 
-### 1. 绑定 `userid`
+### 1. 绑定 `userId`
 
-`Tio.bindUser(ChannelContext channelContext, String userid)` 允许将 `userid` 与 `ChannelContext` 对象绑定起来。一旦绑定后，可以通过 `userid` 来执行各种操作，例如：
+`Tio.bindUserId(ChannelContext channelContext, String userId)` 允许将 `userId` 与 `ChannelContext` 对象绑定起来。一旦绑定后，可以通过 `userId` 来执行各种操作，例如：
 
-- **获取某用户的 `ChannelContext` 集合**：使用 `Tio.getChannelContextsByUserid(TioConfig tioConfig, String userid)` 方法可以获取与某个 `userid` 绑定的所有 `ChannelContext` 对象的集合。
+- **获取某用户的 `ChannelContext` 集合**：使用 `Tio.getChannelContextsByUserId(TioConfig tioConfig, String userId)` 方法可以获取与某个 `userId` 绑定的所有 `ChannelContext` 对象的集合。
 
-- **向某用户发送消息**：使用 `Tio.sendToUser(TioConfig tioConfig, String userid, Packet packet)` 方法可以向指定的 `userid` 发送消息。这种绑定和操作机制极大地简化了向特定用户发送消息的流程。
+- **向某用户发送消息**：使用 `Tio.sendToUser(TioConfig tioConfig, String userId, Packet packet)` 方法可以向指定的 `userId` 发送消息。这种绑定和操作机制极大地简化了向特定用户发送消息的流程。
 
 ### 2. 绑定业务 ID (`bsId`)
 
@@ -37,10 +37,10 @@
 
 ### 5. 获取用户 Id
 
-channelContext 中包含了 userid 字段,类型是 String
+channelContext 中包含了 userId 字段,类型是 String
 
-```
-channelContext.userid;
+```java
+channelContext.userId;
 ```
 
 ### 6. 判断某个用户是否在线

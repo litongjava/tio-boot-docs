@@ -7,18 +7,18 @@ Tio-Boot 内置了心跳监控功能，即使是纯 HTTP 项目，也建议开�
 首先，需要在配置文件 `app.properties` 中设置心跳超时时间：
 
 ```properties
-server.beartbeat.timeout=60000
+server.heartbeat.timeout=60000
 ```
 
-`server.beartbeat.timeout` 指定了心跳超时时间，单位为毫秒。这个值表示当服务器在规定时间内未接收到来自客户端的心跳包时，将会断开连接。可以根据业务需求调整此值。
+`server.heartbeat.timeout` 指定了心跳超时时间，单位为毫秒。这个值表示当服务器在规定时间内未接收到来自客户端的心跳包时，将会断开连接。可以根据业务需求调整此值。
 
 ## 2. 开启心跳监控
 
 接下来，需要在项目中显式开启心跳监控，并将心跳调试日志打开。可以通过设置 `ServerTioConfig` 的 `debug` 参数来输出更多调试信息，帮助监控连接和消息传递情况。
 
 ```java
-import nexus.io.jfinal.aop.annotation.AConfiguration;
-import nexus.io.jfinal.aop.annotation.AInitialization;
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.Initialization;
 import nexus.io.tio.boot.server.TioBootServer;
 import nexus.io.tio.server.ServerTioConfig;
 

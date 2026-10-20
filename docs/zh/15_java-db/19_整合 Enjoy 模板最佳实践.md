@@ -69,7 +69,7 @@ import javax.sql.DataSource;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import nexus.io.annotation.AConfiguration;
-import nexus.io.annotation.AInitialization;
+import nexus.io.annotation.Initialization;
 import nexus.io.db.activerecord.ActiveRecordPlugin;
 import nexus.io.db.activerecord.OrderedFieldContainerFactory;
 import nexus.io.db.activerecord.dialect.PostgreSqlDialect;

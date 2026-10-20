@@ -107,8 +107,8 @@ public class MyIpStatListener implements IpStatListener {
 ```java
 package nexus.io.tio.web.hello.config;
 
-import nexus.io.jfinal.aop.annotation.AConfiguration;
-import nexus.io.jfinal.aop.annotation.AInitialization;
+import nexus.io.annotation.AConfiguration;
+import nexus.io.annotation.Initialization;
 import nexus.io.tio.boot.server.TioBootServer;
 import nexus.io.tio.server.ServerTioConfig;
 import nexus.io.tio.web.hello.stat.IpStatDuration;

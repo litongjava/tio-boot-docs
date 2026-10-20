@@ -129,7 +129,7 @@ public class AsyncController {
     Map<String, Object> data = new HashMap<>();
     data.put("channelContext", channelContext.toString());
     data.put("tioConfig", tioConfig.toString());
-    data.put("userId", channelContext.userid);
+    data.put("userId", channelContext.userId);
     data.put("token", token);
     data.put("asynchronousSocketChannel", channelContext.asynchronousSocketChannel.toString());
     data.put("aioHandler", aioHandler.toString());
