@@ -1162,7 +1162,8 @@
         "children": [
           "/zh/64_ai-coding/readme.md",
           "/zh/64_ai-coding/01.md",
-          "/zh/64_ai-coding/02.md"
+          "/zh/64_ai-coding/02.md",
+          "/zh/64_ai-coding/03.md"
         ],
         "collapsible": true
       },

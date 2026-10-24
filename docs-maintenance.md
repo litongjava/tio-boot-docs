@@ -1,5 +1,10 @@
 # 文档补全与维护记录
 
+## 2026-10-24：tio-boot 调用 Agent CLI，SSE 示例与源码对齐
+
+- 新增 [tio-boot 调用 Agent CLI：agent-cli-sdk](./docs/zh/64_ai-coding/03.md)：SDK 选项组装、服务端工具权限（`CanUseTool`）、JVM 内 MCP 工具（`SdkMcpServer`）、一次性查询接口、SSE 流式接口（`StreamEvent.getTextDelta()`）、多轮会话与回合中查询状态/中断、路由与 Token 拦截器、全局异常处理。全部示例带完整 import，12 个完整类一起编译通过。同步目录页与站点侧边栏。
+- [Server-Sent Events (SSE)](./docs/zh/06_web/29.md)：剩余两处 `SsePacket` 导入改为 `nexus.io.http.common.sse.SsePacket`；`setServerSentEventsHeader()` 改为源码中的 `addServerSentEventsHeader()`（同时修正 [示例 05](./docs/zh/75_examples/05.md)）。
+
 ## 2026-10-19：注解包名、WebSocket 绑定接口与按方法注册路由
 
 - 全站代码示例的注解导入统一为 `nexus.io.annotation.*`（`AConfiguration`、`Initialization`、`AComponentScan`、`ABean`、`AImport` 等），并把示例里的 `@Bean`、`@Configuration`、`@Import`、`@AInitialization` 改为对应的 `@ABean`、`@AConfiguration`、`@AImport`、`@Initialization`。
