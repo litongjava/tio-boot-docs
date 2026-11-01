@@ -1,5 +1,13 @@
 # 文档补全与维护记录
 
+## 2026-10-31：大文件导出零拷贝、下载文件名与反向代理缓冲
+
+- 新增 [大文件导出：零拷贝发送 Excel、Word、PDF、PPT](./docs/zh/06_web/49.md)：`Resps.excel/excelXls/docx/doc/pdf/pptx/ppt` 的 `File` 版本与 `Resps.download(response, file[, contentType], filename)`，文件不进堆内存、由传输层零拷贝发送；完整示例（EasyExcel 生成订单表、按 `type` 发送 PDF/Word/PPT 报告，handler/service 分层、`Aop` 获取 service、`RespBodyVo` 返回参数错误），运行后的响应头、发送过程、导出文件的存放与按时间清理、nginx 下的 `X-Accel-Buffering`。示例代码编译运行通过，curl 验证 xlsx 可用、PDF/Word/PPT 逐字节一致。
+- [Resps](./docs/zh/06_web/17.md)：`Content-Disposition` 改为同时写出 ASCII `filename` 与 UTF-8 `filename*`；新增「大文件：直接发送磁盘文件」一节；方法一览补 `attachmentDisposition`、`contentTypeOf`、`disableProxyBuffering`。
+- [零拷贝](./docs/zh/06_web/38.md)：自定义下载示例的 `DownloadHandler` 原先没有实现 `HttpRequestHandler`，无法传给 `router.get(...)`；改为实现接口并使用 `Resps.download`，编译运行通过。`HttpFileDataHandler` 一节补充 `X-Accel-Buffering: no` 与关闭开关。
+- [EasyExcel 导出](./docs/zh/16_api-table/08.md)：补充写入磁盘文件后用 `Resps.excel(response, file, filename)` 发送的写法。
+- 同步章节目录页与站点侧边栏。新页面使用 `49.md`：`06_web/48.md` 已作为旧地址重定向到 `38.md`。审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未落入 `unlistedPages` 与短内容清单；`unlistedPages` 仍是既有的 6 条历史遗留，不在本次改动范围；`docs:check-ai` 通过。
+
 ## 2026-10-31：tio-boot-admin 的 RocketMQ 整合（不依赖 Spring）
 
 - 新增 [RocketMQ 安装（Docker Compose）](./docs/zh/29_mq/04.md)：NameServer、Broker、Proxy、Dashboard 四个容器，`broker.conf` 同时开启延迟级别（`messageDelayLevel=1s 3s 5s ...`）与 5.x 定时消息，`brokerIP1` 的作用，ACL 账号，`mqadmin clusterList` / `updateTopic` 验证；配图为控制台集群页与 Topic 列表（UNSPECIFIED 类型）。
