@@ -1,9 +1,9 @@
 # 文档补全与维护记录
 
-## 2026-10-31：tio-boot 内置 RocketMQ 整合（不依赖 Spring）
+## 2026-10-31：tio-boot-admin 的 RocketMQ 整合（不依赖 Spring）
 
 - 新增 [RocketMQ 安装（Docker Compose）](./docs/zh/29_mq/04.md)：NameServer、Broker、Proxy、Dashboard 四个容器，`broker.conf` 同时开启延迟级别（`messageDelayLevel=1s 3s 5s ...`）与 5.x 定时消息，`brokerIP1` 的作用，ACL 账号，`mqadmin clusterList` / `updateTopic` 验证；配图为控制台集群页与 Topic 列表（UNSPECIFIED 类型）。
-- 新增 [tio-boot 整合 RocketMQ](./docs/zh/29_mq/05.md)：`RocketMq` 入口与 `rocketmq.*` 配置、`RocketMqTemplate` 全部发送方式（同步、Key、`topic:tag`、属性、延迟级别、定时、顺序、异步、单向）、`@RocketMqMessageListener` 的集群/广播、并发/顺序、Tag/SQL92 过滤、重试与死信、`${...}` 占位符、代码注册与 Lambda、发送/消费钩子透传租户、开关配置。
+- 新增 [tio-boot 整合 RocketMQ](./docs/zh/29_mq/05.md)：整合位于 tio-boot-admin-base（与 Kafka 一致），`TioAdminRocketMqConfig` 入口、`RocketMq` 与 `rocketmq.*` 配置、`RocketMqTemplate` 全部发送方式（同步、Key、`topic:tag`、属性、延迟级别、定时、顺序、异步、单向）、`@RocketMqMessageListener` 的集群/广播、并发/顺序、Tag/SQL92 过滤、重试与死信、`${...}` 占位符、代码注册与 Lambda、发送/消费钩子透传租户、开关配置。
 - 新增 [RocketMQ 即时通讯实战](./docs/zh/29_mq/06.md)：消息扇出、按节点 Topic 定向推送、广播上线事件、ACK 与延迟重推、租户跨多跳透传、事务提交后发送的本地消息表；全部代码来自实际运行的工程，附运行日志与控制台按 Key 查询截图，包括停止 Broker 后由本地消息表补发的验证。
 - 同步章节目录页与站点侧边栏。审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未出现在 `unlistedPages` 与短内容清单中；`docs:check-ai` 通过。
 
