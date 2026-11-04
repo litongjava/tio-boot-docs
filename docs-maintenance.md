@@ -1,5 +1,19 @@
 # 文档补全与维护记录
 
+## 2026-11-01：微服务章节（Nacos、注册发现、配置中心、服务调用、网关）与反向代理
+
+- 新增第 79 章 [微服务](./docs/zh/79_cloud/readme.md)，配套底层库 tio-boot-cloud（commons、nacos、gateway 三个模块）：
+  - [Nacos 安装（Docker Compose）](./docs/zh/79_cloud/01.md)：standalone + MySQL 存储，开启鉴权、初始化管理员、创建命名空间、发布配置；配图为控制台服务列表、实例元数据和配置列表。
+  - [服务注册与发现](./docs/zh/79_cloud/02.md)：`TioBootNacos.start()`、全部 `nacos.*` 配置项、实例元数据、`server.shutdown.hook` 优雅下线、`CloudContext` 查询实例、一个进程注册多个服务名、不使用注册中心时的固定地址。
+  - [配置中心](./docs/zh/79_cloud/03.md)：`nacos.config.data-ids` 在启动时自动加载（可以设置 `server.port`）、优先级、YAML 展开规则、热更新与 `RemoteConfig.addListener`。
+  - [服务调用与负载均衡](./docs/zh/79_cloud/04.md)：`ServiceClient`、失败换实例、请求头透传、轮询/加权随机、按元数据灰度与自定义负载均衡。
+  - [网关](./docs/zh/79_cloud/05.md)：路由、断言、过滤器、全局过滤器、CORS 与 Trace Id、SSE 流式转发、WebSocket 转发、路由在 Nacos 中热更新、失败处理。
+  - [HTTP 与 WebSocket 反向代理](./docs/zh/79_cloud/06.md)：`TioHttpProxy.forward`、`HttpRequestRouter.any`、`WebSocketProxyHandler`、`ChannelCloseHooks`。
+  - [启动与停止的扩展点](./docs/zh/79_cloud/07.md)：`EnvLoadedListener`（ServiceLoader 发现）、`addServerListener`、`server.shutdown.hook`。
+  - 各页完整类按页编译通过；运行结果来自实际启动的 Nacos、两个 provider 实例、consumer 与网关。
+- [使用 HttpForwardHandler 转发所有请求](./docs/zh/06_web/34.md)：接口名改为源码中的 `HttpRequestHandler`，`reverseProxy` 调用改为实际存在的 4 参数版本；补充全部请求方法与原始请求体转发、流式响应、502、`forward` 方法以及 ForwardHandler 返回 `null` 的处理。
+- 同步章节目录页、站点侧边栏、`chapter-layout.json` 与章节别名 `cloud`。审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未落入 `unlistedPages` 与短内容清单；`unlistedPages` 仍是既有的 6 条历史遗留；`docs:check-ai` 通过。
+
 ## 2026-10-31：大文件导出零拷贝、下载文件名与反向代理缓冲
 
 - 新增 [大文件导出：零拷贝发送 Excel、Word、PDF、PPT](./docs/zh/06_web/49.md)：`Resps.excel/excelXls/docx/doc/pdf/pptx/ppt` 的 `File` 版本与 `Resps.download(response, file[, contentType], filename)`，文件不进堆内存、由传输层零拷贝发送；完整示例（EasyExcel 生成订单表、按 `type` 发送 PDF/Word/PPT 报告，handler/service 分层、`Aop` 获取 service、`RespBodyVo` 返回参数错误），运行后的响应头、发送过程、导出文件的存放与按时间清理、nginx 下的 `X-Accel-Buffering`。示例代码编译运行通过，curl 验证 xlsx 可用、PDF/Word/PPT 逐字节一致。

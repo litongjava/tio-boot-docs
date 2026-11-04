@@ -1441,5 +1441,25 @@
         "collapsible": true
       }
     ]
+  },
+  {
+    "text": "微服务",
+    "collapsible": true,
+    "children": [
+      {
+        "text": "79 · 微服务",
+        "children": [
+          "/zh/79_cloud/readme.md",
+          "/zh/79_cloud/01.md",
+          "/zh/79_cloud/02.md",
+          "/zh/79_cloud/03.md",
+          "/zh/79_cloud/04.md",
+          "/zh/79_cloud/05.md",
+          "/zh/79_cloud/06.md",
+          "/zh/79_cloud/07.md"
+        ],
+        "collapsible": true
+      }
+    ]
   }
 ]

@@ -454,6 +454,16 @@
           "previous": "76_tio-boot"
         }
       ]
+    },
+    {
+      "title": "微服务",
+      "chapters": [
+        {
+          "directory": "79_cloud",
+          "title": "微服务",
+          "previous": null
+        }
+      ]
     }
   ]
 }

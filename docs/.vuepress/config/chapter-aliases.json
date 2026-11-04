@@ -76,5 +76,6 @@
   "examples": "75_examples",
   "performance": "76_performance",
   "internals": "77_internals",
-  "source-code": "78_source-code"
+  "source-code": "78_source-code",
+  "cloud": "79_cloud"
 }
