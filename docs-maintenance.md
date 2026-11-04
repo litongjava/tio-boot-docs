@@ -1,5 +1,11 @@
 # 文档补全与维护记录
 
+## 2026-11-03：业务异常日志与连接属性
+
+- [全局异常处理器](./docs/zh/06_web/22.md)：新增“业务异常的日志级别”，`BusinessException`、`ParameterValidationException` 按 INFO 记录且不打印堆栈。
+- [ChannelContext](./docs/zh/34_tio/09-channel-context.md)：新增“在连接上保存属性”，设置为 `null` 即删除。
+- 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0。本次只改两页正文，按维护者要求未重新构建站点，`docs:check-ai` 的结果来自上一条记录的构建。
+
 ## 2026-11-01：微服务章节（Nacos、注册发现、配置中心、服务调用、网关）与反向代理
 
 - 新增第 79 章 [微服务](./docs/zh/79_cloud/readme.md)，配套底层库 tio-boot-cloud（commons、nacos、gateway 三个模块）：

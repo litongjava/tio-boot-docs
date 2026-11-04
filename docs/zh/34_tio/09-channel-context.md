@@ -60,6 +60,34 @@ public boolean isUserOnline(String userId) {
 }
 ```
 
+## 在连接上保存属性
+
+每个连接都可以保存自己的属性，连接关闭后随之释放。把属性设置为 `null` 就是删除它，等同于 `remove(key)`。
+
+```java
+package demo.ws;
+
+import nexus.io.tio.core.ChannelContext;
+
+public class RoomAttributes {
+  private static final String ROOM = "room";
+
+  public void enter(ChannelContext channelContext, String room) {
+    channelContext.setAttribute(ROOM, room);
+  }
+
+  public String current(ChannelContext channelContext) {
+    return (String) channelContext.getAttribute(ROOM);
+  }
+
+  public void leave(ChannelContext channelContext) {
+    channelContext.setAttribute(ROOM, null);
+  }
+}
+```
+
+需要在连接关闭时执行清理，可以使用 [ChannelCloseHooks](../79_cloud/06.md)。
+
 ## ChannelContext 组成部分
 
 第一张图片展示了 `ChannelContext` 的各个组成部分，并简要描述了每个部分的作用。以下是对图片中各部分的解释：
