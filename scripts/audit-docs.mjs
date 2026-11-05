@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import navbar from '../docs/.vuepress/config/nav-en.js'
+import navbar from '../docs/.vitepress/config/nav-en.js'
 
 // Read-only inventory. Markdown code blocks and external URLs are not links to local pages.
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -27,33 +27,33 @@ for (const file of files) {
     try { clean = decodeURIComponent(href.split(/[?#]/)[0]) } catch { continue }
     if (!clean) continue
     const target = clean.startsWith('/') ? path.join(docs, clean) : path.resolve(path.dirname(file), clean)
-    const candidates = [target, target + '.md', path.join(target, 'README.md'), path.join(target, 'readme.md')]
+    const candidates = [target, target + '.md', path.join(target, 'index.md')]
     if (target.endsWith('.html')) candidates.push(target.slice(0, -5) + '.md')
-    if (clean.startsWith('/')) candidates.push(path.join(docs, '.vuepress/public', clean))
+    if (clean.startsWith('/')) candidates.push(path.join(docs, 'public', clean))
     if (!candidates.some(p => fs.existsSync(p))) missingLinks.push({ file: relative(file), href })
   }
 }
-const sidebar = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/sidebar-zh.json'), 'utf8'))
+const sidebar = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/sidebar-zh.json'), 'utf8'))
 const navigated = new Set()
 function visit(value) {
   if (typeof value === 'string' && value.startsWith('/zh/') && value.endsWith('.md')) {
-    navigated.add(value)
-    if (!fs.existsSync(path.join(docs, value))) missingNavigation.push(value)
+    navigated.add(value.replace(/readme\.md$/i, 'index.md'))
+    if (!fs.existsSync(path.join(docs, value.replace(/readme\.md$/i, 'index.md')))) missingNavigation.push(value)
   } else if (Array.isArray(value)) value.forEach(visit)
   else if (value && typeof value === 'object') Object.values(value).forEach(visit)
 }
 visit(sidebar)
-const legacyPaths = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/legacy-paths.json'), 'utf8'))
-const externalChapters = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/external-chapters.json'), 'utf8'))
+const legacyPaths = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/legacy-paths.json'), 'utf8'))
+const externalChapters = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/external-chapters.json'), 'utf8'))
 const isExternalTarget = target => Object.keys(externalChapters).some(chapter => target.startsWith(`zh/${chapter}/`))
 for (const [from, target] of Object.entries(legacyPaths)) {
-  if (!isExternalTarget(target) && !fs.existsSync(path.join(docs, target))) missingNavigation.push({ redirect: from, target })
+  if (!isExternalTarget(target) && !fs.existsSync(path.join(docs, target.replace(/readme\.md$/i, 'index.md')))) missingNavigation.push({ redirect: from, target })
 }
 const unlistedPages = files.map(p => '/' + path.relative(docs, p).replaceAll('\\', '/'))
   .filter(p => /^\/zh\/\d+_[^/]+\/[^/]+\.md$/.test(p) && !navigated.has(p))
 function checkNavbar(value) {
   if (typeof value === 'string' && value.startsWith('/') && value !== '/') {
-    const target = path.join(docs, value)
+    const target = path.join(docs, value.replace(/readme\.md$/i, 'index.md'))
     if (![target, target+'.md', path.join(target,'README.md'), path.join(target,'readme.md')].some(p=>fs.existsSync(p))) missingNavigation.push(value)
   } else if (Array.isArray(value)) value.forEach(checkNavbar)
   else if (value && typeof value === 'object') {

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export async function serveDocs() {
-  const root = path.resolve('docs/.vuepress/dist');
+  const root = path.resolve('docs/.vitepress/dist');
   const failPaths = new Set();
   const failedRequests = [];
   const overrides = new Map();

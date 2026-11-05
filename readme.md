@@ -1,6 +1,6 @@
 # tio-boot-docs
 
-`tio-boot-docs` 是 tio-boot 项目的文档站点，基于 VuePress 构建。
+`tio-boot-docs` 是 tio-boot 项目的文档站点，基于 VitePress 构建。
 
 ## 项目地址
 
@@ -51,7 +51,7 @@ pnpm docs:dev
 
 本次补全文档及剩余缺口见 [文档维护记录](./docs-maintenance.md)。
 
-章节按 13 个学习主题分组，78 个目录使用连续编号与英文名称。阅读顺序见[文档导航](./docs/zh/guide.md)，旧路径映射见 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json)，构建时生成兼容跳转。
+章节按 13 个学习主题分组，78 个目录使用连续编号与英文名称。阅读顺序见[文档导航](./docs/zh/guide.md)，旧路径映射见 [legacy-paths.json](./docs/.vitepress/config/legacy-paths.json)，构建时生成兼容跳转。
 
 AI 检索入口与数据字段见 [AI 检索说明](./docs/ai-retrieval.md)。构建后运行 `pnpm docs:check-ai` 核验单页 Markdown、JSON/JSONL、内容哈希与旧页面跳转；所有检索产物随站点一起部署。
 
@@ -76,13 +76,13 @@ NODE_OPTIONS="--max-old-space-size=8192" pnpm docs:build
 构建完成后，生成文件位于：
 
 ```bash
-docs/.vuepress/dist
+docs/.vitepress/dist
 ```
 
 可以使用以下命令查看构建结果：
 
 ```bash
-ls docs/.vuepress/dist
+ls docs/.vitepress/dist
 ```
 
 ## 部署到 Cloudflare Pages
@@ -91,14 +91,14 @@ ls docs/.vuepress/dist
 
 ```bash
 NODE_OPTIONS="--max-old-space-size=8192" pnpm docs:build
-npx wrangler pages deploy docs/.vuepress/dist --project-name=tio-boot-docs
+npx wrangler pages deploy docs/.vitepress/dist --project-name=tio-boot-docs
 ```
 
 各部分含义：
 
 - NODE_OPTIONS="--max-old-space-size=8192"：允许 Node.js 最多使用约 8GB 内存
 - wrangler pages deploy：部署到 Cloudflare Pages
-- docs/.vuepress/dist：本地待上传的静态文件目录
+- docs/.vitepress/dist：本地待上传的静态文件目录
 - --project-name=tio-boot-docs：部署到名为 tio-boot-docs 的 Pages 项目
 执行后，Wrangler 会把该目录中的 HTML、JavaScript、CSS、图片等文件上传到 Cloudflare。它不会上传整个项目源码
 
@@ -122,7 +122,7 @@ Type=simple
 User=root
 Restart=on-failure
 RestartSec=5
-ExecStart=/usr/bin/http-server -p 10062 /root/code/tio-boot-docs/docs/.vuepress/dist
+ExecStart=/usr/bin/http-server -p 10062 /root/code/tio-boot-docs/docs/.vitepress/dist
 
 [Install]
 WantedBy=multi-user.target
@@ -176,4 +176,4 @@ systemctl restart tio-boot-docs
 
 别名通过静态跳转页和部署重定向指向当前章节，保留查询参数与页内锚点。目录继续使用 `序号_英文`，内部 Markdown 相对链接指向真实源文件。章节编号变化时，只需维护映射，源码仓库 README 无需再次改号。
 
-映射见 [chapter-aliases.json](./docs/.vuepress/config/chapter-aliases.json)；完整页面跳转由 [legacy-paths.json](./docs/.vuepress/config/legacy-paths.json) 维护。构建后发布站点即可生效。
+映射见 [chapter-aliases.json](./docs/.vitepress/config/chapter-aliases.json)；完整页面跳转由 [legacy-paths.json](./docs/.vitepress/config/legacy-paths.json) 维护。构建后发布站点即可生效。

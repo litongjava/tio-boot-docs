@@ -2,9 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { splitSections } from '../docs/.vuepress/config/llms.js';
+import { splitSections } from '../docs/.vitepress/config/llms.js';
 
-const dest=path.resolve('docs/.vuepress/dist');
+const dest=path.resolve('docs/.vitepress/dist');
 const read=p=>fs.readFileSync(path.join(dest,p),'utf8');
 const local=url=>path.join(dest,decodeURIComponent(new URL(url).pathname).replace(/^\//,''));
 const hash=text=>createHash('sha256').update(text).digest('hex');
@@ -41,7 +41,7 @@ assert(llms.includes('## zh/30_kafka'));
 assert(!llms.includes('## zh\n'));
 for(const m of llms.matchAll(/\]\((https?:\/\/[^)]+)\)/g))assert(fs.existsSync(local(m[1])),m[1]);
 const redirects=JSON.parse(read('ai/redirects.json'));
-const externalChapters=JSON.parse(fs.readFileSync('docs/.vuepress/config/external-chapters.json','utf8'));
+const externalChapters=JSON.parse(fs.readFileSync('docs/.vitepress/config/external-chapters.json','utf8'));
 const pages=new Map(index.pages.map(p=>[p.source,p]));
 let redirectCount=0;
 for(const [from,to] of Object.entries(redirects)) {
