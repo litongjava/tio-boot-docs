@@ -47,10 +47,18 @@ export const legacyRedirectsPlugin = ({ hostname }) => ({
   async onGenerated(app) {
     const mapping = JSON.parse(await readFile(app.dir.source('.vuepress/config/legacy-paths.json'), 'utf8'));
     const pages = new Map(app.pages.filter(p => p.filePathRelative).map(p => [p.filePathRelative, p.path]));
+    const externalChapters = JSON.parse(await readFile(app.dir.source('.vuepress/config/external-chapters.json'), 'utf8'));
+    // Chapters moved to their own sites keep their old addresses through absolute redirects.
+    const externalTarget = source => {
+      const match = /^zh\/([^/]+)\/(.*)$/.exec(source);
+      const base = match && externalChapters[match[1]];
+      if (!base) return null;
+      return `${base}/${encodeURI(match[2].replace(/readme\.md$/i, '').replace(/\.md$/, '.html'))}`;
+    };
     const occupied = new Set(app.pages.map(p => normalized(p.path).toLowerCase()));
     const entries = [];
     for (const [oldSource, newSource] of Object.entries(mapping)) {
-      const target = pages.get(newSource);
+      const target = externalTarget(newSource) || pages.get(newSource);
       if (!target) throw new Error('Missing redirect target: ' + newSource);
       const oldPath = '/' + oldSource.replace(/readme\.md$/i, 'index.html').replace(/\.md$/, '.html');
       // Canonical routes take precedence, including case-only aliases on Windows.

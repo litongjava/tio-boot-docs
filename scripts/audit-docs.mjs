@@ -44,8 +44,10 @@ function visit(value) {
 }
 visit(sidebar)
 const legacyPaths = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/legacy-paths.json'), 'utf8'))
+const externalChapters = JSON.parse(fs.readFileSync(path.join(docs, '.vuepress/config/external-chapters.json'), 'utf8'))
+const isExternalTarget = target => Object.keys(externalChapters).some(chapter => target.startsWith(`zh/${chapter}/`))
 for (const [from, target] of Object.entries(legacyPaths)) {
-  if (!fs.existsSync(path.join(docs, target))) missingNavigation.push({ redirect: from, target })
+  if (!isExternalTarget(target) && !fs.existsSync(path.join(docs, target))) missingNavigation.push({ redirect: from, target })
 }
 const unlistedPages = files.map(p => '/' + path.relative(docs, p).replaceAll('\\', '/'))
   .filter(p => /^\/zh\/\d+_[^/]+\/[^/]+\.md$/.test(p) && !navigated.has(p))
@@ -61,7 +63,8 @@ function checkNavbar(value) {
 }
 checkNavbar(navbar)
 const chapters = fs.readdirSync(path.join(docs,'zh')).filter(n=>/^\d+_/.test(n)).sort()
-const chapterErrors = chapters.flatMap((chapter,index)=> Number(chapter.split('_')[0]) === index+1 ? [] : [chapter])
+// Chapters moved to their own sites keep their numbers, so existing addresses do not change.
+const chapterErrors = [...chapters, ...Object.keys(externalChapters)].sort().flatMap((chapter,index)=> Number(chapter.split('_')[0]) === index+1 ? [] : [chapter])
 const orderedChapters = [...new Set([...navigated].map(p=>p.split('/')[2]).filter(p=>/^\d+_/.test(p)))]
 if (orderedChapters.join('|') !== chapters.join('|')) chapterErrors.push('Sidebar order differs from directory order')
 for (const chapter of chapters) if (!/^\d{2}_[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(chapter)) chapterErrors.push('Invalid chapter name: '+chapter)

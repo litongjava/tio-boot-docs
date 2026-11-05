@@ -191,17 +191,7 @@
       },
       {
         "text": "09 · AOP",
-        "children": [
-          "/zh/09_aop/readme.md",
-          "/zh/09_aop/01.md",
-          "/zh/09_aop/02.md",
-          "/zh/09_aop/03.md",
-          "/zh/09_aop/04.md",
-          "/zh/09_aop/05.md",
-          "/zh/09_aop/06.md",
-          "/zh/09_aop/07.md"
-        ],
-        "collapsible": true
+        "link": "https://jfinal-aop.io.nexus/"
       },
       {
         "text": "10 · 国际化",
@@ -296,69 +286,11 @@
     "children": [
       {
         "text": "15 · java-db",
-        "children": [
-          "/zh/15_java-db/readme.md",
-          "/zh/15_java-db/00.md",
-          "/zh/15_java-db/01.md",
-          "/zh/15_java-db/02.md",
-          "/zh/15_java-db/03_SQL Template.md",
-          "/zh/15_java-db/04_数据源配置与使用.md",
-          "/zh/15_java-db/05_ActiveRecordPlugin.md",
-          "/zh/15_java-db/06_db工具类基础.md",
-          "/zh/15_java-db/07_db工具类高级.md",
-          "/zh/15_java-db/08_Model.md",
-          "/zh/15_java-db/09_生成器与 JavaBean.md",
-          "/zh/15_java-db/10.md",
-          "/zh/15_java-db/11_异常处理.md",
-          "/zh/15_java-db/12_数据库事务处理.md",
-          "/zh/15_java-db/13_Cache 缓存.md",
-          "/zh/15_java-db/14_Dialect多数据库支持.md",
-          "/zh/15_java-db/15_表关联操作.md",
-          "/zh/15_java-db/16_复合主键.md",
-          "/zh/15_java-db/17_Oracle支持.md",
-          "/zh/15_java-db/18_Enjoy SQL 模板.md",
-          "/zh/15_java-db/19_整合 Enjoy 模板最佳实践.md",
-          "/zh/15_java-db/20_多数据源支持.md",
-          "/zh/15_java-db/21_独立使用 ActiveRecord.md",
-          "/zh/15_java-db/22_调用存储过程.md",
-          "/zh/15_java-db/23.md",
-          "/zh/15_java-db/24.md",
-          "/zh/15_java-db/25.md",
-          "/zh/15_java-db/26.md",
-          "/zh/15_java-db/27.md",
-          "/zh/15_java-db/28.md",
-          "/zh/15_java-db/29.md",
-          "/zh/15_java-db/30.md",
-          "/zh/15_java-db/31.md",
-          "/zh/15_java-db/32.md",
-          "/zh/15_java-db/query-resources.md",
-          "/zh/15_java-db/row-presentation.md",
-          "/zh/15_java-db/33_支付回执与权益事务.md",
-          "/zh/15_java-db/34_商业库存与按量履约事务.md"
-        ],
-        "collapsible": true
+        "link": "https://java-db.io.nexus/"
       },
       {
         "text": "16 · api-table",
-        "children": [
-          "/zh/16_api-table/readme.md",
-          "/zh/16_api-table/01.md",
-          "/zh/16_api-table/02.md",
-          "/zh/16_api-table/03.md",
-          "/zh/16_api-table/04.md",
-          "/zh/16_api-table/05.md",
-          "/zh/16_api-table/06.md",
-          "/zh/16_api-table/07.md",
-          "/zh/16_api-table/08.md",
-          "/zh/16_api-table/09.md",
-          "/zh/16_api-table/10.md",
-          "/zh/16_api-table/11.md",
-          "/zh/16_api-table/12.md",
-          "/zh/16_api-table/13.md",
-          "/zh/16_api-table/14.md",
-          "/zh/16_api-table/15.md"
-        ],
-        "collapsible": true
+        "link": "https://api-table.io.nexus/"
       },
       {
         "text": "17 · MyBatis",
@@ -1007,25 +939,7 @@
     "children": [
       {
         "text": "59 · java-openai",
-        "children": [
-          "/zh/59_java-openai/readme.md",
-          "/zh/59_java-openai/01.md",
-          "/zh/59_java-openai/02.md",
-          "/zh/59_java-openai/03.md",
-          "/zh/59_java-openai/04.md",
-          "/zh/59_java-openai/05.md",
-          "/zh/59_java-openai/06.md",
-          "/zh/59_java-openai/07.md",
-          "/zh/59_java-openai/08.md",
-          "/zh/59_java-openai/09.md",
-          "/zh/59_java-openai/10.md",
-          "/zh/59_java-openai/11.md",
-          "/zh/59_java-openai/12.md",
-          "/zh/59_java-openai/13.md",
-          "/zh/59_java-openai/14.md",
-          "/zh/59_java-openai/unichat-owned-client.md"
-        ],
-        "collapsible": true
+        "link": "https://java-openai.io.nexus/"
       },
       {
         "text": "60 · AI Agent",

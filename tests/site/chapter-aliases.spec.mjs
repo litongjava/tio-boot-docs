@@ -7,12 +7,10 @@ test.afterAll(async () => { await site.close(); });
 test.beforeEach(() => { site.failPaths.clear(); });
 
 test('章节别名支持无尾斜杠、文章地址及查询参数和锚点', async ({ page }) => {
-  await page.goto(site.url + '/zh/java-openai?from=readme#文章');
-  await expect(page).toHaveURL(/\/zh\/59_java-openai\/\?from=readme#/);
-  await expect(page.locator('h1')).toContainText('java-openai');
-  await page.goto(site.url + '/zh/java-openai/01.html?from=readme#overview');
-  await expect(page).toHaveURL(/\/zh\/59_java-openai\/01.html\?from=readme#overview$/);
-  await expect(page.getByRole('heading', { name: '简介', exact: true })).toBeVisible();
+  await page.goto(site.url + '/zh/ai-agent?from=readme#文章');
+  await expect(page).toHaveURL(/\/zh\/60_ai-agent\/\?from=readme#/);
+  await page.goto(site.url + '/zh/ai-agent/01.html?from=readme#overview');
+  await expect(page).toHaveURL(/\/zh\/60_ai-agent\/01.html\?from=readme#overview$/);
   await page.goto(site.url + '/zh/tio/');
   await expect(page).toHaveURL(/\/zh\/34_tio\/$/);
   await expect(page.locator('.vp-sidebar')).toContainText('33 · AIO');

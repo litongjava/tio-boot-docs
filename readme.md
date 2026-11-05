@@ -13,6 +13,17 @@
 * 主站：https://tio-boot.com/
 * 备用地址：https://env-00jxgnx7m5of-static.normal.cloudstatic.cn/tio-boot-docs/
 
+## 独立文档站
+
+以下项目的文档已拆分到独立仓库，旧地址会重定向到新站点：
+
+| 项目 | 文档站 | 文档仓库 |
+| --- | --- | --- |
+| jfinal-aop | https://jfinal-aop.io.nexus/ | https://github.com/litongjava/jfinal-aop-docs |
+| java-db | https://java-db.io.nexus/ | https://github.com/litongjava/java-db-docs |
+| api-table | https://api-table.io.nexus/ | https://github.com/litongjava/api-table-docs |
+| java-openai | https://java-openai.io.nexus/ | https://github.com/litongjava/java-openai-docs |
+
 ## 本地开发
 
 ### 1. 切换 Node.js 版本

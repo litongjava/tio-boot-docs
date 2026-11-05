@@ -1,6 +1,6 @@
 # 60_ai-agent
 
-本章节介绍智能体应用的接口、数据库、会话、检索和业务编排。客户端 API 使用见 [java-openai](../59_java-openai/readme.md)。
+本章节介绍智能体应用的接口、数据库、会话、检索和业务编排。客户端 API 使用见 [java-openai](https://java-openai.io.nexus/)。
 
 ## 文章目录
 

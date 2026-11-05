@@ -1,5 +1,11 @@
 # 文档补全与维护记录
 
+## 2026-11-04：拆分 jfinal-aop、java-db、api-table、java-openai 文档
+
+- 第 09、15、16、59 章迁到独立仓库，发布到 `*.io.nexus`。这些编号保留不复用，登记在 `docs/.vuepress/config/external-chapters.json`，审计脚本按此跳过，现有章节地址不变。
+- 旧地址（含历史路径和章节别名）301 到新站点；正文链接、导航和侧边栏改为新地址。
+- `docs/zh/61_knowledge-base/34.md` 仍以 `/zh/15_java-db/01` 作为抓取入口的示例，它记录的是当时的实测结果，未改动。
+
 ## 2026-11-03：业务异常日志与连接属性
 
 - [全局异常处理器](./docs/zh/06_web/22.md)：新增“业务异常的日志级别”，`BusinessException`、`ParameterValidationException` 按 INFO 记录且不打印堆栈。
@@ -25,7 +31,7 @@
 - 新增 [大文件导出：零拷贝发送 Excel、Word、PDF、PPT](./docs/zh/06_web/49.md)：`Resps.excel/excelXls/docx/doc/pdf/pptx/ppt` 的 `File` 版本与 `Resps.download(response, file[, contentType], filename)`，文件不进堆内存、由传输层零拷贝发送；完整示例（EasyExcel 生成订单表、按 `type` 发送 PDF/Word/PPT 报告，handler/service 分层、`Aop` 获取 service、`RespBodyVo` 返回参数错误），运行后的响应头、发送过程、导出文件的存放与按时间清理、nginx 下的 `X-Accel-Buffering`。示例代码编译运行通过，curl 验证 xlsx 可用、PDF/Word/PPT 逐字节一致。
 - [Resps](./docs/zh/06_web/17.md)：`Content-Disposition` 改为同时写出 ASCII `filename` 与 UTF-8 `filename*`；新增「大文件：直接发送磁盘文件」一节；方法一览补 `attachmentDisposition`、`contentTypeOf`、`disableProxyBuffering`。
 - [零拷贝](./docs/zh/06_web/38.md)：自定义下载示例的 `DownloadHandler` 原先没有实现 `HttpRequestHandler`，无法传给 `router.get(...)`；改为实现接口并使用 `Resps.download`，编译运行通过。`HttpFileDataHandler` 一节补充 `X-Accel-Buffering: no` 与关闭开关。
-- [EasyExcel 导出](./docs/zh/16_api-table/08.md)：补充写入磁盘文件后用 `Resps.excel(response, file, filename)` 发送的写法。
+- [EasyExcel 导出](https://api-table.io.nexus/08.html)：补充写入磁盘文件后用 `Resps.excel(response, file, filename)` 发送的写法。
 - 同步章节目录页与站点侧边栏。新页面使用 `49.md`：`06_web/48.md` 已作为旧地址重定向到 `38.md`。审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未落入 `unlistedPages` 与短内容清单；`unlistedPages` 仍是既有的 6 条历史遗留，不在本次改动范围；`docs:check-ai` 通过。
 
 ## 2026-10-31：tio-boot-admin 的 RocketMQ 整合（不依赖 Spring）
@@ -55,12 +61,12 @@
 - 修正 [修改密码](./docs/zh/31_authentication/06.md) 中的 `AppUserService` 示例：原先写入的哈希为 `sha256(新密码 + 新密码)`，与登录校验的 `sha256(密码 + 盐)` 不一致，改密码后无法登录。示例改为调用 `setPassword`，盐与哈希一并更新，并给出 `createPasswordSalt`、`hashPassword`、`verifyPassword` 的完整实现与 import。
 - [阿里云短信登录和注册](./docs/zh/32_third-party-auth/05.md)：补充短信注册同时设置密码、手机号密码登录、与邮箱共用的哈希规则，以及邮箱验证码按 `purpose` 隔离和错误次数上限的写法。## 2026-10-10：布尔实体映射与短信事务
 
-- [通过实体类操作数据库](./docs/zh/15_java-db/25.md)：补充原生布尔值、数字零值、可空布尔字段及 SQL 计算字段的映射案例，更新表注解导入。
+- [通过实体类操作数据库](https://java-db.io.nexus/25.html)：补充原生布尔值、数字零值、可空布尔字段及 SQL 计算字段的映射案例，更新表注解导入。
 - [阿里云短信登录和注册](./docs/zh/32_third-party-auth/05.md)：补充独立手机号身份、验证码用途、原子消费、延迟回执和多实例限流的通用实践。
 
 ## 2026-10-07：java-openai 新增按业务档位选模型
 
-- 新增 [按业务档位选模型](./docs/zh/59_java-openai/07.md)：业务只表达档位意图（`fast` / `thinking` / `expert`），由一层映射翻译成「平台 + 模型」再交给 `UniChatRequest`，避免模型名散落到调用处。含各平台模型常量的引用方式（`ExchangetokenModels.CLAUDE_SONNET_5_5` / `CLAUDE_OPUS_5_5`、`DeepSeekModels.deepseek_flash`）、映射方法的完整实现（先判档位、显式 `model` 优先、档位为空回落快速档）、handler 里通过 `Aop` 调用映射，以及用一行日志回读请求实际命中的平台与模型。示例均带 import。
+- 新增 [按业务档位选模型](https://java-openai.io.nexus/07.html)：业务只表达档位意图（`fast` / `thinking` / `expert`），由一层映射翻译成「平台 + 模型」再交给 `UniChatRequest`，避免模型名散落到调用处。含各平台模型常量的引用方式（`ExchangetokenModels.CLAUDE_SONNET_5_5` / `CLAUDE_OPUS_5_5`、`DeepSeekModels.deepseek_flash`）、映射方法的完整实现（先判档位、显式 `model` 优先、档位为空回落快速档）、handler 里通过 `Aop` 调用映射，以及用一行日志回读请求实际命中的平台与模型。示例均带 import。
 - 章节导航与站点侧边栏同步：补登 `21.md`、`22.md`、`unichat-owned-client.md` 三页 —— 前两页原本就没登记在侧边栏里。
 - 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，新增页未落入短内容占位清单；`unlistedPages` 剩既有的 2 条历史遗留（`06_web/46.md`、`15_java-db/35_会员周期与独立增量池.md`），不在本次改动范围。
 
@@ -122,7 +128,7 @@
 - [Resps](./docs/zh/06_web/17.md) 从方法清单改写为能力说明：文本与数据响应、静态文件与错误页、二进制与下载、文档与图片导出四组，每组给出带 import 的示例与参数表，末尾补方法一览与使用要点。
 - 新增方法的文档化：`excel`、`excelXls`、`pdf`、`docx`、`doc`、`pptx`、`ppt`、`image`、`download`、`contentDisposition`，以及四个文档类型常量；同一页说明两件事的分工 —— 生成文件内容属于业务侧，`Resps` 只负责正文与响应头。
 - [文件下载](./docs/zh/06_web/10.md) 增补「用文档类型方法直接下载」一节，给出按类型一行返回的写法与中文文件名的编码行为。
-- [EasyExcel 导出](./docs/zh/16_api-table/08.md) 增补「写入器的统一行为」与「自己发送导出结果」两节：说明共用写入器的列宽、左对齐与转换器约定，显式声明表头的写法，以及一步到位发送与自行发送的差别。
+- [EasyExcel 导出](https://api-table.io.nexus/08.html) 增补「写入器的统一行为」与「自己发送导出结果」两节：说明共用写入器的列宽、左对齐与转换器约定，显式声明表头的写法，以及一步到位发送与自行发送的差别。
 
 ### 顺带修订的文档问题
 
@@ -461,7 +467,7 @@
 ## 2026-09-26：整理 java-openai、ai_agent、知识库和语音章节
 
 - 章节顺序调整为 java-openai、ai_agent、knowlege_base、voice-agent；同步目录、侧边栏、导航与历史页面跳转。
-- [java-openai](./docs/zh/59_java-openai/readme.md) 聚焦客户端使用：保留统一调用与多模态教程，迁入 Perplexity，拆出 Whisper 和 Supadata 调用说明，补充 Gitee、DeepSeek 与 Bailian 入口。
+- [java-openai](https://java-openai.io.nexus/) 聚焦客户端使用：保留统一调用与多模态教程，迁入 Perplexity，拆出 Whisper 和 Supadata 调用说明，补充 Gitee、DeepSeek 与 Bailian 入口。
 - [ai_agent](./docs/zh/60_ai-agent/readme.md) 接收请求记录、限流、RAG、结构化检索、问答与代码执行等应用文章；保留原有业务实现和历史材料。
 - [解析评测](./docs/zh/61_knowledge-base/28.md) 放在知识库解析方案与费用对比之后，保留样本、测量口径、七模型结果与局限。
 - 修正 Perplexity 示例的旧类名与异常处理；依赖示例改用项目管理的版本属性。
@@ -596,7 +602,7 @@
 - [真实 HTTP 测试](<./docs/zh/13_testing/02.md>) 与 [数据库隔离测试](<./docs/zh/13_testing/03.md>)。
 - [源码入口](<docs/zh/78_source-code/01.md>)、[启动与关闭](<docs/zh/78_source-code/03.md>)、[请求分发](<docs/zh/78_source-code/04.md>)。
 - [底层 HTTP 服务与 tio-boot 的边界](<docs/zh/35_tio-http-server/06.md>)。
-- [ApiTable 权限](<./docs/zh/16_api-table/10.md>) 与 [故障定位](<./docs/zh/16_api-table/11.md>)。
+- [ApiTable 权限](https://api-table.io.nexus/10.html) 与 [故障定位](https://api-table.io.nexus/11.html)。
 - 后台 [字段联动](<./docs/zh/74_tio-boot-admin/11.md>)、[Word](<./docs/zh/74_tio-boot-admin/12.md>)、[PDF](<./docs/zh/74_tio-boot-admin/13.md>) 管理：补充业务设计、SQL 和验收条件，不宣称已有转换/编辑服务。
 - 历史部署页增加替代入口，多图上传补配置引用并取消示例中的 DROP TABLE，修正 PostgreSQL 依赖 XML 和 SMTP 地址链接。
 
@@ -615,7 +621,7 @@
 | 页面 | 当前标题 |
 | --- | --- |
 | [docs/en/1 Quick Start/1.0 Quick Start.md](<./docs/en/1 Quick Start/1.0 Quick Start.md>) | Quick Start |
-| [docs/zh/16_api-table/06.md](<./docs/zh/16_api-table/06.md>) | 使用 api-table 连接 oracle |
+| [docs/zh/16_api-table/06.md](https://api-table.io.nexus/06.html) | 使用 api-table 连接 oracle |
 | [docs/zh/38_netty-boot/07.md](<./docs/zh/38_netty-boot/07.md>) | 整合 Dubbo |
 | [docs/zh/38_netty-boot/14.md](<./docs/zh/38_netty-boot/14.md>) | Reserve |
 | [docs/zh/69_tio-im/06.md](<./docs/zh/69_tio-im/06.md>) | 登录 |
@@ -657,7 +663,7 @@
 - tio-boot 和同 reactor HTTP 模块以 JDK 8 本地 install，tio-boot-admin 以 JDK 21 本地 install。已检查 jar 类文件版本：tio-boot 为 52，admin-base/web 为 65。
 - 新增方法路由、RouteMatch/metadata、doBeforeRoute、RequestIdentity；修正拦截器合并及请求上下文释放时机。9 项路由测试、5 项请求链测试、1 项 admin 组合测试实际执行通过。
 - 米旺迁移到方法路由、MiAuthInterceptor 与 DbPro；37 项测试通过，包含独立 PostgreSQL schema、JSONB、共享事务、真实 HTTP 方法/权限/HEAD/预检验证。服务在 8100 完成启动冒烟。
-- 新增 [方法路由与业务鉴权](<./docs/zh/74_tio-boot-admin/19.md>)、[Db PostgreSQL 实践](<./docs/zh/15_java-db/32.md>)，同步路由源码说明、入门与相关目录。
+- 新增 [方法路由与业务鉴权](<./docs/zh/74_tio-boot-admin/19.md>)、[Db PostgreSQL 实践](https://java-db.io.nexus/32.html)，同步路由源码说明、入门与相关目录。
 - docs:check：721 个 Markdown，本地链接缺失 0、导航缺失 0；既有 29 个短页候选仍单独记录。
 - docs:build：722 页面，272.26 秒成功。构建仍提示大 chunk 与 15.3 MB 搜索 worker 未预缓存。
 - 本轮未执行生产数据库初始化 SQL；本地 Maven install 不代表已发布 Maven Central。
@@ -689,7 +695,7 @@
 
 ## 2026-10-11：交换 token 的 Haiku 档位示例
 
-- 更新[按业务档位选模型](./docs/zh/59_java-openai/07.md)：新增 Haiku 模型常量，快速档示例使用 ExchangeToken 的 `claude-haiku-5-5`，保留思考档、专家档与显式模型选择。
+- 更新[按业务档位选模型](https://java-openai.io.nexus/07.html)：新增 Haiku 模型常量，快速档示例使用 ExchangeToken 的 `claude-haiku-5-5`，保留思考档、专家档与显式模型选择。
 - 补齐独立请求实体、服务分包与 import，提供将档位映射传入统一请求的完整示例。
 - 说明 Haiku 的 temperature 序列化兼容能力，并区分路由映射日志与实际调用记录。
 - 验证：三个完整 Java 示例编译通过，模型常量与参数兼容测试通过。文档审计未新增问题；仍有既有的 WebSocket 章节失效链接与未列入导航的页面，全站审计未通过。
@@ -698,7 +704,7 @@
 
 - 根据用户确认，《单容器远程桌面》文章已删除。在 [TCP 数据转发](./docs/zh/36_tio-websocket/03.md) 中直接删除指向该文章的整句引用，不保留删除说明，不创建或猜测替代页面。
 - 复验 `pnpm docs:check`：检查 831 篇 Markdown，本地失效链接、导航缺失及章节错误均为 0；仍有 4 篇既有页面未列入导航，检查退出码为 1。
-- 未列入导航的页面：[会员周期与独立增量池](./docs/zh/15_java-db/35_会员周期与独立增量池.md)、[嵌入式 FRP](./docs/zh/34_tio/34-embedded-frp.md)、[视频尺寸与布局](./docs/zh/68_java-kit-server/08-video-size-layout.md)、[PPT 下载](./docs/zh/68_java-kit-server/09-ppt-download.md)。
+- 未列入导航的页面：[会员周期与独立增量池](https://java-db.io.nexus/35_%E4%BC%9A%E5%91%98%E5%91%A8%E6%9C%9F%E4%B8%8E%E7%8B%AC%E7%AB%8B%E5%A2%9E%E9%87%8F%E6%B1%A0.html)、[嵌入式 FRP](./docs/zh/34_tio/34-embedded-frp.md)、[视频尺寸与布局](./docs/zh/68_java-kit-server/08-video-size-layout.md)、[PPT 下载](./docs/zh/68_java-kit-server/09-ppt-download.md)。
 - 另有 38 个既有短内容或占位页候选，仅作为提示，不是本次退出失败的原因。本次不修改这些页面或导航，保留维护记录已有内容。
 
 ## 2026-10-12：直接绑定 JSON 请求实体

@@ -41,11 +41,21 @@ assert(llms.includes('## zh/30_kafka'));
 assert(!llms.includes('## zh\n'));
 for(const m of llms.matchAll(/\]\((https?:\/\/[^)]+)\)/g))assert(fs.existsSync(local(m[1])),m[1]);
 const redirects=JSON.parse(read('ai/redirects.json'));
+const externalChapters=JSON.parse(fs.readFileSync('docs/.vuepress/config/external-chapters.json','utf8'));
 const pages=new Map(index.pages.map(p=>[p.source,p]));
 let redirectCount=0;
 for(const [from,to] of Object.entries(redirects)) {
-  assert(pages.has(to),to);
   const oldHtml=from.replace(/readme\.md$/i,'index.html').replace(/\.md$/,'.html');
+  const moved=/^zh\/([^/]+)\/(.*)$/.exec(to);
+  const externalBase=moved&&externalChapters[moved[1]];
+  if(externalBase) {
+    const html=read(oldHtml);
+    assert(html.includes('name="robots" content="noindex"'),oldHtml);
+    assert(html.includes(`${externalBase}/${encodeURI(moved[2].replace(/readme\.md$/i,'').replace(/\.md$/,'.html'))}`.replaceAll('&','&amp;')),oldHtml);
+    redirectCount++;
+    continue;
+  }
+  assert(pages.has(to),to);
   const newUrl=pages.get(to).url;
   if(('/'+oldHtml).toLowerCase()===decodeURIComponent(new URL(newUrl).pathname).replace(/\/$/,'/index.html').toLowerCase())continue;
   const html=read(oldHtml);
@@ -57,7 +67,7 @@ const redirectRules=read('_redirects').trim().split('\n');
 assert(redirectRules.includes('/zh/22_MQ/01.html /zh/29_mq/01.html 301') || redirectRules.includes('/zh/22_MQ/* /zh/29_mq/:splat 301'));
 assert(redirectRules.filter(rule=>!rule.includes('*')).length<=2000);
 assert(redirectRules.filter(rule=>rule.includes('*')).length<=100);
-assert(redirectRules.includes('/zh/java-openai /zh/59_java-openai/ 301'));
+assert(redirectRules.includes('/zh/java-openai https://java-openai.io.nexus/ 301'));
 assert(read('zh/java-openai/index.html').includes('location.search+location.hash'));
 assert(read('robots.txt').includes('Sitemap: https://tio-boot.com/sitemap.xml'));
 console.log(JSON.stringify({pages:index.pages.length,chunks:chunks.length,redirectPages:redirectCount,checks:'passed'},null,2));

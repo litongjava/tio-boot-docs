@@ -4,8 +4,8 @@ export default [
   {
     text: "Database",
     children: [
-      { text: "java-db", link: "/zh/15_java-db/01" },
-      { text: "api-table", link: "/zh/16_api-table/01" },
+      { text: "java-db", link: "https://java-db.io.nexus/01.html" },
+      { text: "api-table", link: "https://api-table.io.nexus/01.html" },
       { text: "jooq", link: "/zh/18_jooq/01" },
       { text: "mysql", link: "/zh/20_mysql/01" },
       { text: "postgresql", link: "/zh/19_postgresql/01" },
@@ -24,7 +24,7 @@ export default [
   {
     text: "实战项目",
     children: [
-      { text: "java-openai", link: "/zh/59_java-openai/01" },
+      { text: "java-openai", link: "https://java-openai.io.nexus/01.html" },
       { text: "ai_agent", link: "/zh/60_ai-agent/01" },
       { text: "knowlege_base", link: "/zh/61_knowledge-base/01" },
       { text: "voice-agent", link: "/zh/63_voice-agent/01" },

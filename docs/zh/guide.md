@@ -18,7 +18,7 @@
 - [06 · Web 开发](./06_web/readme.md)
 - [07 · 参数校验](./07_validation/readme.md)
 - [08 · WebSocket 应用开发](./08_websocket/readme.md)
-- [09 · AOP](./09_aop/readme.md)
+- [09 · AOP](https://jfinal-aop.io.nexus/)
 - [10 · 国际化](./10_i18n/readme.md)
 - [11 · Enjoy 模板](./11_enjoy/readme.md)
 - [12 · 定时任务](./12_scheduling/readme.md)
@@ -27,8 +27,8 @@
 
 ## 数据库与数据访问
 
-- [15 · java-db](./15_java-db/readme.md)
-- [16 · api-table](./16_api-table/readme.md)
+- [15 · java-db](https://java-db.io.nexus/)
+- [16 · api-table](https://api-table.io.nexus/)
 - [17 · MyBatis](./17_mybatis/readme.md)
 - [18 · jOOQ](./18_jooq/readme.md)
 - [19 · PostgreSQL](./19_postgresql/readme.md)
@@ -92,7 +92,7 @@
 
 ## AI 开发
 
-- [59 · java-openai](./59_java-openai/readme.md)
+- [59 · java-openai](https://java-openai.io.nexus/)
 - [60 · AI Agent](./60_ai-agent/readme.md)
 - [61 · 知识库](./61_knowledge-base/readme.md)
 - [62 · AI 搜索](./62_ai-search/readme.md)

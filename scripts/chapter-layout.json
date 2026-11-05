@@ -54,11 +54,6 @@
           "previous": "08_websocket"
         },
         {
-          "directory": "09_aop",
-          "title": "AOP",
-          "previous": "11_aop"
-        },
-        {
           "directory": "10_i18n",
           "title": "国际化",
           "previous": "14_i18n"
@@ -88,16 +83,6 @@
     {
       "title": "数据库与数据访问",
       "chapters": [
-        {
-          "directory": "15_java-db",
-          "title": "java-db",
-          "previous": "09_java-db"
-        },
-        {
-          "directory": "16_api-table",
-          "title": "api-table",
-          "previous": "10_api-table"
-        },
         {
           "directory": "17_mybatis",
           "title": "MyBatis",
@@ -343,11 +328,6 @@
     {
       "title": "AI 开发",
       "chapters": [
-        {
-          "directory": "59_java-openai",
-          "title": "java-openai",
-          "previous": "54_java-openai"
-        },
         {
           "directory": "60_ai-agent",
           "title": "AI Agent",
