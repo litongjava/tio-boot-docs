@@ -10,7 +10,7 @@ const local=url=>path.join(dest,decodeURIComponent(new URL(url).pathname).replac
 const hash=text=>createHash('sha256').update(text).digest('hex');
 const index=JSON.parse(read('ai/index.json'));
 assert.equal(index.schemaVersion,1);
-assert(index.pages.length>700);
+assert(index.pages.length>600);
 assert(!index.pages.some(p=>/^zh\/(?:69|77)_manim\//.test(p.source)));
 assert(!fs.existsSync(path.join(dest,'zh/69_manim')));
 assert(!fs.existsSync(path.join(dest,'zh/77_manim')));
@@ -41,11 +41,20 @@ assert(llms.includes('## zh/30_kafka'));
 assert(!llms.includes('## zh\n'));
 for(const m of llms.matchAll(/\]\((https?:\/\/[^)]+)\)/g))assert(fs.existsSync(local(m[1])),m[1]);
 const redirects=JSON.parse(read('ai/redirects.json'));
+const redirectRules0=read('_redirects').trim().split('\n');
 const externalChapters=JSON.parse(fs.readFileSync('docs/.vitepress/config/external-chapters.json','utf8'));
 const pages=new Map(index.pages.map(p=>[p.source,p]));
 let redirectCount=0;
+const externalPages=JSON.parse(fs.readFileSync('docs/.vitepress/config/external-pages.json','utf8'));
+for(const [source,target] of Object.entries(externalPages)) {
+  assert(!pages.has(source),source);
+  assert(read(source.replace(/\.md$/,'.html')).includes(target.replaceAll('&','&amp;')),source);
+  assert(redirectRules0.includes(`/${source.replace(/\.md$/,'.html')} ${target} 301`),source);
+  redirectCount++;
+}
 for(const [from,to] of Object.entries(redirects)) {
   const oldHtml=from.replace(/readme\.md$/i,'index.html').replace(/\.md$/,'.html');
+  if(to in externalPages){redirectCount++;continue;}
   const moved=/^zh\/([^/]+)\/(.*)$/.exec(to);
   const externalBase=moved&&externalChapters[moved[1]];
   if(externalBase) {

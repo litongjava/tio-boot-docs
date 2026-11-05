@@ -1231,9 +1231,10 @@
           "/zh/75_examples/08.md",
           "/zh/75_examples/09.md",
           "/zh/75_examples/10.md",
-          "/zh/75_examples/11.md",
-          "/zh/75_examples/12.md",
-          "/zh/75_examples/13.md"
+          {
+            "text": "面试题",
+            "link": "https://interview-questions.io.nexus/"
+          }
         ],
         "collapsible": true
       }

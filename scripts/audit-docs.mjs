@@ -45,7 +45,8 @@ function visit(value) {
 visit(sidebar)
 const legacyPaths = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/legacy-paths.json'), 'utf8'))
 const externalChapters = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/external-chapters.json'), 'utf8'))
-const isExternalTarget = target => Object.keys(externalChapters).some(chapter => target.startsWith(`zh/${chapter}/`))
+const externalPages = JSON.parse(fs.readFileSync(path.join(docs, '.vitepress/config/external-pages.json'), 'utf8'))
+const isExternalTarget = target => target in externalPages || Object.keys(externalChapters).some(chapter => target.startsWith(`zh/${chapter}/`))
 for (const [from, target] of Object.entries(legacyPaths)) {
   if (!isExternalTarget(target) && !fs.existsSync(path.join(docs, target.replace(/readme\.md$/i, 'index.md')))) missingNavigation.push({ redirect: from, target })
 }

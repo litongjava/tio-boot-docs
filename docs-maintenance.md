@@ -1,5 +1,9 @@
 # 文档补全与维护记录
 
+## 2026-11-04：拆分面试题
+
+- `75_examples/11`、`12`、`13` 迁到独立仓库 interview-questions，发布到 `interview-questions.io.nexus`，登记在 `docs/.vitepress/config/external-pages.json`，旧地址 301 到新站点。
+
 ## 2026-11-04：网关的熔断和降级
 
 - `79_cloud/05.md` 增加熔断配置和 `TioBootGateway.setFallback`，与 tio-boot-cloud 的新功能对应。

@@ -1,6 +1,6 @@
 # 75_examples
 
-本目录包含 14 个文件和 0 个子目录，下列摘要基于文件名、一级标题或资源类型整理。
+本目录包含 11 个文件和 0 个子目录，下列摘要基于文件名、一级标题或资源类型整理。
 
 ## 文件清单
 
@@ -15,6 +15,5 @@
 - [08.md](<./08.md>): 文档《tio-boot 案例 - 定时任务 监控 PostgreSQL、Redis 和 Elasticsearch》。
 - [09.md](<./09.md>): 文档《Tio-Boot 案例：使用 SQLite 整合到登录注册系统》。
 - [10.md](<./10.md>): 文档《tio-boot 案例 - 执行 shell 命令》。
-- [11.md](<./11.md>): Markdown 文档。
-- [12.md](<./12.md>): Markdown 文档。
-- [13.md](<./13.md>): Markdown 文档。
+
+面试题已移到独立站点：[Interview Questions](https://interview-questions.io.nexus/)。

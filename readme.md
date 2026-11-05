@@ -25,6 +25,7 @@
 | java-openai | https://java-openai.io.nexus/ | https://github.com/litongjava/java-openai-docs |
 | Telegram Bot | https://telegram-bot.io.nexus/ | https://github.com/litongjava/telegram-bot-docs |
 | deepseek-browser-use | https://deepseek-browser-use.io.nexus/ | https://github.com/litongjava/deepseek-browser-use-docs |
+| 面试题 | https://interview-questions.io.nexus/ | https://github.com/litongjava/interview-questions |
 
 ## 本地开发
 

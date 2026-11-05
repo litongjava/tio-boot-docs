@@ -47,6 +47,10 @@ export async function generateLegacyRedirects({ configDir, outDir, sources, host
   const externalChapters = JSON.parse(await readFile(join(configDir, 'external-chapters.json'), 'utf8'));
   const pathOf = source => '/' + source.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '.html');
   const pages = new Map(sources.map(source => [source, pathOf(source)]));
+  // Single pages moved to their own sites. Older aliases keep pointing at the old path, which then
+  // redirects, so directory-wide wildcard rules stay intact.
+  const externalPages = JSON.parse(await readFile(join(configDir, 'external-pages.json'), 'utf8'));
+  for (const source of Object.keys(externalPages)) pages.set(source, pathOf(source));
   const occupied = new Set([...pages.values()].map(p => normalized(p).toLowerCase()));
   // Chapters moved to their own sites keep their old addresses through absolute redirects.
   const externalTarget = source => {
@@ -72,6 +76,14 @@ export async function generateLegacyRedirects({ configDir, outDir, sources, host
     await mkdir(dirname(output), { recursive: true });
     const safeTarget = JSON.stringify(target).replaceAll('<', '\\u003c');
     await writeFile(output, `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${escapeHtml(targetUrl)}"><meta http-equiv="refresh" content="0;url=${escapeHtml(target)}"><title>文档入口</title></head><body><a href="${escapeHtml(target)}">前往文档</a><script>location.replace(${safeTarget}+location.search+location.hash)</script></body></html>`);
+  }
+  for (const [source, target] of Object.entries(externalPages)) {
+    const oldPath = pathOf(source);
+    entries.push([oldPath, target]);
+    const output = join(outDir, oldPath.slice(1));
+    await mkdir(dirname(output), { recursive: true });
+    const safeTarget = JSON.stringify(target).replaceAll('<', '\\u003c');
+    await writeFile(output, `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${escapeHtml(target)}"><meta http-equiv="refresh" content="0;url=${escapeHtml(target)}"><title>文档入口</title></head><body><a href="${escapeHtml(target)}">前往文档</a><script>location.replace(${safeTarget}+location.search+location.hash)</script></body></html>`);
   }
   const rules = buildRedirectRules(entries, occupied);
   await writeFile(join(outDir, '_redirects'), rules.join('\n') + '\n');
