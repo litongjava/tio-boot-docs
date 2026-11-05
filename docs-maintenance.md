@@ -1,5 +1,9 @@
 # 文档补全与维护记录
 
+## 2026-11-04：拆分 Telegram 机器人文档
+
+- 第 47、48 章合并到独立仓库 telegram-bot-docs，发布到 `telegram-bot.io.nexus`，旧地址 301 到新站点对应子目录。编号保留不复用。
+
 ## 2026-11-04：拆分 jfinal-aop、java-db、api-table、java-openai 文档
 
 - 第 09、15、16、59 章迁到独立仓库，发布到 `*.io.nexus`。这些编号保留不复用，登记在 `docs/.vuepress/config/external-chapters.json`，审计脚本按此跳过，现有章节地址不变。
@@ -630,8 +634,8 @@
 | [docs/zh/41_groovy/02.md](<./docs/zh/41_groovy/02.md>) | 调试常用脚本 |
 | [docs/zh/21_oceanbase/05.md](<./docs/zh/21_oceanbase/05.md>) | 待定 |
 | [docs/zh/53_media/03.md](<./docs/zh/53_media/03.md>) | 待定 |
-| [docs/zh/47_telegram4j/13.md](<./docs/zh/47_telegram4j/13.md>) | 处理回调查询 |
-| [docs/zh/47_telegram4j/20.md](<./docs/zh/47_telegram4j/20.md>) | Telegram-Bot-Utils 使用指南 |
+| [docs/zh/47_telegram4j/13.md](https://telegram-bot.io.nexus/telegram4j/13.html) | 处理回调查询 |
+| [docs/zh/47_telegram4j/20.md](https://telegram-bot.io.nexus/telegram4j/20.html) | Telegram-Bot-Utils 使用指南 |
 | [docs/zh/60_ai-agent/28.md](<./docs/zh/60_ai-agent/28.md>) | 待定 |
 | [docs/zh/63_voice-agent/06.md](<./docs/zh/63_voice-agent/06.md>) | eleven labs |
 | [docs/zh/60_ai-agent/09.md](<./docs/zh/60_ai-agent/09.md>) | 翻译 |

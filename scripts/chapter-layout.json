@@ -254,16 +254,6 @@
           "previous": "44_quarkus"
         },
         {
-          "directory": "47_telegram4j",
-          "title": "Telegram4J",
-          "previous": "52_telegram4j"
-        },
-        {
-          "directory": "48_telegram-bots",
-          "title": "Telegram Bots",
-          "previous": "53_telegram-bots"
-        },
-        {
           "directory": "49_file-storage",
           "title": "文件存储",
           "previous": "64_文件存储"

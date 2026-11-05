@@ -42,8 +42,6 @@
   "spring": "44_spring",
   "spring-cloud": "45_spring-cloud",
   "quarkus": "46_quarkus",
-  "telegram4j": "47_telegram4j",
-  "telegram-bots": "48_telegram-bots",
   "file-storage": "49_file-storage",
   "payment": "50_payment",
   "firebase": "51_firebase",

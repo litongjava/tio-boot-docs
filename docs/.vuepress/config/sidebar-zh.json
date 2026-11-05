@@ -765,38 +765,11 @@
       },
       {
         "text": "47 · Telegram4J",
-        "children": [
-          "/zh/47_telegram4j/readme.md",
-          "/zh/47_telegram4j/01.md",
-          "/zh/47_telegram4j/02.md",
-          "/zh/47_telegram4j/03.md",
-          "/zh/47_telegram4j/04.md",
-          "/zh/47_telegram4j/05.md",
-          "/zh/47_telegram4j/06.md",
-          "/zh/47_telegram4j/07.md",
-          "/zh/47_telegram4j/08.md",
-          "/zh/47_telegram4j/09.md",
-          "/zh/47_telegram4j/10.md",
-          "/zh/47_telegram4j/11.md",
-          "/zh/47_telegram4j/12.md",
-          "/zh/47_telegram4j/13.md",
-          "/zh/47_telegram4j/14.md",
-          "/zh/47_telegram4j/16.md",
-          "/zh/47_telegram4j/17.md",
-          "/zh/47_telegram4j/18.md",
-          "/zh/47_telegram4j/19.md",
-          "/zh/47_telegram4j/20.md"
-        ],
-        "collapsible": true
+        "link": "https://telegram-bot.io.nexus/telegram4j/"
       },
       {
         "text": "48 · Telegram Bots",
-        "children": [
-          "/zh/48_telegram-bots/readme.md",
-          "/zh/48_telegram-bots/01.md",
-          "/zh/48_telegram-bots/02.md"
-        ],
-        "collapsible": true
+        "link": "https://telegram-bot.io.nexus/telegram-bots/"
       },
       {
         "text": "49 · 文件存储",

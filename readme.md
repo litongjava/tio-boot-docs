@@ -23,6 +23,7 @@
 | java-db | https://java-db.io.nexus/ | https://github.com/litongjava/java-db-docs |
 | api-table | https://api-table.io.nexus/ | https://github.com/litongjava/api-table-docs |
 | java-openai | https://java-openai.io.nexus/ | https://github.com/litongjava/java-openai-docs |
+| Telegram Bot | https://telegram-bot.io.nexus/ | https://github.com/litongjava/telegram-bot-docs |
 
 ## 本地开发
 

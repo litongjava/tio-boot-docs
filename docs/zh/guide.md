@@ -71,8 +71,8 @@
 - [44 · Spring](./44_spring/readme.md)
 - [45 · Spring Cloud](./45_spring-cloud/readme.md)
 - [46 · Quarkus](./46_quarkus/readme.md)
-- [47 · Telegram4J](./47_telegram4j/readme.md)
-- [48 · Telegram Bots](./48_telegram-bots/readme.md)
+- [47 · Telegram4J](https://telegram-bot.io.nexus/telegram4j/)
+- [48 · Telegram Bots](https://telegram-bot.io.nexus/telegram-bots/)
 - [49 · 文件存储](./49_file-storage/readme.md)
 - [50 · 支付](./50_payment/readme.md)
 
