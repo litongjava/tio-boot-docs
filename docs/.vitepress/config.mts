@@ -30,6 +30,33 @@ const toSidebar = (items: any[]): any[] => items.map((item) => {
   if (item.children) return { text: item.text, collapsed: true, items: toSidebar(item.children) };
   return { text: item.text, link: item.link };
 });
+// Each page renders its sidebar into the HTML, so a page only carries its own
+// chapter plus one link per chapter instead of every page on the site.
+const firstPage = (items: any[]): string => {
+  for (const item of items) {
+    if (typeof item === "string") return pathOf(sourceOf(item));
+    if (item.link) return item.link;
+    if (item.children) return firstPage(item.children);
+  }
+  return "/zh/";
+};
+const allChapters = sidebarSource.map((group: any) => ({
+  text: group.text,
+  collapsed: true,
+  items: group.children.map((chapter: any) => ({ text: chapter.text, link: chapter.link || firstPage(chapter.children) })),
+}));
+const buildSidebar = () => {
+  const sidebar: Record<string, any[]> = { "/zh/": allChapters };
+  for (const group of sidebarSource as any[]) for (const chapter of group.children) {
+    if (!chapter.children) continue;
+    const name = chapter.children.find((c: any) => typeof c === "string")?.match(/^\/zh\/([^/]+)\//)?.[1];
+    if (name) sidebar[`/zh/${name}/`] = [
+      { text: chapter.text, items: toSidebar(chapter.children) },
+      { text: "全部章节", collapsed: true, items: allChapters },
+    ];
+  }
+  return sidebar;
+};
 const toNav = (items: any[]): any[] => items.map((item) => {
   if (item === "/") return { text: "首页", link: "/" };
   if (typeof item === "string") return { text: item.replace(/^\//, "").replace(/^./, (c) => c.toUpperCase()), link: item + ".html" };
@@ -102,7 +129,7 @@ export default defineConfig({
     logo: "/logo.png",
     footer: { message: "MIT Licensed", copyright: "Copyright © 2023-present litongjava" },
     nav: toNav(navbar),
-    sidebar: { "/zh/": toSidebar(sidebarSource) },
+    sidebar: buildSidebar(),
     socialLinks: [{ icon: "github", link: "https://github.com/litongjava/tio-boot" }],
     editLink: { pattern: "https://github.com/litongjava/tio-boot-docs/edit/main/docs/:path", text: "编辑此页" },
     outline: { level: [2, 3], label: "本页目录" },
