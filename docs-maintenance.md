@@ -1,5 +1,9 @@
 # 文档补全与维护记录
 
+## 2026-11-04：网关的熔断和降级
+
+- `79_cloud/05.md` 增加熔断配置和 `TioBootGateway.setFallback`，与 tio-boot-cloud 的新功能对应。
+
 ## 2026-11-04：拆分 Telegram 机器人文档
 
 - 第 47、48 章合并到独立仓库 telegram-bot-docs，发布到 `telegram-bot.io.nexus`，旧地址 301 到新站点对应子目录。编号保留不复用。
