@@ -3,6 +3,7 @@
 ## 2026-11-04：拆分 Telegram 机器人文档
 
 - 第 47、48 章合并到独立仓库 telegram-bot-docs，发布到 `telegram-bot.io.nexus`，旧地址 301 到新站点对应子目录。编号保留不复用。
+- 第 65 章迁到独立仓库 deepseek-browser-use-docs，发布到 `deepseek-browser-use.io.nexus`，旧地址 301 到新站点。编号保留不复用。
 
 ## 2026-11-04：拆分 jfinal-aop、java-db、api-table、java-openai 文档
 
@@ -76,18 +77,18 @@
 
 ## 2026-10-07：AI Browser 客户端换成 Go 版 `dsb`，新增多目标与后端管理
 
-- 新增 [dsb 客户端：Go 版本、多目标与后端服务管理](./docs/zh/65_ai-browser/37.md)：为什么把命令行客户端从 Python 换成 Go（少一层运行时依赖、服务没起时自动拉起、去掉脱敏）；安装与目录结构；子命令清单；连别的主机与同机多端口（`--host`/`--port`/`--use`，地址优先级表，具名目标 `server target add|list|remove`，以及「远端目标不自动拉起」这条约束）；`dsb server init/build/start/stop/restart/status/logs` 与 jar 候选优先级（`releases/<commit>` > `target` > `dist`，`status` 会列出全部候选并用 ★ 标出选中的那份）；`server build` 的等价 mvn 命令与 `-Ddriver.platform` 为何不能省；启动参数里 `-Djdk.net.unixdomain.tmpdir` 为什么必须给（不给会在 Windows 上 `Invalid argument: connect`）；以及第 7 节解释**为什么客户端自己实现 JSON 值层**（不是后端的 JSON 不标准，而是 `encoding/json` 面向 `map` 会丢掉键序、把雪花号 jobId 过成 `float64`、且缩进不可控）。同步目录页与站点侧边栏，并登记到「按问题查阅」。
-- [客户端：dsb 命令行、Python 与 PowerShell](./docs/zh/65_ai-browser/03_client.md)：页面开头加显著提示 —— 当前工程的入口是 Go 版 `dsb`，本章的 `client/dsb.py` 与两个包装脚本已删除；本章保留的是协议与参数语义（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），示例里的 `python client/dsb.py` 换成 `dsb` 即可。入口表里两行标注「已删除」。
-- [安装、启动与健康检查](./docs/zh/65_ai-browser/02.md)：环境准备里的「使用 dsb 需要 Python 3」改为「不需要 Python 或其他运行时，它是静态二进制」。
+- 新增 [dsb 客户端：Go 版本、多目标与后端服务管理](https://deepseek-browser-use.io.nexus/37.html)：为什么把命令行客户端从 Python 换成 Go（少一层运行时依赖、服务没起时自动拉起、去掉脱敏）；安装与目录结构；子命令清单；连别的主机与同机多端口（`--host`/`--port`/`--use`，地址优先级表，具名目标 `server target add|list|remove`，以及「远端目标不自动拉起」这条约束）；`dsb server init/build/start/stop/restart/status/logs` 与 jar 候选优先级（`releases/<commit>` > `target` > `dist`，`status` 会列出全部候选并用 ★ 标出选中的那份）；`server build` 的等价 mvn 命令与 `-Ddriver.platform` 为何不能省；启动参数里 `-Djdk.net.unixdomain.tmpdir` 为什么必须给（不给会在 Windows 上 `Invalid argument: connect`）；以及第 7 节解释**为什么客户端自己实现 JSON 值层**（不是后端的 JSON 不标准，而是 `encoding/json` 面向 `map` 会丢掉键序、把雪花号 jobId 过成 `float64`、且缩进不可控）。同步目录页与站点侧边栏，并登记到「按问题查阅」。
+- [客户端：dsb 命令行、Python 与 PowerShell](https://deepseek-browser-use.io.nexus/03_client.html)：页面开头加显著提示 —— 当前工程的入口是 Go 版 `dsb`，本章的 `client/dsb.py` 与两个包装脚本已删除；本章保留的是协议与参数语义（`-p k=v`、`--params @文件`、`--select`、`--out`/`--grep`、退出码、留档格式），示例里的 `python client/dsb.py` 换成 `dsb` 即可。入口表里两行标注「已删除」。
+- [安装、启动与健康检查](https://deepseek-browser-use.io.nexus/02.html)：环境准备里的「使用 dsb 需要 Python 3」改为「不需要 Python 或其他运行时，它是静态二进制」。
 - 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，本次新增页已登记到导航；`unlistedPages` 仍是既有的 4 条历史遗留（`06_web/46.md`、`15_java-db/35_会员周期与独立增量池.md`、`59_java-openai/09.md`、`59_java-openai/unichat-owned-client.md`），不在本次改动范围。
 
 ## 2026-10-06：AI Browser 文档同步「页面正在导航与主 Frame 缺失」
 
-- [执行链与异常处理](./docs/zh/65_ai-browser/14.md)：重写内嵌的 `ActionService` 实现以对齐当前源码 —— 补 `execute → runBounded → run` 的实际分层、`TrackedArgs`/`retryBudget`/`attachUnknownParams`，判伪故障改用原始异常文本，并新增 `PAGE_NAVIGATING` 分支。
-- [统一命令接口与错误码](./docs/zh/65_ai-browser/04.md)：错误码表补 `PAGE_NAVIGATING` 的新成因（主 frame 为 null）与「只读自动重试、动作仍不确定」的分工，说明新增回执字段 `pageNavigatingRetry`；`ACTION_UNCERTAIN` 注明导航类异常已不再落到它。
-- [页面状态与元素读取](./docs/zh/65_ai-browser/19.md)、[DOM 与跨 Frame 索引](./docs/zh/65_ai-browser/16.md)、[等待与重试边界](./docs/zh/65_ai-browser/21.md)：分别补主 frame 为 null 时的快照行为、`frameTree` 的哨兵式保护，以及导航类自动重试与 `pageNavigatingRetry` / `spuriousRetry` 的区分。
-- [安装、启动与健康检查](./docs/zh/65_ai-browser/02.md)：健康检查示例由 curl 改为 `dsb` 客户端调用。
-- 新增 [页面正在导航与主 Frame 缺失](./docs/zh/65_ai-browser/36.md)：症状（`Frame.childFrames() … is null`、`Index 0 out of bounds for length 0`）、成因、服务端分类与自动重试、SSO 重定向循环排查（阿里云账单控制台 `billing-cost` 主机名案例），以及 frame 枚举失效时用坐标点击 + 元素截图 + OCR 操作跨域 iframe 的绕行；同步目录页与站点侧边栏。
+- [执行链与异常处理](https://deepseek-browser-use.io.nexus/14.html)：重写内嵌的 `ActionService` 实现以对齐当前源码 —— 补 `execute → runBounded → run` 的实际分层、`TrackedArgs`/`retryBudget`/`attachUnknownParams`，判伪故障改用原始异常文本，并新增 `PAGE_NAVIGATING` 分支。
+- [统一命令接口与错误码](https://deepseek-browser-use.io.nexus/04.html)：错误码表补 `PAGE_NAVIGATING` 的新成因（主 frame 为 null）与「只读自动重试、动作仍不确定」的分工，说明新增回执字段 `pageNavigatingRetry`；`ACTION_UNCERTAIN` 注明导航类异常已不再落到它。
+- [页面状态与元素读取](https://deepseek-browser-use.io.nexus/19.html)、[DOM 与跨 Frame 索引](https://deepseek-browser-use.io.nexus/16.html)、[等待与重试边界](https://deepseek-browser-use.io.nexus/21.html)：分别补主 frame 为 null 时的快照行为、`frameTree` 的哨兵式保护，以及导航类自动重试与 `pageNavigatingRetry` / `spuriousRetry` 的区分。
+- [安装、启动与健康检查](https://deepseek-browser-use.io.nexus/02.html)：健康检查示例由 curl 改为 `dsb` 客户端调用。
+- 新增 [页面正在导航与主 Frame 缺失](https://deepseek-browser-use.io.nexus/36.html)：症状（`Frame.childFrames() … is null`、`Index 0 out of bounds for length 0`）、成因、服务端分类与自动重试、SSO 重定向循环排查（阿里云账单控制台 `billing-cost` 主机名案例），以及 frame 枚举失效时用坐标点击 + 元素截图 + OCR 操作跨域 iframe 的绕行；同步目录页与站点侧边栏。
 - 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0，本次新增页已登记；`unlistedPages` 仍有 3 条历史遗留（`15_java-db/35_会员周期与独立增量池.md`、`59_java-openai/09.md`、`59_java-openai/unichat-owned-client.md`），不在本次改动范围。`placeholders` 为既有的短页清单。
 
 ## 2026-10-04：补充 getBearerToken()
@@ -195,8 +196,8 @@
 ## 2026-09-30：IO 生命周期与浏览器网络记录
 
 - 补充连接接入、连续读取、发送完成和资源回收的设计说明。
-- [请求响应关联与线程约束](./docs/zh/65_ai-browser/28.md)介绍 requestId 精确关联、下载完成后的正文缓存、容量约定及相关回执字段。
-- 更新[网络记录](./docs/zh/65_ai-browser/24.md)与[Playwright 整合](./docs/zh/42_crawling/07.md)，说明浏览器对象、页面与调用线程之间的关系。
+- [请求响应关联与线程约束](https://deepseek-browser-use.io.nexus/28.html)介绍 requestId 精确关联、下载完成后的正文缓存、容量约定及相关回执字段。
+- 更新[网络记录](https://deepseek-browser-use.io.nexus/24.html)与[Playwright 整合](./docs/zh/42_crawling/07.md)，说明浏览器对象、页面与调用线程之间的关系。
 
 ## 2026-09-30（第二轮）：读取侧补齐、OCR 后端可插拔、失败回执带上地址
 
@@ -240,11 +241,11 @@
 
 ### 已补全
 
-- [正文提取与上层结构化处理](./docs/zh/65_ai-browser/17.md)：新增「先找表」「只想找一行」「图就是数据」三节，含 `listTables`、`TextSearch.find`、`download_image` 取值链的当前源码，以及落盘路径那个坑的成因；「什么时候使用页面状态」改成六条。
-- [命令清单](./docs/zh/65_ai-browser/13.md)：新增三条命令，「页面读取与差异」由 6 改为 9；方法计数 117 → 120（13、04、14、26、27 同步）。
-- [Windows OCR](./docs/zh/65_ai-browser/11.md)：补第 6 节「外部命令后端」（配置、三个占位符、双引号要求、空输出与超时怎么报、为什么不静默退回），开头与排查表同步改写；明确「有 DOM 文本就别 OCR」的**例外**是内容本身就是图片。
-- [配置项与运维自省](./docs/zh/65_ai-browser/12.md)：新增「正文与 Markdown 提取」「读图与 OCR」两张配置表。
-- [站点配方、技能与异步作业](./docs/zh/65_ai-browser/10.md)：配方表补 `gov-site-search`；新增「站点技能」一节说明技能目录与「单反引号＝命令名」的构建期约定。
+- [正文提取与上层结构化处理](https://deepseek-browser-use.io.nexus/17.html)：新增「先找表」「只想找一行」「图就是数据」三节，含 `listTables`、`TextSearch.find`、`download_image` 取值链的当前源码，以及落盘路径那个坑的成因；「什么时候使用页面状态」改成六条。
+- [命令清单](https://deepseek-browser-use.io.nexus/13.html)：新增三条命令，「页面读取与差异」由 6 改为 9；方法计数 117 → 120（13、04、14、26、27 同步）。
+- [Windows OCR](https://deepseek-browser-use.io.nexus/11.html)：补第 6 节「外部命令后端」（配置、三个占位符、双引号要求、空输出与超时怎么报、为什么不静默退回），开头与排查表同步改写；明确「有 DOM 文本就别 OCR」的**例外**是内容本身就是图片。
+- [配置项与运维自省](https://deepseek-browser-use.io.nexus/12.html)：新增「正文与 Markdown 提取」「读图与 OCR」两张配置表。
+- [站点配方、技能与异步作业](https://deepseek-browser-use.io.nexus/10.html)：配方表补 `gov-site-search`；新增「站点技能」一节说明技能目录与「单反引号＝命令名」的构建期约定。
 - 浏览器工程侧同样同步了技能文档（主技能的命令表、症状表与计数，`references/commands.md`、`references/reading-pages.md`、`references/client.md`），由工程内的技能文档一致性测试把关。
 - **新增配方** `gov-site-search`：国产政府站站内检索的完整动作序列（填高级搜索表单 → 点搜索 → 等稳定 → 读结果），参数化关键词、匹配方式、日期区间与每页条数。
 - **新增站点技能** `cn-gov-site-search`：把这轮踩过的坑固化成手册 —— 检索参数为什么必须走表单（**直接拼 URL 会静默返回 0 条**，它不报错）、匹配方式默认档会把无关结果混进来、征地类信息的栏目地图、批准文件与公告的文号不能混用、县级公告常常没有文号、中文形近字（实测「褚庙乡」被印成「禇庙乡」，按常用字检索整段漏掉），以及站上确实没有时怎么转依申请公开。
@@ -282,10 +283,10 @@
 
 ### 已补全
 
-- [正文提取与上层结构化处理](./docs/zh/65_ai-browser/17.md)：开篇改为两条命令的分工；新增「转成 Markdown」整节 —— 参数表、返回字段表、GFM 输出样例、四处边界（读的是 DOM 不是像素、不自动展开折叠内容也不拼接所有 frame、判据是 `truncated` 不是「看起来到结尾了」、选择器没命中会失败而不是静默返回空），并附 `extract_markdown`、`extractMarkdown`、`HtmlMarkdown` 三段当前源码与三处取舍的理由（为什么先过一遍 jsoup、高亮层为什么必须真的删掉、转换器为什么每次新建）。
-- [DOM、页面状态与元素读取](./docs/zh/65_ai-browser/19.md)：命令到服务的映射表补 `extract_markdown` 一行；逐命令源码新增 `extract_markdown` 小节（注册 + 服务实现 + `HtmlMarkdown`）；**改正一段过时结论** —— 原文写「旧的『把网页转 Markdown 再请求大模型』属于另一种设计，不是当前执行链」，现在转换已是注册命令，改为如实说明两条命令只差「纯文本 / Markdown」。
-- [命令清单](./docs/zh/65_ai-browser/13.md)：新增 `extract_markdown`，「页面读取与差异」由 5 改为 6，并在「按场景查方法」补一行「要读页面上的表格（数字别配错列）」。
-- 方法计数由 116 改为 117：13、14、04、26、27 各处的表述与计数同步；[本章索引](./docs/zh/65_ai-browser/readme.md)「按问题查阅」补一行指向正文提取。
+- [正文提取与上层结构化处理](https://deepseek-browser-use.io.nexus/17.html)：开篇改为两条命令的分工；新增「转成 Markdown」整节 —— 参数表、返回字段表、GFM 输出样例、四处边界（读的是 DOM 不是像素、不自动展开折叠内容也不拼接所有 frame、判据是 `truncated` 不是「看起来到结尾了」、选择器没命中会失败而不是静默返回空），并附 `extract_markdown`、`extractMarkdown`、`HtmlMarkdown` 三段当前源码与三处取舍的理由（为什么先过一遍 jsoup、高亮层为什么必须真的删掉、转换器为什么每次新建）。
+- [DOM、页面状态与元素读取](https://deepseek-browser-use.io.nexus/19.html)：命令到服务的映射表补 `extract_markdown` 一行；逐命令源码新增 `extract_markdown` 小节（注册 + 服务实现 + `HtmlMarkdown`）；**改正一段过时结论** —— 原文写「旧的『把网页转 Markdown 再请求大模型』属于另一种设计，不是当前执行链」，现在转换已是注册命令，改为如实说明两条命令只差「纯文本 / Markdown」。
+- [命令清单](https://deepseek-browser-use.io.nexus/13.html)：新增 `extract_markdown`，「页面读取与差异」由 5 改为 6，并在「按场景查方法」补一行「要读页面上的表格（数字别配错列）」。
+- 方法计数由 116 改为 117：13、14、04、26、27 各处的表述与计数同步；[本章索引](https://deepseek-browser-use.io.nexus/)「按问题查阅」补一行指向正文提取。
 - 浏览器工程侧技能文档同步（主技能文档的命令表、症状表、命令计数，以及 `references/commands.md` 与 `references/reading-pages.md` 的参数手册与「表格为什么读出来会散架」一节）；这三处由工程内的技能文档一致性测试把关，漏一处构建期就会失败。
 
 ### 验证范围
@@ -339,10 +340,10 @@
 
 ### 已补全
 
-- [源码教程：Chrome 走 CDP 与 CDP 客户端](./docs/zh/65_ai-browser/27.md)（**新增页**）：为什么本机 Chrome 走 CDP、启动链路（含从 stderr 读调试地址与「拒绝」和「提前退出」的区分）、独立客户端的类型分层与「为什么自己写」、三个关键机制（id 配对 / 按 target 分会话与跨域 iframe / 失败分型里「超时不能当成没生效」）、创建期参数怎么补（含**权限名不是 Playwright 那一套**这个静默坑，以及自动挂载必须放行）、回执新增字段、profile 为什么不再按端口派生、排障（退出码 21 与「没有输出」的真实原因、9222 的由来与害处、`set_credentials` 不可用）、自测怎么自证。
-- [浏览器、profile 与登录态](./docs/zh/65_ai-browser/05.md)：`start` 的浏览器表新增「启动方式」一列并写明 CDP 与持久化上下文的分工；第三节由「默认按端口分开」重写为两节（本机 Chrome 固定 `shared-default` / 其余按端口派生），并写清从旧目录切过来**登录态不会跟着走**；第四节由「用用户自己那份 Chrome profile（CDP 模式）」重写为「换一份 profile」，说明该开关只管「用哪份 profile」、不管「走哪条路」；回执字段表补 `cdp` 并更新 `note`、`mode` 说明；第六节补调试端口不要用 9222 的提示。
-- [配置项与运维自省](./docs/zh/65_ai-browser/12.md)：新增 `browser.chrome.cdpProfileDir` 与 `browser.chrome.debugPort` 两行，`browser.profileDir` / `perPort` 两行标明只影响内置 Chromium 与 Firefox；可配项计数 36 改为 38；`get_config` 样例补 `forType` / `cdpConfigured` 并写明 `resolved` 与 `start` 回执同值、`chrome` 时不是 `shared-<端口>`；「停服务前先关任务」一节补上 CDP 那条路特有的孤儿浏览器症状（退出码 21 + 没有输出）。
-- [本章索引](./docs/zh/65_ai-browser/readme.md)：第四阶段目录补 27，并在「按问题查阅」表加一行指向它。
+- [源码教程：Chrome 走 CDP 与 CDP 客户端](https://deepseek-browser-use.io.nexus/27.html)（**新增页**）：为什么本机 Chrome 走 CDP、启动链路（含从 stderr 读调试地址与「拒绝」和「提前退出」的区分）、独立客户端的类型分层与「为什么自己写」、三个关键机制（id 配对 / 按 target 分会话与跨域 iframe / 失败分型里「超时不能当成没生效」）、创建期参数怎么补（含**权限名不是 Playwright 那一套**这个静默坑，以及自动挂载必须放行）、回执新增字段、profile 为什么不再按端口派生、排障（退出码 21 与「没有输出」的真实原因、9222 的由来与害处、`set_credentials` 不可用）、自测怎么自证。
+- [浏览器、profile 与登录态](https://deepseek-browser-use.io.nexus/05.html)：`start` 的浏览器表新增「启动方式」一列并写明 CDP 与持久化上下文的分工；第三节由「默认按端口分开」重写为两节（本机 Chrome 固定 `shared-default` / 其余按端口派生），并写清从旧目录切过来**登录态不会跟着走**；第四节由「用用户自己那份 Chrome profile（CDP 模式）」重写为「换一份 profile」，说明该开关只管「用哪份 profile」、不管「走哪条路」；回执字段表补 `cdp` 并更新 `note`、`mode` 说明；第六节补调试端口不要用 9222 的提示。
+- [配置项与运维自省](https://deepseek-browser-use.io.nexus/12.html)：新增 `browser.chrome.cdpProfileDir` 与 `browser.chrome.debugPort` 两行，`browser.profileDir` / `perPort` 两行标明只影响内置 Chromium 与 Firefox；可配项计数 36 改为 38；`get_config` 样例补 `forType` / `cdpConfigured` 并写明 `resolved` 与 `start` 回执同值、`chrome` 时不是 `shared-<端口>`；「停服务前先关任务」一节补上 CDP 那条路特有的孤儿浏览器症状（退出码 21 + 没有输出）。
+- [本章索引](https://deepseek-browser-use.io.nexus/)：第四阶段目录补 27，并在「按问题查阅」表加一行指向它。
 - 中文侧边栏登记新页（`audit-docs.mjs` 对未登记的章节页会直接判失败）。
 
 ### 验证范围
@@ -373,8 +374,8 @@
 ### 已补全
 
 - [Json 转换](./docs/zh/14_tio-utils/05.md)：「不输出 null 值字段」一节重写为三种方式（按调用点 / 全局配置项 / 启动期代码打开），补 `installSkipNull` / `uninstallSkipNull` / `isSkipNull` 的语义与"只还原自己那一层"，并写清影响范围是这个进程、以及同框架下多项目互不影响的理由。
-- [统一命令接口与人机协作](./docs/zh/65_ai-browser/04.md)：响应样例改为不带空字段的形态，新增「响应里不输出 null 值字段」小节。
-- [配置项与运维自省](./docs/zh/65_ai-browser/12.md)：新增 `tio.json.skipNull`（框架级）与 `browser.json.skipNull`（项目级、优先级更高）两行。
+- [统一命令接口与人机协作](https://deepseek-browser-use.io.nexus/04.html)：响应样例改为不带空字段的形态，新增「响应里不输出 null 值字段」小节。
+- [配置项与运维自省](https://deepseek-browser-use.io.nexus/12.html)：新增 `tio.json.skipNull`（框架级）与 `browser.json.skipNull`（项目级、优先级更高）两行。
 
 ### 验证范围
 
@@ -401,8 +402,8 @@
 ### 已补全
 
 - [Json 转换](./docs/zh/14_tio-utils/05.md)：新增「不输出 null 值字段」一节 —— 按调用点的两种用法、为什么框架**刻意不**提供全局开关、项目级包装工厂的完整写法与三个要点（包装"当前"工厂、解析必须委托、只影响本进程），并指向浏览器服务这个实例。
-- [统一命令接口与人机协作](./docs/zh/65_ai-browser/04.md)：响应样例改为不带空字段的形态，并新增「响应里不输出 null 值字段」小节，讲清「字段不在 == 为 null」对读回执的一方的两个影响（判断成败只认 `ok`/`code`；`browser.json.skipNull=false` 可恢复）。
-- [配置项与运维自省](./docs/zh/65_ai-browser/12.md)：新增 `browser.json.skipNull` 一行。
+- [统一命令接口与人机协作](https://deepseek-browser-use.io.nexus/04.html)：响应样例改为不带空字段的形态，并新增「响应里不输出 null 值字段」小节，讲清「字段不在 == 为 null」对读回执的一方的两个影响（判断成败只认 `ok`/`code`；`browser.json.skipNull=false` 可恢复）。
+- [配置项与运维自省](https://deepseek-browser-use.io.nexus/12.html)：新增 `browser.json.skipNull` 一行。
 
 ### 验证范围
 
@@ -422,12 +423,12 @@
 
 ### 已补全
 
-- [点击、输入、键盘和鼠标](./docs/zh/65_ai-browser/20.md)：键盘与鼠标一节改写为「输入形态分流」与「按住不放读图上一点」；`send_keys` 补分流判据表、`typesAsText` 源码片段、更新后的 `sendKeys` 实现与参数表；`mouse_click` 补「坐标点击不依赖 DOM 节点句柄，是选择器频繁撞伪故障时的稳定退路」。
-- [DOM、页面状态与元素读取](./docs/zh/65_ai-browser/19.md)：`get_element_text` 更新为 `index`/`selector` 二选一 + `canvasOnly` 的当前实现，并说明为什么这个命令要收选择器（canvas 没有索引）与诊断的边界（诊断取不到不影响文字返回）。
-- [公共执行链](./docs/zh/65_ai-browser/14.md)：重发策略段落改写，并同步 `ActionService.execute` 的当前源码（动作类失败提示新增「确认没生效后可带 `retryOnSpurious` 再发」、只读失败提示改为「可以再发一次」并新增 `retriedByCallerRequest`）。
-- [表单与多层弹窗排障](./docs/zh/65_ai-browser/08.md)：补动作类命令的处置顺序「先读 → 确认没生效再带开关重发 → 仍不行改用坐标点击」，并强调默认行为未变。
-- [源码教程：等待条件与 JavaScript 执行](./docs/zh/65_ai-browser/21.md)：说明 `retryOnSpurious` 是按调用点声明、对任何命令都有效，命令名只决定默认行为。
-- [客户端](./docs/zh/65_ai-browser/03_client.md)：`--retry-on-spurious` 说明改为 `js` 与 `run` 两个子命令都有，并写明动作类要先确认没生效。
+- [点击、输入、键盘和鼠标](https://deepseek-browser-use.io.nexus/20.html)：键盘与鼠标一节改写为「输入形态分流」与「按住不放读图上一点」；`send_keys` 补分流判据表、`typesAsText` 源码片段、更新后的 `sendKeys` 实现与参数表；`mouse_click` 补「坐标点击不依赖 DOM 节点句柄，是选择器频繁撞伪故障时的稳定退路」。
+- [DOM、页面状态与元素读取](https://deepseek-browser-use.io.nexus/19.html)：`get_element_text` 更新为 `index`/`selector` 二选一 + `canvasOnly` 的当前实现，并说明为什么这个命令要收选择器（canvas 没有索引）与诊断的边界（诊断取不到不影响文字返回）。
+- [公共执行链](https://deepseek-browser-use.io.nexus/14.html)：重发策略段落改写，并同步 `ActionService.execute` 的当前源码（动作类失败提示新增「确认没生效后可带 `retryOnSpurious` 再发」、只读失败提示改为「可以再发一次」并新增 `retriedByCallerRequest`）。
+- [表单与多层弹窗排障](https://deepseek-browser-use.io.nexus/08.html)：补动作类命令的处置顺序「先读 → 确认没生效再带开关重发 → 仍不行改用坐标点击」，并强调默认行为未变。
+- [源码教程：等待条件与 JavaScript 执行](https://deepseek-browser-use.io.nexus/21.html)：说明 `retryOnSpurious` 是按调用点声明、对任何命令都有效，命令名只决定默认行为。
+- [客户端](https://deepseek-browser-use.io.nexus/03_client.html)：`--retry-on-spurious` 说明改为 `js` 与 `run` 两个子命令都有，并写明动作类要先确认没生效。
 
 ### 验证范围
 
@@ -441,16 +442,16 @@
 
 ### 已补全
 
-- [DOM、页面状态与元素读取](./docs/zh/65_ai-browser/19.md)：重写「快照一致性与索引有效性」一节，说明判据为什么从「页面变更计数」换成**结构变更 + 逐元素重校验** —— 索引解析成的是位置型 XPath（只有同级序号、没有 class 谓词），所以文字改写与 class/style 变化不影响索引，只有增删元素才会挪动同级序号。补上 `strictSnapshot` 参数、增量变更计数（`snapshotMutations` / `snapshotStructuralMutations` / `snapshotContentMutations`）与 `snapshotNote` 字段。
-- [DOM、页面状态与元素读取](./docs/zh/65_ai-browser/19.md)：`get_browser_state` 的参数表与两处源码片段同步为带 `strictSnapshot` 的当前签名。
-- [客户端](./docs/zh/65_ai-browser/03_client.md)：补上三处与服务端一致的行为 —— `--select` 对**失败响应同样生效**（批量里某一步失败时 `data.results` 仍在，`--select data.results.N.…` 正是「只看失败那一步」的用法，只有路径不存在才退回整封）；参数文件与 `batch` 都认**整个请求体**；`js` 新增 `--retry-on-spurious`（只读脚本的重发开关）。
+- [DOM、页面状态与元素读取](https://deepseek-browser-use.io.nexus/19.html)：重写「快照一致性与索引有效性」一节，说明判据为什么从「页面变更计数」换成**结构变更 + 逐元素重校验** —— 索引解析成的是位置型 XPath（只有同级序号、没有 class 谓词），所以文字改写与 class/style 变化不影响索引，只有增删元素才会挪动同级序号。补上 `strictSnapshot` 参数、增量变更计数（`snapshotMutations` / `snapshotStructuralMutations` / `snapshotContentMutations`）与 `snapshotNote` 字段。
+- [DOM、页面状态与元素读取](https://deepseek-browser-use.io.nexus/19.html)：`get_browser_state` 的参数表与两处源码片段同步为带 `strictSnapshot` 的当前签名。
+- [客户端](https://deepseek-browser-use.io.nexus/03_client.html)：补上三处与服务端一致的行为 —— `--select` 对**失败响应同样生效**（批量里某一步失败时 `data.results` 仍在，`--select data.results.N.…` 正是「只看失败那一步」的用法，只有路径不存在才退回整封）；参数文件与 `batch` 都认**整个请求体**；`js` 新增 `--retry-on-spurious`（只读脚本的重发开关）。
 
 ### 验证范围
 
 - 源码核对：`snapshotIssues` 现在按 `strict` 选择比较 `mutations` 还是 `structuralMutations`，并新增 `element_identity_changed` 重校验；`snapshotStamp` 把 `childList` 中增删元素节点计为结构变更、其余计为内容变更；`getBrowserState` 增加 `strictSnapshot` 重载，`CommandTable` 同步读取该参数。
 - 单元测试：`BrowserConsistencyTest` 9 项通过，其中新增三项分别覆盖「纯内容变动不作废索引」「`strictSnapshot` 恢复旧判据」「同一位置换了标签必须作废」。
 - 实测：在持续刷新的实时行情页上，修复前每次按索引操作都得到「当前没有页面快照」；修复后同一页面返回 `indicesUsable:true`、`snapshotStructuralMutations:0`、`snapshotContentMutations:1`，按索引点击回执 `changed:true`。
-- 配置读取：`ChromeBrowser` 与 `WindowsOcr` 原先把 `System.getenv` 当作环境变量入口，会绕过 [配置与运维](./docs/zh/65_ai-browser/12.md) 写明的优先级链（配在配置文件里不生效）。两处已改为 `EnvUtils.get`，代码与文档一致。
+- 配置读取：`ChromeBrowser` 与 `WindowsOcr` 原先把 `System.getenv` 当作环境变量入口，会绕过 [配置与运维](https://deepseek-browser-use.io.nexus/12.html) 写明的优先级链（配在配置文件里不生效）。两处已改为 `EnvUtils.get`，代码与文档一致。
 - 技能文档与服务端的命令表一致性由构建期测试校验；本次未新增命令，只新增了一个 `get_browser_state` 参数，主技能文档与分册已同步。
 
 ## 2026-09-26：补回浏览器原理与实现代码
@@ -459,14 +460,14 @@
 - DOM 与元素提取篇补充当前前端完整脚本、Java DOM 模型、两遍组装与跨 Frame 索引代码。
 - 正文提取篇增加完整 Java 模型抽取示例，明确浏览器正文读取和上层模型处理的边界。
 - 116 条命令逐一附上注册代码与服务实现，另补执行链、点击定位和批量辅助代码。
-- 新增 [客户端教程](./docs/zh/65_ai-browser/03_client.md)，覆盖命令行、Python 库、PowerShell、传输错误、留档与异步查询，附当前客户端实现。
+- 新增 [客户端教程](https://deepseek-browser-use.io.nexus/03_client.html)，覆盖命令行、Python 库、PowerShell、传输错误、留档与异步查询，附当前客户端实现。
 
 ## 2026-09-26：重编 deepseek-browser-use 教程
 
 - ai-browser 移至 ai-coding 之后，目录为 `65_ai-browser`，原 60—62 章顺延；同步导航、引用与历史页面跳转。
 - 删除旧控制器与多端点教程，重写安装、首次任务和智能体接入；统一使用当前 Handler、ActionService、CommandTable 执行链。
 - DOM 与正文抽取按现行源码重写，补充 Frame 索引、实时表单状态以及正文长度和 query 回显边界。
-- [章节目录](./docs/zh/65_ai-browser/readme.md) 按入门、实际任务、核心原理、功能源码四个阶段组织。
+- [章节目录](https://deepseek-browser-use.io.nexus/) 按入门、实际任务、核心原理、功能源码四个阶段组织。
 
 ## 2026-09-26：整理 java-openai、ai_agent、知识库和语音章节
 
@@ -479,7 +480,7 @@
 
 ## 2026-09-26：AI Browser 按功能补齐源码教程并清理旧文档
 
-- 新增 [公共执行链](./docs/zh/65_ai-browser/14.md) 与 18–26 功能教程，按当前注册表覆盖全部 116 个命令；另讲解 commands 批量入口。内容包含执行机制、注册参数、Java 入口、边界及验证方法。
+- 新增 [公共执行链](https://deepseek-browser-use.io.nexus/14.html) 与 18–26 功能教程，按当前注册表覆盖全部 116 个命令；另讲解 commands 批量入口。内容包含执行机制、注册参数、Java 入口、边界及验证方法。
 - 保留 Windows OCR 专章和 08–15 使用指南；修正命令清单中的滚动单位、HTML 返回、数量等待与设置作用域。
 - 按用户反馈恢复 01–07 全文，保留总体介绍、提示词、DOM 原理和 Controller 教学示例；在原文基础上增加适用范围和现行实现指引。撤销这些页面的迁移重定向，恢复目录、侧边栏及历史引用。
 - 新增示例统一使用虚构资料，不记录真实商家信息、账号、验证码或密钥。
@@ -492,15 +493,15 @@
   1. 生命周期原文写「每个任务使用独立的持久化浏览器上下文和 profile」，与实现相反 —— 浏览器与 profile 是**全进程共享**的（一个浏览器进程、一份 profile，任务之间靠页签隔离），原文的写法正是被取代掉的旧设计；
   2. profile 路径原写 `~/.config/browseruse/profiles/<id>`，实际默认按服务端口派生为 `shared-<端口>`；
   3. 补上「浏览器类型、有头/无头、profile 目录、可执行文件是浏览器级属性」这条：与正在运行的不一致时空闲才重建、有任务在跑就报错。
-- [统一命令接口与人机协作](<./docs/zh/65_ai-browser/04.md>)：错误码表补 `RATE_LIMITED`，并给每一行加「可自动重试」列，说明 `data.retryable` 与 `data.retryAfterMs` 的建议退避值；批量一节补 `expect` 断言与 `stopOnExpectFailure`（断言没过时 `failed` 仍是 0、`expectFailed` 是 1），以及 `async` 异步作业；开头加后续章节导引。
+- [统一命令接口与人机协作](https://deepseek-browser-use.io.nexus/04.html)：错误码表补 `RATE_LIMITED`，并给每一行加「可自动重试」列，说明 `data.retryable` 与 `data.retryAfterMs` 的建议退避值；批量一节补 `expect` 断言与 `stopOnExpectFailure`（断言没过时 `failed` 仍是 0、`expectFailed` 是 1），以及 `async` 异步作业；开头加后续章节导引。
 - 新增 6 篇现行文档，填掉章节里「只有早期多端点方案」的空白：
-  - [09. 浏览器、profile 与登录态](<./docs/zh/65_ai-browser/05.md>)：`browser` 参数五种取值与别名、`auto` 与显式取值的区别、回执里 `requestedBrowser`/`effectiveBrowser`/`engineHonored`/`mode`/`profileSeenBefore`/`note`/`profileNote` 各字段含义、profile 按端口派生、用户自己那份 Chrome profile（CDP 模式）的两个代价、Firefox 差异、Chromium 沙箱三档取值与「沙箱 + 管道」那条坑。
-  - [10. 窗口尺寸与页面视口](<./docs/zh/65_ai-browser/06.md>)：窗口按**可用工作区**（扣任务栏）计算、`browser.viewport` 三档取值、默认从固定视口改成跟随窗口的原因与前后实测对照、截图像素与 `devicePixelRatio` 的换算、跟随窗口时不能同时给设备仿真参数、`set_viewport` 与元素在视口外的处理。
-  - [11. 配置项与运维自省](<./docs/zh/65_ai-browser/12.md>)：配置读取优先级（`EnvUtils.get` 通道优先于服务自带配置，不要直接用 `System.getenv`）、36 个运行时可配项按用途分组、四个只读端点与两条非 `/playwright/` 前缀路由、`get_config` 的返回结构、启动与停止脚本、安全提示。
-  - [12. 调用追踪、页面留档与文件上传](<./docs/zh/65_ai-browser/09.md>)：`logs/trace/` 四类产物与命名规则、排查顺序、脱敏规则与「尽力而为」的边界、`data/<id>/` 的留档时机与序号约定、客户端侧留档、`POST /playwright/upload` 的四种用法与安全约束、`execute_js` 的脚本目录。
-  - [13. 命令清单](<./docs/zh/65_ai-browser/13.md>)：把 116 个方法按 23 个功能组列出，并补「按场景查方法」一表；说明 `commands` 不在方法清单里但可由分发层处理。
-  - [14. 站点配方、技能与异步作业](<./docs/zh/65_ai-browser/10.md>)：配方文件格式与变量注入、仓库自带的 5 个配方、「主站套第三方控制台」这一整类站点的套路与最易踩的一步、技能与配方的分工、异步作业的状态与 50 个上限（含「结果在内存、服务重启即丢」这条限制）。
-- [章节导航](<./docs/zh/65_ai-browser/readme.md>) 重写为「现行文档 / 原理与早期实现」两段，并点明 `01`、`06`、`07` 属早期实现、不能直接当当前 API 用。
+  - [09. 浏览器、profile 与登录态](https://deepseek-browser-use.io.nexus/05.html)：`browser` 参数五种取值与别名、`auto` 与显式取值的区别、回执里 `requestedBrowser`/`effectiveBrowser`/`engineHonored`/`mode`/`profileSeenBefore`/`note`/`profileNote` 各字段含义、profile 按端口派生、用户自己那份 Chrome profile（CDP 模式）的两个代价、Firefox 差异、Chromium 沙箱三档取值与「沙箱 + 管道」那条坑。
+  - [10. 窗口尺寸与页面视口](https://deepseek-browser-use.io.nexus/06.html)：窗口按**可用工作区**（扣任务栏）计算、`browser.viewport` 三档取值、默认从固定视口改成跟随窗口的原因与前后实测对照、截图像素与 `devicePixelRatio` 的换算、跟随窗口时不能同时给设备仿真参数、`set_viewport` 与元素在视口外的处理。
+  - [11. 配置项与运维自省](https://deepseek-browser-use.io.nexus/12.html)：配置读取优先级（`EnvUtils.get` 通道优先于服务自带配置，不要直接用 `System.getenv`）、36 个运行时可配项按用途分组、四个只读端点与两条非 `/playwright/` 前缀路由、`get_config` 的返回结构、启动与停止脚本、安全提示。
+  - [12. 调用追踪、页面留档与文件上传](https://deepseek-browser-use.io.nexus/09.html)：`logs/trace/` 四类产物与命名规则、排查顺序、脱敏规则与「尽力而为」的边界、`data/<id>/` 的留档时机与序号约定、客户端侧留档、`POST /playwright/upload` 的四种用法与安全约束、`execute_js` 的脚本目录。
+  - [13. 命令清单](https://deepseek-browser-use.io.nexus/13.html)：把 116 个方法按 23 个功能组列出，并补「按场景查方法」一表；说明 `commands` 不在方法清单里但可由分发层处理。
+  - [14. 站点配方、技能与异步作业](https://deepseek-browser-use.io.nexus/10.html)：配方文件格式与变量注入、仓库自带的 5 个配方、「主站套第三方控制台」这一整类站点的套路与最易踩的一步、技能与配方的分工、异步作业的状态与 50 个上限（含「结果在内存、服务重启即丢」这条限制）。
+- [章节导航](https://deepseek-browser-use.io.nexus/) 重写为「现行文档 / 原理与早期实现」两段，并点明 `01`、`06`、`07` 属早期实现、不能直接当当前 API 用。
 
 ### 验证范围
 
@@ -520,10 +521,10 @@
 ### 已补齐
 
 - 结论：`/commands` **只接受 POST + JSON 请求体**，`GET` 直接返回 `批量指令只支持 POST + JSON 请求体,请用 POST 并把命令放在请求体里`；表单、`bodyJson` 字段与 `getRequestMap()` 读取方式都已从源码移除。文档里「POST 优先、GET 兼容」的写法全部删除，只保留 **POST + JSON 对象载荷** 这一个推荐写法（另附 POST + 命令数组、POST + 单条命令两种同样受支持的写法），段落标题由“为什么推荐 POST”改为“为什么只支持 POST”（会改浏览器状态、命令 JSON 塞进 URL 要百分号编码且受长度限制）。
-- [操作浏览器指令](<./docs/zh/65_ai-browser/03.md>)：接口参数表去掉 `bodyJson`，`id` 说明改为“可选：放在请求体里，数组体时放查询串 `?id=`”；“参数绑定”与 `execute_js` 一节按“**`execute_js` 可以用 JSON 请求体（也支持查询串／表单），`commands` 必须用 POST + JSON 请求体**”重写，不再把两个接口混为一谈；保留一张“老写法”表，只用于说明 GET／表单／`bodyJson` 各自的实际失败提示。
-- [AI Browser 简介](<./docs/zh/65_ai-browser/01.md>)：`commands` 表格行与参数说明同步为 POST-only，并区分 `execute_js` 与 `commands` 的传参方式。
-- [启动浏览器](<./docs/zh/65_ai-browser/02.md>)：参数绑定、`execute_js`、批量指令三处同步；明确 `commands` 不接受 GET、不接受表单，也没有 `bodyJson` 参数。
-- 跟进源码的两处小改动：[操作浏览器指令](<./docs/zh/65_ai-browser/03.md>)“老写法”表里 `bodyJson` 字段一行的实际返回，改为源码新增的显式迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`（原先写的是“被当成一条名为 `bodyJson` 的命令”）；错误信息侧，`briefMessage` 现在会截掉库异常尾部的版本号标记，文档中相关提示本来就写成 `请求体解析失败,批量指令需要 JSON：<原因>`、`set_headers 失败：<原因>` 这类占位形式，无版本号需要删除。
+- [操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html)：接口参数表去掉 `bodyJson`，`id` 说明改为“可选：放在请求体里，数组体时放查询串 `?id=`”；“参数绑定”与 `execute_js` 一节按“**`execute_js` 可以用 JSON 请求体（也支持查询串／表单），`commands` 必须用 POST + JSON 请求体**”重写，不再把两个接口混为一谈；保留一张“老写法”表，只用于说明 GET／表单／`bodyJson` 各自的实际失败提示。
+- [AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html)：`commands` 表格行与参数说明同步为 POST-only，并区分 `execute_js` 与 `commands` 的传参方式。
+- [启动浏览器](https://deepseek-browser-use.io.nexus/02.html)：参数绑定、`execute_js`、批量指令三处同步；明确 `commands` 不接受 GET、不接受表单，也没有 `bodyJson` 参数。
+- 跟进源码的两处小改动：[操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html)“老写法”表里 `bodyJson` 字段一行的实际返回，改为源码新增的显式迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`（原先写的是“被当成一条名为 `bodyJson` 的命令”）；错误信息侧，`briefMessage` 现在会截掉库异常尾部的版本号标记，文档中相关提示本来就写成 `请求体解析失败,批量指令需要 JSON：<原因>`、`set_headers 失败：<原因>` 这类占位形式，无版本号需要删除。
 
 ### 验证范围
 
@@ -537,9 +538,9 @@
 
 ### 已补齐
 
-- [操作浏览器指令](<./docs/zh/65_ai-browser/03.md>)：批量一节按源码改写为 **只支持 POST + JSON 请求体**——新增“请求写法”表格（POST + 对象载荷、POST + 命令数组、POST + 单条命令对象）与三条完整 `curl` 示例；说明只有 POST 的三个理由（`/commands` 会改浏览器状态、命令 JSON 塞进 URL 要百分号编码且受长度限制、POST 请求体不受 URL 长度约束）；新增“老写法”表列出 GET、表单、`bodyJson` 字段各自的结果（GET 返回 `批量指令只支持 POST + JSON 请求体,请用 POST 并把命令放在请求体里`，表单体返回 `请求体解析失败,批量指令需要 JSON：<原因>`，`bodyJson` 字段返回迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`）；请求体出错提示表改为源码当前文案（`请求体不能为空,需要命令数组或含 commands 的对象`、`请求体解析失败,批量指令需要 JSON：<原因>`、`缺少参数 id,可以放在查询串里,也可以放在对象载荷里`、`对象载荷必须包含 commands 数组,或者只写一条命令`、`命令数组为空`）；接口表格行改为“`id`（可选）、命令 JSON 请求体（POST 必需，没有 `bodyJson` 参数）”；PTC 的两个例子改为 `POST` + JSON 请求体；“参数绑定”与 `execute_js` 一节把“只有 `execute_js` 支持 JSON 请求体”改为 `execute_js` 与 `commands` 两个接口，并注明 `commands` 只接受 POST。
-- [AI Browser 简介](<./docs/zh/65_ai-browser/01.md>)：`commands` 表格行与参数说明同步为“只接受 POST + JSON 请求体，`id` 可放查询串或对象载荷里”。
-- [启动浏览器](<./docs/zh/65_ai-browser/02.md>)：参数绑定与“在页面中执行 JavaScript”两节同步改为两个接口支持 JSON 请求体；批量指令示例改为 `POST` + JSON 请求体，并说明请求体直接是命令数组时 `id` 必须放查询串、GET／表单／`bodyJson` 已不支持。
+- [操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html)：批量一节按源码改写为 **只支持 POST + JSON 请求体**——新增“请求写法”表格（POST + 对象载荷、POST + 命令数组、POST + 单条命令对象）与三条完整 `curl` 示例；说明只有 POST 的三个理由（`/commands` 会改浏览器状态、命令 JSON 塞进 URL 要百分号编码且受长度限制、POST 请求体不受 URL 长度约束）；新增“老写法”表列出 GET、表单、`bodyJson` 字段各自的结果（GET 返回 `批量指令只支持 POST + JSON 请求体,请用 POST 并把命令放在请求体里`，表单体返回 `请求体解析失败,批量指令需要 JSON：<原因>`，`bodyJson` 字段返回迁移提示 `不再支持 bodyJson 字段,请把命令直接放在请求体里,例如 {"id":1,"commands":[{"get_title":{}}]}`）；请求体出错提示表改为源码当前文案（`请求体不能为空,需要命令数组或含 commands 的对象`、`请求体解析失败,批量指令需要 JSON：<原因>`、`缺少参数 id,可以放在查询串里,也可以放在对象载荷里`、`对象载荷必须包含 commands 数组,或者只写一条命令`、`命令数组为空`）；接口表格行改为“`id`（可选）、命令 JSON 请求体（POST 必需，没有 `bodyJson` 参数）”；PTC 的两个例子改为 `POST` + JSON 请求体；“参数绑定”与 `execute_js` 一节把“只有 `execute_js` 支持 JSON 请求体”改为 `execute_js` 与 `commands` 两个接口，并注明 `commands` 只接受 POST。
+- [AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html)：`commands` 表格行与参数说明同步为“只接受 POST + JSON 请求体，`id` 可放查询串或对象载荷里”。
+- [启动浏览器](https://deepseek-browser-use.io.nexus/02.html)：参数绑定与“在页面中执行 JavaScript”两节同步改为两个接口支持 JSON 请求体；批量指令示例改为 `POST` + JSON 请求体，并说明请求体直接是命令数组时 `id` 必须放查询串、GET／表单／`bodyJson` 已不支持。
 
 ### 验证范围
 
@@ -553,10 +554,10 @@
 
 ### 已补齐
 
-- [操作浏览器指令](<./docs/zh/65_ai-browser/03.md>)：按源码重写“批量”一节——覆盖范围改为除 `commands` 自身之外的 78 个接口（老 17 个走老处理器注册表，其余 61 个走新命令表，两者对外表现一致），补齐数组与对象两种载荷（`id`、`stopOnError`、`commands` 三个字段）、`count`/`succeeded`/`failed`/`stopped`/`results` 逐步结果、`stopOnError` 默认 `true`、有失败时整体 `code` 为 `0` 但 `data.results` 完整返回、缺参数返回 `第 N 条命令 xxx 失败：缺少参数 xxx`、布尔参数缺失按 `false` 处理（`start` 的 `headless` 例外）、嵌套调用与未知命令的提示语，并新增 PTC 用途说明与“输入 → 回车 → 等待 → 取快照”一次请求完成的例子；新增“快照文本怎么读”小节，用百度首页真实样例逐条解释首尾标记、缩进层级、索引不连续、行尾 `/>`、无文字节点、属性保留范围、`value` 的两种含义、DOM 顺序，以及不可见元素不入快照、快照会过期等实测结论。
-- [AI Browser 简介](<./docs/zh/65_ai-browser/01.md>)：结构化文本样例替换为百度首页真实快照，补充读法要点与指向“快照文本怎么读”的链接；`commands` 一行改为说明批量覆盖范围、逐步结果与 `stopOnError` 默认值。
-- [启动浏览器](<./docs/zh/65_ai-browser/02.md>)：`execute_js` 作为批量指令的说明改为与源码一致（覆盖 78 个接口、对象载荷、逐步结果在 `data.results`），并指向“批量”一节。
-- 复核修正（隐藏元素与边界标记）：此前把“快照里没有的隐藏元素改用选择器类接口”写成兜底手段，实测与源码均不成立——隐藏元素不满足可操作性检查，`input_text_by_selector` 等选择器、文本、角色、标签类接口会等满 5 秒后返回 `没匹配到可操作的元素(不存在或不可见): 选择器 #kw`（源码中该失败分支的注释也以百度首页被隐藏的 `#kw` 为例）。[操作浏览器指令](<./docs/zh/65_ai-browser/03.md>) 的“快照文本怎么读”改为“不可见元素既不在快照里、选择器类接口也操作不了它，只能用 `execute_js` 直接设值并派发 `input` 事件”，并补上可复制的 `execute_js` 示例；“定位方式”一节补上该失败提示与 5 秒等待；批量示例里的 `data.text` 片段由 `[Start of page]...` 改为 `[0]<a >新闻/>...`。[AI Browser 简介](<./docs/zh/65_ai-browser/01.md>) 同步修正读法要点与参数说明，并写明 `[Start of page]` / `[End of page]` 只来自 `src/test` 下测试/demo 代码（`DomServiceTest`、`PlayWrightTaobaoSearch`、`PlayWrightKeheLogin`）的 `System.out.println`，`get_dom_text` 接口不返回这两行（实测 `data.text` 第一行直接是 `[0]<a >新闻/>`）。
+- [操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html)：按源码重写“批量”一节——覆盖范围改为除 `commands` 自身之外的 78 个接口（老 17 个走老处理器注册表，其余 61 个走新命令表，两者对外表现一致），补齐数组与对象两种载荷（`id`、`stopOnError`、`commands` 三个字段）、`count`/`succeeded`/`failed`/`stopped`/`results` 逐步结果、`stopOnError` 默认 `true`、有失败时整体 `code` 为 `0` 但 `data.results` 完整返回、缺参数返回 `第 N 条命令 xxx 失败：缺少参数 xxx`、布尔参数缺失按 `false` 处理（`start` 的 `headless` 例外）、嵌套调用与未知命令的提示语，并新增 PTC 用途说明与“输入 → 回车 → 等待 → 取快照”一次请求完成的例子；新增“快照文本怎么读”小节，用百度首页真实样例逐条解释首尾标记、缩进层级、索引不连续、行尾 `/>`、无文字节点、属性保留范围、`value` 的两种含义、DOM 顺序，以及不可见元素不入快照、快照会过期等实测结论。
+- [AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html)：结构化文本样例替换为百度首页真实快照，补充读法要点与指向“快照文本怎么读”的链接；`commands` 一行改为说明批量覆盖范围、逐步结果与 `stopOnError` 默认值。
+- [启动浏览器](https://deepseek-browser-use.io.nexus/02.html)：`execute_js` 作为批量指令的说明改为与源码一致（覆盖 78 个接口、对象载荷、逐步结果在 `data.results`），并指向“批量”一节。
+- 复核修正（隐藏元素与边界标记）：此前把“快照里没有的隐藏元素改用选择器类接口”写成兜底手段，实测与源码均不成立——隐藏元素不满足可操作性检查，`input_text_by_selector` 等选择器、文本、角色、标签类接口会等满 5 秒后返回 `没匹配到可操作的元素(不存在或不可见): 选择器 #kw`（源码中该失败分支的注释也以百度首页被隐藏的 `#kw` 为例）。[操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html) 的“快照文本怎么读”改为“不可见元素既不在快照里、选择器类接口也操作不了它，只能用 `execute_js` 直接设值并派发 `input` 事件”，并补上可复制的 `execute_js` 示例；“定位方式”一节补上该失败提示与 5 秒等待；批量示例里的 `data.text` 片段由 `[Start of page]...` 改为 `[0]<a >新闻/>...`。[AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html) 同步修正读法要点与参数说明，并写明 `[Start of page]` / `[End of page]` 只来自 `src/test` 下测试/demo 代码（`DomServiceTest`、`PlayWrightTaobaoSearch`、`PlayWrightKeheLogin`）的 `System.out.println`，`get_dom_text` 接口不返回这两行（实测 `data.text` 第一行直接是 `[0]<a >新闻/>`）。
 
 ### 验证范围
 
@@ -570,8 +571,8 @@
 
 ### 已补齐
 
-- [启动浏览器](<./docs/zh/65_ai-browser/02.md>)：新增“在页面中执行 JavaScript”一节，说明 `/api/v1/playwright/execute_js` 的请求参数、三种脚本写法、返回值限制与错误信息；同时按源码修正包名、`start` 方法签名、`BrowserInstance` 字段、`close` 的资源释放顺序，以及示例中的业务码与端口。
-- [操作浏览器指令](<./docs/zh/65_ai-browser/03.md>) 与 [AI Browser 简介](<./docs/zh/65_ai-browser/01.md>)：指令清单补充 `execute_js`。
+- [启动浏览器](https://deepseek-browser-use.io.nexus/02.html)：新增“在页面中执行 JavaScript”一节，说明 `/api/v1/playwright/execute_js` 的请求参数、三种脚本写法、返回值限制与错误信息；同时按源码修正包名、`start` 方法签名、`BrowserInstance` 字段、`close` 的资源释放顺序，以及示例中的业务码与端口。
+- [操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html) 与 [AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html)：指令清单补充 `execute_js`。
 
 ### 验证范围
 
@@ -583,10 +584,10 @@
 
 ### 已补齐
 
-- [AI Browser 简介](<./docs/zh/65_ai-browser/01.md>)：操作指令集按源码重写为导航、元素交互、信息读取、状态查询、定位方式、标签页、等待、鼠标、截图与 PDF、Cookie 与存储、浏览器设置、弹窗与控制台、网络、批量共 14 组、79 个接口；结构化文本一节说明该文本由 `get_dom_text` 返回，并补充元素索引的来源、失效与 5 秒等待上限；参数说明修正为统一响应体、`id` 序列化为字符串、除 `execute_js` 外只从 query/form 取参，以及坐标与拖拽的真实参数形态。
-- [启动浏览器](<./docs/zh/65_ai-browser/02.md>)：包名统一为 `nexus.io.ai.browser`；按源码补全 `BrowserInstance` 的快照、弹窗、日志与网络字段，补全 `start` 的启动参数、视口、权限与监听挂载；新增启动类 `PlaywrightApp` 与配置类 `PlaywrightAppConfig`、统一响应体与参数绑定两节，使用示例改为完整响应体并新增 `get_dom_text` 示例。
-- [操作浏览器指令](<./docs/zh/65_ai-browser/03.md>)：新增通用约定（统一响应体、参数绑定、元素索引）与全部 79 个接口的完整 URL、参数、返回示例，覆盖超时提示、前进后退的历史记录判断、弹窗默认确认、凭据重建上下文、截图与 PDF 落盘、路由拦截与模拟、控制台日志与请求记录上限等实现细节。
-- [dom构建- 将网页可点击元素提取与可视化](<./docs/zh/65_ai-browser/16.md>)：按源码改正 `DOMState` 的 6 参数构造器与页面高度字段，把 `DomService` 改为静态入口 `buildExpression()`、`evaluate(...)`、`getClickableElements(page, ...)`、`getSimpleText(page)`，同步更新核心类说明、代码块与测试示例。
+- [AI Browser 简介](https://deepseek-browser-use.io.nexus/01.html)：操作指令集按源码重写为导航、元素交互、信息读取、状态查询、定位方式、标签页、等待、鼠标、截图与 PDF、Cookie 与存储、浏览器设置、弹窗与控制台、网络、批量共 14 组、79 个接口；结构化文本一节说明该文本由 `get_dom_text` 返回，并补充元素索引的来源、失效与 5 秒等待上限；参数说明修正为统一响应体、`id` 序列化为字符串、除 `execute_js` 外只从 query/form 取参，以及坐标与拖拽的真实参数形态。
+- [启动浏览器](https://deepseek-browser-use.io.nexus/02.html)：包名统一为 `nexus.io.ai.browser`；按源码补全 `BrowserInstance` 的快照、弹窗、日志与网络字段，补全 `start` 的启动参数、视口、权限与监听挂载；新增启动类 `PlaywrightApp` 与配置类 `PlaywrightAppConfig`、统一响应体与参数绑定两节，使用示例改为完整响应体并新增 `get_dom_text` 示例。
+- [操作浏览器指令](https://deepseek-browser-use.io.nexus/03.html)：新增通用约定（统一响应体、参数绑定、元素索引）与全部 79 个接口的完整 URL、参数、返回示例，覆盖超时提示、前进后退的历史记录判断、弹窗默认确认、凭据重建上下文、截图与 PDF 落盘、路由拦截与模拟、控制台日志与请求记录上限等实现细节。
+- [dom构建- 将网页可点击元素提取与可视化](https://deepseek-browser-use.io.nexus/16.html)：按源码改正 `DOMState` 的 6 参数构造器与页面高度字段，把 `DomService` 改为静态入口 `buildExpression()`、`evaluate(...)`、`getClickableElements(page, ...)`、`getSimpleText(page)`，同步更新核心类说明、代码块与测试示例。
 
 ### 验证范围
 

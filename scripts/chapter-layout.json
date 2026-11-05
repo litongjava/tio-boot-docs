@@ -342,11 +342,6 @@
           "directory": "64_ai-coding",
           "title": "AI Coding",
           "previous": "59_ai-coding"
-        },
-        {
-          "directory": "65_ai-browser",
-          "title": "AI Browser",
-          "previous": "60_ai-browser"
         }
       ]
     },

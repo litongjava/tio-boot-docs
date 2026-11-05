@@ -4,5 +4,6 @@
   "16_api-table": "https://api-table.io.nexus",
   "47_telegram4j": "https://telegram-bot.io.nexus/telegram4j",
   "48_telegram-bots": "https://telegram-bot.io.nexus/telegram-bots",
-  "59_java-openai": "https://java-openai.io.nexus"
+  "59_java-openai": "https://java-openai.io.nexus",
+  "65_ai-browser": "https://deepseek-browser-use.io.nexus"
 }

@@ -30,7 +30,7 @@ export default [
       { text: "voice-agent", link: "/zh/63_voice-agent/01" },
       { text: "ai-search", link: "/zh/62_ai-search/01" },
       { text: "ai-coding", link: "/zh/64_ai-coding/01" },
-      { text: "ai-browser", link: "/zh/65_ai-browser/01" },
+      { text: "ai-browser", link: "https://deepseek-browser-use.io.nexus/01.html" },
     ],
   },
   {
