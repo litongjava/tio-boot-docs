@@ -42,7 +42,7 @@ const firstPage = (items: any[]): string => {
 };
 const allChapters = sidebarSource.map((group: any) => ({
   text: group.text,
-  collapsed: true,
+  collapsed: false,
   items: group.children.map((chapter: any) => ({ text: chapter.text, link: chapter.link || firstPage(chapter.children) })),
 }));
 const buildSidebar = () => {
@@ -52,7 +52,7 @@ const buildSidebar = () => {
     const name = chapter.children.find((c: any) => typeof c === "string")?.match(/^\/zh\/([^/]+)\//)?.[1];
     if (name) sidebar[`/zh/${name}/`] = [
       { text: chapter.text, items: toSidebar(chapter.children) },
-      { text: "全部章节", collapsed: true, items: allChapters },
+      { text: "全部章节", collapsed: false, items: allChapters },
     ];
   }
   return sidebar;
