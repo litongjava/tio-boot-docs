@@ -27,7 +27,7 @@ const toSidebar = (items: any[]): any[] => items.map((item) => {
     const source = sourceOf(item);
     return { text: source.endsWith("index.md") ? "概览" : titleOf(source), link: pathOf(source) };
   }
-  if (item.children) return { text: item.text, collapsed: true, items: toSidebar(item.children) };
+  if (item.children) return { text: item.text, collapsed: false, items: toSidebar(item.children) };
   return { text: item.text, link: item.link };
 });
 // Each page renders its sidebar into the HTML, so a page only carries its own

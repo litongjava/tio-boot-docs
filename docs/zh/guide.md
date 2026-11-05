@@ -98,7 +98,7 @@
 - [62 · AI 搜索](./62_ai-search/index.md)
 - [63 · 语音 Agent](./63_voice-agent/index.md)
 - [64 · AI Coding](./64_ai-coding/index.md)
-- [65 · AI Browser](./65_ai-browser/index.md)
+- [65 · AI Browser](https://deepseek-browser-use.io.nexus/)
 
 ## 项目实战
 
