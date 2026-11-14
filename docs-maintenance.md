@@ -1,5 +1,13 @@
 # 文档补全与维护记录
 
+## 2026-11-14：Netty、Spring、Quarkus、Telegram 独立成篇
+
+- 原先 37 Netty、38 netty-boot 属于「网络通信」篇，44 Spring、45 Spring Cloud、46 Quarkus、47/48 Telegram、49 文件存储、50 支付属于「集成与扩展」篇。现在拆成 5 个篇：Netty（37–38）、Spring（44–45）、Quarkus（46）、Telegram（47–48，外链）、文件存储与支付（49–50）；「网络通信」保留 33–36，「集成与扩展」保留 39–42。篇数由 15 变为 20。
+- 章节编号与目录名未变，页面地址不变，`legacy-paths.json` 无需调整。
+- `scripts/audit-docs.mjs` 会校验侧边栏展开后的章节顺序与目录数字顺序一致，因此 44–50 不能留在 39–42 之后的位置，只能各自成篇或归入其后的篇。
+- 同步 `docs/zh/guide.md` 的分组，以及 `scripts/chapter-layout.json` 的 groups。47、48 是外链，布局文件中本来就没有目录条目，不新增。
+- 验证：`docs:check` 的 `chapterErrors`、`missingLinks`、`missingNavigation` 均为 0，`unlistedPages` 仍是既有的 4 条；构建成功，产物中篇顺序为 网络通信 → Netty → 集成与扩展 → Spring → Quarkus → Telegram → 文件存储与支付。
+
 ## 2026-11-14：ZooKeeper 安装独立成页并补充 Windows 安装
 
 - 原 `76_dubbo/03.md` 的“安装 zookeeper”一节移到新页 [安装 ZooKeeper](./docs/zh/76_dubbo/02.md)，原位置保留一句指向新页的说明。侧边栏 76 章补上 `02.md` 条目。
