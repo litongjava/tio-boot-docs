@@ -1,5 +1,14 @@
 # 文档补全与维护记录
 
+## 2026-11-14：tio-boot-cloud 更名为 tio-cloud
+
+- 章节目录 `docs/zh/77_cloud` 改为 `docs/zh/77_tio-cloud`。仓库的 `audit-docs.mjs` 要求章节目录形如 `NN_xxx`，所以保留两位数字前缀。
+- 侧边栏、顶部导航、`guide.md`、`chapter-layout.json`、`chapter-aliases.json` 同步新目录名；篇名「微服务」与章节名「77 · 微服务」都改为 `tio-cloud`。
+- 章节正文中的模块名同步为 `tio-cloud-commons`、`tio-cloud-nacos`、`tio-cloud-gateway`，属性名改为 `tio-cloud.version`。
+- `legacy-paths.json`：`79_cloud` 的 8 条旧映射改指向新目录，另新增 `77_cloud` 的 8 条映射，旧地址仍可访问。
+- 其他章节里指向本目录的相对链接（`06_web/34.md`、`34_tio/09-channel-context.md`）同步更新。
+- 验证：`docs:check` 的 `chapterErrors`、`missingLinks`、`missingNavigation` 均为 0，`unlistedPages` 仍是既有的 4 条；站点构建成功。
+
 ## 2026-11-14：Netty、Spring、Quarkus、Telegram 独立成篇
 
 - 原先 37 Netty、38 netty-boot 属于「网络通信」篇，44 Spring、45 Spring Cloud、46 Quarkus、47/48 Telegram、49 文件存储、50 支付属于「集成与扩展」篇。现在拆成 5 个篇：Netty（37–38）、Spring（44–45）、Quarkus（46）、Telegram（47–48，外链）、文件存储与支付（49–50）；「网络通信」保留 33–36，「集成与扩展」保留 39–42。篇数由 15 变为 20。

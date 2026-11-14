@@ -86,7 +86,7 @@ public class RoomAttributes {
 }
 ```
 
-需要在连接关闭时执行清理，可以使用 [ChannelCloseHooks](../77_cloud/06.md)。
+需要在连接关闭时执行清理，可以使用 [ChannelCloseHooks](../77_tio-cloud/06.md)。
 
 ## ChannelContext 组成部分
 

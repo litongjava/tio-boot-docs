@@ -1261,7 +1261,7 @@
     ]
   },
   {
-    "text": "微服务",
+    "text": "tio-cloud",
     "collapsible": true,
     "children": [
       {
@@ -1279,16 +1279,16 @@
         "collapsible": true
       },
       {
-        "text": "77 · 微服务",
+        "text": "77 · tio-cloud",
         "children": [
-          "/zh/77_cloud/readme.md",
-          "/zh/77_cloud/01.md",
-          "/zh/77_cloud/02.md",
-          "/zh/77_cloud/03.md",
-          "/zh/77_cloud/04.md",
-          "/zh/77_cloud/05.md",
-          "/zh/77_cloud/06.md",
-          "/zh/77_cloud/07.md"
+          "/zh/77_tio-cloud/readme.md",
+          "/zh/77_tio-cloud/01.md",
+          "/zh/77_tio-cloud/02.md",
+          "/zh/77_tio-cloud/03.md",
+          "/zh/77_tio-cloud/04.md",
+          "/zh/77_tio-cloud/05.md",
+          "/zh/77_tio-cloud/06.md",
+          "/zh/77_tio-cloud/07.md"
         ],
         "collapsible": true
       }

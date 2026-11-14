@@ -34,10 +34,10 @@ export default [
     ],
   },
   {
-    text: "微服务",
+    text: "tio-cloud",
     children: [
       { text: "Dubbo", link: "/zh/76_dubbo/01" },
-      { text: "微服务", link: "/zh/77_cloud/01" },
+      { text: "tio-cloud", link: "/zh/77_tio-cloud/01" },
     ],
   },
   {
