@@ -1,5 +1,32 @@
 # 文档补全与维护记录
 
+## 2026-11-14：ZooKeeper 安装独立成页并补充 Windows 安装
+
+- 原 `76_dubbo/03.md` 的“安装 zookeeper”一节移到新页 [安装 ZooKeeper](./docs/zh/76_dubbo/02.md)，原位置保留一句指向新页的说明。侧边栏 76 章补上 `02.md` 条目。
+- 新页按 Linux、Windows 分开写：下载、解压、`zoo.cfg` 配置、启动、状态检查、关闭、开机自启。Windows 部分补充：3.7.2 只提供 `tar.gz`，用系统自带的 `tar` 解压；`dataDir` 用正斜杠，避免 properties 把反斜杠当转义符；`zkServer.cmd` 依赖 `JAVA_HOME`，在前台运行，没有 `start` 子命令，多传参数会退化为 standalone 并抛 `NumberFormatException`；用 `zkCli.cmd` 验证连接。
+- 原来的三个裸端口号改为说明用途：2181 是客户端端口，8080 是 3.5 起内置的 AdminServer。
+- Windows 步骤在 3.7.2 + JDK 21 上实际启动验证，日志出现 `binding to port 0.0.0.0/0.0.0.0:2181` 与 `PrepRequestProcessor (sid:0) started`。
+- 同步 `76_dubbo/index.md` 的文件清单，补上 `02.md`。
+
+## 2026-11-14：侧边栏节可展开、顶部导航新增“微服务”
+
+- “全部章节”从“篇 → 章链接”改为“篇 → 章 → 节”三级树：章标题仍可点击进入本章概览，右侧箭头单独负责展开与收起；章默认收起，当前页所在的章自动展开。7 个外链章（AOP、java-db、api-table、Telegram4J、Telegram Bots、java-openai、AI Browser）没有子节点，保持纯链接。
+- 每篇正文下面再列出该页的二、三级标题：条目直接跳到对应锚点，当前页自动展开，其他页点箭头展开。标题锚点由配置按构建实际规则生成（去标点、空格转连字符、数字开头加下划线、保留中文标点），并在构建产物上逐页核对过 —— 690 页、6788 个标题全部命中真实 `id`。
+- 只有当前所在章的页面带标题层，所以单页体积只随本章增加：单页从 310 KB 增到约 340 KB，`dist` 由 380 MB 增到 482 MB，完整构建 186 s。代价比“给全部 601 页都加标题层”低一个数量级（后者每页要多渲染约 6800 个条目）。
+- 进入某章后左侧第一块（本章目录）同样支持收起，并同样带标题层。
+- 顶部导航在“实战项目”右侧新增“微服务”下拉，包含 Dubbo 与微服务，指向 `/zh/76_dubbo/01.html`、`/zh/77_cloud/01.html`。
+- 侧边栏改为按需容错读取源文件：条目指向的页面暂时不存在时不再让整站构建中断（`docs:check` 的 `missingNavigation` 仍会报出来），避免重命名或移动页面期间的构建互相打断。
+- 同步 `76_dubbo` 章的重命名：`02.md`（安装 ZooKeeper）独立成页，原 02 顺延为 `03.md`（dubbo 2.6）、`04.md`（dubbo 2.6.0 调用过程）、`05.md`（dubbo 3.2）；`legacy-paths.json` 中 5 组 Dubbo 旧地址的目标同步下移一位，旧链接仍指向同一篇内容。
+- 验证：`docs:check` 的 `missingLinks`、`missingNavigation`、`chapterErrors` 均为 0，`unlistedPages` 仍是既有的 4 条；浏览器实测章与节均可展开、跳转锚点正确、导航出现“微服务”。
+- 顺带发现：`tests/site/chapter-aliases.spec.mjs` 用 `.vp-sidebar` 定位侧边栏，而实际 class 是 `VPSidebar`，该用例在本次改动前就无法定位元素，属既有问题，未在本次修改。
+
+## 2026-11-14：章节重编号（76–80）
+
+- Dubbo 从第 43 章移到第 76 章，微服务从 79 改为 77，性能测试从 76 改为 78，原理从 77 改为 79，源码解析从 78 改为 80；目录同步改为 `76_dubbo`、`77_cloud`、`78_performance`、`79_internals`、`80_source-code`。
+- 侧边栏和阅读导航调整为三组：微服务（76 Dubbo、77 微服务）、测试（78 性能测试）、原理（79 原理、80 源码解析）。
+- 旧地址生成跳转页并更新映射；`_redirects` 超过 2000 条静态规则上限的 26 条回退到生成的跳转页，旧地址仍可访问。43 空出后不再复用，`docs:check` 的编号校验改为唯一且递增。
+- 审计结果：`missingLinks` 0、`missingNavigation` 0、`chapterErrors` 0；`unlistedPages` 仍是既有的 4 条历史遗留。
+
 ## 2026-11-04：拆分面试题
 
 - `75_examples/11`、`12`、`13` 迁到独立仓库 interview-questions，发布到 `interview-questions.io.nexus`，登记在 `docs/.vitepress/config/external-pages.json`，旧地址 301 到新站点。

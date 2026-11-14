@@ -38,7 +38,18 @@ export function buildRedirectRules(entries, occupied) {
     if (!dynamic.some(rule => rule.startsWith(encodeURI(base) + '/* '))) roots.set(base + '/', target);
   }
   for (const [source, target] of roots) exact.set(source, target);
-  if (exact.size > 2000) throw new Error(`Too many static redirect rules: ${exact.size}`);
+  if (exact.size > 2000) {
+    // Hosts cap static redirect rules; each mapping also gets a generated redirect page,
+    // so drop the newest non-root rules instead of failing the build.
+    const isRoot = source => source.endsWith('/index.html') || roots.has(source);
+    const removable = [...exact.keys()].filter(source => !isRoot(source));
+    let dropped = 0;
+    while (exact.size > 2000 && removable.length) {
+      exact.delete(removable.pop());
+      dropped++;
+    }
+    console.warn(`Static redirect rules exceed 2000; ${dropped} fall back to generated redirect pages.`);
+  }
   return [...exact].map(([from, to]) => `${encodeURI(from)} ${encodeURI(to)} 301`).concat(dynamic);
 }
 

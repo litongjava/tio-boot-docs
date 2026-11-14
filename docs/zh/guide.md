@@ -1,6 +1,6 @@
 # 文档阅读导航
 
-从入门 Demo 开始，接着完成部署与日志配置，再按业务需要进入核心开发、数据访问及其他主题。章节目录采用连续编号和英文名称；下列分组与侧边栏一致。
+从入门 Demo 开始，接着完成部署与日志配置，再按业务需要进入核心开发、数据访问及其他主题。章节目录采用数字编号和英文名称，编号不复用；下列分组与侧边栏一致。
 
 ## 入门
 
@@ -67,7 +67,6 @@
 - [40 · Magic Script](./40_magic-script/index.md)
 - [41 · Groovy](./41_groovy/index.md)
 - [42 · 爬虫](./42_crawling/index.md)
-- [43 · Dubbo](./43_dubbo/index.md)
 - [44 · Spring](./44_spring/index.md)
 - [45 · Spring Cloud](./45_spring-cloud/index.md)
 - [46 · Quarkus](./46_quarkus/index.md)
@@ -113,8 +112,16 @@
 - [74 · tio-boot-admin](./74_tio-boot-admin/index.md)
 - [75 · 案例](./75_examples/index.md)
 
-## 性能、原理与源码
+## 微服务
 
-- [76 · 性能测试](./76_performance/index.md)
-- [77 · 原理](./77_internals/index.md)
-- [78 · 源码解析](./78_source-code/index.md)
+- [76 · Dubbo](./76_dubbo/index.md)
+- [77 · 微服务](./77_cloud/index.md)
+
+## 测试
+
+- [78 · 性能测试](./78_performance/index.md)
+
+## 原理
+
+- [79 · 原理](./79_internals/index.md)
+- [80 · 源码解析](./80_source-code/index.md)

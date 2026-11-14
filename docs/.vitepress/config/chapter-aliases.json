@@ -38,7 +38,7 @@
   "magic-script": "40_magic-script",
   "groovy": "41_groovy",
   "crawling": "42_crawling",
-  "dubbo": "43_dubbo",
+  "dubbo": "76_dubbo",
   "spring": "44_spring",
   "spring-cloud": "45_spring-cloud",
   "quarkus": "46_quarkus",
@@ -67,8 +67,8 @@
   "tio-sip": "73_tio-sip",
   "tio-boot-admin": "74_tio-boot-admin",
   "examples": "75_examples",
-  "performance": "76_performance",
-  "internals": "77_internals",
-  "source-code": "78_source-code",
-  "cloud": "79_cloud"
+  "performance": "78_performance",
+  "internals": "79_internals",
+  "source-code": "80_source-code",
+  "cloud": "77_cloud"
 }

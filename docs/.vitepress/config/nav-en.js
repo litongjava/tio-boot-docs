@@ -34,6 +34,13 @@ export default [
     ],
   },
   {
+    text: "微服务",
+    children: [
+      { text: "Dubbo", link: "/zh/76_dubbo/01" },
+      { text: "微服务", link: "/zh/77_cloud/01" },
+    ],
+  },
+  {
     text: "最佳实践",
     children: [{ text: "案例", link: "/zh/75_examples/01" }],
   },

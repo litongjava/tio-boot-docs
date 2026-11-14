@@ -723,17 +723,6 @@
         "collapsible": true
       },
       {
-        "text": "43 · Dubbo",
-        "children": [
-          "/zh/43_dubbo/readme.md",
-          "/zh/43_dubbo/01.md",
-          "/zh/43_dubbo/02.md",
-          "/zh/43_dubbo/03.md",
-          "/zh/43_dubbo/04.md"
-        ],
-        "collapsible": true
-      },
-      {
         "text": "44 · Spring",
         "children": [
           "/zh/44_spring/readme.md",
@@ -1241,67 +1230,85 @@
     ]
   },
   {
-    "text": "性能、原理与源码",
+    "text": "微服务",
     "collapsible": true,
     "children": [
       {
-        "text": "76 · 性能测试",
+        "text": "76 · Dubbo",
         "children": [
-          "/zh/76_performance/readme.md",
-          "/zh/76_performance/01.md",
-          "/zh/76_performance/02.md",
-          "/zh/76_performance/03.md",
-          "/zh/76_performance/04.md",
-          "/zh/76_performance/05.md",
-          "/zh/76_performance/06.md",
-          "/zh/76_performance/07.md",
-          "/zh/76_performance/08.md",
-          "/zh/76_performance/09.md",
-          "/zh/76_performance/10.md"
+          "/zh/76_dubbo/readme.md",
+          "/zh/76_dubbo/01.md",
+          "/zh/76_dubbo/02.md",
+          "/zh/76_dubbo/03.md",
+          "/zh/76_dubbo/04.md",
+          "/zh/76_dubbo/05.md"
         ],
         "collapsible": true
       },
       {
-        "text": "77 · 原理",
+        "text": "77 · 微服务",
         "children": [
-          "/zh/77_internals/readme.md",
-          "/zh/77_internals/01.md",
-          "/zh/77_internals/02.md",
-          "/zh/77_internals/03.md"
-        ],
-        "collapsible": true
-      },
-      {
-        "text": "78 · 源码解析",
-        "children": [
-          "/zh/78_source-code/readme.md",
-          "/zh/78_source-code/01.md",
-          "/zh/78_source-code/02.md",
-          "/zh/78_source-code/03.md",
-          "/zh/78_source-code/04.md",
-          "/zh/78_source-code/05.md",
-          "/zh/78_source-code/06.md",
-          "/zh/78_source-code/http-connection-lifecycle.md"
+          "/zh/77_cloud/readme.md",
+          "/zh/77_cloud/01.md",
+          "/zh/77_cloud/02.md",
+          "/zh/77_cloud/03.md",
+          "/zh/77_cloud/04.md",
+          "/zh/77_cloud/05.md",
+          "/zh/77_cloud/06.md",
+          "/zh/77_cloud/07.md"
         ],
         "collapsible": true
       }
     ]
   },
   {
-    "text": "微服务",
+    "text": "测试",
     "collapsible": true,
     "children": [
       {
-        "text": "79 · 微服务",
+        "text": "78 · 性能测试",
         "children": [
-          "/zh/79_cloud/readme.md",
-          "/zh/79_cloud/01.md",
-          "/zh/79_cloud/02.md",
-          "/zh/79_cloud/03.md",
-          "/zh/79_cloud/04.md",
-          "/zh/79_cloud/05.md",
-          "/zh/79_cloud/06.md",
-          "/zh/79_cloud/07.md"
+          "/zh/78_performance/readme.md",
+          "/zh/78_performance/01.md",
+          "/zh/78_performance/02.md",
+          "/zh/78_performance/03.md",
+          "/zh/78_performance/04.md",
+          "/zh/78_performance/05.md",
+          "/zh/78_performance/06.md",
+          "/zh/78_performance/07.md",
+          "/zh/78_performance/08.md",
+          "/zh/78_performance/09.md",
+          "/zh/78_performance/10.md"
+        ],
+        "collapsible": true
+      }
+    ]
+  },
+  {
+    "text": "原理",
+    "collapsible": true,
+    "children": [
+      {
+        "text": "79 · 原理",
+        "children": [
+          "/zh/79_internals/readme.md",
+          "/zh/79_internals/01.md",
+          "/zh/79_internals/02.md",
+          "/zh/79_internals/03.md"
+        ],
+        "collapsible": true
+      },
+      {
+        "text": "80 · 源码解析",
+        "children": [
+          "/zh/80_source-code/readme.md",
+          "/zh/80_source-code/01.md",
+          "/zh/80_source-code/02.md",
+          "/zh/80_source-code/03.md",
+          "/zh/80_source-code/04.md",
+          "/zh/80_source-code/05.md",
+          "/zh/80_source-code/06.md",
+          "/zh/80_source-code/http-connection-lifecycle.md"
         ],
         "collapsible": true
       }

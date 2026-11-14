@@ -16,22 +16,95 @@ const srcRoot = resolve(import.meta.dirname, "..");
 
 const sourceOf = (link: string) => link.replace(/^\//, "").replace(/readme\.md$/i, "index.md");
 const pathOf = (source: string) => "/" + source.replace(/(^|\/)index\.md$/, "$1").replace(/\.md$/, ".html");
-const titleOf = (source: string) => {
-  const text = readFileSync(join(srcRoot, source), "utf8").replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
-  const body = text.replace(/^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\s*$/gm, "");
-  const heading = body.match(/^#\s+(.+)$/m);
-  return heading ? heading[1].replace(/`/g, "").trim() : source.split("/").pop()!.replace(/\.md$/, "");
+// A sidebar entry can briefly point at a page that is being moved or removed.
+// Fall back to an empty body instead of failing the whole build; `docs:check`
+// reports the entry as missing navigation.
+const readSource = (source: string) => {
+  try {
+    return readFileSync(join(srcRoot, source), "utf8")
+      .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "")
+      .replace(/^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\s*$/gm, "");
+  } catch {
+    return "";
+  }
 };
-const toSidebar = (items: any[]): any[] => items.map((item) => {
+const titleCache = new Map<string, string>();
+const titleOf = (source: string) => {
+  const cached = titleCache.get(source);
+  if (cached != null) return cached;
+  const heading = readSource(source).match(/^#\s+(.+)$/m);
+  const title = heading ? heading[1].replace(/`/g, "").trim() : source.split("/").pop()!.replace(/\.md$/, "");
+  titleCache.set(source, title);
+  return title;
+};
+// Heading text as it reads on the page: inline code keeps its content, links
+// keep their label, emphasis markers and HTML tags go away.
+const headingText = (heading: string) => heading
+  .split(/(`[^`]*`)/)
+  .map((part, index) => index % 2
+    ? part.slice(1, -1)
+    : part
+      .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/<[^>]+>/g, "")
+      .replace(/[*~]/g, "")
+      .replace(/(^|\s)_([^_]+)_(?=\s|$)/g, "$1$2"))
+  .join("")
+  .replace(/\s+/g, " ")
+  .trim();
+// Same rule the build applies to heading anchors, so an entry lands on the
+// section it names instead of a missing hash.
+const slugOf = (text: string) => text
+  .normalize("NFKD")
+  .replace(/[\u0300-\u036F]/g, "")
+  .replace(/[\u0000-\u001f]/g, "")
+  .replace(/[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g, "-")
+  .replace(/-{2,}/g, "-")
+  .replace(/^-+|-+$/g, "")
+  .replace(/^(\d)/, "_$1")
+  .toLowerCase();
+const outlineCache = new Map<string, any[]>();
+const outlineOf = (source: string): any[] => {
+  const cached = outlineCache.get(source);
+  if (cached) return cached;
+  const body = readSource(source);
+  const link = pathOf(source);
+  const used = new Map<string, number>();
+  const items: any[] = [];
+  let section: any;
+  for (const match of body.matchAll(/^(#{2,3})[ \t]+(.+)$/gm)) {
+    const text = headingText(match[2]);
+    const base = text && slugOf(text);
+    if (!base) continue;
+    const repeats = used.get(base) ?? 0;
+    used.set(base, repeats + 1);
+    const item = { text, link: `${link}#${repeats ? `${base}-${repeats}` : base}` };
+    if (match[1].length === 2) {
+      items.push(item);
+      section = item;
+    } else if (section) {
+      (section.items ??= []).push(item);
+    }
+  }
+  for (const item of items) if (item.items) item.collapsed = false;
+  outlineCache.set(source, items);
+  return items;
+};
+const toSidebar = (items: any[], withOutline = false): any[] => items.map((item) => {
   if (typeof item === "string") {
     const source = sourceOf(item);
-    return { text: source.endsWith("index.md") ? "概览" : titleOf(source), link: pathOf(source) };
+    const text = source.endsWith("index.md") ? "概览" : titleOf(source);
+    const outline = withOutline ? outlineOf(source) : [];
+    return outline.length
+      ? { text, link: pathOf(source), collapsed: true, items: outline }
+      : { text, link: pathOf(source) };
   }
-  if (item.children) return { text: item.text, collapsed: false, items: toSidebar(item.children) };
+  if (item.children) return { text: item.text, collapsed: false, items: toSidebar(item.children, withOutline) };
   return { text: item.text, link: item.link };
 });
-// Each page renders its sidebar into the HTML, so a page only carries its own
-// chapter plus one link per chapter instead of every page on the site.
+const chapterOf = (chapter: any) =>
+  chapter.children?.find((child: any) => typeof child === "string")?.match(/^\/zh\/([^/]+)\//)?.[1];
+// "全部章节" keeps every chapter nested and collapsible. Chapters start
+// collapsed; VitePress expands the one holding the current page.
 const firstPage = (items: any[]): string => {
   for (const item of items) {
     if (typeof item === "string") return pathOf(sourceOf(item));
@@ -40,19 +113,31 @@ const firstPage = (items: any[]): string => {
   }
   return "/zh/";
 };
-const allChapters = sidebarSource.map((group: any) => ({
+// Page outlines are only expanded for the chapter being read, so a page carries
+// one chapter's headings instead of all 6777 of them.
+const allChaptersFor = (outlined?: string) => sidebarSource.map((group: any) => ({
   text: group.text,
   collapsed: false,
-  items: group.children.map((chapter: any) => ({ text: chapter.text, link: chapter.link || firstPage(chapter.children) })),
+  items: group.children.map((chapter: any) =>
+    chapter.children
+      ? {
+          text: chapter.text,
+          link: firstPage(chapter.children),
+          collapsed: true,
+          items: toSidebar(chapter.children, chapterOf(chapter) === outlined),
+        }
+      : { text: chapter.text, link: chapter.link }
+  ),
 }));
+const allChapters = allChaptersFor();
 const buildSidebar = () => {
   const sidebar: Record<string, any[]> = { "/zh/": allChapters };
   for (const group of sidebarSource as any[]) for (const chapter of group.children) {
     if (!chapter.children) continue;
-    const name = chapter.children.find((c: any) => typeof c === "string")?.match(/^\/zh\/([^/]+)\//)?.[1];
+    const name = chapterOf(chapter);
     if (name) sidebar[`/zh/${name}/`] = [
-      { text: chapter.text, items: toSidebar(chapter.children) },
-      { text: "全部章节", collapsed: false, items: allChapters },
+      { text: chapter.text, collapsed: false, items: toSidebar(chapter.children, true) },
+      { text: "全部章节", collapsed: false, items: allChaptersFor(name) },
     ];
   }
   return sidebar;

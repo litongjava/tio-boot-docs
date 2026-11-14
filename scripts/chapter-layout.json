@@ -234,11 +234,6 @@
           "previous": "37_spider"
         },
         {
-          "directory": "43_dubbo",
-          "title": "Dubbo",
-          "previous": "38_dubbo"
-        },
-        {
           "directory": "44_spring",
           "title": "Spring",
           "previous": "39_spring"
@@ -401,32 +396,42 @@
       ]
     },
     {
-      "title": "性能、原理与源码",
+      "title": "微服务",
       "chapters": [
         {
-          "directory": "76_performance",
-          "title": "性能测试",
-          "previous": "75_性能测试"
+          "directory": "76_dubbo",
+          "title": "Dubbo",
+          "previous": "38_dubbo"
         },
         {
-          "directory": "77_internals",
-          "title": "原理",
-          "previous": "04_原理"
-        },
-        {
-          "directory": "78_source-code",
-          "title": "源码解析",
-          "previous": "76_tio-boot"
+          "directory": "77_cloud",
+          "title": "微服务",
+          "previous": null
         }
       ]
     },
     {
-      "title": "微服务",
+      "title": "测试",
       "chapters": [
         {
-          "directory": "79_cloud",
-          "title": "微服务",
-          "previous": null
+          "directory": "78_performance",
+          "title": "性能测试",
+          "previous": "75_性能测试"
+        }
+      ]
+    },
+    {
+      "title": "原理",
+      "chapters": [
+        {
+          "directory": "79_internals",
+          "title": "原理",
+          "previous": "04_原理"
+        },
+        {
+          "directory": "80_source-code",
+          "title": "源码解析",
+          "previous": "76_tio-boot"
         }
       ]
     }
